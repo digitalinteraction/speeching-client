@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView
+        android:text="Complete!"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/RecordCompletedHeader"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp" />
+    <TextView
+        android:text="Now you can review your sound before sending it off."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/RecordSoundHeaderLower"
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:layout_marginBottom="40.6dp" />
+    <Button
+        android:layout_width="200sp"
+        android:layout_height="200sp"
+        android:background="@drawable/round_button"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Play Recording"
+        android:textColor="#000000"
+        android:id="@+id/RoundPlayButton"
+        android:layout_gravity="center_horizontal"
+        android:drawableBottom="@drawable/ic_action_mic"
+        android:textSize="25dp"
+        style="@style/button_text"
+        android:layout_marginBottom="35.0dp" />
+    <CheckBox
+        android:text="Bad Audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/FlagAudio"
+        android:textSize="22dp" />
+    <TextView
+        android:text="If you think the audio is somehow broken then tick this box"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:paddingLeft="8dp"
+        android:layout_marginBottom="30.7dp" />
+    <Button
+        android:text="Confirm &amp; Upload Audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/RecordCompletedConfirmButton" />
+</LinearLayout>

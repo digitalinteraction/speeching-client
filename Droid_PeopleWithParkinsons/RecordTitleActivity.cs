@@ -14,6 +14,8 @@ namespace Droid_PeopleWithParkinsons
     {
         private Button recordSoundButton;
         private Button viewResultsButton;
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -22,10 +24,13 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.RecordTitle);
 
             // Get and assign buttons
-
             recordSoundButton = FindViewById<Button>(Resource.Id.RecordSoundBtn);
-            recordSoundButton.Click += delegate {
+            recordSoundButton.Click += delegate
+            {
+                // TODO: This will inevitably be responsible for the gathering of data before switching to the record activity.
+                // Therefore, some server-communication stuff will probably happen.
                 Intent recordSound = new Intent(this, typeof(RecordSoundActivity));
+                recordSound.PutExtra("text", PlaceholderStrings.GetRandomSentence());
                 StartActivity(recordSound);
             };
 

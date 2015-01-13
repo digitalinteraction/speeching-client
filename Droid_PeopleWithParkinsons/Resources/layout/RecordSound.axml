@@ -6,85 +6,36 @@
     <TextView
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
-        android:layout_height="80.0dp"
+        android:layout_height="110.0dp"
         android:id="@+id/textView1"
         android:gravity="center_horizontal"
         android:ellipsize="none"
         android:layout_marginBottom="20.0dp"
         android:text="Example text"
-        android:layout_marginTop="10.0dp" />
+        android:layout_marginTop="10.0dp"
+        android:padding="10dp"
+        android:typeface="monospace" />
     <Button
-        android:layout_width="250sp"
-        android:layout_height="250sp"
+        android:layout_width="200sp"
+        android:layout_height="200sp"
         android:background="@drawable/round_button"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Start Recording"
+        android:text="Begin Recording"
         android:textColor="#000000"
-        android:id="@+id/button1"
+        android:id="@+id/RoundSoundRecorderBtn"
         android:layout_gravity="center_horizontal"
-        android:drawableBottom="@drawable/Icon"
-        android:textSize="25dp" />
-    <Button
-        android:text="Start Recording"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/SoundRecorderBtn" />
-    <Button
-        android:text="Play Sound"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/PlaySoundBtn" />
+        android:drawableBottom="@drawable/ic_action_mic"
+        android:textSize="25dp"
+        style="@style/button_text"
+        android:layout_marginBottom="35.0dp" />
     <TextView
-        android:text="Files recorded:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/StoredSounds" />
-    <TextView
-        android:text="0 files"
+        android:text="Press to start recording"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/StoredSoundsValue" />
-    <Button
-        android:text="Delete all audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/DeleteAllFilesBtn" />
-    <TextView
-        android:text="Selected Audio Track"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/SelectedAudioTrack" />
-    <TextView
-        android:text="0"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/AudioTrackValue" />
-    <Button
-        android:text="Increase index"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/IncreaseBtn" />
-    <Button
-        android:text="Decrease Index"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/DecreseIndex" />
-    <Button
-        android:text="Delete indv. file"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/DeleteFileBtn" />
-    <TextView
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/InfoText"
-        android:text="Info text field"
-        android:layout_marginBottom="16.8dp" />
+        android:id="@+id/StoredSoundsValue"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="50.4dp" />
     <TextView
         android:text="Background Noise"
         android:textAppearance="?android:attr/textAppearanceSmall"

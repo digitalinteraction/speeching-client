@@ -6,9 +6,8 @@ namespace Droid_PeopleWithParkinsons
 {
     interface IAudioRecorder
     {
-        void PrepareAudioRecorder(string _filePath);
+        void PrepareAudioRecorder(string _filePath, bool enableNoiseSuppression);
         bool StartAudio();
         bool StopAudio();
-        //void DisposeAudio();
     }
 }
