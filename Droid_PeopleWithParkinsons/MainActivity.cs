@@ -8,7 +8,7 @@ using Android.OS;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Droid_PeopleWithParkinsons", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Speeching", MainLauncher = true, Icon = "@drawable/Icon")]
     public class MainActivity : Activity
     {
         private Button recordButton;

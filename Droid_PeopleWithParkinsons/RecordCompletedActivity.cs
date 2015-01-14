@@ -15,12 +15,11 @@ using Xamarin.Forms.Platform.Android;
 
 namespace Droid_PeopleWithParkinsons
 {
-    // TODO: Need to add OnPause and OnResume methods to cleanup playback code.
-    // TODO: Do I need to set thread priotity here for playing audio?
     [Activity(Label = "Sound Recorder")]
     class RecordCompletedActivity : Activity
     {
-        private string filePath;
+        private string _filePath;
+        private string filePath { get { return _filePath; } set { _filePath = value; byteData = null;} }
 
         private Button playbackButton;
         private Button confirmButton;
@@ -44,10 +43,6 @@ namespace Droid_PeopleWithParkinsons
             normalAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_normal);
             downAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_pressed);
 
-            // TODO: Do we need to validate this somehow? Or do we just assume that this is correct?
-            // Seems like a dangerous way for Android to handle things? Maybe I'm missing something...Resort to Google.
-            filePath = this.Intent.GetStringExtra("filepath");
-
             // Get and initiate buttons
             playbackButton = FindViewById<Button>(Resource.Id.RoundPlayButton);
             playbackButton.Click += PlayBackButtonClicked;
@@ -56,12 +51,75 @@ namespace Droid_PeopleWithParkinsons
             confirmButton.Click += ConfirmButtonClicked;
         }
 
+        protected override void OnStart()
+        {
+            base.OnStart();
 
+            // Stackoverflow recommends this format to avoid null pointer exceptions
+            Intent intent = this.Intent;
+            Bundle extras = intent.Extras;
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey("filepath"))
+                {
+                    filePath = extras.GetString("filepath");
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                    // TODO: Manage exception where there isn't valid data.
+                }
+            }
+        }
+
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
+
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+
+            if (didPlayAudio)
+            {
+                if (isPlaying)
+                {
+                    audioTrackPlayer.Stop();
+                    isPlaying = false;
+                }
+
+                if (audioTrackPlayer != null)
+                {
+                    audioTrackPlayer.Release();
+                    audioTrackPlayer.Dispose();
+                    audioTrackPlayer = null;
+                }
+
+                didPlayAudio = false;                
+            }
+        }           
+
+
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+
+            
+        }
+
+
+        /// <summary>
+        /// Disables back button support. We want users to commit to the audio they have selected.
+        /// </summary>
         public override void OnBackPressed()
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-            alert.SetTitle("You can't go back now! You must confirm your audio.");
+            alert.SetTitle("You can't go back now! You must record and confirm your audio.");
 
             alert.SetPositiveButton("OK", (senderAlert, args) =>
             {
@@ -71,6 +129,11 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
+        /// <summary>
+        /// Asks the user for confirmation if they have flagged bad audio. Otherwise instantly submits audio selection.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ConfirmButtonClicked(object sender, EventArgs e)
         {
             bool isTicked = FindViewById<CheckBox>(Resource.Id.FlagAudio).Checked;
@@ -99,9 +162,29 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+
+        /// <summary>
+        /// When user finishes confirming audio
+        /// </summary>
         private void SubmitAudio()
         {
-            // TODO: Need to check if we have to stop the audio. Can press play, and then press submit. Naughty.
+            if (didPlayAudio)
+            {
+                if (isPlaying)
+                {
+                    audioTrackPlayer.Stop();
+                    isPlaying = false;
+                }
+
+                if (audioTrackPlayer != null)
+                {
+                    audioTrackPlayer.Release();
+                    audioTrackPlayer.Dispose();
+                    audioTrackPlayer = null;
+                }
+
+                didPlayAudio = false;
+            }
 
             AudioFileManager.DeleteAll();
             Intent mainMenu = new Intent(this, typeof(MainActivity));
@@ -109,6 +192,11 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
+        /// <summary>
+        /// Cycles through playing and stopping the selected audio at filePath
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayBackButtonClicked(object sender, EventArgs e)
         {
             if (!isPlaying)
@@ -143,6 +231,10 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+
+        /// <summary>
+        /// To be called when audio has finished playing via stop or reached end of track.
+        /// </summary>
         private void AudioFinishedPlaying()
         {
             playbackButton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
@@ -160,11 +252,12 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+
+        /// <summary>
+        /// Begins playback of recorded audio. Will automatically update UI thread when audio has finished playing.
+        /// </summary>
         private void PlayAudio()
         {
-            // Only get this once - It's always the same file!
-            // Woah, wait a second. It's not the same file if we're returning to the activity
-            // TODO: Fix that. - filePath set method invalidates byteData?
             if (byteData == null)
             {
                 GetByteData();
@@ -180,8 +273,6 @@ namespace Droid_PeopleWithParkinsons
                 if (audioTrackPlayer != null)  audioTrackPlayer.Play();
                 if (audioTrackPlayer != null)  audioTrackPlayer.Write(byteData, 0, byteData.Length);
                 
-                // Run cleanup on UI thread, as audio can be paused mid-track
-                // Also because we need to updated UI controls, and that can only be done on the main thread.
                 RunOnUiThread(() =>
                 {
                     AudioFinishedPlaying();
@@ -189,6 +280,9 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+        /// <summary>
+        /// Reads in byte data to byteData from current set filePath
+        /// </summary>
         private void GetByteData()
         {
             Java.IO.File file = null;

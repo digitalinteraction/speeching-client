@@ -15,13 +15,20 @@ using System.Threading;
 
 namespace Droid_PeopleWithParkinsons
 {
-    // TODO: Do we need to do a destructor thing for the audio players?
-    // TODO: When recording a second audio, the background noise recorder doesn't work anymore?
-    // Note: OnCreate is only -ever- called once. When returning through the loop, it goes through OnResume. Interesting.
-    // TODO: Do I need to set thread priority here for recording of user-interaction audio?
+    // TODO: Save audio to a temp path. Move audio when finished recording. Clear temp path.
+    // That way we can always use the same temp file path name.
+    // When we confirm our audio, we then move the audio to the correct folder.
     [Activity(Label = "Sound Recorder")]
     class RecordSoundActivity : Activity
     {
+        private const int LOW_BACKGROUND_NOISE = 25;
+        private const int MEDIUM_BACKGROUND_NOISE = 50;
+        private const int HIGH_BACKGROUND_NOISE = 75;
+
+        private const string LOW_BACKGROUND_STRING = "It's quiet here. This is a good time to record.";
+        private const string MEDIUM_BACKGROUND_STRING = "It's a little loud here.";
+        private const string HIGH_BACKGROUND_STRING = "It's loud here. Try moving somewhere quieter before recording.";
+
         private Button roundSoundRecorderButtton;
 
         private AudioRecorder audioRecorder;
@@ -35,7 +42,6 @@ namespace Droid_PeopleWithParkinsons
         private Animation downAnim;
         private Animation normalAnim;
 
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -48,54 +54,37 @@ namespace Droid_PeopleWithParkinsons
 
             // Get and assign buttons
             roundSoundRecorderButtton = FindViewById<Button>(Resource.Id.RoundSoundRecorderBtn);
-            roundSoundRecorderButtton.Click += SoundRecorderButtonClicked;            
+            roundSoundRecorderButtton.Click += SoundRecorderButtonClicked;                        
+
+            backgroundNoiseDisplay = FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay);              
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
 
             // Initiate main recorder
             outputPath = AudioFileManager.GetNewAudioFilePath();
 
-            audioRecorder = new AudioRecorder();
-            audioRecorder.PrepareAudioRecorder(outputPath, true);
-
-            // Initiate background recorder
-            backgroundAudioRecorder = new AudioRecorder();
-            backgroundNoiseDisplay = FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay);
-
-            backgroundAudioRecorder.PrepareAudioRecorder(AudioFileManager.RootBackgroundAudioPath, false);
-            bgRunning = true;
-            bgShouldToggle = true;
-
-            ThreadPool.QueueUserWorkItem(o => DoBackgroundNoiseChecker());
-            ThreadPool.QueueUserWorkItem(o => DoBackgroundNoiseCycler());
-
             // Set text
-            string text = this.Intent.GetStringExtra("text");
-            Console.WriteLine(text);
-            FindViewById<TextView>(Resource.Id.textView1).Text = text;
-        }
+            Intent intent = this.Intent;
+            Bundle extras = intent.Extras;
+            string text = "";
 
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-
-            // TODO: Do you have to clean up the suprressor?
-
-            // Clean up access to recorder/player
-            // and delete audio if currently recording to avoid incomplete files
-            bool deleteFile = audioRecorder.isRecording;
-            audioRecorder.Dispose();
-            audioRecorder = null;
-        
-            if (deleteFile)
+            if (extras != null)
             {
-                AudioFileManager.DeleteFile(outputPath);
-                roundSoundRecorderButtton.Text = "Begin Recording";
+                if (extras.ContainsKey("text"))
+                {
+                    text = extras.GetString("text");
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                    // TODO: Manage exception where there isn't valid data.
+                }
             }
 
-            bgRunning = false;
-            bgShouldToggle = false;
-            backgroundAudioRecorder.Dispose();
-            backgroundAudioRecorder = null;
+            FindViewById<TextView>(Resource.Id.textView1).Text = text;
         }
 
 
@@ -115,6 +104,36 @@ namespace Droid_PeopleWithParkinsons
 
             ThreadPool.QueueUserWorkItem(o => DoBackgroundNoiseChecker());
             ThreadPool.QueueUserWorkItem(o => DoBackgroundNoiseCycler());
+        }
+
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+
+            // Clean up access to recorder/player
+            // and delete audio if currently recording to avoid incomplete files
+            bool deleteFile = audioRecorder.isRecording;
+            audioRecorder.Dispose();
+            audioRecorder = null;
+        
+            if (deleteFile)
+            {
+                AudioFileManager.DeleteFile(outputPath);
+                roundSoundRecorderButtton.Text = "Begin Recording";
+                // Deleting audio means we need to reset the drawable as it will be in 'active' state when resuming.
+                roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
+            }
+
+            bgRunning = false;
+            bgShouldToggle = false;
+            backgroundAudioRecorder.Dispose();
+            backgroundAudioRecorder = null;
+
+            // Deletes background noise audio. Probably a better way to do this
+            // Probably shouldn't be saving it on disk in the first place.
+            // TODO: Extend to solve issue if time.
+            AudioFileManager.DeleteFile(AudioFileManager.RootBackgroundAudioPath);
         }
 
 
@@ -141,9 +160,6 @@ namespace Droid_PeopleWithParkinsons
                     roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
                     roundSoundRecorderButtton.StartAnimation(normalAnim);
                     roundSoundRecorderButtton.Text = "Begin Recording";
-
-                    // TODO: What we actually want to do is make sure that the file saved properly and is ready to go to the next screen
-                    // How do we do this? - Some sort of validation. After this point, user cannot cancel their recording.
 
                     Intent recordCompleted = new Intent(this, typeof(RecordCompletedActivity));
                     recordCompleted.PutExtra("filepath", outputPath);
@@ -180,15 +196,26 @@ namespace Droid_PeopleWithParkinsons
         {
             while (bgRunning)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(1500);
 
                 if (backgroundAudioRecorder != null)
                 {
-                    int? amplitude = backgroundAudioRecorder.soundLevel;
+                    int? soundLevel = backgroundAudioRecorder.soundLevel;
 
-                    if (amplitude != null)
+                    if (soundLevel != null)
                     {
-                        RunOnUiThread(() => backgroundNoiseDisplay.Text = string.Concat("Background noise level: ", amplitude.ToString()));
+                        string displayString = HIGH_BACKGROUND_STRING;
+
+                        if (soundLevel < MEDIUM_BACKGROUND_NOISE)
+                        {
+                            displayString = MEDIUM_BACKGROUND_STRING;
+                        }
+                        if (soundLevel < LOW_BACKGROUND_NOISE)
+                        {
+                            displayString = LOW_BACKGROUND_STRING;
+                        }
+
+                        RunOnUiThread(() => backgroundNoiseDisplay.Text = string.Concat(displayString, "\n", "Background noise level: ", soundLevel.ToString()));
                     }
                     else
                     {

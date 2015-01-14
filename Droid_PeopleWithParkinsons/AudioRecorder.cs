@@ -9,24 +9,18 @@ using Android.Media.Audiofx;
 
 namespace Droid_PeopleWithParkinsons
 {
-    // TODO: App crashes when starting recorder occasionally? Why is this?
-    // Probably to do with trying to do an action when it isn't in the appropriate 'state'.
-    // Arguably this is the problem of the calling code, and not this class?
-    // Although, to be fair, the class should probably wrap itself to protect from that...
-
-    // TODO: Make sure that when pausing application any current audio is discarded
-    // TODO: Make sure that the background noise recorder is deleted when finished.
     class AudioRecorder : IAudioRecorder, IDisposable
     {
         private bool _isRecording = false;
         public bool isRecording { get { return _isRecording; } protected set { _isRecording = value; } }
 
         public int? soundLevel { get { return isRecording ? (int?) CalculateSoundLevel() : null; } }
-
+       
         private AudioRecord audioRecorder;
         private string filePath = "";
         private bool prepared = false;    
 		
+        // According to documentation all Android devices support Mono, Pcm16bit and 44100 sample rate.
 		private int bufferSizeBytes;
 		private int bufferLength;
 		private ChannelIn channelConfiguration = ChannelIn.Mono;
@@ -59,6 +53,10 @@ namespace Droid_PeopleWithParkinsons
             filePath = _filePath;
         }
 
+        /// <summary>
+        /// Calculates a relative number to how much sound is detected
+        /// </summary>
+        /// <returns>Average value of sample buffer length. Always positive.</returns>
 		int? CalculateSoundLevel()
 		{
             // read the data into the buffer
@@ -83,28 +81,37 @@ namespace Droid_PeopleWithParkinsons
         {
             if (prepared && !isRecording)
             {				
-               if (NoiseSuppressor.IsAvailable)
-               {
-                   if (isNoiseSupression)
-                   {                       
-                       noiseSuppressor = NoiseSuppressor.Create(audioRecorder.AudioSessionId);
+                if (audioRecorder.RecordingState == RecordState.Recording)
+                {
+                // Not all devices have a noise suppressor
+                    if (NoiseSuppressor.IsAvailable && isNoiseSupression)
+                    {
+                        noiseSuppressor = NoiseSuppressor.Create(audioRecorder.AudioSessionId);
 
                         // Differences on some platforms according to API?
-                       if (noiseSuppressor.Enabled == false)
-                       {
-                           noiseSuppressor.SetEnabled(true);
-                       }
-                   }
+                        if (noiseSuppressor.Enabled == false)
+                        {
+                            noiseSuppressor.SetEnabled(true);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Start was called, but the auio recorder was not ready to be started.");
+                    }
                }
                else
                {
                    Console.WriteLine("Noise suppression is not enabled on this device.");
                }
 
+                isRecording = true;
+                audioRecorder.StartRecording();
+
+               // Allows us to write audio data to a file alongside recording.
+               // We have to do this as noise suppression isn't supported with MediaRecorder.
                ThreadPool.QueueUserWorkItem(o => WriteAudioDataToFile());
 
-               isRecording = true;
-               audioRecorder.StartRecording();
+              
 
                return true;
             }
@@ -114,9 +121,13 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 		
+
+        /// <summary>
+        /// Writes data to given filepath whilst recording audio.
+        /// </summary>
 		private void WriteAudioDataToFile()
 		{
-			// Write the output audio in byte
+			// Get audio sample length
 			short[] sData = new short[bufferSizeBytes / 2];
 
 			Java.IO.FileOutputStream os = null;
@@ -137,7 +148,6 @@ namespace Droid_PeopleWithParkinsons
 				try
 				{
 					// Writes the data to file from buffer
-					// Stores the voice buffer
 					byte[] bData = short2byte(sData);
 					os.Write(bData, 0, bufferSizeBytes);
 				}
@@ -156,6 +166,11 @@ namespace Droid_PeopleWithParkinsons
 			}
 		}
 		
+        /// <summary>
+        ///  Converts short to byte
+        /// </summary>
+        /// <param name="sData"></param>
+        /// <returns>Byte array</returns>
 		private byte[] short2byte(short[] sData)
 		{
 			int shortArrsize = sData.Length;
@@ -180,17 +195,25 @@ namespace Droid_PeopleWithParkinsons
         {
             if (prepared && isRecording)
             {
-                isRecording = false;
-                audioRecorder.Stop();
-
-                if (noiseSuppressor != null)
+                if (audioRecorder.RecordingState == RecordState.Recording)
                 {
-                    noiseSuppressor.Release();
-                    noiseSuppressor.Dispose();                    
-                    noiseSuppressor = null;
-                }
+                    isRecording = false;
+                    audioRecorder.Stop();
 
-                return true;
+                    if (noiseSuppressor != null)
+                    {
+                        noiseSuppressor.Release();
+                        noiseSuppressor.Dispose();
+                        noiseSuppressor = null;
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Stop was called, but the audio recorder was not ready to be stopped.");
+                    return false;                    
+                }
             }
             else
             {
