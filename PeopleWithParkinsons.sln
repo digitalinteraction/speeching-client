@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid_PeopleWithParkinsons", "Droid_PeopleWithParkinsons\Droid_PeopleWithParkinsons.csproj", "{F44A53F8-3F99-47C8-8BF4-B634880D4E7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid_Speeching", "Droid_PeopleWithParkinsons\Droid_Speeching.csproj", "{F44A53F8-3F99-47C8-8BF4-B634880D4E7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

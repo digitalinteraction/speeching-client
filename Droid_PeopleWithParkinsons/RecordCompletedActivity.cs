@@ -119,8 +119,9 @@ namespace Droid_PeopleWithParkinsons
         {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-            alert.SetTitle("You can't go back now! You must record and confirm your audio.");
-
+            alert.SetTitle("Uh-Oh!");
+            alert.SetMessage("You can't go back now! You must confirm your audio.");
+            
             alert.SetPositiveButton("OK", (senderAlert, args) =>
             {
             });

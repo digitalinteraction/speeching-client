@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout1">
     <TextView
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
@@ -10,24 +11,39 @@
         android:id="@+id/textView1"
         android:gravity="center_horizontal"
         android:ellipsize="none"
-        android:layout_marginBottom="20.0dp"
+        android:layout_marginBottom="15.0dp"
         android:text="Example text"
         android:layout_marginTop="10.0dp"
         android:padding="10dp"
         android:typeface="monospace" />
-    <Button
-        android:layout_width="200sp"
-        android:layout_height="200sp"
-        android:background="@drawable/round_button"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Begin Recording"
-        android:textColor="#000000"
-        android:id="@+id/RoundSoundRecorderBtn"
-        android:layout_gravity="center_horizontal"
-        android:drawableBottom="@drawable/ic_action_mic"
-        android:textSize="25dp"
-        style="@style/button_text"
-        android:layout_marginBottom="35.0dp" />
+    <FrameLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/frameLayout1"
+        android:layout_marginBottom="15.0dp">
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/round_button"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Begin Recording"
+            android:textColor="#000000"
+            android:id="@+id/RoundSoundRecorderBtn"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:drawableBottom="@drawable/ic_action_mic"
+            android:textSize="25dp"
+            style="@style/button_text"
+            android:layout_marginBottom="0.0dp"
+            android:layout_marginLeft="0.0dp" />
+        <ImageView
+            android:src="@drawable/circle"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/CircleWaveForm"
+            android:layout_gravity="center_horizontal|center_vertical" />
+    </FrameLayout>
     <TextView
         android:text="Press to start recording"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -35,7 +51,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/StoredSoundsValue"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="50.4dp" />
+        android:layout_marginBottom="30.0dp" />
     <TextView
         android:text="Background Noise"
         android:textAppearance="?android:attr/textAppearanceSmall"

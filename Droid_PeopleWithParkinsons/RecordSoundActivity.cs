@@ -10,6 +10,7 @@ using Android.Media;
 using Android.Views;
 using Android.Graphics.Drawables;
 using Android.Views.Animations;
+using Android.Graphics;
 
 using System.Threading;
 
@@ -29,6 +30,8 @@ namespace Droid_PeopleWithParkinsons
         private const string MEDIUM_BACKGROUND_STRING = "It's a little loud here.";
         private const string HIGH_BACKGROUND_STRING = "It's loud here. Try moving somewhere quieter before recording.";
 
+        private const float MAX_ANIM_SCALE = 2.0f;
+
         private Button roundSoundRecorderButtton;
 
         private AudioRecorder audioRecorder;
@@ -42,6 +45,12 @@ namespace Droid_PeopleWithParkinsons
         private Animation downAnim;
         private Animation normalAnim;
 
+        private ImageView circleWaveForm;
+        private Animation glowAnimation;
+
+        private Bitmap glowBitMap;
+
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -49,14 +58,27 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.RecordSound);
 
             // Load animations
-            normalAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_normal);
-            downAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_pressed);
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                    normalAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_normal);
+                    downAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_pressed);
+                    glowBitMap = GetGlow(Resource.Drawable.circle);
+                    RunOnUiThread(() => circleWaveForm.SetImageBitmap(glowBitMap) );
+            });
+            
 
             // Get and assign buttons
             roundSoundRecorderButtton = FindViewById<Button>(Resource.Id.RoundSoundRecorderBtn);
             roundSoundRecorderButtton.Click += SoundRecorderButtonClicked;                        
 
-            backgroundNoiseDisplay = FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay);              
+            backgroundNoiseDisplay = FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay);
+
+            circleWaveForm = FindViewById<ImageView>(Resource.Id.CircleWaveForm);
+
+            // Initiate 'glowing' effect and hide for later use
+            // Takes 'time', doing this here improves responsiveness.
+            
+            circleWaveForm.Alpha = 0.0f;            
         }
 
         protected override void OnStart()
@@ -123,6 +145,7 @@ namespace Droid_PeopleWithParkinsons
                 roundSoundRecorderButtton.Text = "Begin Recording";
                 // Deleting audio means we need to reset the drawable as it will be in 'active' state when resuming.
                 roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
+                EndGlowAnimation();
             }
 
             bgRunning = false;
@@ -148,8 +171,13 @@ namespace Droid_PeopleWithParkinsons
 
                 if (audioRecorder.StartAudio())
                 {
+                    AnimateOuterGlow(1.15f, 1.3f, 400);
                     roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button_alt));
-                    roundSoundRecorderButtton.StartAnimation(downAnim);
+
+                    if (downAnim != null)
+                    {
+                        roundSoundRecorderButtton.StartAnimation(downAnim);
+                    }
                     roundSoundRecorderButtton.Text = "Stop Recording";   
                 }
             }
@@ -157,8 +185,13 @@ namespace Droid_PeopleWithParkinsons
             {
                 if (audioRecorder.StopAudio())
                 {
+                    EndGlowAnimation();
                     roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
-                    roundSoundRecorderButtton.StartAnimation(normalAnim);
+
+                    if (normalAnim != null)
+                    {
+                        roundSoundRecorderButtton.StartAnimation(normalAnim);
+                    }
                     roundSoundRecorderButtton.Text = "Begin Recording";
 
                     Intent recordCompleted = new Intent(this, typeof(RecordCompletedActivity));
@@ -166,7 +199,71 @@ namespace Droid_PeopleWithParkinsons
                     StartActivity(recordCompleted);
                 }
             }
-        }       
+        }
+
+
+        public Bitmap GetGlow(int resourceId)
+        {
+            Bitmap bmp = null;
+
+            try
+            {
+                int margin = 500;
+                int halfMargin = margin / 2;
+                int glowRadius = 500;
+                int glowColor = Color.Rgb(0, 192, 200);
+
+                Bitmap src = BitmapFactory.DecodeResource(Resources, resourceId);
+
+                Bitmap alpha = src.ExtractAlpha();
+
+                bmp = Bitmap.CreateBitmap(src.Width + margin, src.Height
+                        + margin, Bitmap.Config.Argb8888);
+
+                Canvas canvas = new Canvas(bmp);
+
+                Paint paint = new Paint();
+                paint.Color = Color.Blue;
+
+                paint.SetMaskFilter(new BlurMaskFilter(glowRadius, BlurMaskFilter.Blur.Outer));
+                canvas.DrawBitmap(alpha, halfMargin, halfMargin, paint);
+
+                canvas.DrawBitmap(src, halfMargin, halfMargin, null);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return bmp;
+        }
+
+        public void AnimateOuterGlow(float from, float to, long duration)
+        {
+            if (glowAnimation == null)
+            {
+                glowAnimation = new ScaleAnimation(from, to, from, to, Dimension.RelativeToSelf, 0.5f, Dimension.RelativeToSelf, 0.5f);
+                glowAnimation.RepeatMode = RepeatMode.Reverse;
+                glowAnimation.RepeatCount = Animation.Infinite;
+
+                glowAnimation.FillAfter = false;
+                glowAnimation.FillEnabled = false;
+            }
+            
+            glowAnimation.Duration = duration;
+
+            circleWaveForm.Alpha = 1.0f;
+
+            circleWaveForm.StartAnimation(glowAnimation);            
+        }
+
+        void EndGlowAnimation()
+        {
+            glowAnimation.Cancel();
+
+            circleWaveForm.Alpha = 0.0f;
+        }
 
 
         private void DoBackgroundNoiseCycler()
@@ -194,6 +291,7 @@ namespace Droid_PeopleWithParkinsons
 
         private void DoBackgroundNoiseChecker()
         {
+            
             while (bgRunning)
             {
                 Thread.Sleep(1500);
@@ -215,6 +313,7 @@ namespace Droid_PeopleWithParkinsons
                             displayString = LOW_BACKGROUND_STRING;
                         }
 
+                        
                         RunOnUiThread(() => backgroundNoiseDisplay.Text = string.Concat(displayString, "\n", "Background noise level: ", soundLevel.ToString()));
                     }
                     else
@@ -223,6 +322,8 @@ namespace Droid_PeopleWithParkinsons
                     }
                 }
             }
+
+            
         }
     }
 }
