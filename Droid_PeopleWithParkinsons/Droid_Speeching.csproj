@@ -69,21 +69,23 @@
   <ItemGroup>
     <Compile Include="AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
+    <Compile Include="Fragment\RecordCompletedFragment.cs" />
     <Compile Include="IAudioRecorder.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="Activity\MainActivity.cs" />
     <Compile Include="PlaceholderStrings.cs" />
-    <Compile Include="RecordCompletedActivity.cs" />
-    <Compile Include="RecordSoundActivity.cs" />
-    <Compile Include="RecordTitleActivity.cs" />
+    <Compile Include="Activity\RecordCompletedActivity.cs" />
+    <Compile Include="Activity\RecordSoundActivity.cs" />
+    <Compile Include="Activity\RecordSoundRunActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Fragment\RecordSoundFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\RecordSound.axml" />
-    <AndroidResource Include="Resources\layout\RecordTitle.axml" />
+    <AndroidResource Include="Resources\layout\RecordSoundRun.axml" />
     <AndroidResource Include="Resources\layout\RecordCompleted.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +122,9 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\round_button_alt.xml" />
     <AndroidResource Include="Resources\drawable\button_pressed.png" />
     <AndroidResource Include="Resources\drawable\button_unpressed.png" />
+    <AndroidResource Include="Resources\menu\RecordMenu.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout-large\" />

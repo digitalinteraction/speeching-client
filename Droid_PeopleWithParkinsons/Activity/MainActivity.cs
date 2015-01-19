@@ -19,12 +19,13 @@ namespace Droid_PeopleWithParkinsons
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Main);
-
+            
             // Get and assign buttons
 
             recordButton = FindViewById<Button>(Resource.Id.RecordBtn);
             recordButton.Click += delegate {
-                Intent recordMenu = new Intent(this, typeof(RecordTitleActivity));
+                Intent recordMenu = new Intent(this, typeof(RecordSoundRunActivity));
+                recordMenu.PutExtra("text", PlaceholderStrings.GetRandomSentence());
                 StartActivity(recordMenu);
             };
 
