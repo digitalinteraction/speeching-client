@@ -21,7 +21,8 @@ namespace Droid_PeopleWithParkinsons
         private string _filePath;
         private string filePath { get { return _filePath; } set { _filePath = value; byteData = null;} }
 
-        private Button playbackButton;
+        private ImageView playbackImage;
+        private TextView playbackText;
         private Button confirmButton;
 
         private AudioTrack audioTrackPlayer;
@@ -44,8 +45,9 @@ namespace Droid_PeopleWithParkinsons
             downAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_pressed);
 
             // Get and initiate buttons
-            playbackButton = FindViewById<Button>(Resource.Id.RoundPlayButton);
-            playbackButton.Click += PlayBackButtonClicked;
+            playbackImage = FindViewById<ImageView>(Resource.Id.PlaybackButtonRoot);
+            playbackImage.Click += PlayBackButtonClicked;
+            playbackText = FindViewById<TextView>(Resource.Id.RecordCompleted_ButtonText);
 
             confirmButton = FindViewById<Button>(Resource.Id.RecordCompletedConfirmButton);
             confirmButton.Click += ConfirmButtonClicked;
@@ -89,6 +91,7 @@ namespace Droid_PeopleWithParkinsons
                 if (isPlaying)
                 {
                     audioTrackPlayer.Stop();
+                    playbackText.Text = "Play Sound";
                     isPlaying = false;
                 }
 
@@ -204,10 +207,10 @@ namespace Droid_PeopleWithParkinsons
             {
                 if (AudioFileManager.IsExist(filePath))
                 {
-                    playbackButton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button_alt));
-                    playbackButton.StartAnimation(downAnim);
+                    playbackImage.SetImageResource(Resource.Drawable.button_pressed);
+                    playbackImage.StartAnimation(downAnim);
 
-                    playbackButton.Text = "Stop Sound";
+                    playbackText.Text = "Stop Sound";
                     isPlaying = true;
                     didPlayAudio = true;
 
@@ -238,11 +241,11 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         private void AudioFinishedPlaying()
         {
-            playbackButton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
-            playbackButton.StartAnimation(normalAnim);
+            playbackImage.SetImageResource(Resource.Drawable.button_unpressed);
+            playbackImage.StartAnimation(normalAnim);
 
             isPlaying = false;
-            playbackButton.Text = "Play Sound";
+            playbackText.Text = "Play Sound";
 
             if (audioTrackPlayer != null)
             {

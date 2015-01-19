@@ -15,10 +15,12 @@
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>2791ae23</NuGetPackageImportStamp>
+    <TargetFrameworkVersion>
+    </TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -108,6 +110,19 @@
     <AndroidResource Include="Resources\anim\scale_button_pressed.xml" />
     <AndroidResource Include="Resources\anim\scale_button_normal.xml" />
     <AndroidResource Include="Resources\drawable\circle.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable-mdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-mdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable\button_pressed.png" />
+    <AndroidResource Include="Resources\drawable\button_unpressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\layout-large\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.1.3.1.6296\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.3.1.6296\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

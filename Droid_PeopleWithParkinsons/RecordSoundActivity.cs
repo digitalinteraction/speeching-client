@@ -32,7 +32,8 @@ namespace Droid_PeopleWithParkinsons
 
         private const float MAX_ANIM_SCALE = 2.0f;
 
-        private Button roundSoundRecorderButtton;
+        private ImageView roundSoundImageView;
+        private TextView roundSoundText;
 
         private AudioRecorder audioRecorder;
         private string outputPath;
@@ -58,6 +59,8 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.RecordSound);
 
             // Load animations
+            // Initiate 'glowing' effect and hide for later use
+            // Takes 'time', doing this here improves responsiveness.
             ThreadPool.QueueUserWorkItem(o =>
             {
                     normalAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.scale_button_normal);
@@ -67,17 +70,16 @@ namespace Droid_PeopleWithParkinsons
             });
             
 
-            // Get and assign buttons
-            roundSoundRecorderButtton = FindViewById<Button>(Resource.Id.RoundSoundRecorderBtn);
-            roundSoundRecorderButtton.Click += SoundRecorderButtonClicked;                        
+            // Get and assign 'buttons'
+            roundSoundImageView = FindViewById<ImageView>(Resource.Id.RecordButtonRoot);
+            roundSoundImageView.Click += SoundRecorderButtonClicked;
+            roundSoundText = FindViewById<TextView>(Resource.Id.ButtonText);
 
             backgroundNoiseDisplay = FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay);
 
             circleWaveForm = FindViewById<ImageView>(Resource.Id.CircleWaveForm);
 
-            // Initiate 'glowing' effect and hide for later use
-            // Takes 'time', doing this here improves responsiveness.
-            
+            // We don't want to show this until the user starts recording.
             circleWaveForm.Alpha = 0.0f;            
         }
 
@@ -106,7 +108,7 @@ namespace Droid_PeopleWithParkinsons
                 }
             }
 
-            FindViewById<TextView>(Resource.Id.textView1).Text = text;
+            FindViewById<TextView>(Resource.Id.TextToSpeak).Text = text;
         }
 
 
@@ -142,9 +144,9 @@ namespace Droid_PeopleWithParkinsons
             if (deleteFile)
             {
                 AudioFileManager.DeleteFile(outputPath);
-                roundSoundRecorderButtton.Text = "Begin Recording";
+                roundSoundText.Text = "Begin Recording";
                 // Deleting audio means we need to reset the drawable as it will be in 'active' state when resuming.
-                roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
+                roundSoundImageView.SetImageResource(Resource.Drawable.button_unpressed);
                 EndGlowAnimation();
             }
 
@@ -172,13 +174,13 @@ namespace Droid_PeopleWithParkinsons
                 if (audioRecorder.StartAudio())
                 {
                     AnimateOuterGlow(1.15f, 1.3f, 400);
-                    roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button_alt));
+                    roundSoundImageView.SetImageResource(Resource.Drawable.button_pressed);
+                    roundSoundText.Text = "Stop Recording";
 
                     if (downAnim != null)
                     {
-                        roundSoundRecorderButtton.StartAnimation(downAnim);
-                    }
-                    roundSoundRecorderButtton.Text = "Stop Recording";   
+                        roundSoundImageView.StartAnimation(downAnim);
+                    } 
                 }
             }
             else
@@ -186,13 +188,13 @@ namespace Droid_PeopleWithParkinsons
                 if (audioRecorder.StopAudio())
                 {
                     EndGlowAnimation();
-                    roundSoundRecorderButtton.SetBackgroundDrawable(GetDrawable(Resource.Drawable.round_button));
+                    roundSoundImageView.SetImageResource(Resource.Drawable.button_unpressed);
+                    roundSoundText.Text = "Begin Recording";
 
                     if (normalAnim != null)
                     {
-                        roundSoundRecorderButtton.StartAnimation(normalAnim);
+                        roundSoundImageView.StartAnimation(normalAnim);
                     }
-                    roundSoundRecorderButtton.Text = "Begin Recording";
 
                     Intent recordCompleted = new Intent(this, typeof(RecordCompletedActivity));
                     recordCompleted.PutExtra("filepath", outputPath);

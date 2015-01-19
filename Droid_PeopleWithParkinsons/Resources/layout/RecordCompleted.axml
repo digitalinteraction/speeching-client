@@ -2,54 +2,104 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:weightSum="100">
     <TextView
         android:text="Complete!"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/RecordCompletedHeader"
         android:gravity="center_horizontal"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:layout_weight="10" />
     <TextView
         android:text="Now you can review your sound before sending it off."
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/RecordSoundHeaderLower"
         android:gravity="center_horizontal"
         android:padding="5dp"
-        android:layout_marginBottom="40.6dp" />
-    <Button
-        android:layout_width="200sp"
-        android:layout_height="200sp"
-        android:background="@drawable/round_button"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Play Recording"
-        android:textColor="#000000"
-        android:id="@+id/RoundPlayButton"
-        android:layout_gravity="center_horizontal"
-        android:drawableBottom="@drawable/ic_action_mic"
-        android:textSize="25dp"
-        style="@style/button_text"
-        android:layout_marginBottom="35.0dp" />
+        android:layout_marginBottom="20.0dp"
+        android:layout_weight="15" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/RecordCompleted_LinearRecorderRoot"
+        android:layout_weight="50"
+        android:weightSum="100">
+        <FrameLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/RecordCompleted_FramePaddingLeft"
+            android:layout_weight="20" />
+        <FrameLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_height="match_parent"
+            android:id="@+id/RecordCompleted_FrameRecorderSet"
+            android:layout_weight="60"
+            android:layout_width="0dp">
+            <ImageView
+                android:src="@drawable/circle"
+                android:id="@+id/CircleWaveForm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10sp"
+                android:paddingTop="10sp"
+                android:paddingRight="10sp"
+                android:paddingLeft="10sp" />
+            <ImageView
+                android:src="@drawable/button_unpressed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/PlaybackButtonRoot"
+                android:paddingBottom="10sp"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:paddingTop="10sp"
+                android:clickable="true" />
+            <TextView
+                android:text="Play Audio"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/RecordCompleted_ButtonText"
+                android:textStyle="bold"
+                android:gravity="center_horizontal|center_vertical"
+                android:textColor="#FF000000"
+                android:layout_marginLeft="20sp"
+                android:layout_marginRight="20sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="35sp" />
+        </FrameLayout>
+    </LinearLayout>
     <CheckBox
         android:text="Bad Audio"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/FlagAudio"
-        android:textSize="22dp" />
+        android:textSize="22dp"
+        android:layout_weight="10" />
     <TextView
         android:text="If you think the audio is somehow broken then tick this box"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/textView1"
         android:paddingLeft="8dp"
-        android:layout_marginBottom="30.7dp" />
+        android:layout_marginBottom="15.0dp"
+        android:layout_weight="5" />
     <Button
         android:text="Confirm &amp; Upload Audio"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/RecordCompletedConfirmButton" />
+        android:layout_height="0dp"
+        android:id="@+id/RecordCompletedConfirmButton"
+        android:layout_weight="10" />
 </LinearLayout>
