@@ -69,16 +69,16 @@
   <ItemGroup>
     <Compile Include="AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
+    <Compile Include="Fragment\PlaceholderFragment.cs" />
     <Compile Include="Fragment\RecordCompletedFragment.cs" />
     <Compile Include="IAudioRecorder.cs" />
     <Compile Include="Activity\MainActivity.cs" />
     <Compile Include="PlaceholderStrings.cs" />
-    <Compile Include="Activity\RecordCompletedActivity.cs" />
-    <Compile Include="Activity\RecordSoundActivity.cs" />
     <Compile Include="Activity\RecordSoundRunActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fragment\RecordSoundFragment.cs" />
+    <Compile Include="UploadService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

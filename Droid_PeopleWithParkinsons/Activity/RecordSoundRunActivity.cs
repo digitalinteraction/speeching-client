@@ -11,22 +11,96 @@ using Android.Views;
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Speeching")]
-    class RecordSoundRunActivity : Activity, RecordSoundFragment.IOnFinishedRecordingListener
+    public class RecordSoundRunActivity : Activity, RecordSoundFragment.IOnFinishedRecordingListener, RecordCompletedFragment.IOnFinishedPlaybackListener
     {
+        public bool isBound = false;
+        public UploadService.UploadServiceBinder binder;
+        public UploadServiceConnection uploadServiceConnection;
+
+        private bool isRecordFragment = true;
+        private Bundle currentBundle;
+        private bool hasFragment;
+
+        private string serviceParameter;
+
+
+        public void OnBoundToService()
+        {
+            binder.GetUploadService().AddFile(serviceParameter);
+            Toast.MakeText(this, "Added sound to upload queue.", ToastLength.Short).Show();
+
+            Intent mainMenu = new Intent(this, typeof(MainActivity));
+            StartActivity(mainMenu);
+        }
+
+
+        /// <summary>
+        /// Event listener for used fragment.
+        /// </summary>
+        public void OnFinishedPlaybackListener(string filepath)
+        {
+            serviceParameter = filepath;
+            isRecordFragment = true;
+            currentBundle = null;
+
+            // Starts a service (Ensures it carries on after activity ends)
+            // TODO: Make sure this service is started when opening the application
+            
+            Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
+            StartService(uploadServiceIntent);
+
+            uploadServiceConnection = new UploadServiceConnection(this);
+            BindService(uploadServiceIntent, uploadServiceConnection, Bind.AutoCreate);   
+        }
+
+
+        /// <summary>
+        /// Event listener for used fragment.
+        /// </summary>
+        /// <param name="filepath">Filepath to recorded audio</param>
         public void OnFinishedRecordingListener(string filepath)
         {
-            // TODO: Change this to use an individual bundle for the Fragment, rather than the activity.
-            // Switch fragments here.
-            var newFragment = new RecordCompletedFragment();
-            Intent.PutExtra("filepath", filepath);
+            currentBundle.PutString("filepath", filepath);
 
-            Bundle arguments = Intent.Extras;
-            newFragment.Arguments = arguments;
+            LoadFragment(new RecordCompletedFragment(), currentBundle, "RecordCompletedFragment");
+            isRecordFragment = false;
+        }
+
+
+        /// <summary>
+        /// Generic method to load any new or replacing fragment into Resource.Id.RecordSoundRunFragment
+        /// </summary>
+        /// <typeparam name="T">Fragment to load</typeparam>
+        /// <param name="args">Bundle will set T.Arguments param</param>
+        /// <returns></returns>
+        private Fragment LoadFragment<T>(T _fragment, Bundle args, string tag) where T : Fragment, new()
+        {
+            var newFragment = new T();
+
+            newFragment.Arguments = args;
 
             var ft = FragmentManager.BeginTransaction();
 
-            ft.Replace(Resource.Id.RecordSoundRunFragment, newFragment);
+            Fragment _frag = FragmentManager.FindFragmentByTag(tag);
+
+            if (_frag != null)
+            {
+                ft.Detach(_frag);
+            }
+
+            if (!hasFragment)
+            {
+                ft.Add(Resource.Id.RecordSoundRunFragment, newFragment, tag);
+                hasFragment = true;
+            }
+            else
+            {
+                ft.Replace(Resource.Id.RecordSoundRunFragment, newFragment, tag);
+            }
+
             ft.Commit();
+
+            return newFragment;
         }
 
 
@@ -35,6 +109,7 @@ namespace Droid_PeopleWithParkinsons
             MenuInflater.Inflate(Resource.Menu.RecordMenu, menu);
             return base.OnPrepareOptionsMenu(menu);
         }
+
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
@@ -56,6 +131,7 @@ namespace Droid_PeopleWithParkinsons
             return base.OnOptionsItemSelected(item);
         }
 
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -72,7 +148,19 @@ namespace Droid_PeopleWithParkinsons
             //tab.SetIcon(Resource.Drawable.tab1_icon);
             tab.TabSelected += (sender, args) =>
             {
-                // Do something when tab is selected
+                if (currentBundle == null)
+                {
+                    currentBundle = Intent.Extras;
+                }
+
+                if (isRecordFragment)
+                {
+                    LoadFragment(new RecordSoundFragment(), currentBundle, "RecordSoundFragment");
+                }
+                else
+                {
+                    LoadFragment(new RecordCompletedFragment(), currentBundle, "RecordCompletedFragment");
+                }
             };
 
             ActionBar.AddTab(tab);
@@ -82,24 +170,47 @@ namespace Droid_PeopleWithParkinsons
             //tab.SetIcon(Resource.Drawable.tab1_icon);
             tab.TabSelected += (sender, args) =>
             {
-                // Do something when tab is selected
+                Bundle arguments = Intent.Extras;
+                LoadFragment(new PlaceholderFragment(), arguments, "PlaceholderFragment");
             };
 
             ActionBar.AddTab(tab);
-
-            var newFragment = new RecordSoundFragment();
-            Bundle arguments = Intent.Extras;
-            newFragment.Arguments = arguments;
-
-            var ft = FragmentManager.BeginTransaction();
-            
-            ft.Add(Resource.Id.RecordSoundRunFragment, newFragment);
-            ft.Commit();
         }
 
-        public void TestFunc()
+        protected override void OnPause()
         {
+            base.OnPause();
 
+            if (isBound)
+            {
+                UnbindService(uploadServiceConnection);
+            }
         }
-    }
+
+        public class UploadServiceConnection : Java.Lang.Object, IServiceConnection
+        {
+            RecordSoundRunActivity activity;
+
+            public UploadServiceConnection(RecordSoundRunActivity activity)
+            {
+                this.activity = activity;
+            }
+
+            public void OnServiceConnected(ComponentName name, IBinder service)
+            {
+                var demoServiceBinder = service as UploadService.UploadServiceBinder;
+                if (demoServiceBinder != null)
+                {
+                    activity.binder = demoServiceBinder;
+                    activity.isBound = true;
+                    activity.OnBoundToService();
+                }
+            }
+
+            public void OnServiceDisconnected(ComponentName name)
+            {
+                activity.isBound = false;
+            }
+        }
+    }    
 }

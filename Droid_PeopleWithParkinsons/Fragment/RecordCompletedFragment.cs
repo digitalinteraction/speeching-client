@@ -33,6 +33,12 @@ namespace Droid_PeopleWithParkinsons
         private Animation normalAnim;
 
         private View ourView;
+        private IOnFinishedPlaybackListener mListener;
+
+        public interface IOnFinishedPlaybackListener
+        {
+            void OnFinishedPlaybackListener(string filepath);
+        }
 
         public override Android.Views.View OnCreateView(Android.Views.LayoutInflater inflater, Android.Views.ViewGroup container, Android.OS.Bundle savedInstanceState)
         {
@@ -57,9 +63,7 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnStart();
 
-            // Stackoverflow recommends this format to avoid null pointer exceptions
-            Intent intent = Activity.Intent;
-            Bundle extras = intent.Extras;
+            Bundle extras = Arguments;
 
             if (extras != null)
             {
@@ -183,11 +187,25 @@ namespace Droid_PeopleWithParkinsons
                 didPlayAudio = false;
             }
 
-            AudioFileManager.DeleteAll();
-            Intent mainMenu = new Intent(Activity, typeof(MainActivity));
-            StartActivity(mainMenu);
+            // Move file to rootActual audio directory
+            // Get string to new directory
+            // Call listener with string
+            filePath = AudioFileManager.FinaliseAudio(filePath);
+            mListener.OnFinishedPlaybackListener(filePath);
         }
 
+        public override void OnAttach(Activity activity)
+        {
+            base.OnAttach(activity);
+            try
+            {
+                mListener = (IOnFinishedPlaybackListener)activity;
+            }
+            catch (NotImplementedException e)
+            {
+                throw new NotImplementedException(activity.ToString() + " must implement OnArticleSelectedListener : " + e.ToString());
+            }
+        }
 
         /// <summary>
         /// Cycles through playing and stopping the selected audio at filePath
@@ -296,6 +314,30 @@ namespace Droid_PeopleWithParkinsons
             catch (Java.IO.FileNotFoundException e)
             {
                 Console.WriteLine(e);
+            }
+        }
+
+        public override void OnDestroyView()
+        {
+            base.OnDestroyView();
+
+            unbindDrawables(ourView);
+        }
+
+
+        private void unbindDrawables(View view)
+        {
+            if (view.Background != null)
+            {
+                view.Background.SetCallback(null);
+            }
+            if (view is ViewGroup)
+            {
+                for (int i = 0; i < ((ViewGroup)view).ChildCount; i++)
+                {
+                    unbindDrawables(((ViewGroup)view).GetChildAt(i));
+                }
+                ((ViewGroup)view).RemoveAllViews();
             }
         }
     }

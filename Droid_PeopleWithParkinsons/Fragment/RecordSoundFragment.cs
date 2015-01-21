@@ -64,7 +64,7 @@ namespace Droid_PeopleWithParkinsons
             }
             catch (NotImplementedException e)
             {
-                throw new NotImplementedException(activity.ToString() + " must implement OnArticleSelectedListener");
+                throw new NotImplementedException(activity.ToString() + " must implement OnArticleSelectedListener : " + e.ToString());
             }
         }
 
@@ -79,7 +79,8 @@ namespace Droid_PeopleWithParkinsons
             {
                 normalAnim = AnimationUtils.LoadAnimation(Activity, Resource.Animation.scale_button_normal);
                 downAnim = AnimationUtils.LoadAnimation(Activity, Resource.Animation.scale_button_pressed);
-                glowBitMap = GetGlow(Resource.Drawable.circle);
+                Activity.RunOnUiThread(() => DestroyImageViewDrawable());
+                SetCircleWaveFormGlow();
                 Activity.RunOnUiThread(() => circleWaveForm.SetImageBitmap(glowBitMap));
             });
 
@@ -229,10 +230,8 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
-        public Bitmap GetGlow(int resourceId)
+        public void SetCircleWaveFormGlow()
         {
-            Bitmap bmp = null;
-
             try
             {
                 int margin = 500;
@@ -240,14 +239,14 @@ namespace Droid_PeopleWithParkinsons
                 int glowRadius = 500;
                 int glowColor = Color.Rgb(0, 192, 200);
 
-                Bitmap src = BitmapFactory.DecodeResource(Resources, resourceId);
+                Bitmap src = BitmapFactory.DecodeResource(Resources, Resource.Drawable.circle);
 
                 Bitmap alpha = src.ExtractAlpha();
 
-                bmp = Bitmap.CreateBitmap(src.Width + margin, src.Height
+                glowBitMap = Bitmap.CreateBitmap(src.Width + margin, src.Height
                         + margin, Bitmap.Config.Argb8888);
 
-                Canvas canvas = new Canvas(bmp);
+                Canvas canvas = new Canvas(glowBitMap);
 
                 Paint paint = new Paint();
                 paint.Color = Color.Blue;
@@ -257,13 +256,20 @@ namespace Droid_PeopleWithParkinsons
 
                 canvas.DrawBitmap(src, halfMargin, halfMargin, null);
 
+                src.Recycle();
+                alpha.Recycle();
+                canvas.Dispose();
+                paint.Dispose();
+
+                src = null;
+                alpha = null;
+                canvas = null;
+                paint = null;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-
-            return bmp;
         }
 
         public void AnimateOuterGlow(float from, float to, long duration)
@@ -317,8 +323,7 @@ namespace Droid_PeopleWithParkinsons
 
 
         private void DoBackgroundNoiseChecker()
-        {
-            
+        {            
             while (bgRunning)
             {
                 Thread.Sleep(1500);
@@ -350,5 +355,53 @@ namespace Droid_PeopleWithParkinsons
                 }
             }  
         }
+
+        public override void OnDestroyView()
+        {
+            base.OnDestroyView();
+
+            DestroyImageViewDrawable();
+            glowBitMap.Recycle();
+            glowBitMap.Dispose();
+            glowBitMap = null;
+            unbindDrawables(ourView);
+        }
+
+        public void DestroyImageViewDrawable()
+        {
+            circleWaveForm.ClearAnimation();
+
+            if (circleWaveForm != null && circleWaveForm.Drawable is BitmapDrawable)
+            {
+                // get the drawable
+                using (var d = circleWaveForm.Drawable)
+                {
+                    // remove the reference the imageView has
+                    circleWaveForm.SetImageBitmap(null);
+                    // recycle it
+                    if (((BitmapDrawable)d).Bitmap != null)
+                    {
+                        ((BitmapDrawable)d).Bitmap.Recycle();
+                    }
+                }
+            }
+        }
+
+
+        private void unbindDrawables(View view) 
+        {
+            if (view.Background != null) 
+            {
+               view.Background.SetCallback(null);
+            }
+            if (view is ViewGroup) 
+            {
+               for (int i = 0; i < ((ViewGroup) view).ChildCount; i++) 
+               {
+                  unbindDrawables(((ViewGroup) view).GetChildAt(i));
+               }
+               ((ViewGroup) view).RemoveAllViews();
+            }
+       }
     }
 }
