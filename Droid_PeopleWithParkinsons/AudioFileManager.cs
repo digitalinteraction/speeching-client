@@ -172,5 +172,11 @@ namespace Droid_PeopleWithParkinsons
 
             return list;
         }
+
+        public static void DeleteAllTemp()
+        {
+            Directory.Delete(RootTempAudioDirectory, true);
+        }
+
     }
 }
