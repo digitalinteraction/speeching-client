@@ -21,13 +21,12 @@ namespace Droid_PeopleWithParkinsons
 
         protected override void OnCreate(Bundle bundle)
         {
-            // TODO: Start and attacj to upload service
-            // Add all currently stored non-uploaded files
-            // Unbind from service.
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Main);
-            
+
+            Intent.SetFlags(ActivityFlags.ReorderToFront);
+
             // Get and assign buttons
 
             recordButton = FindViewById<Button>(Resource.Id.RecordBtn);
@@ -60,16 +59,25 @@ namespace Droid_PeopleWithParkinsons
 
             if (list.Count > 0)
             {
+                bool makeToast = false;
+
                 foreach (string item in list)
                 {
-                    binder.GetUploadService().AddFile(item);
+                    bool success = binder.GetUploadService().AddFile(item);
+
+                    makeToast = success ? success : makeToast;
                 }
 
-                Toast.MakeText(this, "Added item(s) to upload queue", ToastLength.Short).Show();
+                if (makeToast)
+                {
+                    Toast.MakeText(this, "Added item(s) to upload queue", ToastLength.Short).Show();
+                }
 
                 list.Clear();
                 list = null;
             }
+
+            UnbindService(uploadServiceConnection);
         }
 
         public class UploadServiceConnection : Java.Lang.Object, IServiceConnection

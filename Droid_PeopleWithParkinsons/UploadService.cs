@@ -19,7 +19,6 @@ namespace Droid_PeopleWithParkinsons
     [Service]
     public class UploadService : Android.App.Service
     {
-        // TODO: If uploading files, create a toast to inform the user this is happening.
         private UploadServiceBinder binder;
         private bool isRunning = false;
 
@@ -34,18 +33,26 @@ namespace Droid_PeopleWithParkinsons
                 new Thread(new ThreadStart(() =>
                 {
                     Thread.Sleep(5 * 1000);
-
                     while (filesToUpload.Count > 0)
                     {
-                        // TODO: Get index 0 and check if it exists before performing operation.
-                        // Complete via rework of actual upload process.
-                        SendNotification(filesToUpload[0]);
                         string fPath = filesToUpload[0];
-                        AudioFileManager.DeleteFile(fPath);
-                        filesToUpload.RemoveAt(0);
+
+                        if (AudioFileManager.IsExist(fPath))
+                        {
+                            // TODO: Check network connectivity before progressing
+                            SendNotification(filesToUpload[0]);
+                            AudioFileManager.DeleteFile(fPath);
+                            filesToUpload.RemoveAt(0);     
+                        }
+                        else
+                        {
+                            // Whaaaa?
+                        }
+
                         Thread.Sleep(5 * 1000);
                     }
 
+                    SendNotification("All current audio files have been uploaded");
                     StopSelf();
 
                 })).Start();
@@ -75,19 +82,20 @@ namespace Droid_PeopleWithParkinsons
             var notification = new Notification(Resource.Drawable.Icon, "Message from service");
             var pendingIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(RecordSoundRunActivity)), 0);
             // TODO: Use non obsolete (Whatever that is. This needs heavily reworking anyway).
-            notification.SetLatestEventInfo(this, message, message, null);
+            notification.SetLatestEventInfo(this, "Upload completed", message, null);
             nMgr.Notify(0, notification);            
         }
 
-        public void AddFile(string filePath)
+        public bool AddFile(string filePath)
         {
             if (filesToUpload.Contains(filePath))
             {
-                return;
+                return false;
             }
             else
             {
                 filesToUpload.Add(filePath);
+                return true;
             }
         }
 
@@ -105,8 +113,5 @@ namespace Droid_PeopleWithParkinsons
                 return service;
             }
         }
-
-
-
     }
 }
