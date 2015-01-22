@@ -31,7 +31,7 @@ namespace Droid_PeopleWithParkinsons
             if (isRunning == false)
             {
                 isRunning = true;
-
+                
                 // Instantiate our uploader object and provide callbacks
                 contentUploader = new ContentUploader();
                 contentUploader.itemUploadedEvent += ItemUploaded;
