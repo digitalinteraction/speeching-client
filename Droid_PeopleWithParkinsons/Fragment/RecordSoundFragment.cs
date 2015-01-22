@@ -129,6 +129,7 @@ namespace Droid_PeopleWithParkinsons
                 {
                     //throw new NotImplementedException();
                     // TODO: Manage exception where there isn't valid data.
+                    // Although, there should never be 'invalid data'.
                 }
             }
 
@@ -221,15 +222,16 @@ namespace Droid_PeopleWithParkinsons
                     }
 
                     mListener.OnFinishedRecordingListener(outputPath);
-
-                    /*Intent recordCompleted = new Intent(Activity, typeof(RecordCompletedActivity));
-                    recordCompleted.PutExtra("filepath", outputPath);
-                    StartActivity(recordCompleted);*/
                 }
             }
         }
 
 
+        /// <summary>
+        /// Not the nicest, or most 'component-y'est, but had an issue with a memory leak
+        /// And now it's best to just not touch it.
+        /// Takes the circle drawable, adds a fade around the outside and re-draws the bitmap to glowBitMap
+        /// </summary>
         public void SetCircleWaveFormGlow()
         {
             try
@@ -272,6 +274,13 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+
+        /// <summary>
+        /// Adds a glow to the circleWaveForm that is behind the record button.
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="duration"></param>
         public void AnimateOuterGlow(float from, float to, long duration)
         {
             if (glowAnimation == null)
@@ -299,6 +308,9 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
+        /// <summary>
+        /// Cycles between 10 second audio recordings of background noise
+        /// </summary>
         private void DoBackgroundNoiseCycler()
         {
             while (bgRunning)
@@ -322,6 +334,9 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
+        /// <summary>
+        /// Polls for the background noise level in a loop and displays it to the user.
+        /// </summary>
         private void DoBackgroundNoiseChecker()
         {            
             while (bgRunning)
@@ -367,6 +382,12 @@ namespace Droid_PeopleWithParkinsons
             unbindDrawables(ourView);
         }
 
+
+        /// <summary>
+        /// Bitmap memory is handled differently, so we signal the GC
+        /// That it's allowed to free the memory.
+        /// Call this before changing the drawable on circleWaveForm
+        /// </summary>
         public void DestroyImageViewDrawable()
         {
             circleWaveForm.ClearAnimation();
@@ -388,6 +409,12 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
+        /// <summary>
+        /// Taken from stackoverflow.
+        /// To clean up fragment from memory leaks
+        /// Not sure if neccessary.
+        /// </summary>
+        /// <param name="view"></param>
         private void unbindDrawables(View view) 
         {
             if (view.Background != null) 

@@ -24,48 +24,42 @@ namespace Droid_PeopleWithParkinsons
 
         private List<string> filesToUpload = new List<string>();
 
+        private ContentUploader contentUploader;
+
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
             if (isRunning == false)
             {
                 isRunning = true;
 
+                // Instantiate our uploader object and provide callbacks
+                contentUploader = new ContentUploader();
+                contentUploader.itemUploadedEvent += ItemUploaded;
+                contentUploader.allItemsUploadedEvent += AllFilesUploaded;
+                contentUploader.operationFinishedEvent += OperationFinished;
+
+                // Run the uploading in a new thread so we don't block UI.
                 new Thread(new ThreadStart(() =>
                 {
+                    // Wait a little while to make sure we've added all our files
                     Thread.Sleep(5 * 1000);
-                    while (filesToUpload.Count > 0)
-                    {
-                        string fPath = filesToUpload[0];
+                    contentUploader.BeginUploadProcess();
 
-                        if (AudioFileManager.IsExist(fPath))
-                        {
-                            // TODO: Check network connectivity before progressing
-                            SendNotification(filesToUpload[0]);
-                            AudioFileManager.DeleteFile(fPath);
-                            filesToUpload.RemoveAt(0);     
-                        }
-                        else
-                        {
-                            // Whaaaa?
-                        }
-
-                        Thread.Sleep(5 * 1000);
-                    }
-
-                    SendNotification("All current audio files have been uploaded");
-                    StopSelf();
-
-                })).Start();
+                })).Start();               
             }
 
             // Else we are already running
-
             return StartCommandResult.Sticky;
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
+
+            contentUploader.itemUploadedEvent -= ItemUploaded;
+            contentUploader.allItemsUploadedEvent -= AllFilesUploaded;
+            contentUploader.operationFinishedEvent -= OperationFinished;
+            contentUploader = null;
         }
 
         
@@ -76,7 +70,23 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
-        void SendNotification(string message)
+        private void ItemUploaded(string filePath)
+        {
+            SendNotification(filePath);
+            AudioFileManager.DeleteFile(filePath);            
+        }
+
+        private void AllFilesUploaded()
+        {
+            SendNotification("All items uploaded");
+        }
+
+        private void OperationFinished()
+        {
+            StopSelf();
+        }
+
+        private void SendNotification(string message)
         {
             var nMgr = (NotificationManager) GetSystemService(NotificationService);
             var notification = new Notification(Resource.Drawable.Icon, "Message from service");
@@ -88,15 +98,7 @@ namespace Droid_PeopleWithParkinsons
 
         public bool AddFile(string filePath)
         {
-            if (filesToUpload.Contains(filePath))
-            {
-                return false;
-            }
-            else
-            {
-                filesToUpload.Add(filePath);
-                return true;
-            }
+            return contentUploader.AddFileToUploadQueue(filePath);
         }
 
         public class UploadServiceBinder : Binder
@@ -114,4 +116,6 @@ namespace Droid_PeopleWithParkinsons
             }
         }
     }
+
+    
 }

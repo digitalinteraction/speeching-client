@@ -16,6 +16,7 @@ namespace Droid_PeopleWithParkinsons
         public UploadServiceConnection uploadServiceConnection;
         public UploadService.UploadServiceBinder binder;
         public bool isBound = false;
+
         private Button recordButton;
         private Button analyseButton;
 
@@ -49,12 +50,15 @@ namespace Droid_PeopleWithParkinsons
             AudioFileManager.DeleteAllTemp();
         }
 
+
+        /// <summary>
+        /// Checks for any unuploaded files and adds them to the upload queue.
+        /// Useful on first-start to make sure the user doesn't leave any files hanging around
+        /// Unbinds from the Upload Service when finished adding any files to queue.
+        /// Displays toast message if files were added.
+        /// </summary>
         public void OnBoundToService()
         {
-            // TODO: Add files to the service for upload
-            // Get list of files from audio file manager?
-            // Iterate over and add to the list?
-            // Then unbind
             List<string> list = AudioFileManager.GetAllFiles(false);
 
             if (list.Count > 0)
@@ -80,6 +84,11 @@ namespace Droid_PeopleWithParkinsons
             UnbindService(uploadServiceConnection);
         }
 
+
+        /// <summary>
+        /// Handles connection to allow class to bind to the UploadService.
+        /// Calls Activity.OnBoundToService() when successfully bound.
+        /// </summary>
         public class UploadServiceConnection : Java.Lang.Object, IServiceConnection
         {
             MainActivity activity;

@@ -173,6 +173,9 @@ namespace Droid_PeopleWithParkinsons
             return list;
         }
 
+        // Deletes all files in the temp directory.
+        // Useful if the user records temp audio, but never finalises it
+        // Device crash, user quits and kills application etc.
         public static void DeleteAllTemp()
         {
             Directory.Delete(RootTempAudioDirectory, true);

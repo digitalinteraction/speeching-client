@@ -24,6 +24,107 @@ namespace Droid_PeopleWithParkinsons
         private string serviceParameter;
 
 
+        protected override void OnCreate(Bundle bundle)
+        {
+            base.OnCreate(bundle);
+            
+            // Register for tabs
+            ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
+
+            // Set our view from the "main" layout resource
+            SetContentView(Resource.Layout.RecordSoundRun);
+
+            // Do tab setup - Each tab is a fragment
+            ActionBar.Tab tab = ActionBar.NewTab();
+            tab.SetText("Record");
+            //tab.SetIcon(Resource.Drawable.tab1_icon);
+            tab.TabSelected += (sender, args) =>
+            {
+                if (currentBundle == null)
+                {
+                    currentBundle = Intent.Extras;
+                }
+
+                if (isRecordFragment)
+                {
+                    LoadFragment(new RecordSoundFragment(), currentBundle, "RecordSoundFragment");
+                }
+                else
+                {
+                    LoadFragment(new RecordCompletedFragment(), currentBundle, "RecordCompletedFragment");
+                }
+            };
+
+            ActionBar.AddTab(tab);
+
+            tab = ActionBar.NewTab();
+            tab.SetText("Results");
+            //tab.SetIcon(Resource.Drawable.tab1_icon);
+            tab.TabSelected += (sender, args) =>
+            {
+                Bundle arguments = Intent.Extras;
+                LoadFragment(new PlaceholderFragment(), arguments, "PlaceholderFragment");
+            };
+
+            ActionBar.AddTab(tab);
+        }
+
+
+        /// <summary>
+        /// Clears up our references. Unbinds from upload service.
+        /// </summary>
+        protected override void OnPause()
+        {
+            base.OnPause();
+
+            if (isBound)
+            {
+                UnbindService(uploadServiceConnection);
+            }
+        }
+
+
+        /// <summary>
+        /// Inflates our action bar menu for this screen.
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <returns></returns>
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.RecordMenu, menu);
+            return base.OnPrepareOptionsMenu(menu);
+        }
+
+
+        /// <summary>
+        /// Handles case scenario of pressing 'help' button on the action bar.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.help:
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+                    alert.SetTitle("Help");
+                    alert.SetMessage("Custom help text/images can go here.");
+
+                    alert.SetPositiveButton("OK", (senderAlert, args) =>
+                    {
+                    });
+
+                    alert.Show();
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+
+        /// <summary>
+        /// Adds the most recent recorded item filepath to the upload service queue.
+        /// </summary>
         public void OnBoundToService()
         {
             binder.GetUploadService().AddFile(serviceParameter);
@@ -44,13 +145,11 @@ namespace Droid_PeopleWithParkinsons
             currentBundle = null;
 
             // Starts a service (Ensures it carries on after activity ends)
-            // TODO: Make sure this service is started when opening the application
-            
             Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
             StartService(uploadServiceIntent);
 
             uploadServiceConnection = new UploadServiceConnection(this);
-            BindService(uploadServiceIntent, uploadServiceConnection, Bind.AutoCreate);   
+            BindService(uploadServiceIntent, uploadServiceConnection, Bind.AutoCreate);
         }
 
 
@@ -104,89 +203,10 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.RecordMenu, menu);
-            return base.OnPrepareOptionsMenu(menu);
-        }
-
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Resource.Id.help:
-                    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-                    alert.SetTitle("Help");
-                    alert.SetMessage("Custom help text/images can go here.");
-            
-                    alert.SetPositiveButton("OK", (senderAlert, args) =>
-                    {
-                    });
-
-                    alert.Show();
-                    return true;
-            }
-            return base.OnOptionsItemSelected(item);
-        }
-
-
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-            
-            // Register for tabs
-            ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
-
-            // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.RecordSoundRun);
-
-            // Do tab setup - Each tab is a fragment
-            ActionBar.Tab tab = ActionBar.NewTab();
-            tab.SetText("Record");
-            //tab.SetIcon(Resource.Drawable.tab1_icon);
-            tab.TabSelected += (sender, args) =>
-            {
-                if (currentBundle == null)
-                {
-                    currentBundle = Intent.Extras;
-                }
-
-                if (isRecordFragment)
-                {
-                    LoadFragment(new RecordSoundFragment(), currentBundle, "RecordSoundFragment");
-                }
-                else
-                {
-                    LoadFragment(new RecordCompletedFragment(), currentBundle, "RecordCompletedFragment");
-                }
-            };
-
-            ActionBar.AddTab(tab);
-
-            tab = ActionBar.NewTab();
-            tab.SetText("Results");
-            //tab.SetIcon(Resource.Drawable.tab1_icon);
-            tab.TabSelected += (sender, args) =>
-            {
-                Bundle arguments = Intent.Extras;
-                LoadFragment(new PlaceholderFragment(), arguments, "PlaceholderFragment");
-            };
-
-            ActionBar.AddTab(tab);
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-
-            if (isBound)
-            {
-                UnbindService(uploadServiceConnection);
-            }
-        }
-
+        /// <summary>
+        /// Class for handling a connection to the Upload Service.
+        /// Calls Activity.OnBoundToService() when successfully bound.
+        /// </summary>
         public class UploadServiceConnection : Java.Lang.Object, IServiceConnection
         {
             RecordSoundRunActivity activity;

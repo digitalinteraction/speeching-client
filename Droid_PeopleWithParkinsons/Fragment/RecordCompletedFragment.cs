@@ -111,23 +111,12 @@ namespace Droid_PeopleWithParkinsons
         }
 
 
-        // TODO: Move this someplace nice. Or get rid of it. Figure it out, whatever.
-        /// <summary>
-        /// Disables back button support. We want users to commit to the audio they have selected.
-        /// </summary>
-        /*public override void OnBackPressed()
+        public override void OnDestroyView()
         {
-            AlertDialog.Builder alert = new AlertDialog.Builder(Activity);
+            base.OnDestroyView();
 
-            alert.SetTitle("Uh-Oh!");
-            alert.SetMessage("You can't go back now! You must confirm your audio.");
-
-            alert.SetPositiveButton("OK", (senderAlert, args) =>
-            {
-            });
-
-            alert.Show();
-        }*/
+            unbindDrawables(ourView);
+        }
 
 
         /// <summary>
@@ -194,6 +183,11 @@ namespace Droid_PeopleWithParkinsons
             mListener.OnFinishedPlaybackListener(filePath);
         }
 
+
+        /// <summary>
+        /// Gets a reference to our Activity's interface method so we can call it.
+        /// </summary>
+        /// <param name="activity"></param>
         public override void OnAttach(Activity activity)
         {
             base.OnAttach(activity);
@@ -317,14 +311,13 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
-        public override void OnDestroyView()
-        {
-            base.OnDestroyView();
 
-            unbindDrawables(ourView);
-        }
-
-
+        /// <summary>
+        /// Taken from Stackoverflow
+        /// To ensure that the view fragment is properly disposes of
+        /// Not sure if this is neccessary.
+        /// </summary>
+        /// <param name="view"></param>
         private void unbindDrawables(View view)
         {
             if (view.Background != null)
