@@ -7,10 +7,11 @@ using Android.OS;
 using Android.Widget;
 using Android.Content;
 using Android.Views;
+using Android.Content.PM;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Speeching")]
+    [Activity(Label = "Speeching", ScreenOrientation = ScreenOrientation.Portrait)]
     public class RecordSoundRunActivity : Activity, RecordSoundFragment.IOnFinishedRecordingListener, RecordCompletedFragment.IOnFinishedPlaybackListener
     {
         public bool isBound = false;

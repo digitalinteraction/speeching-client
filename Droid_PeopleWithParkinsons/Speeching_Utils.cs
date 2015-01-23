@@ -5,12 +5,50 @@ using System.Text;
 using Android.App;
 using Android.Text;
 using Android.Graphics;
+using Android.Widget;
 
 namespace Droid_PeopleWithParkinsons
 {
     static class Speeching_Utils
     {
         public enum DISPLAY_UNIT { DP, PX }
+
+
+        public static void FitTextInTextView(TextView view, Activity activity, string overrideString = null)
+        {
+            int width = view.MeasuredWidth;
+            int height = view.MeasuredHeight;
+
+            int widthPading = view.PaddingLeft + view.PaddingRight;
+            int heightPadding = view.PaddingTop + view.PaddingBottom;
+
+            width -= widthPading;
+            height -= heightPadding;
+
+            string toUse = overrideString == null ? view.Text : overrideString;
+
+            // An attempt to get a reasonable starting value for maximum text size
+            // that is higher than the actual maximum, but only higher by the smallest
+            // possible margin.
+            // Might be possible to get better numbers if we weren't int dividing.
+            // Probably needs testing on larger screen devices or something really.
+            int allOnOneLine = width / toUse.Length;
+            int canGetLines = height / allOnOneLine;
+
+            int whileOneLines = allOnOneLine;
+            int whileAllLines = canGetLines;
+            while (whileAllLines >= 2)
+            {
+                whileOneLines *= 2;
+                whileAllLines /= 2;
+            }
+
+            // Magic!
+            whileOneLines = (int)(whileOneLines * 1.2f);
+            int textSize = Speeching_Utils.GenerateTextSize(toUse, whileOneLines, height, width, Speeching_Utils.DISPLAY_UNIT.DP, activity);
+
+            view.TextSize = textSize;
+        }
 
 
         /// <summary>

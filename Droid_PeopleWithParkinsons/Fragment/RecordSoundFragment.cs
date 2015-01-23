@@ -52,30 +52,14 @@ namespace Droid_PeopleWithParkinsons
         private IOnFinishedRecordingListener mListener;
 
 
-        private void FitTextInTextView(TextView view, string overrideString = null)
-        {
-            int width = view.MeasuredWidth;
-            int height = view.MeasuredHeight;
-
-            int widthPading = view.PaddingLeft + view.PaddingRight;
-            int heightPadding = view.PaddingTop + view.PaddingBottom;
-
-            width -= widthPading;
-            height -= heightPadding;
-
-            string toUse = overrideString == null ? view.Text : overrideString;
-            int textSize = Speeching_Utils.GenerateTextSize(toUse, 200, height, width, Speeching_Utils.DISPLAY_UNIT.DP, Activity);
-
-            view.TextSize = textSize;
-        }
-
         public void OnGlobalLayout()
         {
-            FitTextInTextView(textToSpeak);
-            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.Instructions));
-            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.StoredSoundsValue));
-            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay), HIGH_BACKGROUND_STRING);
-            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.ButtonText));
+            Speeching_Utils.FitTextInTextView(textToSpeak, Activity);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.Instructions), Activity);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.StoredSoundsValue), Activity);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay), Activity, HIGH_BACKGROUND_STRING);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.ButtonText), Activity);
+
             textToSpeak.ViewTreeObserver.RemoveGlobalOnLayoutListener(this);
         }
 
@@ -94,8 +78,7 @@ namespace Droid_PeopleWithParkinsons
             catch (NotImplementedException e)
             {
                 throw new NotImplementedException(activity.ToString() + " must implement OnArticleSelectedListener : " + e.ToString());
-            }
-       
+            }       
         }
 
 

@@ -7,10 +7,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Content.PM;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Speeching", MainLauncher = true, Icon = "@drawable/Icon")]
+    [Activity(Label = "Speeching", MainLauncher = true, Icon = "@drawable/Icon", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         public UploadServiceConnection uploadServiceConnection;
