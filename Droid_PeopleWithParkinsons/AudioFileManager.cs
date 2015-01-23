@@ -5,10 +5,6 @@ using System.IO;
 
 namespace Droid_PeopleWithParkinsons
 {
-    // TODO: Set up a temporary path to save files. Only export to main file directory upon completion.
-    // That way we can clean out the temp folder if the system crashes for any reason
-    // Without affecting the data we actually want to keep.
-
     class AudioFileManager
     {
         public static string fileExtension = ".pcm";

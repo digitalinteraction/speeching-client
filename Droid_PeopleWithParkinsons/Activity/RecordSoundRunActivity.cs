@@ -24,6 +24,12 @@ namespace Droid_PeopleWithParkinsons
         private string serviceParameter;
 
 
+        public override void OnWindowFocusChanged(bool hasFocus)
+        {
+            base.OnWindowFocusChanged(hasFocus);
+        }
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

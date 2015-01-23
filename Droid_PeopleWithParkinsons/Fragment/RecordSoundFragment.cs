@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace Droid_PeopleWithParkinsons
 {
-    class RecordSoundFragment : Android.App.Fragment
+    class RecordSoundFragment : Android.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private const int LOW_BACKGROUND_NOISE = 25;
         private const int MEDIUM_BACKGROUND_NOISE = 50;
@@ -28,6 +28,7 @@ namespace Droid_PeopleWithParkinsons
 
         private const float MAX_ANIM_SCALE = 2.0f;
 
+        private TextView textToSpeak;
         private ImageView roundSoundImageView;
         private TextView roundSoundText;
 
@@ -50,6 +51,34 @@ namespace Droid_PeopleWithParkinsons
         private View ourView;
         private IOnFinishedRecordingListener mListener;
 
+
+        private void FitTextInTextView(TextView view, string overrideString = null)
+        {
+            int width = view.MeasuredWidth;
+            int height = view.MeasuredHeight;
+
+            int widthPading = view.PaddingLeft + view.PaddingRight;
+            int heightPadding = view.PaddingTop + view.PaddingBottom;
+
+            width -= widthPading;
+            height -= heightPadding;
+
+            string toUse = overrideString == null ? view.Text : overrideString;
+            int textSize = Speeching_Utils.GenerateTextSize(toUse, 200, height, width, Speeching_Utils.DISPLAY_UNIT.DP, Activity);
+
+            view.TextSize = textSize;
+        }
+
+        public void OnGlobalLayout()
+        {
+            FitTextInTextView(textToSpeak);
+            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.Instructions));
+            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.StoredSoundsValue));
+            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay), HIGH_BACKGROUND_STRING);
+            FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.ButtonText));
+            textToSpeak.ViewTreeObserver.RemoveGlobalOnLayoutListener(this);
+        }
+
         public interface IOnFinishedRecordingListener
         {
             void OnFinishedRecordingListener(string filepath);
@@ -66,7 +95,9 @@ namespace Droid_PeopleWithParkinsons
             {
                 throw new NotImplementedException(activity.ToString() + " must implement OnArticleSelectedListener : " + e.ToString());
             }
+       
         }
+
 
         public override Android.Views.View OnCreateView(Android.Views.LayoutInflater inflater, Android.Views.ViewGroup container, Android.OS.Bundle savedInstanceState)
         {
@@ -97,11 +128,13 @@ namespace Droid_PeopleWithParkinsons
             // We don't want to show this until the user starts recording.
             circleWaveForm.Alpha = 0.0f;        
 
+            textToSpeak = ourView.FindViewById<TextView>(Resource.Id.TextToSpeak);
+            ViewTreeObserver vto = textToSpeak.ViewTreeObserver;
+            vto.AddOnGlobalLayoutListener(this);
 
             return ourView;
         }
         
-
         public override void OnCreate(Bundle savedInstanceState)
         {
  	        base.OnCreate(savedInstanceState);
