@@ -8,6 +8,9 @@ namespace Droid_PeopleWithParkinsons
 {
     static class SentenceManager
     {
+        public static int MIN_STORED_SENTENCES = 10;
+        public static int DOWNLOAD_SENTENCES = 15;
+
         private static Random random = new Random();
         private static bool initialised = false;
         private static List<string> _sentences;

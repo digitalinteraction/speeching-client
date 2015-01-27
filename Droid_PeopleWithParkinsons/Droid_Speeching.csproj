@@ -73,21 +73,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioFileManager.cs" />
+    <Compile Include="ToShared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
-    <Compile Include="ContentUploader.cs" />
+    <Compile Include="ToShared\ContentUploader.cs" />
     <Compile Include="DownloadService.cs" />
     <Compile Include="Fragment\PlaceholderFragment.cs" />
     <Compile Include="Fragment\RecordCompletedFragment.cs" />
-    <Compile Include="IAudioRecorder.cs" />
+    <Compile Include="ToShared\IAudioRecorder.cs" />
     <Compile Include="Activity\MainActivity.cs" />
-    <Compile Include="ModelManager.cs" />
-    <Compile Include="PlaceholderStrings.cs" />
+    <Compile Include="ToShared\ModelManager.cs" />
+    <Compile Include="ToShared\PlaceholderStrings.cs" />
     <Compile Include="Activity\RecordSoundRunActivity.cs" />
-    <Compile Include="SentenceDownloader.cs" />
-    <Compile Include="SentenceManager.cs" />
-    <Compile Include="SentenceModel.cs" />
-    <Compile Include="Reachability.cs" />
+    <Compile Include="ToShared\SentenceDownloader.cs" />
+    <Compile Include="ToShared\SentenceManager.cs" />
+    <Compile Include="ToShared\SentenceModel.cs" />
+    <Compile Include="ToShared\Reachability.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fragment\RecordSoundFragment.cs" />

@@ -21,8 +21,6 @@ namespace Droid_PeopleWithParkinsons
 
             SetContentView(Resource.Layout.Main);
 
-            Intent.SetFlags(ActivityFlags.ReorderToFront);
-
             // Get and assign buttons
 
             recordButton = FindViewById<Button>(Resource.Id.RecordBtn);
@@ -32,6 +30,8 @@ namespace Droid_PeopleWithParkinsons
             };
 
             // Not yet implemented
+            // Probably not even going to exist
+            // TODO: Probably delete this.
             analyseButton = FindViewById<Button>(Resource.Id.AnalyseBtn);
             analyseButton.Enabled = false;
             analyseButton.Alpha = 0.0f;
@@ -43,7 +43,7 @@ namespace Droid_PeopleWithParkinsons
 
             if (SentenceManager.sentences.Count > 0)
             {
-                if (SentenceManager.sentences.Count <= 10)
+                if (SentenceManager.sentences.Count <= SentenceManager.MIN_STORED_SENTENCES)
                 {
                     Intent downloadServiceIntent = new Intent(this, typeof(DownloadService));
                     StartService(downloadServiceIntent);

@@ -73,7 +73,7 @@ namespace Droid_PeopleWithParkinsons
             // TODO: Fill out when we have a proper question structure.
             // A list in JSON would be grrrrrrrreeeaaaatt.
 
-            while (SentenceManager.sentences.Count < 15)
+            while (SentenceManager.sentences.Count < SentenceManager.DOWNLOAD_SENTENCES)
             {
                 SentenceManager.AddSentence(PlaceholderStrings.GetRandomSentence());
             }

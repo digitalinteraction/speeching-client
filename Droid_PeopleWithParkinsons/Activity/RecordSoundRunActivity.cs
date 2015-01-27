@@ -46,7 +46,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 if (currentBundle == null)
                 {
-                    currentBundle = Intent.Extras;
+                    currentBundle = Intent.Extras == null ? new Bundle() : Intent.Extras;
                 }
 
                 if (isRecordFragment)
