@@ -51,6 +51,8 @@ namespace Droid_PeopleWithParkinsons
         private View ourView;
         private IOnFinishedRecordingListener mListener;
 
+        private string textString;
+
 
         public void OnGlobalLayout()
         {
@@ -65,7 +67,7 @@ namespace Droid_PeopleWithParkinsons
 
         public interface IOnFinishedRecordingListener
         {
-            void OnFinishedRecordingListener(string filepath);
+            void OnFinishedRecordingListener(string filepath, string sentence);
         }
 
         public override void OnAttach(Activity activity)
@@ -130,26 +132,28 @@ namespace Droid_PeopleWithParkinsons
             // Initiate main recorder
             outputPath = AudioFileManager.GetNewAudioFilePath();
 
-            // Set text
-            Intent intent = Activity.Intent;
-            Bundle extras = intent.Extras;
-            string text = "";
+            textString = SentenceManager.GetRandomQuestion();
 
-            if (extras != null)
+            if (!string.IsNullOrEmpty(textString))
             {
-                if (extras.ContainsKey("text"))
-                {
-                    text = extras.GetString("text");
-                }
-                else
-                {
-                    //throw new NotImplementedException();
-                    // TODO: Manage exception where there isn't valid data.
-                    // Although, there should never be 'invalid data'.
-                }
+                ourView.FindViewById<TextView>(Resource.Id.TextToSpeak).Text = textString;
             }
+            else
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(Activity);
 
-            ourView.FindViewById<TextView>(Resource.Id.TextToSpeak).Text = text;
+                alert.SetTitle("Error");
+                alert.SetMessage("This page doesn't seem to be ready yet! Returning to main menu...\n\nTIP: Do you have data enabled?.");
+
+                // TODO: Change this to go to the results fragment instead.
+                alert.SetPositiveButton("OK", (senderAlert, args) =>
+                {
+                    Intent mainMenu = new Intent(Activity, typeof(MainActivity));
+                    StartActivity(mainMenu);
+                });
+
+                alert.Show();
+            }            
         }
 
 
@@ -237,7 +241,7 @@ namespace Droid_PeopleWithParkinsons
                         roundSoundImageView.StartAnimation(normalAnim);
                     }
 
-                    mListener.OnFinishedRecordingListener(outputPath);
+                    mListener.OnFinishedRecordingListener(outputPath, textString);
                 }
             }
         }

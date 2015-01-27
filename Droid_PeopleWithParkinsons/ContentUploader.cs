@@ -14,34 +14,25 @@ namespace Droid_PeopleWithParkinsons
         public event itemUploadedHandler itemUploadedEvent;
         public event allItemsUploadedHandler operationFinishedEvent;
 
-        private List<string> filesToUpload = new List<string>();
-
-        public bool AddFileToUploadQueue(string filePath)
-        {
-            if (filesToUpload.Contains(filePath))
-            {
-                return false;
-            }
-            else
-            {
-                filesToUpload.Add(filePath);
-                return true;
-            }
-        }
-
         public void BeginUploadProcess()
         {
-            if (filesToUpload.Count > 0)
+            if (ModelManager.uploads.Count > 0)
             {
-                while (filesToUpload.Count > 0)
+                // TODO: Have a notification manager class which also includes toasts
+                // For both platforms
+                // Then, call that platform code here to say that things are actually uploading.
+
+                while (ModelManager.uploads.Count > 0)
                 {
-                    string fPath = filesToUpload[0];
+                    SentenceModel _model = ModelManager.uploads[0];
+                    string fPath = _model.path;
 
                     bool didUpload = UploadItem(fPath);
 
                     if (didUpload)
                     {
-                        filesToUpload.RemoveAt(0);
+                        AudioFileManager.DeleteFile(fPath);
+                        ModelManager.DeleteModel(_model);                        
                     }
 
                     Thread.Sleep(5 * 1000);

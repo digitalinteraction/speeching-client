@@ -11,11 +11,9 @@ using Android.Content;
 using Android.Views.Animations;
 using Android.Views;
 
-using Xamarin.Forms.Platform.Android;
-
 namespace Droid_PeopleWithParkinsons
 {
-    class RecordCompletedFragment : Android.App.Fragment
+    class RecordCompletedFragment : Android.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private string _filePath;
         private string filePath { get { return _filePath; } set { _filePath = value; byteData = null; } }
@@ -32,8 +30,23 @@ namespace Droid_PeopleWithParkinsons
         private Animation downAnim;
         private Animation normalAnim;
 
+        private TextView text;
+
         private View ourView;
         private IOnFinishedPlaybackListener mListener;
+
+
+        public void OnGlobalLayout()
+        {
+            Speeching_Utils.FitTextInTextView(text, Activity);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.RecordSoundHeaderLower), Activity);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.RecordCompleted_ButtonText), Activity);
+            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.CheckBoxLowerHeader), Activity);
+            //Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.ButtonText), Activity);
+
+            text.ViewTreeObserver.RemoveGlobalOnLayoutListener(this);
+        }
+
 
         public interface IOnFinishedPlaybackListener
         {
@@ -56,6 +69,10 @@ namespace Droid_PeopleWithParkinsons
             confirmButton = ourView.FindViewById<Button>(Resource.Id.RecordCompletedConfirmButton);
             confirmButton.Click += ConfirmButtonClicked;
 
+            text = ourView.FindViewById<TextView>(Resource.Id.RecordCompletedHeader);
+            ViewTreeObserver vto = text.ViewTreeObserver;
+            vto.AddOnGlobalLayoutListener(this);
+
             return ourView;
         }
 
@@ -73,8 +90,18 @@ namespace Droid_PeopleWithParkinsons
                 }
                 else
                 {
-                    throw new NotImplementedException();
-                    // TODO: Manage exception where there isn't valid data.
+                    AlertDialog.Builder alert = new AlertDialog.Builder(Activity);
+
+                    alert.SetTitle("Error");
+                    alert.SetMessage("There's been a problem recording your audio. Sorry about that, please try again.");
+
+                    alert.SetPositiveButton("OK", (senderAlert, args) =>
+                    {
+                        Intent mainMenu = new Intent(Activity, typeof(MainActivity));
+                        StartActivity(mainMenu);
+                    });
+
+                    alert.Show();
                 }
             }
         }

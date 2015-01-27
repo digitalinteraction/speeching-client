@@ -6,10 +6,10 @@ using RestSharp;
 
 namespace Droid_PeopleWithParkinsons
 {
-    class QuestionDownloader
+    class SentenceDownloader
     {
-        public delegate void questionsDownloadedHandler();
-        public event questionsDownloadedHandler questionsDownloadedEvent;
+        public delegate void sentencesDownloadedHandler();
+        public event sentencesDownloadedHandler sentencesDownloadedEvent;
 
         public void BeginDownloadProcess()
         {
@@ -17,12 +17,12 @@ namespace Droid_PeopleWithParkinsons
 
             while (!successful)
             {
-                successful = DownloadQuestions();
+                successful = DownloadSentences();
             }
 
-            if (questionsDownloadedEvent != null)
+            if (sentencesDownloadedEvent != null)
             {
-                questionsDownloadedEvent();
+                sentencesDownloadedEvent();
             }
         }
 
@@ -32,7 +32,7 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
-        private bool DownloadQuestions()
+        private bool DownloadSentences()
         {
             do
             {
@@ -53,7 +53,7 @@ namespace Droid_PeopleWithParkinsons
 
                 if (contents == "ok")
                 {
-                    WriteQuestionsToFile(contents);
+                    SaveSentences(contents);
                     return true;
                 }
                 else
@@ -68,9 +68,15 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
-        private void WriteQuestionsToFile(string filepath)
+        private void SaveSentences(string questions)
         {
-            // Ok.
+            // TODO: Fill out when we have a proper question structure.
+            // A list in JSON would be grrrrrrrreeeaaaatt.
+
+            while (SentenceManager.sentences.Count < 15)
+            {
+                SentenceManager.AddSentence(PlaceholderStrings.GetRandomSentence());
+            }
         }
     }
 }

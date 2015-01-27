@@ -76,8 +76,8 @@
                 android:textColor="#FF000000"
                 android:layout_marginLeft="20sp"
                 android:layout_marginRight="20sp"
-                android:layout_marginTop="20sp"
-                android:layout_marginBottom="35sp" />
+                android:layout_marginTop="30sp"
+                android:layout_marginBottom="30sp" />
         </FrameLayout>
     </LinearLayout>
     <CheckBox
@@ -92,7 +92,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/textView1"
+        android:id="@+id/CheckBoxLowerHeader"
         android:paddingLeft="8dp"
         android:layout_marginBottom="15.0dp"
         android:layout_weight="5" />

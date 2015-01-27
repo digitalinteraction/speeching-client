@@ -4,10 +4,6 @@ using System.Text;
 
 using Android.App;
 using Android.Net;
-using Android.OS;
-using Android.Widget;
-using Android.Test.Mock;
-using Xamarin.Forms;
 
 namespace Droid_PeopleWithParkinsons
 {

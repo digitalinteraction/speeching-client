@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 using Android.OS;
 using Android.App;
-using Android.Widget;
 using Android.Content;
-using Android.Media;
-using Android.Views;
-using Android.Graphics.Drawables;
-using Android.Views.Animations;
-using Android.Graphics;
-
-using System.Threading;
 
 namespace Droid_PeopleWithParkinsons
 {
     [Service]
     public class UploadService : Android.App.Service
     {
-        private UploadServiceBinder binder;
         private bool isRunning = false;
-
-        private List<string> filesToUpload = new List<string>();
 
         private ContentUploader contentUploader;
 
@@ -41,10 +31,7 @@ namespace Droid_PeopleWithParkinsons
                 // Run the uploading in a new thread so we don't block UI.
                 new Thread(new ThreadStart(() =>
                 {
-                    // Wait a little while to make sure we've added all our files
-                    Thread.Sleep(5 * 1000);
                     contentUploader.BeginUploadProcess();
-
                 })).Start();               
             }
 
@@ -62,18 +49,15 @@ namespace Droid_PeopleWithParkinsons
             contentUploader = null;
         }
 
-        
         public override IBinder OnBind(Intent intent)
         {
-            binder = new UploadServiceBinder(this);
-            return binder;
+            throw new NotImplementedException();
         }
 
 
         private void ItemUploaded(string filePath)
         {
             SendNotification(filePath);
-            AudioFileManager.DeleteFile(filePath);            
         }
 
         private void AllFilesUploaded()
@@ -88,34 +72,34 @@ namespace Droid_PeopleWithParkinsons
 
         private void SendNotification(string message)
         {
-            var nMgr = (NotificationManager) GetSystemService(NotificationService);
+            // TODO: Change this to call shared platform code notification
+            // So everything is handled nicely (:
+
+
+            // Keep this incase we need to target older platforms later.
+            // Although we might want to use AppCompat at this point.
+            /*var nMgr = (NotificationManager) GetSystemService(NotificationService);
             var notification = new Notification(Resource.Drawable.Icon, "Message from service");
             var pendingIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(RecordSoundRunActivity)), 0);
-            // TODO: Use non obsolete (Whatever that is. This needs heavily reworking anyway).
             notification.SetLatestEventInfo(this, "Upload completed", message, null);
-            nMgr.Notify(0, notification);            
+            nMgr.Notify(0, notification);*/
+
+            PendingIntent pIntent = PendingIntent.GetActivity(Android.App.Application.Context.ApplicationContext, 0, new Intent(), 0);
+
+            Notification noti = new Notification.Builder(Android.App.Application.Context)
+             .SetContentTitle("Upload Completed")
+             .SetContentText(message)
+             .SetSmallIcon(Resource.Drawable.Icon)
+             .SetContentIntent(pIntent)
+             .Build();
+
+            // Get the notification manager:
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+
+            // Publish the notification:
+            const int notificationId = 0;
+            notificationManager.Notify(notificationId, noti);
         }
-
-        public bool AddFile(string filePath)
-        {
-            return contentUploader.AddFileToUploadQueue(filePath);
-        }
-
-        public class UploadServiceBinder : Binder
-        {
-            UploadService service;
-
-            public UploadServiceBinder(UploadService service)
-            {
-                this.service = service;
-            }
-
-            public UploadService GetUploadService()
-            {
-                return service;
-            }
-        }
-    }
-
-    
+    }    
 }

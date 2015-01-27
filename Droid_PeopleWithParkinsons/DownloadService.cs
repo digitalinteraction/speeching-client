@@ -5,24 +5,17 @@ using System.Threading;
 
 using Android.OS;
 using Android.App;
-using Android.Widget;
 using Android.Content;
-using Android.Media;
-using Android.Views;
-using Android.Graphics.Drawables;
-using Android.Views.Animations;
-using Android.Graphics;
 
 namespace Droid_PeopleWithParkinsons
 {
-    class DownloadService : Android.App.Service
+    [Service]
+    public class DownloadService : Android.App.Service
     {
         private DownloadServiceBinder binder;
         private bool isRunning = false;
 
-        private List<string> filesToUpload = new List<string>();
-
-        private QuestionDownloader questionDownloader;
+        private SentenceDownloader questionDownloader;
 
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
@@ -31,8 +24,8 @@ namespace Droid_PeopleWithParkinsons
                 isRunning = true;
 
                 // Instantiate our downloader object and provide callbacks
-                questionDownloader = new QuestionDownloader();
-                questionDownloader.questionsDownloadedEvent += QuestionsDownloaded;
+                questionDownloader = new SentenceDownloader();
+                questionDownloader.sentencesDownloadedEvent += QuestionsDownloaded;
 
                 // Run the downloader in a new thread so we don't block UI.
                 new Thread(new ThreadStart(() =>
@@ -50,7 +43,7 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnDestroy();
 
-            questionDownloader.questionsDownloadedEvent -= QuestionsDownloaded;
+            questionDownloader.sentencesDownloadedEvent -= QuestionsDownloaded;
             questionDownloader = null;
         }
 

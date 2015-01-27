@@ -9,18 +9,15 @@ namespace Droid_PeopleWithParkinsons
         private static Random random;
         private static string[] exampleSentences = 
         {
-            "\"This is an example string\"",
-            "\"This is a longer example string\"",
-            "\"This is a much longer example string\"",
-            "\"This is a very much longer example string\"",
-            "\"This example string length is getting ridiculous now\"",
-            "\"This example string length needs to be even more ridiculous\"",
-            "\"This example string length is so long now that it might just overflow the box\"",
-            "\"This is the maximum length that a string can be before it starts to overflow the text box.....W\""
-            // Note: Currently not using a monospaced font?
-            // TODO: Check monospace fonting
-            // Max characters for text 95-99 chars?
-
+            "\"This is a simple example sentence.\"",
+            "\"Coming up with some random sentences is harder than you think.\"",
+            "\"It's nice to see you to see you nice.\"",
+            "\"Did you read the newspaper last night? There was a really good article on chocolate.\"",
+            "\"I really liked the long black dress she was wearing.\"",
+            "\"There are some great films on at the cinema tonight.\"",
+            "\"I'll be back in a few minutes, I'm just going to the shop to buy some eggs and bread.\"",
+            "\"It's really cold outside, you should take a coat to keep warm.\"",
+            "\"The longer the text, the smaller the text becomes. This way, we can support any length sentence without overflowing the text box.\""
         };
 
         public static string GetRandomSentence()

@@ -14,15 +14,12 @@ namespace Droid_PeopleWithParkinsons
     [Activity(Label = "Speeching", ScreenOrientation = ScreenOrientation.Portrait)]
     public class RecordSoundRunActivity : Activity, RecordSoundFragment.IOnFinishedRecordingListener, RecordCompletedFragment.IOnFinishedPlaybackListener
     {
-        public bool isBound = false;
-        public UploadService.UploadServiceBinder binder;
-        public UploadServiceConnection uploadServiceConnection;
-
         private bool isRecordFragment = true;
         private Bundle currentBundle;
         private bool hasFragment;
 
         private string serviceParameter;
+        private string sentence;
 
 
         public override void OnWindowFocusChanged(bool hasFocus)
@@ -83,11 +80,6 @@ namespace Droid_PeopleWithParkinsons
         protected override void OnPause()
         {
             base.OnPause();
-
-            if (isBound)
-            {
-                UnbindService(uploadServiceConnection);
-            }
         }
 
 
@@ -130,19 +122,6 @@ namespace Droid_PeopleWithParkinsons
 
 
         /// <summary>
-        /// Adds the most recent recorded item filepath to the upload service queue.
-        /// </summary>
-        public void OnBoundToService()
-        {
-            binder.GetUploadService().AddFile(serviceParameter);
-            Toast.MakeText(this, "Added sound to upload queue.", ToastLength.Short).Show();
-
-            Intent mainMenu = new Intent(this, typeof(MainActivity));
-            StartActivity(mainMenu);
-        }
-
-
-        /// <summary>
         /// Event listener for used fragment.
         /// </summary>
         public void OnFinishedPlaybackListener(string filepath)
@@ -151,12 +130,24 @@ namespace Droid_PeopleWithParkinsons
             isRecordFragment = true;
             currentBundle = null;
 
+            SentenceModel model = new SentenceModel();
+
+            model.path = serviceParameter;
+            model.sentence = sentence;
+
+            ModelManager.AddModel(model);
+
+            //uploadServiceBinder.GetUploadService().AddFile(serviceParameter, sentence);
+            Toast.MakeText(this, "Added sound to upload queue.", ToastLength.Short).Show();
+
+            SentenceManager.DeleteQuestion(sentence);
+
             // Starts a service (Ensures it carries on after activity ends)
             Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
             StartService(uploadServiceIntent);
 
-            uploadServiceConnection = new UploadServiceConnection(this);
-            BindService(uploadServiceIntent, uploadServiceConnection, Bind.AutoCreate);
+            Intent mainMenu = new Intent(this, typeof(MainActivity));
+            StartActivity(mainMenu);           
         }
 
 
@@ -164,8 +155,9 @@ namespace Droid_PeopleWithParkinsons
         /// Event listener for used fragment.
         /// </summary>
         /// <param name="filepath">Filepath to recorded audio</param>
-        public void OnFinishedRecordingListener(string filepath)
+        public void OnFinishedRecordingListener(string filepath, string _sentence)
         {
+            sentence = _sentence;
             currentBundle.PutString("filepath", filepath);
 
             LoadFragment(new RecordCompletedFragment(), currentBundle, "RecordCompletedFragment");
@@ -207,37 +199,6 @@ namespace Droid_PeopleWithParkinsons
             ft.Commit();
 
             return newFragment;
-        }
-
-
-        /// <summary>
-        /// Class for handling a connection to the Upload Service.
-        /// Calls Activity.OnBoundToService() when successfully bound.
-        /// </summary>
-        public class UploadServiceConnection : Java.Lang.Object, IServiceConnection
-        {
-            RecordSoundRunActivity activity;
-
-            public UploadServiceConnection(RecordSoundRunActivity activity)
-            {
-                this.activity = activity;
-            }
-
-            public void OnServiceConnected(ComponentName name, IBinder service)
-            {
-                var demoServiceBinder = service as UploadService.UploadServiceBinder;
-                if (demoServiceBinder != null)
-                {
-                    activity.binder = demoServiceBinder;
-                    activity.isBound = true;
-                    activity.OnBoundToService();
-                }
-            }
-
-            public void OnServiceDisconnected(ComponentName name)
-            {
-                activity.isBound = false;
-            }
         }
     }    
 }
