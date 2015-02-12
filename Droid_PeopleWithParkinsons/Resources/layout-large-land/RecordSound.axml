@@ -6,31 +6,31 @@
     android:weightSum="100">
     <TextView
         android:text="Speak the following:"
-        android:textSize="18sp"
+        android:textSize="25sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Instructions"
         android:gravity="center_horizontal"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="20dp" />
     <Droid_PeopleWithParkinsons.AutoResizeTextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/TextToSpeak"
         android:gravity="center_horizontal"
         android:text="This is an example sentence - they shouldn't get much longer than this."
-        android:padding="10dp"
+        android:padding="20dp"
         android:layout_below="@id/Instructions"
-        android:textSize="22sp" />
+        android:textSize="25sp" />
     <Button
         android:id="@+id/RecordButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
         android:background="@drawable/recordButton"
         android:gravity="center_vertical|center_horizontal"
         android:text="Begin Recording!"
         android:textColor="#fff"
         android:layout_centerInParent="true"
-        android:textSize="20sp" />
+        android:textSize="30sp" />
     <TextView
         android:text="Press to start recording"
         android:layout_width="match_parent"
@@ -38,8 +38,8 @@
         android:gravity="center_horizontal|center_vertical"
         android:layout_height="wrap_content"
         android:layout_below="@id/RecordButton"
-        android:textSize="15sp"
-        android:padding="10dp" />
+        android:textSize="24sp"
+        android:padding="18dp" />
     <TextView
         android:text="Background Noise"
         android:id="@+id/BackgroundAudioDisplay"
@@ -47,6 +47,6 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:padding="10dp"
-        android:textSize="15sp" />
+        android:padding="25dp"
+        android:textSize="20sp" />
 </RelativeLayout>

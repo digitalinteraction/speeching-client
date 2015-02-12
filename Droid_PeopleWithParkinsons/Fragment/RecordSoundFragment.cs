@@ -29,8 +29,7 @@ namespace Droid_PeopleWithParkinsons
         private const float MAX_ANIM_SCALE = 2.0f;
 
         private TextView textToSpeak;
-        private ImageView roundSoundImageView;
-        private TextView roundSoundText;
+        private Button recordButton;
 
         private AudioRecorder audioRecorder;
         private string outputPath;
@@ -43,8 +42,8 @@ namespace Droid_PeopleWithParkinsons
         private Animation downAnim;
         private Animation normalAnim;
 
-        private ImageView circleWaveForm;
-        private Animation glowAnimation;
+        //private ImageView circleWaveForm;
+        //private Animation glowAnimation;
 
         private Bitmap glowBitMap;
 
@@ -60,7 +59,7 @@ namespace Droid_PeopleWithParkinsons
             Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.Instructions), Activity);
             Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.StoredSoundsValue), Activity);
             Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay), Activity, HIGH_BACKGROUND_STRING);
-            Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.ButtonText), Activity);
+            //Speeching_Utils.FitTextInTextView(ourView.FindViewById<TextView>(Resource.Id.ButtonText), Activity);
 
             textToSpeak.ViewTreeObserver.RemoveGlobalOnLayoutListener(this);
         }
@@ -95,23 +94,22 @@ namespace Droid_PeopleWithParkinsons
             {
                 normalAnim = AnimationUtils.LoadAnimation(Activity, Resource.Animation.scale_button_normal);
                 downAnim = AnimationUtils.LoadAnimation(Activity, Resource.Animation.scale_button_pressed);
-                Activity.RunOnUiThread(() => DestroyImageViewDrawable());
+                //Activity.RunOnUiThread(() => DestroyImageViewDrawable());
                 SetCircleWaveFormGlow();
-                Activity.RunOnUiThread(() => circleWaveForm.SetImageBitmap(glowBitMap));
+                //Activity.RunOnUiThread(() => circleWaveForm.SetImageBitmap(glowBitMap));
             });
 
 
             // Get and assign 'buttons'
-            roundSoundImageView = ourView.FindViewById<ImageView>(Resource.Id.RecordButtonRoot);
-            roundSoundImageView.Click += SoundRecorderButtonClicked;
-            roundSoundText = ourView.FindViewById<TextView>(Resource.Id.ButtonText);
+            recordButton = ourView.FindViewById<Button>(Resource.Id.RecordButton);
+            recordButton.Click += SoundRecorderButtonClicked;
 
             backgroundNoiseDisplay = ourView.FindViewById<TextView>(Resource.Id.BackgroundAudioDisplay);
 
-            circleWaveForm = ourView.FindViewById<ImageView>(Resource.Id.CircleWaveForm);
+            /*circleWaveForm = ourView.FindViewById<ImageView>(Resource.Id.CircleWaveForm);
 
             // We don't want to show this until the user starts recording.
-            circleWaveForm.Alpha = 0.0f;        
+            circleWaveForm.Alpha = 0.0f;   */     
 
             textToSpeak = ourView.FindViewById<TextView>(Resource.Id.TextToSpeak);
             ViewTreeObserver vto = textToSpeak.ViewTreeObserver;
@@ -189,10 +187,10 @@ namespace Droid_PeopleWithParkinsons
             if (deleteFile)
             {
                 AudioFileManager.DeleteFile(outputPath);
-                roundSoundText.Text = "Begin Recording";
+                recordButton.Text = "Begin Recording";
                 // Deleting audio means we need to reset the drawable as it will be in 'active' state when resuming.
-                roundSoundImageView.SetImageResource(Resource.Drawable.button_unpressed);
-                EndGlowAnimation();
+                //recordButton.SetImageResource(Resource.Drawable.button_unpressed);
+                //EndGlowAnimation();
             }
 
             bgRunning = false;
@@ -218,13 +216,13 @@ namespace Droid_PeopleWithParkinsons
 
                 if (audioRecorder.StartAudio())
                 {
-                    AnimateOuterGlow(1.15f, 1.3f, 400);
-                    roundSoundImageView.SetImageResource(Resource.Drawable.button_pressed);
-                    roundSoundText.Text = "Stop Recording";
+                    //AnimateOuterGlow(1.15f, 1.3f, 400);
+                    //recordButton.SetImageResource(Resource.Drawable.button_pressed);
+                    recordButton.Text = "Stop Recording";
 
                     if (downAnim != null)
                     {
-                        roundSoundImageView.StartAnimation(downAnim);
+                        recordButton.StartAnimation(downAnim);
                     } 
                 }
             }
@@ -232,13 +230,13 @@ namespace Droid_PeopleWithParkinsons
             {
                 if (audioRecorder.StopAudio())
                 {
-                    EndGlowAnimation();
-                    roundSoundImageView.SetImageResource(Resource.Drawable.button_unpressed);
-                    roundSoundText.Text = "Begin Recording";
+                    //EndGlowAnimation();
+                    //recordButton.SetImageResource(Resource.Drawable.button_unpressed);
+                    recordButton.Text = "Begin Recording";
 
                     if (normalAnim != null)
                     {
-                        roundSoundImageView.StartAnimation(normalAnim);
+                        recordButton.StartAnimation(normalAnim);
                     }
 
                     mListener.OnFinishedRecordingListener(outputPath, textString);
@@ -301,7 +299,7 @@ namespace Droid_PeopleWithParkinsons
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <param name="duration"></param>
-        public void AnimateOuterGlow(float from, float to, long duration)
+        /*public void AnimateOuterGlow(float from, float to, long duration)
         {
             if (glowAnimation == null)
             {
@@ -325,7 +323,7 @@ namespace Droid_PeopleWithParkinsons
             glowAnimation.Cancel();
 
             circleWaveForm.Alpha = 0.0f;
-        }
+        }*/
 
 
         /// <summary>
@@ -395,10 +393,10 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnDestroyView();
 
-            DestroyImageViewDrawable();
+            /*DestroyImageViewDrawable();
             glowBitMap.Recycle();
             glowBitMap.Dispose();
-            glowBitMap = null;
+            glowBitMap = null;*/
             unbindDrawables(ourView);
         }
 
@@ -408,7 +406,7 @@ namespace Droid_PeopleWithParkinsons
         /// That it's allowed to free the memory.
         /// Call this before changing the drawable on circleWaveForm
         /// </summary>
-        public void DestroyImageViewDrawable()
+       /* public void DestroyImageViewDrawable()
         {
             circleWaveForm.ClearAnimation();
 
@@ -426,7 +424,7 @@ namespace Droid_PeopleWithParkinsons
                     }
                 }
             }
-        }
+        }*/
 
 
         /// <summary>

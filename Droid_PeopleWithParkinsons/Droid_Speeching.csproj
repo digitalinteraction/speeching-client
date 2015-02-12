@@ -73,24 +73,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ToShared\AudioFileManager.cs" />
+    <Compile Include="AutoResizeTextView.cs" />
+    <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
-    <Compile Include="ToShared\ContentUploader.cs" />
+    <Compile Include="Shared\ContentUploader.cs" />
     <Compile Include="DownloadService.cs" />
     <Compile Include="Fragment\PlaceholderFragment.cs" />
     <Compile Include="Fragment\RecordCompletedFragment.cs" />
-    <Compile Include="ToShared\IAudioRecorder.cs" />
+    <Compile Include="Shared\IAudioRecorder.cs" />
     <Compile Include="Activity\MainActivity.cs" />
-    <Compile Include="ToShared\ModelManager.cs" />
-    <Compile Include="ToShared\PlaceholderStrings.cs" />
+    <Compile Include="Shared\ModelManager.cs" />
+    <Compile Include="Shared\PlaceholderStrings.cs" />
     <Compile Include="Activity\RecordSoundRunActivity.cs" />
-    <Compile Include="ToShared\SentenceDownloader.cs" />
-    <Compile Include="ToShared\SentenceManager.cs" />
-    <Compile Include="ToShared\SentenceModel.cs" />
-    <Compile Include="ToShared\Reachability.cs" />
+    <Compile Include="Shared\SentenceDownloader.cs" />
+    <Compile Include="Shared\SentenceManager.cs" />
+    <Compile Include="Shared\SentenceModel.cs" />
+    <Compile Include="Shared\Reachability.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fragment\RecordSoundFragment.cs" />
+    <Compile Include="Shared\ServerStructs.cs" />
     <Compile Include="Speeching_Utils.cs" />
     <Compile Include="UploadService.cs" />
   </ItemGroup>
@@ -101,6 +103,17 @@
     <AndroidResource Include="Resources\layout\RecordSound.axml" />
     <AndroidResource Include="Resources\layout\RecordSoundRun.axml" />
     <AndroidResource Include="Resources\layout\RecordCompleted.axml" />
+    <AndroidResource Include="Resources\drawable\recordButton.xml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\AutoResizeTextViewStyleable.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-large-land\RecordSound.axml" />
+    <AndroidResource Include="Resources\layout-large-port\RecordSound.axml" />
+    <AndroidResource Include="Resources\layout\MainMenuListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -139,6 +152,7 @@
     <AndroidResource Include="Resources\menu\RecordMenu.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_drawer.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout-large\" />

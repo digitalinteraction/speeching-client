@@ -2,4 +2,6 @@
 <resources>
     <string name="ApplicationName">Speeching</string>
     <string name="appTitleMain">Speeching</string>
+  <string name="drawer_open">Open</string>
+  <string name="drawer_close">Close</string>
 </resources>

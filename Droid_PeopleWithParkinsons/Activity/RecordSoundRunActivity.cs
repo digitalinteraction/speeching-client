@@ -11,7 +11,7 @@ using Android.Content.PM;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Speeching", ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "Speeching")]
     public class RecordSoundRunActivity : Activity, RecordSoundFragment.IOnFinishedRecordingListener, RecordCompletedFragment.IOnFinishedPlaybackListener
     {
         private bool isRecordFragment = true;
