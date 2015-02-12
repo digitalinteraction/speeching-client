@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\SplashActivity.cs" />
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
@@ -114,6 +115,7 @@
     <AndroidResource Include="Resources\layout\MainMenuListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout-large\Main.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -129,7 +131,6 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\drawable\round_button.xml" />
-    <AndroidResource Include="Resources\values\style.xml" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_mic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_mic.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_mic.png" />
@@ -153,10 +154,10 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\ic_drawer.png" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+    <AndroidResource Include="Resources\drawable\splash.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\layout-large\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="json.net">
       <Visible>False</Visible>

@@ -93,6 +93,9 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f020008
 			public const int round_button_alt = 2130837512;
 			
+			// aapt resource value: 0x7f020009
+			public const int splash = 2130837513;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -270,7 +273,7 @@ namespace Droid_PeopleWithParkinsons
 		{
 			
 			// aapt resource value: 0x7f060000
-			public const int button_text = 2131099648;
+			public const int Theme_Splash = 2131099648;
 			
 			static Style()
 			{

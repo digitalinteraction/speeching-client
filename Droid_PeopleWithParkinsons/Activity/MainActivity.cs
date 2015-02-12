@@ -13,7 +13,7 @@ using Droid_PeopleWithParkinsons.Shared;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Speeching", MainLauncher = true, Icon = "@drawable/Icon")]
+    [Activity(Label = "Speeching", Icon = "@drawable/Icon")]
     public class MainActivity : Activity
     {
         private DrawerLayout drawer;
