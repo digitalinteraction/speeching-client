@@ -35,7 +35,6 @@ namespace Droid_PeopleWithParkinsons
             // Register for tabs
             ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
 
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.RecordSoundRun);
 
             // Do tab setup - Each tab is a fragment

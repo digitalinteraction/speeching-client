@@ -12,6 +12,16 @@ using Android.Widget;
 
 namespace Droid_PeopleWithParkinsons.Shared
 {
+    public class User
+    {
+        public enum UserType { Patient, Therapist, Rater };
+
+        public string id;
+        public string name;
+        public string avatar;
+        public UserType userType;
+    }
+
     public class UserTask
     {
         public string id;

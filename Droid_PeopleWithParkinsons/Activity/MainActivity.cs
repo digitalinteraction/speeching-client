@@ -19,13 +19,25 @@ namespace Droid_PeopleWithParkinsons
         private DrawerLayout drawer;
         private ActionBarDrawerToggle drawerToggle;
         private ListView drawerList;
-        private GridView mainList;
+        private Bundle currentBundle;
+
+        bool hasFragment;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
+            // Register for tabs
+            ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
+
             SetContentView(Resource.Layout.Main);
+
+            // Do actionbar tab setup - Each tab is a fragment
+            Android.App.Fragment tasks = new TaskListFragment();
+            Android.App.Fragment friends = new FriendListFragment();
+            
+            AndroidUtils.AddTab("Tasks", currentBundle, this, Resource.Id.fragmentContainer, tasks);
+            AndroidUtils.AddTab("Friends", currentBundle, this, Resource.Id.fragmentContainer, friends);     
 
             string[] fakeOptions = new string[]{ "these are", "some fake", "options to fill", "up sidebar space"};
 
@@ -43,21 +55,6 @@ namespace Droid_PeopleWithParkinsons
             ActionBar.Show();
             ActionBar.SetHomeButtonEnabled(true);
             ActionBar.SetDisplayHomeAsUpEnabled(true);
-
-            UserTask[] sampleTasks = new UserTask[12];
-
-            for (int i = 0; i < sampleTasks.Length; i++ )
-            {
-                sampleTasks[i] = new UserTask();
-                sampleTasks[i].title = "Task " + i;
-            }
-
-            mainList = FindViewById<GridView>(Resource.Id.mainActivitiesList);
-            mainList.Adapter = new UserTaskListAdapter(this, Resource.Id.mainActivitiesList, sampleTasks);
-            mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
-            {
-                StartActivity(typeof(RecordSoundRunActivity));
-            };
 
             Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
             StartService(uploadServiceIntent);
@@ -77,6 +74,42 @@ namespace Droid_PeopleWithParkinsons
                 Intent downloadServiceIntent = new Intent(this, typeof(DownloadService));
                 StartService(downloadServiceIntent);
             }
+        }
+
+        /// <summary>
+        /// Generic method to load any new or replacing fragment into Resource.Id.RecordSoundRunFragment
+        /// </summary>
+        /// <typeparam name="T">Fragment to load</typeparam>
+        /// <param name="args">Bundle will set T.Arguments param</param>
+        /// <returns></returns>
+        private Android.App.Fragment LoadFragment<T>(T _fragment, Bundle args, string tag) where T : Android.App.Fragment, new()
+        {
+            var newFragment = new T();
+
+            newFragment.Arguments = args;
+
+            var ft = FragmentManager.BeginTransaction();
+
+            Android.App.Fragment _frag = FragmentManager.FindFragmentByTag(tag);
+
+            if (_frag != null)
+            {
+                ft.Detach(_frag);
+            }
+
+            if (!hasFragment)
+            {
+                ft.Add(Resource.Id.RecordSoundRunFragment, newFragment, tag);
+                hasFragment = true;
+            }
+            else
+            {
+                ft.Replace(Resource.Id.RecordSoundRunFragment, newFragment, tag);
+            }
+
+            ft.Commit();
+
+            return newFragment;
         }
 
         #region DrawerLayout management
@@ -103,47 +136,5 @@ namespace Droid_PeopleWithParkinsons
         #endregion
 
     }
-
-    public class UserTaskListAdapter : BaseAdapter<UserTask>
-    {
-        Activity context;
-        UserTask[] tasks;
-
-        public UserTaskListAdapter(Activity context, int resource, UserTask[] data)
-        {
-            this.context = context;
-            this.tasks = data;
-        }
-
-        public override long GetItemId(int position)
-        {
-            return position;
-        }
-
-        public override UserTask this[int position]
-        {
-            get { return tasks[position]; }
-        }
-
-        public override int Count
-        {
-            get { return tasks.Length; }
-        }
-
-        public override View GetView(int position, View convertView, ViewGroup parent)
-        {
-            View view = convertView;
-
-            if (view == null)
-            {
-                view = context.LayoutInflater.Inflate(Resource.Layout.MainMenuListItem, null);
-            }
-
-            view.FindViewById<TextView>(Resource.Id.mainListActivityTitle).Text = tasks[position].title;
-            return view;
-        }
-    }
-
-   
 }
 
