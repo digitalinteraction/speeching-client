@@ -14,6 +14,14 @@ namespace Droid_PeopleWithParkinsons
 {
     class AndroidUtils
     {
+        /// <summary>
+        /// Add a tab to the given activity's ActionBar
+        /// </summary>
+        /// <param name="tabName">The label to display on the tab</param>
+        /// <param name="currentBundle">Intent data</param>
+        /// <param name="activity">The current context</param>
+        /// <param name="fragContainerId">Resource id of the element that will contain the fragment</param>
+        /// <param name="view">The fragment to use</param>
         public static void AddTab(string tabName, Bundle currentBundle, Activity activity, int fragContainerId, Fragment view )
         {
             // Do actionbar tab setup - Each tab is a fragment

@@ -14,14 +14,13 @@ using Droid_PeopleWithParkinsons.Shared;
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Speeching", Icon = "@drawable/Icon")]
-    public class MainActivity : Activity
+    public class MainActivity : Activity, GestureDetector.IOnGestureListener
     {
         private DrawerLayout drawer;
         private ActionBarDrawerToggle drawerToggle;
         private ListView drawerList;
         private Bundle currentBundle;
-
-        bool hasFragment;
+        private GestureDetector gestureDetector;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -74,43 +73,81 @@ namespace Droid_PeopleWithParkinsons
                 Intent downloadServiceIntent = new Intent(this, typeof(DownloadService));
                 StartService(downloadServiceIntent);
             }
+
+            gestureDetector = new GestureDetector(this);
         }
 
-        /// <summary>
-        /// Generic method to load any new or replacing fragment into Resource.Id.RecordSoundRunFragment
-        /// </summary>
-        /// <typeparam name="T">Fragment to load</typeparam>
-        /// <param name="args">Bundle will set T.Arguments param</param>
-        /// <returns></returns>
-        private Android.App.Fragment LoadFragment<T>(T _fragment, Bundle args, string tag) where T : Android.App.Fragment, new()
+        private void GestureLeft()
         {
-            var newFragment = new T();
-
-            newFragment.Arguments = args;
-
-            var ft = FragmentManager.BeginTransaction();
-
-            Android.App.Fragment _frag = FragmentManager.FindFragmentByTag(tag);
-
-            if (_frag != null)
+            if (ActionBar.SelectedTab.Position - 1 < 0)
             {
-                ft.Detach(_frag);
-            }
-
-            if (!hasFragment)
-            {
-                ft.Add(Resource.Id.RecordSoundRunFragment, newFragment, tag);
-                hasFragment = true;
+                ActionBar.SelectTab(ActionBar.GetTabAt(ActionBar.TabCount - 1));
             }
             else
             {
-                ft.Replace(Resource.Id.RecordSoundRunFragment, newFragment, tag);
+                ActionBar.SelectTab(ActionBar.GetTabAt(ActionBar.SelectedTab.Position - 1));
             }
-
-            ft.Commit();
-
-            return newFragment;
         }
+
+        private void GestureRight()
+        {
+            if (ActionBar.SelectedTab.Position + 1 >= ActionBar.TabCount) 
+            {
+                ActionBar.SelectTab(ActionBar.GetTabAt(0));
+            }
+            else
+            {
+                ActionBar.SelectTab(ActionBar.GetTabAt(ActionBar.SelectedTab.Position + 1));
+            }
+        }
+
+        #region Gestures
+        private int SWIPE_MAX_OFF_PATH = 250;
+        private int SWIPE_MIN_DISTANCE = 120;
+        private int SWIPE_THRESHOLD_VELOCITY = 200;
+        public bool OnDown(MotionEvent e)
+        {
+            return true;
+        }
+
+        public bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+        {
+            try
+            {
+                if (Math.Abs(e1.GetY() - e2.GetY()) > SWIPE_MAX_OFF_PATH)
+                    return false;
+                // right to left swipe
+                if (e1.GetX() - e2.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+                    GestureLeft();
+                else if (e2.GetX() - e1.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+                    GestureRight();
+            }
+            catch (Exception e)
+            {
+                // nothing
+            }
+            return false;
+        }
+
+        public void OnLongPress(MotionEvent e)
+        {
+        }
+
+        public bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+        {
+            return true;
+        }
+
+        public void OnShowPress(MotionEvent e)
+        {
+        }
+
+        public bool OnSingleTapUp(MotionEvent e)
+        {
+            return true;
+        }
+
+        #endregion
 
         #region DrawerLayout management
         protected override void OnPostCreate(Bundle savedInstanceState)

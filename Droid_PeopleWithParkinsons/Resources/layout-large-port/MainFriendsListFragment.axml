@@ -10,6 +10,6 @@
         android:layout_gravity="start"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
-        android:paddingLeft="100dp"
-        android:paddingRight="100dp" />
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp" />
 </LinearLayout>

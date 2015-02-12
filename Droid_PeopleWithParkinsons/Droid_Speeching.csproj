@@ -132,6 +132,8 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-land\MainFriendsListFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-port\MainFriendsListFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-land\MainFriendsListFragment.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
