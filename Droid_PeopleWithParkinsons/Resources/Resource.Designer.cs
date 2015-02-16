@@ -227,8 +227,8 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f09001f
 			public const int scenarioAuthor = 2131296287;
 			
-			// aapt resource value: 0x7f090026
-			public const int scenarioBreaker = 2131296294;
+			// aapt resource value: 0x7f090024
+			public const int scenarioBreaker = 2131296292;
 			
 			// aapt resource value: 0x7f090021
 			public const int scenarioEventLayout = 2131296289;
@@ -236,11 +236,11 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090022
 			public const int scenarioImage = 2131296290;
 			
-			// aapt resource value: 0x7f090025
-			public const int scenarioProgressBtn = 2131296293;
+			// aapt resource value: 0x7f090026
+			public const int scenarioProgressBtn = 2131296294;
 			
-			// aapt resource value: 0x7f090024
-			public const int scenarioPrompt = 2131296292;
+			// aapt resource value: 0x7f090025
+			public const int scenarioPrompt = 2131296293;
 			
 			// aapt resource value: 0x7f090020
 			public const int scenarioStartBtn = 2131296288;
