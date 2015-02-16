@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons.Shared
 {
@@ -29,4 +30,42 @@ namespace Droid_PeopleWithParkinsons.Shared
         public string icon;
         public DateTime lastActive;
     }
+
+    public class EventContent
+    {
+        public string type;
+        public string visual;
+        public string audio;
+        public string text;
+    }
+
+    public class EventResponse
+    {
+        public string type;
+        public string prompt;
+    }
+
+    public class ScenarioEvent
+    {
+        public EventContent content;
+        public EventResponse response;
+    }
+
+    public class Scenario
+    {
+        public string id;
+        public User creator;
+        public string title;
+        public string resources;
+        public ScenarioEvent[] events;
+    }
+
+    public class Utils 
+    {
+        public static async Task LoadStringFromFile(string fileAddress, Action<string> callback)
+        {
+            callback(System.IO.File.ReadAllText(fileAddress));
+        }
+    }
+   
 }

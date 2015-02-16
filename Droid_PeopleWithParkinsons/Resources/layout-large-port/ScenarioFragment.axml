@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<!-- TITLE SCREEN LAYOUT  -->
+    <RelativeLayout
+        android:id="@+id/scenarioTitleLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone">
+        <TextView
+            android:text="Getting the bus to the train station"
+            android:layout_width="match_parent"
+            android:id="@+id/scenarioTitle"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:paddingTop="100dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" />
+        <TextView
+            android:text="Created by Dan Richardson"
+            android:layout_width="match_parent"
+            android:id="@+id/scenarioAuthor"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scenarioTitle"
+            android:textSize="15sp"
+            android:paddingTop="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="20dp" />
+        <Button
+            android:id="@+id/scenarioStartBtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/recordButton"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Start!"
+            android:textColor="#fff"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="40dp" />
+    </RelativeLayout>
+<!-- EVENT LAYOUT  -->
+    <RelativeLayout
+        android:id="@+id/scenarioEventLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="visible">
+    <!-- TODO make this a mini fragment to allow for video instead -->
+        <ImageView
+            android:src="@drawable/driver"
+            android:id="@+id/scenarioImage"
+            android:layout_width="wrap_content"
+            android:layout_height="425dp"
+            android:padding="25dp"
+            android:layout_centerHorizontal="true" />
+        <Droid_PeopleWithParkinsons.AutoResizeTextView
+            android:text="This is a text entry! There are many others like it, but this one is mine."
+            android:layout_width="wrap_content"
+            android:id="@+id/scenarioText"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scenarioImage"
+            android:textSize="22sp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="22dp" />
+        <View
+            android:layout_below="@id/scenarioText"
+            android:id="@+id/scenarioBreaker"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/darkBlue"
+            android:paddingBottom="22dp" />
+        <Droid_PeopleWithParkinsons.AutoResizeTextView
+            android:text="This is the prompt - try to read is as carefully as possible."
+            android:layout_width="match_parent"
+            android:id="@+id/scenarioPrompt"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scenarioBreaker"
+            android:textSize="22sp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="22dp" />
+        <Button
+            android:id="@+id/scenarioProgressBtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/recordButton"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Begin Recording!"
+            android:textColor="#fff"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="30dp" />
+    </RelativeLayout>
+</RelativeLayout>

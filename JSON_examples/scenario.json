@@ -1,0 +1,47 @@
+{
+	"id" : "testScenario",
+	"creator" : {
+		"id"	: "thatId",
+		"name"	: "Justin Time"
+	},
+	"title" : "Getting the Bus",
+	"resources" : "aFileAddress.zip",
+	"events" : [
+	{
+		"content" : {
+			"type"	 : "AUDIO",
+			"visual" : "busDriverGreet.jpg",
+			"audio"	 : "greeting.mp3",
+			"text"	 : "Hello! Where would you like to go today?"
+		},
+		"response" : {
+			"type"	: "promptedSpeech",
+			"prompt" : "Hello, please may I have a return ticket to the train station?"
+		}
+	},
+	{
+		"content" : {
+			"type"	 : "VIDEO",
+			"visual" : "busDriverThanks.mp4",
+			"audio"	 : null,
+			"text"	 : "No problem at all, looks like you have a valid card. Take a seat!"
+		},
+		"response" : {
+			"type"	: "promptedSpeech",
+			"prompt" : "Thank you. Have a good day."
+		}
+	},
+	{
+		"content" : {
+			"type"	 : "TEXT",
+			"visual" : "womanOnBus.jpg",
+			"audio"	 : null,
+			"text"	 : "You sit next to an old woman, who asks what your plans are for the day. Greet her and explain how you're catching a train to the seaside."
+		},
+		"response" : {
+			"type"	: "freeformSpeech",
+			"prompt" : null
+		}
+	}
+	]
+}

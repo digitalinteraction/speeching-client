@@ -77,6 +77,7 @@
     <Compile Include="AndroidUtils.cs" />
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
+    <Compile Include="Fragment\ScenarioFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
@@ -134,6 +135,10 @@
     <AndroidResource Include="Resources\layout-land\MainFriendsListFragment.axml" />
     <AndroidResource Include="Resources\layout-large-port\MainFriendsListFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\MainFriendsListFragment.axml" />
+    <AndroidResource Include="Resources\layout\ScenarioFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-large-port\ScenarioFragment.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -176,6 +181,7 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\splash.png" />
+    <AndroidResource Include="Resources\drawable\driver.jpg" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

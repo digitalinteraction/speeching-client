@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ApplicationName">Speeching</string>
-    <string name="appTitleMain">Speeching</string>
+  <string name="ApplicationName">Speeching</string>
+  <string name="appTitleMain">Speeching</string>
   <string name="drawer_open">Open</string>
   <string name="drawer_close">Close</string>
+  <color name="darkBlue">#0099CC</color>
+  <color name="lightBlue">#33B5E5</color>
 </resources>

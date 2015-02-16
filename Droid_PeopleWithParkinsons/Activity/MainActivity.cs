@@ -36,7 +36,11 @@ namespace Droid_PeopleWithParkinsons
             Android.App.Fragment friends = new FriendListFragment();
             
             AndroidUtils.AddTab("Tasks", currentBundle, this, Resource.Id.fragmentContainer, tasks);
-            AndroidUtils.AddTab("Friends", currentBundle, this, Resource.Id.fragmentContainer, friends);     
+            AndroidUtils.AddTab("Friends", currentBundle, this, Resource.Id.fragmentContainer, friends);
+
+            // Set up Scenario fragment - TODO don't attach to a tab
+            Android.App.Fragment scenario = new ScenarioFragment();
+            AndroidUtils.AddTab("Test Scenario", currentBundle, this, Resource.Id.fragmentContainer, scenario); 
 
             string[] fakeOptions = new string[]{ "these are", "some fake", "options to fill", "up sidebar space"};
 
@@ -48,7 +52,7 @@ namespace Droid_PeopleWithParkinsons
             drawer.SetDrawerListener(drawerToggle);
             drawerList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
-                Toast.MakeText(this, "Selected: " + args.Position, ToastLength.Short).Show();
+                Toast.MakeText(this, "Option selected!", ToastLength.Short).Show();
             };
 
             ActionBar.Show();
