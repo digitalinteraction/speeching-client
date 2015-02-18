@@ -43,6 +43,7 @@ namespace Droid_PeopleWithParkinsons.Shared
     {
         public string type;
         public string prompt;
+        public string resultPath;
     }
 
     public class ScenarioEvent

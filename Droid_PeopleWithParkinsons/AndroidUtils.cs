@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Threading;
+using Android.Media;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -49,21 +50,22 @@ namespace Droid_PeopleWithParkinsons
 
         public class RecordAudioManager
         {
-            public static const int LOW_BACKGROUND_NOISE = 25;
-            public static const int MEDIUM_BACKGROUND_NOISE = 50;
-            public static const int HIGH_BACKGROUND_NOISE = 75;
+            public static int LOW_BACKGROUND_NOISE = 25;
+            public static int MEDIUM_BACKGROUND_NOISE = 50;
+            public static int HIGH_BACKGROUND_NOISE = 75;
 
-            public static const string LOW_BACKGROUND_STRING = "It's quiet here. This is a good time to record.";
-            public static const string MEDIUM_BACKGROUND_STRING = "It's a little loud here.";
-            public static const string HIGH_BACKGROUND_STRING = "It's loud here. Try moving somewhere quieter before recording.";
+            public static string LOW_BACKGROUND_STRING = "It's quiet here. This is a good time to record.";
+            public static string MEDIUM_BACKGROUND_STRING = "It's a little loud here.";
+            public static string HIGH_BACKGROUND_STRING = "It's loud here. Try moving somewhere quieter before recording.";
 
-            private AudioRecorder audioRecorder;
+            private MediaRecorder audioRecorder;
             private string outputPath;
 
             private TextView backgroundNoiseDisplay;
             private AudioRecorder backgroundAudioRecorder;
             private bool bgRunning = false;
             private bool bgShouldToggle = false;
+            private bool recording = false;
             private Activity context;
 
             /// <summary>
@@ -115,12 +117,18 @@ namespace Droid_PeopleWithParkinsons
                                 displayString = LOW_BACKGROUND_STRING;
                             }
 
+                            if (backgroundNoiseDisplay != null)
+                            {
+                                context.RunOnUiThread(() => backgroundNoiseDisplay.Text = string.Concat(displayString, "\n", "Background noise level: ", soundLevel.ToString()));
+                            }
 
-                            context.RunOnUiThread(() => backgroundNoiseDisplay.Text = string.Concat(displayString, "\n", "Background noise level: ", soundLevel.ToString()));
                         }
                         else
                         {
-                            context.RunOnUiThread(() => backgroundNoiseDisplay.Text = "Background noise information not available");
+                            if (backgroundNoiseDisplay != null)
+                            {
+                                context.RunOnUiThread(() => backgroundNoiseDisplay.Text = "Background noise information not available");
+                            }
                         }
                     }
                 }
@@ -158,8 +166,12 @@ namespace Droid_PeopleWithParkinsons
             public void StartRecording(string outputPath)
             {
                 this.outputPath = outputPath;
-                audioRecorder = new AudioRecorder();
-                audioRecorder.PrepareAudioRecorder(outputPath, true);
+                audioRecorder = new MediaRecorder();
+                audioRecorder.SetAudioSource(AudioSource.Mic);
+                audioRecorder.SetOutputFormat(OutputFormat.ThreeGpp);
+                audioRecorder.SetAudioEncoder(AudioEncoder.AmrNb);
+                audioRecorder.SetOutputFile(outputPath);
+                audioRecorder.Prepare();
 
                 if(backgroundAudioRecorder != null)
                 {
@@ -167,7 +179,9 @@ namespace Droid_PeopleWithParkinsons
                 }
                 bgShouldToggle = false;
 
-                audioRecorder.StartAudio();
+                recording = true;
+
+                audioRecorder.Start();
             }
 
            /// <summary>
@@ -178,14 +192,13 @@ namespace Droid_PeopleWithParkinsons
             {
                 if(audioRecorder == null) return null;
 
-                if(audioRecorder.StopAudio())
-                {
-                    return outputPath;
-                }
-                else
-                {
-                    return null;
-                }
+                audioRecorder.Stop();
+                audioRecorder.Reset();
+
+                recording = false;
+
+                return outputPath;
+                
             }
 
             /// <summary>
@@ -193,16 +206,22 @@ namespace Droid_PeopleWithParkinsons
             /// </summary>
             public void CleanUp()
             {
-                bool deleteFile = audioRecorder.isRecording;
-                audioRecorder.Dispose();
-                audioRecorder = null;
-
-                if (deleteFile)  AudioFileManager.DeleteFile(outputPath);
-
                 bgRunning = false;
                 bgShouldToggle = false;
-                backgroundAudioRecorder.Dispose();
-                backgroundAudioRecorder = null;
+
+                if(audioRecorder != null)
+                {
+                    audioRecorder.Release();
+                    audioRecorder.Dispose();
+                    audioRecorder = null;
+                    if (recording) AudioFileManager.DeleteFile(outputPath);
+                }
+
+                if(backgroundAudioRecorder != null)
+                {
+                    backgroundAudioRecorder.Dispose();
+                    backgroundAudioRecorder = null;
+                }
 
                 // Luke's TODO
                 // Deletes background noise audio. Probably a better way to do this

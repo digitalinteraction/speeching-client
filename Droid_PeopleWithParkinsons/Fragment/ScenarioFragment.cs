@@ -33,17 +33,20 @@ namespace Droid_PeopleWithParkinsons
         // Scenario event screen
         private RelativeLayout eventLayout;
         private ImageView eventImage; //TODO make this a sub-fragment to allow switching between image and video
-        private AutoResizeTextView eventTranscript;
-        private AutoResizeTextView eventPrompt;
-        private Button continueButton;
+        private TextView eventTranscript;
+        private TextView eventPrompt;
+        private Button recButton;
 
         Dictionary<string, string> resources;
         ProgressDialog progress;
         string documentsPath;
         string localResourcesDirectory;
+        string localExportDirectory;
         string localZipPath;
 
         private int currIndex = -1;
+        private AndroidUtils.RecordAudioManager audioManager;
+        private bool recording = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -54,36 +57,48 @@ namespace Droid_PeopleWithParkinsons
             scenario = JsonConvert.DeserializeObject<Scenario>(jsonString);
             string scenarioFormatted = scenario.title.Replace(" ", String.Empty);
 
-
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
-            try
+            localExportDirectory = localResourcesDirectory + "/exports";
+
+            // Create these directories if they don't already exist
+            if (!Directory.Exists(documentsPath))
             {
                 Directory.CreateDirectory(documentsPath);
-                if (Directory.Exists(localResourcesDirectory))
+            }
+            
+            // If the scenario folder doesn't exist we need to download the additional files
+            if (!Directory.Exists(localResourcesDirectory))
+            {
+                Directory.CreateDirectory(localResourcesDirectory);
+                Directory.CreateDirectory(localExportDirectory);
+
+                localZipPath = Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
+                try
                 {
+                    PrepareData();
+                }
+                catch (Exception except)
+                {
+                    Console.Write(except);
                     Directory.Delete(localResourcesDirectory, true);
                 }
-                Directory.CreateDirectory(localResourcesDirectory);
             }
-            catch(Exception except)
+            else
             {
-                Console.WriteLine(except.Message);
+                // We need to populate the resources dictionary with the existing files
+                string[] files = Directory.GetFiles(localResourcesDirectory);
+                resources = new Dictionary<string, string>();
+
+                for(int i = 0; i < files.Length; i++)
+                {
+                    resources.Add(Path.GetFileName(files[i]), files[i]);
+                }
             }
 
-            localZipPath = Path.Combine(documentsPath, scenarioFormatted + ".zip");
-
-            try
-            {
-                DownloadData();
-            }
-            catch(Exception except)
-            {
-                Console.Write(except);
-            }
         }
 
-        private async void DownloadData()
+        private async void PrepareData()
         {
             Activity.RunOnUiThread(() => progress = ProgressDialog.Show(Activity, "Please Wait", "Downloading data to " + localZipPath, true));
             resources = new Dictionary<string, string>();
@@ -150,14 +165,13 @@ namespace Droid_PeopleWithParkinsons
             authorName.Text = scenario.creator.name;
 
             eventLayout = view.FindViewById<RelativeLayout>(Resource.Id.scenarioEventLayout);
-            eventTranscript = view.FindViewById<AutoResizeTextView>(Resource.Id.scenarioText);
-            eventPrompt = view.FindViewById<AutoResizeTextView>(Resource.Id.scenarioPrompt);
+            eventTranscript = view.FindViewById<TextView>(Resource.Id.scenarioText);
+
+            eventPrompt = view.FindViewById<TextView>(Resource.Id.scenarioPrompt);
             eventImage = view.FindViewById<ImageView>(Resource.Id.scenarioImage);
-            continueButton = view.FindViewById<Button>(Resource.Id.scenarioProgressBtn);
-            continueButton.Click += delegate(object sender, EventArgs e)
-            {
-                ShowNextEvent();
-            };
+
+            recButton = view.FindViewById<Button>(Resource.Id.scenarioProgressBtn);
+            recButton.Click += SoundRecorderButtonClicked;
 
             titleLayout.Visibility = ViewStates.Visible;
             eventLayout.Visibility = ViewStates.Gone;
@@ -165,9 +179,28 @@ namespace Droid_PeopleWithParkinsons
             return view;
         }
 
+        public override void OnResume ()
+        {
+            base.OnResume();
+            audioManager = new AndroidUtils.RecordAudioManager(Activity, null);
+        }
+
+        // Make sure that the recorder is unallocated when the app goes into the background
+        public override void OnPause ()
+        {
+            base.OnPause();
+            if(audioManager != null)
+            {
+                audioManager.CleanUp();
+                audioManager = null;
+            }
+        }
+
         private void ShowNextEvent()
         {
             currIndex++;
+
+            recButton.Text = "Record Response";
 
             if (currIndex >= scenario.events.Length)
             {
@@ -176,7 +209,7 @@ namespace Droid_PeopleWithParkinsons
 
             if(currIndex + 1 >= scenario.events.Length)
             {
-                continueButton.Text = "Finish";
+                recButton.Text = "Finish";
             }
 
             eventTranscript.Text = scenario.events[currIndex].content.text;
@@ -195,6 +228,24 @@ namespace Droid_PeopleWithParkinsons
             if(key != null && resources.ContainsKey(key))
             {
                 eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[key]) ));
+            }
+        }
+
+        private void SoundRecorderButtonClicked(object sender, EventArgs e)
+        {
+            if(recording)
+            {
+                recording = false;
+                audioManager.StopRecording();
+                ShowNextEvent();
+            }
+            else
+            {
+                recording = true;
+                string fileAdd = Path.Combine(localExportDirectory, "res" + currIndex + ".3gpp");
+                scenario.events[currIndex].response.resultPath = fileAdd;
+                audioManager.StartRecording(fileAdd);
+                recButton.Text = "Stop";
             }
         }
     }
