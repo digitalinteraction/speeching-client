@@ -55,8 +55,13 @@
     <Reference Include="RestSharp.MonoDroid">
       <HintPath>..\Components\restsharp-105.0.1.0\lib\android\RestSharp.MonoDroid.dll</HintPath>
     </Reference>
+    <Reference Include="SharpZipLib">
+      <HintPath>..\packages\icsharpcode-SharpZipLib-9478d50\SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Android.Support.v4">

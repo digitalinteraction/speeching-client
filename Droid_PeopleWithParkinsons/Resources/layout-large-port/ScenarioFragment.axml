@@ -59,6 +59,8 @@
             android:id="@+id/scenarioImage"
             android:layout_width="wrap_content"
             android:layout_height="380dp"
+            android:minWidth="200dp"
+            android:minHeight="200dp"
             android:paddingTop="15dp"
             android:paddingBottom="25dp"
             android:layout_centerHorizontal="true" />

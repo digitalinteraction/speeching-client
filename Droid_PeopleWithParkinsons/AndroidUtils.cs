@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.Threading;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -44,6 +45,170 @@ namespace Droid_PeopleWithParkinsons
             };
 
             activity.ActionBar.AddTab(tab);
+        }
+
+        public class RecordAudioManager
+        {
+            public static const int LOW_BACKGROUND_NOISE = 25;
+            public static const int MEDIUM_BACKGROUND_NOISE = 50;
+            public static const int HIGH_BACKGROUND_NOISE = 75;
+
+            public static const string LOW_BACKGROUND_STRING = "It's quiet here. This is a good time to record.";
+            public static const string MEDIUM_BACKGROUND_STRING = "It's a little loud here.";
+            public static const string HIGH_BACKGROUND_STRING = "It's loud here. Try moving somewhere quieter before recording.";
+
+            private AudioRecorder audioRecorder;
+            private string outputPath;
+
+            private TextView backgroundNoiseDisplay;
+            private AudioRecorder backgroundAudioRecorder;
+            private bool bgRunning = false;
+            private bool bgShouldToggle = false;
+            private Activity context;
+
+            /// <summary>
+            /// Class to help record and export audio
+            /// </summary>
+            /// <param name="context">The current activity</param>
+            /// <param name="outputPath">Path to save this recording</param>
+            /// <param name="backgroundNoise">TextView to display background noise level information</param>
+            public RecordAudioManager(Activity context, TextView backgroundNoise = null)
+            {
+                this.context = context;
+                this.backgroundNoiseDisplay = backgroundNoise;
+            }
+            
+            public void StartBackgroundCheck()
+            {
+                backgroundAudioRecorder = new AudioRecorder();
+                backgroundAudioRecorder.PrepareAudioRecorder(AudioFileManager.RootBackgroundAudioPath, false);
+                bgRunning = true;
+                bgShouldToggle = true;
+
+                ThreadPool.QueueUserWorkItem(o => DoBackgroundNoiseChecker());
+                ThreadPool.QueueUserWorkItem(o => DoBackgroundNoiseCycler());
+            }
+
+            /// <summary>
+            /// Polls for the background noise level in a loop and displays it to the user.
+            /// </summary>
+            private void DoBackgroundNoiseChecker()
+            {
+                while (bgRunning)
+                {
+                    Thread.Sleep(1500);
+
+                    if (backgroundAudioRecorder != null)
+                    {
+                        int? soundLevel = backgroundAudioRecorder.soundLevel;
+
+                        if (soundLevel != null)
+                        {
+                            string displayString = HIGH_BACKGROUND_STRING;
+
+                            if (soundLevel < MEDIUM_BACKGROUND_NOISE)
+                            {
+                                displayString = MEDIUM_BACKGROUND_STRING;
+                            }
+                            if (soundLevel < LOW_BACKGROUND_NOISE)
+                            {
+                                displayString = LOW_BACKGROUND_STRING;
+                            }
+
+
+                            context.RunOnUiThread(() => backgroundNoiseDisplay.Text = string.Concat(displayString, "\n", "Background noise level: ", soundLevel.ToString()));
+                        }
+                        else
+                        {
+                            context.RunOnUiThread(() => backgroundNoiseDisplay.Text = "Background noise information not available");
+                        }
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Cycles between 10 second audio recordings of background noise
+            /// </summary>
+            private void DoBackgroundNoiseCycler()
+            {
+                while (bgRunning)
+                {
+                    if (bgShouldToggle)
+                    {
+                        if (backgroundAudioRecorder.isRecording)
+                        {
+                            backgroundAudioRecorder.StopAudio();
+                            backgroundAudioRecorder.StartAudio();
+                            int? temp = backgroundAudioRecorder.soundLevel;
+                        }
+                        else
+                        {
+                            backgroundAudioRecorder.StartAudio();
+                        }
+                    }
+
+                    Thread.Sleep(10000);
+                }
+            }
+
+            /// <summary>
+            /// Starts the audio recording
+            /// </summary>
+            /// <param name="outputPath">The path to output the resulting recording to</param>
+            public void StartRecording(string outputPath)
+            {
+                this.outputPath = outputPath;
+                audioRecorder = new AudioRecorder();
+                audioRecorder.PrepareAudioRecorder(outputPath, true);
+
+                if(backgroundAudioRecorder != null)
+                {
+                    backgroundAudioRecorder.StopAudio();
+                }
+                bgShouldToggle = false;
+
+                audioRecorder.StartAudio();
+            }
+
+           /// <summary>
+            /// Stops the recording, exporting the file.
+           /// </summary>
+           /// <returns>Path of resulting file; null if failed</returns>
+            public string StopRecording()
+            {
+                if(audioRecorder == null) return null;
+
+                if(audioRecorder.StopAudio())
+                {
+                    return outputPath;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            /// <summary>
+            /// Cleans up any data if the recording needs to be cancelled
+            /// </summary>
+            public void CleanUp()
+            {
+                bool deleteFile = audioRecorder.isRecording;
+                audioRecorder.Dispose();
+                audioRecorder = null;
+
+                if (deleteFile)  AudioFileManager.DeleteFile(outputPath);
+
+                bgRunning = false;
+                bgShouldToggle = false;
+                backgroundAudioRecorder.Dispose();
+                backgroundAudioRecorder = null;
+
+                // Luke's TODO
+                // Deletes background noise audio. Probably a better way to do this
+                // Probably shouldn't be saving it on disk in the first place.
+                AudioFileManager.DeleteFile(AudioFileManager.RootBackgroundAudioPath);
+            }
         }
 
     }

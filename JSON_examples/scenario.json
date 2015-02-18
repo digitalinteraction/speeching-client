@@ -5,12 +5,12 @@
 		"name"	: "Justin Time"
 	},
 	"title" : "Getting the Bus",
-	"resources" : "aFileAddress.zip",
+	"resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
 	"events" : [
 	{
 		"content" : {
 			"type"	 : "AUDIO",
-			"visual" : "busDriverGreet.jpg",
+			"visual" : "driver.jpg",
 			"audio"	 : "greeting.mp3",
 			"text"	 : "Hello! Where would you like to go today?"
 		},
@@ -22,7 +22,7 @@
 	{
 		"content" : {
 			"type"	 : "VIDEO",
-			"visual" : "busDriverThanks.mp4",
+			"visual" : "driver.jpg",
 			"audio"	 : null,
 			"text"	 : "No problem at all, looks like you have a valid card. Take a seat!"
 		},
@@ -34,7 +34,7 @@
 	{
 		"content" : {
 			"type"	 : "TEXT",
-			"visual" : "womanOnBus.jpg",
+			"visual" : "oldwoman.jpg",
 			"audio"	 : null,
 			"text"	 : "You sit next to an old woman, who asks what your plans are for the day. Greet her and explain how you're catching a train to the seaside."
 		},
