@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Droid_PeopleWithParkinsons.Shared;
+using SpeechingCommon;
+using System;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -54,7 +49,11 @@ namespace Droid_PeopleWithParkinsons
                 confirm.SetMessage("The recorded data will be irrecoverably lost.");
                 confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>
                 {
-                    Toast.MakeText(this, "Delete!", ToastLength.Short).Show();
+                    AppData.session.DeleteResult(AppData.session.resultsToUpload[args.Position]);
+
+                    uploadsList.Adapter = null;
+                    uploadsList.Adapter = new UploadListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+
                     alert.Dismiss();
                 });
                 confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });

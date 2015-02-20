@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.Widget;
 using Android.OS;
-using Android.Content.PM;
-using Android.Support.V4.Widget;
 using Android.Support.V4.App;
-using Android.Views;
-using Droid_PeopleWithParkinsons.Shared;
 using Android.Support.V4.View;
+using Android.Support.V4.Widget;
+using Android.Views;
+using Android.Widget;
 
 namespace Droid_PeopleWithParkinsons
 {

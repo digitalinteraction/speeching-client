@@ -1,19 +1,12 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.Threading.Tasks;
-using System.IO;
-using Newtonsoft.Json;
 
-namespace Droid_PeopleWithParkinsons.Shared
+namespace SpeechingCommon
 {
     public static class AppData
     {
@@ -44,7 +37,7 @@ namespace Droid_PeopleWithParkinsons.Shared
             {
                 return false;
             }
-            
+
             return false;
         }
 
@@ -68,6 +61,17 @@ namespace Droid_PeopleWithParkinsons.Shared
         public List<Scenario> scenarios;
         public List<ResultItem> resultsToUpload;
         public List<User> friends;
+
+        /// <summary>
+        /// Removes the result object from the toUpload list and deletes the files on disk
+        /// </summary>
+        /// <param name="result">The item to delete</param>
+        public void DeleteResult(ResultItem result)
+        {
+            resultsToUpload.Remove(result);
+
+            File.Delete(result.dataLoc);
+        }
     }
 
     public class User
@@ -141,7 +145,7 @@ namespace Droid_PeopleWithParkinsons.Shared
 
         public static Scenario GetWithId(List<Scenario> coll, string id)
         {
-            for(int i = 0; i < coll.Count; i++)
+            for (int i = 0; i < coll.Count; i++)
             {
                 if (coll[i].id == id) return coll[i];
             }
@@ -150,12 +154,11 @@ namespace Droid_PeopleWithParkinsons.Shared
         }
     }
 
-    public class Utils 
+    public class Utils
     {
         public static async Task LoadStringFromFile(string fileAddress, Action<string> callback)
         {
             callback(System.IO.File.ReadAllText(fileAddress));
         }
     }
-   
 }

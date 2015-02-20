@@ -54,6 +54,8 @@ namespace Droid_PeopleWithParkinsons
 			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps;
 			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineColor = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_underlineColor;
 			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineHeight = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_underlineHeight;
+			global::SpeechingCommon.Resource.String.ApplicationName = global::Droid_PeopleWithParkinsons.Resource.String.ApplicationName;
+			global::SpeechingCommon.Resource.String.Hello = global::Droid_PeopleWithParkinsons.Resource.String.Hello;
 		}
 		
 		public partial class Animation
@@ -127,14 +129,14 @@ namespace Droid_PeopleWithParkinsons
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int background_tab_pressed = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int background_tab_pressed = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int darkBlue = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int darkBlue = 2131099649;
 			
-			// aapt resource value: 0x7f050002
-			public const int lightBlue = 2131034114;
+			// aapt resource value: 0x7f060002
+			public const int lightBlue = 2131099650;
 			
 			static Color()
 			{
@@ -441,20 +443,20 @@ namespace Droid_PeopleWithParkinsons
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int ApplicationName = 2131099649;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f060000
-			public const int Hello = 2131099648;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
 			
-			// aapt resource value: 0x7f060002
-			public const int appTitleMain = 2131099650;
+			// aapt resource value: 0x7f050002
+			public const int appTitleMain = 2131034114;
 			
-			// aapt resource value: 0x7f060004
-			public const int drawer_close = 2131099652;
+			// aapt resource value: 0x7f050004
+			public const int drawer_close = 2131034116;
 			
-			// aapt resource value: 0x7f060003
-			public const int drawer_open = 2131099651;
+			// aapt resource value: 0x7f050003
+			public const int drawer_open = 2131034115;
 			
 			static String()
 			{

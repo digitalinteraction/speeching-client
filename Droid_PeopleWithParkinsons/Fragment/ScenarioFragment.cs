@@ -1,22 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Droid_PeopleWithParkinsons.Shared;
-using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Net;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
+using SpeechingCommon;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -290,6 +284,15 @@ namespace Droid_PeopleWithParkinsons
                 AppData.session.resultsToUpload.Add(res);
                 AppData.SaveCurrentData(localResourcesDirectory);
 
+                // Clean up zipped files
+                string[] toDel = Directory.GetFiles(localExportDirectory);
+
+                for (int i = 0; i < toDel.Length; i++ )
+                {
+                    if (toDel[i] == zipPath) continue;
+                    File.Delete(toDel[i]);
+                }
+                    
                 Activity.StartActivity(typeof(UploadsActivity));
             }
             catch(Exception except)
