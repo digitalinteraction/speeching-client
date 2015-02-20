@@ -17,7 +17,7 @@ namespace Droid_PeopleWithParkinsons
     /// <summary>
     /// A fragment which lists the currently available tasks in a grid layout
     /// </summary>
-    public class TaskListFragment : Fragment
+    public class TaskListFragment : Android.Support.V4.App.Fragment
     {
         private GridView mainList;
 

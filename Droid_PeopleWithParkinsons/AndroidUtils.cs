@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using System.Threading;
 using Android.Media;
+using Android.Support.V4.App;
+using Android.Support.V4.View;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -24,11 +26,12 @@ namespace Droid_PeopleWithParkinsons
         /// <param name="activity">The current context</param>
         /// <param name="fragContainerId">Resource id of the element that will contain the fragment</param>
         /// <param name="view">The fragment to use</param>
-        public static void AddTab(string tabName, Bundle currentBundle, Activity activity, int fragContainerId, Fragment view )
+        public static void AddTab(string tabName, Bundle currentBundle, Activity activity, int fragContainerId, Android.App.Fragment view )
         {
             // Do actionbar tab setup - Each tab is a fragment
             ActionBar.Tab tab = activity.ActionBar.NewTab();
             tab.SetText(tabName);
+            tab.SetTag(tabName);
             tab.TabSelected += (sender, args) =>
             {
                 if (currentBundle == null)
@@ -44,9 +47,54 @@ namespace Droid_PeopleWithParkinsons
                 }
                 args.FragmentTransaction.Add(fragContainerId, view);
             };
-
             activity.ActionBar.AddTab(tab);
         }
+
+        public class PagerAdapter : FragmentPagerAdapter
+        {
+            private static int NUM_ITEMS = 3;
+            public override int Count
+            {
+                get { return NUM_ITEMS; }
+            } 
+
+            public PagerAdapter(Android.Support.V4.App.FragmentManager manager) : base(manager)
+            {
+                
+            }
+
+            public override Android.Support.V4.App.Fragment GetItem(int position)
+            {
+                switch (position)
+                {
+                    case 0: 
+                        return new TaskListFragment();
+                    case 1: 
+                        return new FriendListFragment();
+                    case 2: 
+                        return new ScenarioFragment();
+                    default:
+                        return null;
+                }
+            }
+
+            public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
+            {
+                switch (position)
+                {
+                    case 0:
+                        return new Java.Lang.String("value 1");
+                    case 1:
+                        return new Java.Lang.String("value 2");
+                    case 2:
+                        return new Java.Lang.String("value 3");
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        
 
         public class RecordAudioManager
         {

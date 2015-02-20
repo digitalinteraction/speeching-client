@@ -10,37 +10,28 @@ using Android.Support.V4.Widget;
 using Android.Support.V4.App;
 using Android.Views;
 using Droid_PeopleWithParkinsons.Shared;
+using Android.Support.V4.View;
 
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Speeching", Icon = "@drawable/Icon")]
-    public class MainActivity : Activity, GestureDetector.IOnGestureListener
+    public class MainActivity : FragmentActivity
     {
         private DrawerLayout drawer;
         private ActionBarDrawerToggle drawerToggle;
         private ListView drawerList;
-        private Bundle currentBundle;
-        private GestureDetector gestureDetector;
-
+        private ViewPager pager;
+        
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
             // Register for tabs
-            ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
-
             SetContentView(Resource.Layout.Main);
 
-            // Do actionbar tab setup - Each tab is a fragment
-            Android.App.Fragment tasks = new TaskListFragment();
-            Android.App.Fragment friends = new FriendListFragment();
-            
-            AndroidUtils.AddTab("Tasks", currentBundle, this, Resource.Id.fragmentContainer, tasks);
-            AndroidUtils.AddTab("Friends", currentBundle, this, Resource.Id.fragmentContainer, friends);
-
-            // Set up Scenario fragment - TODO don't attach to a tab
-            Android.App.Fragment scenario = new ScenarioFragment();
-            AndroidUtils.AddTab("Test Scenario", currentBundle, this, Resource.Id.fragmentContainer, scenario); 
+            pager = FindViewById<ViewPager>(Resource.Id.fragmentContainer);
+            var adaptor = new AndroidUtils.PagerAdapter(SupportFragmentManager);
+            pager.Adapter = adaptor;
 
             string[] fakeOptions = new string[]{ "these are", "some fake", "options to fill", "up sidebar space"};
 
@@ -77,81 +68,29 @@ namespace Droid_PeopleWithParkinsons
                 Intent downloadServiceIntent = new Intent(this, typeof(DownloadService));
                 StartService(downloadServiceIntent);
             }
-
-            gestureDetector = new GestureDetector(this);
         }
 
-        private void GestureLeft()
+        public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            if (ActionBar.SelectedTab.Position - 1 < 0)
+            MenuInflater.Inflate(Resource.Menu.mainActivityActions, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if(item.ItemId == Resource.Id.action_uploads)
             {
-                ActionBar.SelectTab(ActionBar.GetTabAt(ActionBar.TabCount - 1));
+                StartActivity(typeof(UploadsActivity));
             }
-            else
-            {
-                ActionBar.SelectTab(ActionBar.GetTabAt(ActionBar.SelectedTab.Position - 1));
-            }
+            return base.OnOptionsItemSelected(item);
         }
 
-        private void GestureRight()
+        // Save the selected tab
+        protected override void OnSaveInstanceState(Bundle outState)
         {
-            if (ActionBar.SelectedTab.Position + 1 >= ActionBar.TabCount) 
-            {
-                ActionBar.SelectTab(ActionBar.GetTabAt(0));
-            }
-            else
-            {
-                ActionBar.SelectTab(ActionBar.GetTabAt(ActionBar.SelectedTab.Position + 1));
-            }
+            outState.PutInt("selected_tab", this.ActionBar.SelectedNavigationIndex);
+            base.OnSaveInstanceState(outState);
         }
-
-        #region Gestures
-        private int SWIPE_MAX_OFF_PATH = 250;
-        private int SWIPE_MIN_DISTANCE = 120;
-        private int SWIPE_THRESHOLD_VELOCITY = 200;
-        public bool OnDown(MotionEvent e)
-        {
-            return true;
-        }
-
-        public bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
-        {
-            try
-            {
-                if (Math.Abs(e1.GetY() - e2.GetY()) > SWIPE_MAX_OFF_PATH)
-                    return false;
-                // right to left swipe
-                if (e1.GetX() - e2.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
-                    GestureLeft();
-                else if (e2.GetX() - e1.GetX() > SWIPE_MIN_DISTANCE && Math.Abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
-                    GestureRight();
-            }
-            catch (Exception e)
-            {
-                // nothing
-            }
-            return false;
-        }
-
-        public void OnLongPress(MotionEvent e)
-        {
-        }
-
-        public bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-        {
-            return true;
-        }
-
-        public void OnShowPress(MotionEvent e)
-        {
-        }
-
-        public bool OnSingleTapUp(MotionEvent e)
-        {
-            return true;
-        }
-
-        #endregion
 
         #region DrawerLayout management
         protected override void OnPostCreate(Bundle savedInstanceState)
@@ -164,15 +103,6 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnConfigurationChanged(newConfig);
             drawerToggle.OnConfigurationChanged(newConfig);
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            if (this.drawerToggle.OnOptionsItemSelected(item))
-            {
-                return true;
-            }
-            return base.OnOptionsItemSelected(item);
         }
         #endregion
 

@@ -48,9 +48,13 @@
       <HintPath>..\packages\Xamarin.Forms.1.3.1.6296\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PagerSlidingTabStrip">
+      <HintPath>..\packages\PagerSlidingTabStrip.Net.1.2.40604.0921\lib\MonoAndroid2.2\PagerSlidingTabStrip.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp.MonoDroid">
       <HintPath>..\Components\restsharp-105.0.1.0\lib\android\RestSharp.MonoDroid.dll</HintPath>
@@ -64,8 +68,9 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\packages\Xamarin.Android.Support.v4.19.1.0\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
+    <Reference Include="Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xamarin.Android.Support.v4.21.0.3.0\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.1.3.1.6296\lib\MonoAndroid10\Xamarin.Forms.Core.dll</HintPath>
@@ -79,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity\SplashActivity.cs" />
+    <Compile Include="Activity\UploadsActivity.cs" />
     <Compile Include="AndroidUtils.cs" />
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
@@ -147,6 +153,12 @@
     <AndroidResource Include="Resources\layout-land\ScenarioFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\ScenarioFragment.axml" />
     <AndroidResource Include="Resources\layout-xlarge-land\ScenarioFragment.axml" />
+    <AndroidResource Include="Resources\layout\UploadsActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\UploadsListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -190,6 +202,8 @@
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\splash.png" />
     <AndroidResource Include="Resources\drawable\driver.jpg" />
+    <AndroidResource Include="Resources\drawable\iconupload128.png" />
+    <AndroidResource Include="Resources\menu\mainActivityActions.xml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,0 +1,872 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PagerSlidingTabStrip</name>
+    </assembly>
+    <members>
+        <member name="T:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase">
+            <summary>
+            This class provides a starting implementation of ITabProvider alongside
+            the FragmentPagerAdapter class for you to use to expose custom tabs for your
+            fragments in one go.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.ITabProvider">
+            <summary>
+            Interface for an adapter that wants complete control over the views that are
+            created for each of its tabs.
+            
+            Note that when an Adapter supports this interface, the tab strip will still control 
+            the padding and width of each of your tabs
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.ITabProvider.RequestTabUpdate(System.Int32,System.String)">
+            <summary>
+            Call this to trigger a particular tab to be updated in response to a data change.
+            
+            The correct way to implement this would simply be to raise the TabUpdateRequired event,
+            which should then be handled by the PagerSlidingTabStrip, which in turn will find the 
+            view to be updated and then call <see cref="M:PagerSlidingTabStrip.ITabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+            <param name="position">The position of the tab to be updated.</param>
+            <param name="hint">A hint string to be passed eventually to <see cref="M:PagerSlidingTabStrip.ITabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.ITabProvider.GetTab(PagerSlidingTabStrip.PagerSlidingTabStrip,Android.Views.ViewGroup,System.Int32,Android.Views.View)">
+            <summary>
+            Called to get the view for a particular tab, either by creating a view or recycling an old one.
+            Note - you do not have to handle the padding, background, focusability or click event for your view - 
+            this is handled by the tab strip itself through a container control.
+            </summary>
+            <param name="owner">The tab strip that is requesting the view (allows access to its styled attributes and the current <see cref="T:Android.Content.Context"/></param>
+            <param name="root">The view that will be the root for the view you pass back - typically a FrameLayout.</param>
+            <param name="position">The position of the tab to be created.</param>
+            <param name="recycled">A previous view that could possibly be recycled.  To indicate that this view
+            can simply be re-bound, just return this view.</param>
+            <returns>A view for the tab. MUST NOT RETURN NULL.</returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.ITabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)">
+            <summary>
+            Binds the tab view - i.e. sets any text, calculates the visibility of more complex items etc.
+            First time this is called for a tab is just after it's created or recycled by a call to <see cref="M:PagerSlidingTabStrip.ITabProvider.GetTab(PagerSlidingTabStrip.PagerSlidingTabStrip,Android.Views.ViewGroup,System.Int32,Android.Views.View)"/>.
+            
+            Note that this is only designed to be called by a PagerSlidingTabStrip.  If you simply wish to trigger a tab update
+            in response to data/state being changed, then 
+            </summary>
+            <param name="view">The view to be bound.</param>
+            <param name="owner">The tab strip that the view belongs to.</param>
+            <param name="position">The position of the tab being updated.</param>
+            <param name="hint">An optional string providing an implementation-specific hint for the part(s)
+            of the view that should be updated.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.ITabProvider.UpdateTabStyle(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32)">
+            <summary>
+            This is called to give the provider a chance to sync any styles defined on the passed PagerSlidingTabStrip
+            (e.g. text styles, layout etc) to the tabs it's created.
+            
+            Called just after a tab is created, but also whenever a style changes on the tab strip itself.
+            </summary>
+            <param name="view"></param>
+            <param name="owner"></param>
+            <param name="position"></param>
+        </member>
+        <member name="E:PagerSlidingTabStrip.ITabProvider.TabUpdated">
+            <summary>
+            Fired whenever a tab is updated in any way that could affect it's display.  E.g., 
+            text might have changed, or a progress bar might be visible. Etc.
+            
+            An implementation that surfaces this event correctly will typically be firing it
+            in its implementation of <see cref="M:PagerSlidingTabStrip.ITabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+        </member>
+        <member name="E:PagerSlidingTabStrip.ITabProvider.TabUpdateRequired">
+            <summary>
+            Raised by the tab provider when it is aware of an underlying data change that will
+            require a tab being updated through a call to UpdateTab.  A PagerSlidingTabStrip
+            instance will subscribe to this event, find the correct view for the tab in it's
+            view hierarchy, and then pass it to <see cref="M:PagerSlidingTabStrip.ITabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.#ctor(Android.Support.V4.App.FragmentManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase"/> class.
+            </summary>
+            <param name="fragmentManager">The fragment manager.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.OnTabUpdateRequired(System.Int32,System.String)">
+            <summary>
+            Called to raise the TabUpdateRequired event.
+            </summary>
+            <param name="position"></param>
+            <param name="hint"></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.OnTabUpdated(System.Int32,System.String)">
+            <summary>
+            Called to raise the TabUpdated event.
+            </summary>
+            <param name="position"></param>
+            <param name="hint"></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.RequestTabUpdate(System.Int32,System.String)">
+            <summary>
+            This is a hook for external components to trigger a tab update when some data has changed
+            that will affect its contents or size.
+            
+            The base implementation simply raises the TabUpdateRequired event, which is handled by PagerSlidingTabStrip
+            such that it finds the tab's target view and pushes it through to <see cref="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>
+            </summary>
+            <param name="position">The position of the tab to be updated.</param>
+            <param name="hint">An optional hint to be eventually passed to the <see cref="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>
+            method.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.GetTab(PagerSlidingTabStrip.PagerSlidingTabStrip,Android.Views.ViewGroup,System.Int32,Android.Views.View)">
+            <summary>
+            Called by the underlying implementation of <see cref="T:PagerSlidingTabStrip.ITabProvider"/> to get your custom view for a 
+            given tab.  To have the default implementation kick in (which creates text tabs by default or icon tabs
+            if this instance also implements IIconTabProvider), simply return null.
+            
+            Note - you do not have to handle the standard padding, background, focusability or click event for your view -
+            this is handled by the tab strip itself through a container control (the root).
+            </summary>
+            <param name="owner">The tab strip that is requesting the view (allows access to its styled attributes and the current <see cref="T:Android.Content.Context"/></param>
+            <param name="root">The view that will be the root for the view you pass back - typically a FrameLayout.</param>
+            <param name="position">The position of the tab to be created.</param>
+            <param name="recycled">A previous view that could possibly be recycled.  To indicate that this view
+            can simply be re-bound, just return this view.</param>
+            <returns>
+            A view for the tab. If you return null, a default will be created (see summary).
+            </returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)">
+            <summary>
+            Called by the underlying implementation of <see cref="T:PagerSlidingTabStrip.ITabProvider"/> to allow you to perform a custom
+            action to update the UI of the given tab (in response to text changes etc).  If you return false, 
+            then the default implementation will fall back to either the TextTabProvider or IconTabProvider, 
+            depending on whether the View is a TextView or if this instance also implements the <see cref="!:IIconTabProvider"/>.
+            If neither of these two conditions are met for fall back, then no update is performed.
+            
+            Note that the OnTabUpdated method is called after this method finishes - unless you return false and
+            no fall back behaviour could be selected.
+            </summary>
+            <param name="view">The view to be updated.</param>
+            <param name="owner">The tab strip that owns this tab.</param>
+            <param name="position">The tab position.</param>
+            <param name="hint">An optional string that provides an implementation-specific hint as to the nature
+            of the data that has changed.</param>
+            <returns>True if you successfully handle the update.  Return false to fall back to default behaviour.</returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.UpdateTabStyle(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32)">
+            <summary>
+            Called by the underlying implementation of <see cref="T:PagerSlidingTabStrip.ITabProvider"/> to give you the chance to apply any styles
+            defined on the PagerSlidingTabStrip to your tab's UI components (e.g. Text styles, colours etc).  Return true from this
+            method to prevent the default functionality, which is to fallback to either the text or icon providers.
+            </summary>
+            <param name="view">The view to be styled.</param>
+            <param name="owner">The tab strip that owns this tab.</param>
+            <param name="position">The tab position.</param>
+            <returns>True if all styling has been done, or false if you want the default behaviour to kick in.</returns>
+        </member>
+        <member name="E:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.TabUpdated">
+            <summary>
+            Fired whenever a tab is updated in any way that could affect it's display.  E.g.,
+            text might have changed, or a progress bar might be visible. Etc.
+            An implementation that surfaces this event correctly will typically be firing it
+            in its implementation of <see cref="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+        </member>
+        <member name="E:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.TabUpdateRequired">
+            <summary>
+            Raised by the tab provider when it is aware of an underlying data change that will
+            require a tab being updated through a call to UpdateTab.  A PagerSlidingTabStrip
+            instance will subscribe to this event, find the correct view for the tab in it's
+            view hierarchy, and then pass it to <see cref="M:PagerSlidingTabStrip.FragmentTabProviderPagerAdapterBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.IconTabProvider">
+            <summary>
+            Default implementation of an ITabProvider that uses icons instead of text.
+            
+            Use of this provider is triggered automatically if the PagerAdapter given to a
+            PagerSlidingTabStrip implements its IIconTabProvider nested interface.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.TabProviderBase">
+            <summary>
+            Base class for your tab providers if you're not implementing it directly on your PagerAdapter.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderBase.OnTabUpdated(System.Int32)">
+            <summary>
+            Raises the TabUpdated event
+            </summary>
+            <param name="position"></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderBase.OnTabUpdateRequired(System.Int32,System.String)">
+            <summary>
+            Raises the TabUpdateRequired event
+            </summary>
+            <param name="position"></param>
+            <param name="hint"></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderBase.GetTab(PagerSlidingTabStrip.PagerSlidingTabStrip,Android.Views.ViewGroup,System.Int32,Android.Views.View)">
+            <summary>
+            Called to get the view for a particular tab, either by creating a view or recycling an old one.
+            Note - you do not have to handle the padding, background, focusability or click event for your view -
+            this is handled by the tab strip itself through a container control.
+            </summary>
+            <param name="owner">The tab strip that is requesting the view (allows access to its styled attributes and the current <see cref="T:Android.Content.Context"/></param>
+            <param name="root">The view that will be the root for the view you pass back - typically a FrameLayout.</param>
+            <param name="position">The position of the tab to be created.</param>
+            <param name="recycled">A previous view that could possibly be recycled.  To indicate that this view
+            can simply be re-bound, just return this view.</param>
+            <returns>
+            A view for the tab. MUST NOT RETURN NULL.
+            </returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)">
+            <summary>
+            Binds the tab view - i.e. sets any text, calculates the visibility of more complex items etc.
+            First time this is called for a tab is just after it's created or recycled by a call to <see cref="M:PagerSlidingTabStrip.TabProviderBase.GetTab(PagerSlidingTabStrip.PagerSlidingTabStrip,Android.Views.ViewGroup,System.Int32,Android.Views.View)"/>.
+            </summary>
+            <param name="view">The view to be bound.</param>
+            <param name="owner">The tab strip that the view belongs to.</param>
+            <param name="position">The position of the tab being updated.</param>
+            <param name="hint">An optional string providing an implementation-specific hint for the part(s)
+            of the view that should be updated.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderBase.UpdateTabStyle(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32)">
+            <summary>
+            This is called to give the provider a chance to sync any styles defined on the passed PagerSlidingTabStrip
+            (e.g. text styles, layout etc) to the tabs it's created.
+            Called just after a tab is created, but also whenever a style changes on the tab strip itself.
+            </summary>
+            <param name="view"></param>
+            <param name="owner"></param>
+            <param name="position"></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderBase.RequestTabUpdate(System.Int32,System.String)">
+            <summary>
+            Call this to trigger a particular tab to be updated in response to a data change.
+            The correct way to implement this would simply be to raise the TabUpdateRequired event,
+            which should then be handled by the PagerSlidingTabStrip, which in turn will find the
+            view to be updated and then call <see cref="M:PagerSlidingTabStrip.TabProviderBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+            <param name="position">The position of the tab to be updated.</param>
+            <param name="hint">A hint string to be passed eventually to <see cref="M:PagerSlidingTabStrip.TabProviderBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/></param>
+        </member>
+        <member name="E:PagerSlidingTabStrip.TabProviderBase.TabUpdateRequired">
+            <summary>
+            Raised by the tab provider when it is aware of an underlying data change that will
+            required a tab being updated through a call to UpdateTab.
+            </summary>
+        </member>
+        <member name="E:PagerSlidingTabStrip.TabProviderBase.TabUpdated">
+            <summary>
+            Fired whenever the UI of a tab is updated in any way that could affect it's display.  E.g.,
+            text might have changed, or a progress bar might be visible. Etc.
+            An implementation that surfaces this event correctly will typically be firing it
+            in its implementation of <see cref="M:PagerSlidingTabStrip.TabProviderBase.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/>.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.IconTabProvider.#ctor(Android.Content.Context,Android.Support.V4.View.PagerAdapter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.TextTabProvider"/> class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="adapter">The adapter.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.IconTabProvider.GetTab(PagerSlidingTabStrip.PagerSlidingTabStrip,Android.Views.ViewGroup,System.Int32,Android.Views.View)">
+            <summary>
+            Gets the tab.
+            </summary>
+            <param name="owner">The owner.</param>
+            <param name="root">The root.</param>
+            <param name="position">The position.</param>
+            <param name="recycled">The recycled.</param>
+            <returns></returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.IconTabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)">
+            <summary>
+            Updates the tab.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="owner">The owner.</param>
+            <param name="position">The position.</param>
+            <param name="hint">The hint.</param>
+            <exception cref="T:System.InvalidOperationException">No IconProvider is available.</exception>
+        </member>
+        <member name="M:PagerSlidingTabStrip.IconTabProvider.UpdateTabStyle(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32)">
+            <summary>
+            Updates the tab style.
+            </summary>
+            <param name="view">The view.</param>
+            <param name="owner">The owner.</param>
+            <param name="position">The position.</param>
+        </member>
+        <member name="P:PagerSlidingTabStrip.IconTabProvider.Context">
+            <summary>
+            Gets the context for resources etc.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.IconTabProvider.Adapter">
+            <summary>
+            Gets the adapter.
+            </summary>
+            <value>
+            The adapter.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.IconTabProvider.IconProvider">
+            <summary>
+            Gets the icon provider for this instance.
+            
+            The base implementation defaults to grabbing the instance from the 
+            <see cref="P:PagerSlidingTabStrip.IconTabProvider.Adapter"/> via a cast.  Override to provide a different
+            way to fetch the icon provider.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.PagerSlidingTabStrip">
+            <summary>
+            A title strip to be used with a view pager that scrolls horizontally, has touchable tabs for page selection,
+            and has a dynamic page indicator.
+            
+            You can customise the color of the background, the bottom border, the indicator and the text, as well as 
+            the height of the control, tabs and the underline.
+            
+            All-in-all, it's just miles more flexible than any of the 'stock' pager title strips, and is supported on 
+            Android 2.2+ devices.
+            </summary>
+        </member>
+        <member name="F:PagerSlidingTabStrip.PagerSlidingTabStrip._tabProvider">
+            <summary>
+            This is created by the _tabProviderFactory 
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.#ctor(Android.Content.Context)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip"/> class.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.#ctor(Android.Content.Context,Android.Util.IAttributeSet)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip"/> class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="attrs">The attrs.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.#ctor(System.IntPtr,Android.Runtime.JniHandleOwnership)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip"/> class.
+            </summary>
+            <param name="javaReference">The java reference.</param>
+            <param name="transfer">The transfer.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.#ctor(Android.Content.Context,Android.Util.IAttributeSet,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip"/> class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="attrs">The attributes from xml.</param>
+            <param name="defStyle">The default style.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetViewPager(Android.Support.V4.View.ViewPager,PagerSlidingTabStrip.TabProviderFactory)">
+            <summary>
+            Sets the view pager for this instance, from this the control inherits the PagerAdapter and then
+            derives the <see cref="T:PagerSlidingTabStrip.ITabProvider"/> - unless you also pass a custom <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabProviderFactory"/>
+            in the <paramref name="tabProviderFactory"/> .
+            </summary>
+            <param name="pager">The pager.</param>
+            <param name="tabProviderFactory">The factory to use to select the correct tab provider for the given
+            pager, and equally as a factory for more complex tab providers to delegate to if they want to reuse
+            .  This also then is set on the .</param>
+            <exception cref="T:System.ArgumentException">ViewPager does not have adapter instance.;pager</exception>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.UpdateTab(System.Int32,System.String)">
+            <summary>
+            Call this to force a tab to update it's UI and, optionally, have the tab control re-layout
+            and redraw.
+            </summary>
+            <param name="position">The position of the tab to be updated.</param>
+            <param name="hint">Optional hint to be passed to the underlying <see cref="T:PagerSlidingTabStrip.ITabProvider"/>'s 
+            <see cref="M:PagerSlidingTabStrip.ITabProvider.UpdateTab(Android.Views.View,PagerSlidingTabStrip.PagerSlidingTabStrip,System.Int32,System.String)"/> method.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.NotifyDataSetChanged">
+            <summary>
+            Used to tell this instance that the underlying tabs have changed.  In general you won't actually call 
+            this method directly, but instead will rely on data set updates, <see cref="T:PagerSlidingTabStrip.ITabProvider"/> events 
+            or the <see cref="M:PagerSlidingTabStrip.PagerSlidingTabStrip.UpdateTab(System.Int32,System.String)"/> method to notify about updates - as those mechanisms are generally
+            generate less workload.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetCurrentItem(System.Int32,System.Boolean)">
+            <summary>
+            Sets the current item in both the view pager and the tab control.  This is a 
+            wrapper for calling the underlying adapter's SetCurrentItem if the caller does
+            not have access to that object, however note that even if you do, you should 
+            use this method to set the position because otherwise the tab might not update.
+            </summary>
+            <param name="position">The tab position to be set as the current item.</param>
+            <param name="smoothScroll">if set to <c>true</c> [smooth scroll].</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.OnMeasure(System.Int32,System.Int32)">
+            <summary>
+            Implementation of the base method.  Tabs are measure in here to see if they overflow
+            or not.  If not, and ShouldExpand is true, then their layout is changed so that they
+            are all given equal share of the total width of the container.  This calculation is 
+            performed once and only repeated if a change occurs in the tabs that could affect layout.
+            </summary>
+            <param name="widthMeasureSpec"></param>
+            <param name="heightMeasureSpec"></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.OnDraw(Android.Graphics.Canvas)">
+            <summary>
+            Overriden to perform the custom drawing required by this control - dividers, control underline and tab dividers.
+            </summary>
+            <param name="canvas">the canvas on which the background will be drawn</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetIndicatorColor(System.Int32)">
+            <summary>
+            Sets the <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.IndicatorColor"/> to a color resource from its ID.
+            </summary>
+            <param name="resId">The res id.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetUnderlineColor(System.Int32)">
+            <summary>
+            Sets the <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.UnderlineColor"/> to a color resource from its ID.
+            </summary>
+            <param name="resId">The res id.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetDividerColor(System.Int32)">
+            <summary>
+            Sets the <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.DividerColor"/> to a color resource from its ID.
+            </summary>
+            <param name="resId">The res id.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetTextColor(System.Int32)">
+            <summary>
+            Sets the <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TextColor"/> to a color resource, from its ID.
+            </summary>
+            <param name="resId">The res id.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetTypeface(Android.Graphics.Typeface,Android.Graphics.TypefaceStyle)">
+            <summary>
+            Sets the typeface and style used to draw the tab text.
+            
+            Please note - if the current adapter is an <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip.IIconTabProvider"/> this will
+            have no effect.
+            </summary>
+            <param name="typeface">The typeface.</param>
+            <param name="style">The style.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.OnRestoreInstanceState(Android.OS.IParcelable)">
+            <summary>
+            Override of <see cref="M:Android.Views.View.OnSaveInstanceState"/>.
+            </summary>
+            <param name="state">The state that was previously saved by <see cref="M:PagerSlidingTabStrip.PagerSlidingTabStrip.OnSaveInstanceState"/></param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.OnSaveInstanceState">
+            <summary>
+            Override of <see cref="M:Android.Views.View.OnSaveInstanceState"/>.  Creates a <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip.PagerSlidingTabStripState"/> instance with
+            the current position, encompassing any base saved state, and returns it.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.DefaultTabProviderFactory">
+            <summary>
+            Used as the default <see cref="!:ITabProviderFactory"/> if you don't set a custom one in <see cref="M:PagerSlidingTabStrip.PagerSlidingTabStrip.SetViewPager(Android.Support.V4.View.ViewPager,PagerSlidingTabStrip.TabProviderFactory)"/>
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabProviderFactory">
+            <summary>
+            The tab provider factory used by this instance to get a tab provider to be used to manage all
+            the tabs that are displayed in this control.  Defaults to <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.DefaultTabProviderFactory"/>.
+            
+            Note that more complex implementations of ITabProvider can utilise this factory to help them to create
+            non-homogenous tab lists (e.g. mixing icon and text tabs with those that have more complex layouts).
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.DefaultTextTabProvider">
+            <summary>
+            Gets a reference to the default TextTabProvider that can be used to help manage how text is displayed 
+            in your custom tab layout.  The underlying instance is created by the current <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabProviderFactory"/>
+            the first time you use it.
+            
+            Most of the time, this will be an instance of the <see cref="T:PagerSlidingTabStrip.TextTabProvider"/> type.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.DefaultIconTabProvider">
+            <summary>
+            Gets a reference to the default provider that can be used to help manage how a tab icon is
+            displayed in your custom layout.  The underlying instance is created by the current <see cref="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabProviderFactory"/>
+            the first time you use it.
+            
+            Most of the time, this will be an instance of the <see cref="T:PagerSlidingTabStrip.IconTabProvider"/> type.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.Adapter">
+            <summary>
+            Gets the adapter that is providing view pages but potentially also
+            tabs.
+            </summary>
+            <value>
+            The adapter.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.IndicatorColor">
+            <summary>
+            Gets or sets the color of the selected tab indicator.
+            </summary>
+            <value>
+            The color of the indicator.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.IndicatorHeight">
+            <summary>
+            Gets or sets the height of the indicator, in DPs
+            </summary>
+            <value>
+            The height of the indicator.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.UnderlineColor">
+            <summary>
+            Gets or sets the color of the underline drawn across the bottom of the whole tab strip.
+            </summary>
+            <value>
+            The color of the underline.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.DividerColor">
+            <summary>
+            Gets or sets the color of the divider drawn between each tab.
+            </summary>
+            <value>
+            The color of the divider.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.UnderlineHeight">
+            <summary>
+            Gets or sets the height of the underline drawn across the bottom of the tab strip, in DPs.
+            </summary>
+            <value>
+            The height of the underline.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabDividerPadding">
+            <summary>
+            Gets or sets the padding, in DPs, either side of the dividers.
+            </summary>
+            <value>
+            The divider padding.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.ScrollOffset">
+            <summary>
+            Gets or sets the scroll offset, in pixels, used when scrolling the control view
+            to the tab for the currently selected page.
+            </summary>
+            <value>
+            The scroll offset.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.ShouldExpand">
+            <summary>
+            Gets or sets a value indicating whether tabs should be resized to fill
+            the whole control if they are too small, collectively, to fill it.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabTextAllCaps">
+            <summary>
+            Gets or sets a value indicating whether the text in the tabs should be all capitals.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TextSize">
+            <summary>
+            Gets or sets the size, in pixels, of the text.
+            </summary>
+            <value>
+            The size of the text.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TextColor">
+            <summary>
+            Gets or sets the color of the text displayed in the tabs.
+            </summary>
+            <value>
+            The color of the text.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.Typeface">
+            <summary>
+            Gets the typeface used to draw the tab text.
+            </summary>
+            <value>
+            The typeface.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TypefaceStyle">
+            <summary>
+            Gets the typeface style used to draw the tab text.
+            </summary>
+            <value>
+            The typeface style.
+            </value>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabBackground">
+            <summary>
+            Gets or sets the tab background resource ID.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.TabPaddingLeftRight">
+            <summary>
+            Gets or sets the padding either side of each tab.
+            </summary>
+            <value>
+            The tab padding left right.
+            </value>
+        </member>
+        <member name="E:PagerSlidingTabStrip.PagerSlidingTabStrip.PageSelected">
+            <summary>
+            Raised when a page is selected.  Subscribe to this instead of the associated ViewPager's
+            PageSelected event.
+            </summary>
+        </member>
+        <member name="E:PagerSlidingTabStrip.PagerSlidingTabStrip.PageScrollStateChanged">
+            <summary>
+            Raised when the pager's scroll state changes.  Subscribe to this instead of the associated
+            ViewPager's PageScrollStateChanged event.
+            </summary>
+        </member>
+        <member name="E:PagerSlidingTabStrip.PagerSlidingTabStrip.PageScrolled">
+            <summary>
+            Raised when the pager scrolls.  Subscribe to this instead of the associated ViewPager's
+            PageScrolled event.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.PagerSlidingTabStrip.IIconTabProvider">
+            <summary>
+            Interface for an adapter that wants to display icons in tabs instead of text.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.IIconTabProvider.GetPageIconResId(System.Int32)">
+            <summary>
+            Gets the resource ID to be used for the icon for the given page.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="T:PagerSlidingTabStrip.PagerSlidingTabStrip.PagerSlidingTabStripState">
+            <summary>
+            The state saved by an instance of PagerSlidingTabStrip during orientation changes etc.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.PagerSlidingTabStripState.#ctor(Android.OS.IParcelable)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.PagerSlidingTabStrip.PagerSlidingTabStripState"/> class.
+            </summary>
+            <param name="superState">State of the super.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.PagerSlidingTabStrip.PagerSlidingTabStripState.WriteToParcel(Android.OS.Parcel,Android.OS.ParcelableWriteFlags)">
+            <summary>
+            Implementation of AbsSavedState.WriteToParcel
+            
+            This is overriden to 
+            </summary>
+            <param name="dest">The Parcel in which the object should be written.</param>
+            <param name="flags">Additional flags about how the object should be written.
+            May be 0 or <c><see cref="F:Android.OS.Parcelable.ParcelableWriteReturnValue" /></c>.</param>
+        </member>
+        <member name="P:PagerSlidingTabStrip.PagerSlidingTabStrip.PagerSlidingTabStripState.CurrentPosition">
+            <summary>
+            Gets or sets the current position.
+            </summary>
+            <value>
+            The current position.
+            </value>
+        </member>
+        <member name="T:PagerSlidingTabStrip.TabEventArgs">
+            <summary>
+            Base class of arguments for events pertaining to tabs exposed by an ITabProvider.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabEventArgs.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.TabEventArgs"/> class.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="P:PagerSlidingTabStrip.TabEventArgs.Position">
+            <summary>
+            Gets the position of the tab that's changed
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.CustomTabProviderFactory">
+            <summary>
+            A TabProviderFactory that can be customised through callbacks, eliminating 
+            the need to inherit a new class for basic 
+            customisations.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.TabProviderFactory">
+             <summary>
+             Default tab provider factory class.
+            
+             This one supports all the standard functionality: using the ITabProvider
+             implementation from an adapter if it supports it; otherwise falling back to
+             an IconTabProvider provider or TextTabProvider.
+             
+             If you're looking to customise the behaviour, you can either inherit from this
+             class, or you might want to look at <see cref="T:PagerSlidingTabStrip.CustomTabProviderFactory"/>,
+             which allows you to supply callbacks for a custom provider, the icon provider and
+             the text provider.
+             </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabProviderFactory.CreateTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)">
+            <summary>
+            Creates a tab provider to be used for the given adapter.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="adapter">The adapter.</param>
+            <returns>
+            Must return an ITabProvider instance.
+            </returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.CustomTabProviderFactory.#ctor(PagerSlidingTabStrip.CustomTabProviderFactory.FactoryCallback,PagerSlidingTabStrip.CustomTabProviderFactory.FactoryCallback,PagerSlidingTabStrip.CustomTabProviderFactory.FactoryCallback)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.CustomTabProviderFactory"/> class.
+            </summary>
+            <param name="customTabProviderCallback">If supplied, this callback is used before any other
+            logic to give you the chance to create a particular <see cref="T:PagerSlidingTabStrip.ITabProvider"/> for a given adapter.  If this
+            returns null, then the factory will check the adapter for its own ITabProvider implementation.</param>
+            <param name="textTabProviderCallback">If supplied, this callback will be used to create the provider to 
+            be used for straightforward text tabs (e.g. a <see cref="T:PagerSlidingTabStrip.TextTabProvider"/>).  This is used most
+            commonly to change the text layout resource that's used for the text tab.</param>
+            <param name="iconTabProviderCallback">If supplied, this callback will be used to create the provider
+            to be used for Icon tabs (e.g. a <see cref="T:PagerSlidingTabStrip.IconTabProvider"/>.</param>
+        </member>
+        <member name="M:PagerSlidingTabStrip.CustomTabProviderFactory.CreateTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)">
+            <summary>
+            Overrides the base implementation to first check if a custom provider is to be created (with a 
+            call to the <see cref="P:PagerSlidingTabStrip.CustomTabProviderFactory.CustomTabProviderCallback"/>) and, if not, the base implementation is called.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="adapter">The adapter.</param>
+            <returns>
+            Must return an ITabProvider instance.
+            </returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.CustomTabProviderFactory.CreateTextTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)">
+            <summary>
+            Overrides the base method to use <see cref="P:PagerSlidingTabStrip.CustomTabProviderFactory.TextTabProviderCallback"/> if it is not null.
+            
+            If it is null, or if the callback returns null, then the default implementation will be 
+            used, which simply returns a new default instance of the <see cref="T:PagerSlidingTabStrip.TextTabProvider"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="adapter">The adapter.</param>
+            <returns></returns>
+        </member>
+        <member name="M:PagerSlidingTabStrip.CustomTabProviderFactory.CreateIconTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)">
+            <summary>
+            Overrides the base method to use <see cref="P:PagerSlidingTabStrip.CustomTabProviderFactory.IconTabProviderCallback"/> if it is not null.
+            
+            If it is null, or if the callback returns null, then the default implementation will be
+            used, which simply returns a new default instance of the <see cref="T:PagerSlidingTabStrip.IconTabProvider"/>.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="adapter">The adapter.</param>
+            <returns></returns>
+        </member>
+        <member name="P:PagerSlidingTabStrip.CustomTabProviderFactory.CustomTabProviderCallback">
+            <summary>
+            If not null, then this is executed by the <see cref="M:PagerSlidingTabStrip.CustomTabProviderFactory.CreateTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)"/> override 
+            to create a tab provider for the given context and adapter using custom logic.
+            
+            If this is null or returns null, then the standard behaviour applies, which is to
+            see if the adapter itself implements the ITabProvider interface, and if not then
+            to fallback to either an icon provider or text provider.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.CustomTabProviderFactory.TextTabProviderCallback">
+            <summary>
+            If not null, then this is executed by the <see cref="M:PagerSlidingTabStrip.CustomTabProviderFactory.CreateTextTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)"/> override
+            to give you a chance to create a custom tab provider to be used for basic text tabs.
+            
+            If the method returns null, then the base implementation of the method will be used,
+            which simply creates an instance of <see cref="T:PagerSlidingTabStrip.TextTabProvider"/>.
+            
+            The most common reason you would supply this callback on construction is so you can customise
+            the standard <see cref="T:PagerSlidingTabStrip.TextTabProvider"/>.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.CustomTabProviderFactory.IconTabProviderCallback">
+            <summary>
+            If not null, then is is executed by the <see cref="M:PagerSlidingTabStrip.CustomTabProviderFactory.CreateIconTabProvider(Android.Content.Context,Android.Support.V4.View.PagerAdapter)"/> override
+            to give you a chance to create a custom tab provider to be used for icon tabs.
+            
+            If the method returns null, then the base implementation of the method will be used,
+            which simply creates and instance <see cref="T:PagerSlidingTabStrip.IconTabProvider"/>.
+            
+            The most common reason you would supply this callback on construction is so you can customise
+            the standard <see cref="T:PagerSlidingTabStrip.IconTabProvider"/>.
+            </summary>
+        </member>
+        <member name="T:PagerSlidingTabStrip.CustomTabProviderFactory.FactoryCallback">
+            <summary>
+            Delegate type for the callback used to create a tab provider.
+            
+            If a callback returns null, then the <see cref="T:PagerSlidingTabStrip.CustomTabProviderFactory"/> will use
+            it's own default behaviour.
+            </summary>
+            <param name="context"></param>
+            <param name="adapter"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PagerSlidingTabStrip.TabUpdateEventArgs">
+            <summary>
+            Event arguments object for the <see cref="E:PagerSlidingTabStrip.ITabProvider.TabUpdated"/> and 
+            <see cref="E:PagerSlidingTabStrip.ITabProvider.TabUpdateRequired"/> events.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TabUpdateEventArgs.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.TabUpdateEventArgs"/> class.
+            </summary>
+            <param name="position">The position.</param>
+        </member>
+        <member name="P:PagerSlidingTabStrip.TabUpdateEventArgs.Hint">
+            <summary>
+            Gets the update hint.
+            </summary>
+            <value>
+            The hint.
+            </value>
+        </member>
+        <member name="T:PagerSlidingTabStrip.TextTabProvider">
+            <summary>
+            A standard implementation of the <see cref="T:PagerSlidingTabStrip.ITabProvider"/> interface that provides a simple
+            TextView instance for each tab.
+            </summary>
+        </member>
+        <member name="M:PagerSlidingTabStrip.TextTabProvider.#ctor(Android.Content.Context,Android.Support.V4.View.PagerAdapter,System.Nullable{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:PagerSlidingTabStrip.TextTabProvider"/> class.
+            </summary>
+            <param name="context">The context.</param>
+            <param name="adapter">The adapter.</param>
+            <param name="textTabResourceID">The ID of the layout resource to be used to inflate the text view.
+            If not supplied or equal to null, then the built in resource pagerslidingtabstrip_texttab will be used.</param>
+        </member>
+        <member name="P:PagerSlidingTabStrip.TextTabProvider.Context">
+            <summary>
+            Gets the context for resources etc.
+            </summary>
+        </member>
+        <member name="P:PagerSlidingTabStrip.TextTabProvider.Adapter">
+            <summary>
+            Gets the adapter.
+            </summary>
+            <value>
+            The adapter.
+            </value>
+        </member>
+    </members>
+</doc>

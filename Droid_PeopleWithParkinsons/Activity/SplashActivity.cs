@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Threading;
+using Droid_PeopleWithParkinsons.Shared;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -19,6 +20,13 @@ namespace Droid_PeopleWithParkinsons
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            AppData.session = new SessionData();
+            AppData.session.scenarios = new List<Scenario>();
+            AppData.session.resultsToUpload = new List<ResultItem>();
+            AppData.session.currentUser = new User();
+            AppData.session.currentUser.id = "aUserId";
+
             StartActivity(typeof(MainActivity));
         }
     }

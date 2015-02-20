@@ -20,7 +20,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace Droid_PeopleWithParkinsons
 {
-    public class ScenarioFragment : Fragment
+    public class ScenarioFragment : Android.Support.V4.App.Fragment
     {
         private Scenario scenario;
 
@@ -52,9 +52,15 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnCreate(savedInstanceState);
 
+            RetainInstance = true;
+
             // TODO
             string jsonString = "{\r\n\t\"id\" : \"testScenario\",\r\n\t\"creator\" : {\r\n\t\t\"id\"\t: \"thatId\",\r\n\t\t\"name\"\t: \"Justin Time\"\r\n\t},\r\n\t\"title\" : \"Getting the Bus\",\r\n\t\"resources\" : \"https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1\",\r\n\t\"events\" : [\r\n\t{\r\n\t\t\"content\" : {\r\n\t\t\t\"type\"\t : \"AUDIO\",\r\n\t\t\t\"visual\" : \"driver.jpg\",\r\n\t\t\t\"audio\"\t : \"greeting.mp3\",\r\n\t\t\t\"text\"\t : \"Hello! Where would you like to go today?\"\r\n\t\t},\r\n\t\t\"response\" : {\r\n\t\t\t\"type\"\t: \"promptedSpeech\",\r\n\t\t\t\"prompt\" : \"Hello, please may I have a return ticket to the train station?\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"content\" : {\r\n\t\t\t\"type\"\t : \"VIDEO\",\r\n\t\t\t\"visual\" : \"driver.jpg\",\r\n\t\t\t\"audio\"\t : null,\r\n\t\t\t\"text\"\t : \"No problem at all, looks like you have a valid card. Take a seat!\"\r\n\t\t},\r\n\t\t\"response\" : {\r\n\t\t\t\"type\"\t: \"promptedSpeech\",\r\n\t\t\t\"prompt\" : \"Thank you. Have a good day.\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"content\" : {\r\n\t\t\t\"type\"\t : \"TEXT\",\r\n\t\t\t\"visual\" : \"oldwoman.jpg\",\r\n\t\t\t\"audio\"\t : null,\r\n\t\t\t\"text\"\t : \"You sit next to an old woman, who asks what your plans are for the day. Greet her and explain how you're catching a train to the seaside.\"\r\n\t\t},\r\n\t\t\"response\" : {\r\n\t\t\t\"type\"\t: \"freeformSpeech\",\r\n\t\t\t\"prompt\" : null\r\n\t\t}\r\n\t}\r\n\t]\r\n}";
             scenario = JsonConvert.DeserializeObject<Scenario>(jsonString);
+
+            //TODO
+            AppData.session.scenarios.Add(scenario);
+
             string scenarioFormatted = scenario.title.Replace(" ", String.Empty);
 
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
@@ -204,12 +210,8 @@ namespace Droid_PeopleWithParkinsons
 
             if (currIndex >= scenario.events.Length)
             {
+                FinishScenario();
                 return;
-            }
-
-            if(currIndex + 1 >= scenario.events.Length)
-            {
-                recButton.Text = "Finish";
             }
 
             eventTranscript.Text = scenario.events[currIndex].content.text;
@@ -247,6 +249,85 @@ namespace Droid_PeopleWithParkinsons
                 audioManager.StartRecording(fileAdd);
                 recButton.Text = "Stop";
             }
+        }
+
+        /// <summary>
+        /// Restarts the scenario, deleting already exported data
+        /// </summary>
+        private void RestartScenario()
+        {
+            currIndex = -1;
+
+            string[] files = Directory.GetFiles(localExportDirectory);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                File.Delete(files[i]);
+            }
+
+            titleLayout.Visibility = ViewStates.Visible;
+            eventLayout.Visibility = ViewStates.Gone;
+        }
+
+        /// <summary>
+        /// Exports the recordings into a zip and marks them as being ready to upload (TODO)
+        /// </summary>
+        private void ExportRecordings()
+        {
+            // Compress exported recordings into zip (Delete existing zip first)
+            // TODO set password? https://github.com/icsharpcode/SharpZipLib/wiki/Zip-Samples#anchorCreate  
+            string zipPath = Path.Combine(localExportDirectory, "final.zip");
+            File.Delete(zipPath);
+
+            try
+            {
+                FastZip fastZip = new FastZip();
+                bool recurse = true;
+                string filter = @"-final\.zip$"; // Don't include yourself, you daft thing
+                fastZip.CreateZip(zipPath, localExportDirectory, recurse, filter);
+
+                ResultItem res = new ResultItem(scenario.id, zipPath);
+                AppData.session.resultsToUpload.Add(res);
+                AppData.SaveCurrentData(localResourcesDirectory);
+
+                Activity.StartActivity(typeof(UploadsActivity));
+            }
+            catch(Exception except)
+            {
+                Console.Write(except.Message);
+            }
+        }
+
+        /// <summary>
+        /// Presents the user with the choice of exporting their recordings or restarting the scenario
+        /// </summary>
+        private void FinishScenario()
+        {
+            AlertDialog alert = new AlertDialog.Builder(Activity)
+            .SetTitle("Scenario Complete!")
+            .SetMessage("Well done! You've completed this scenario and we're ready to export your recordings. Would you like to export now or retry the scenario?")
+            .SetCancelable(false)
+            .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>)null)
+            .SetPositiveButton("Export Results", (s, args) => { ExportRecordings(); })
+            .Create();
+
+            alert.Show();
+
+            // A second alert dialogue, confirming the decision to restart
+            Button negative = alert.GetButton((int)DialogButtonType.Negative);
+            negative.Click += delegate(object sender, EventArgs e)
+            {
+                AlertDialog.Builder confirm = new AlertDialog.Builder(Activity);
+                confirm.SetTitle("Are you sure?");
+                confirm.SetMessage("Restarting will wipe your current progress. Restart the scenario?");
+                confirm.SetPositiveButton("Restart", (senderAlert, confArgs) =>
+                {
+                    RestartScenario();
+                    alert.Dismiss();
+                });
+                confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
+                confirm.Show();
+            };      
         }
     }
 }

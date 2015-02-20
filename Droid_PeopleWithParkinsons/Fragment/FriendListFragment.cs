@@ -14,7 +14,7 @@ using Droid_PeopleWithParkinsons.Shared;
 
 namespace Droid_PeopleWithParkinsons
 {
-    public class FriendListFragment : Fragment
+    public class FriendListFragment : Android.Support.V4.App.Fragment
     {
         private ListView mainList;
 
