@@ -205,6 +205,8 @@
     <AndroidResource Include="Resources\drawable\driver.jpg" />
     <AndroidResource Include="Resources\drawable\iconupload128.png" />
     <AndroidResource Include="Resources\menu\mainActivityActions.xml" />
+    <AndroidResource Include="Resources\drawable\background_tabs.xml" />
+    <AndroidResource Include="Resources\drawable\tabs_pattern.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="json.net">

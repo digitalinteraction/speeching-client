@@ -1,20 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 using SpeechingCommon;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Core;
-using Android.Support.V4.App;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -35,6 +32,7 @@ namespace Droid_PeopleWithParkinsons
         private TextView eventTranscript;
         private TextView eventPrompt;
         private Button recButton;
+        private MediaPlayer mediaPlayer;
 
         Dictionary<string, string> resources;
         ProgressDialog progress;
@@ -121,7 +119,6 @@ namespace Droid_PeopleWithParkinsons
 
             titleLayout.Visibility = ViewStates.Visible;
             eventLayout.Visibility = ViewStates.Gone;
-
         }
 
         // For the home button in top left
@@ -163,7 +160,7 @@ namespace Droid_PeopleWithParkinsons
                 {
                     string filename = Path.Combine(localResourcesDirectory, entry.Name);
                     byte[] buffer = new byte[4096];
-                    Stream zipStream = zip.GetInputStream(entry);
+                    System.IO.Stream zipStream = zip.GetInputStream(entry);
                     using(FileStream streamWriter = File.Create(filename))
                     {
                         StreamUtils.Copy(zipStream, streamWriter, buffer);
@@ -199,6 +196,11 @@ namespace Droid_PeopleWithParkinsons
                 audioManager.CleanUp();
                 audioManager = null;
             }
+            if(mediaPlayer != null)
+            {
+                mediaPlayer.Release();
+                mediaPlayer = null;
+            }
         }
 
         private void ShowNextEvent()
@@ -224,11 +226,28 @@ namespace Droid_PeopleWithParkinsons
                 eventPrompt.Text = scenario.events[currIndex].response.prompt;
             }
 
-            // Load the visual media
-            string key = scenario.events[currIndex].content.visual;
-            if(key != null && resources.ContainsKey(key))
+            // Load audio
+            string audioKey = scenario.events[currIndex].content.audio;
+            if(audioKey != null && resources.ContainsKey(audioKey))
             {
-                eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[key]) ));
+                if (mediaPlayer == null)
+                {
+                    mediaPlayer = new MediaPlayer();
+                }
+                else
+                {
+                    mediaPlayer.Reset();
+                }
+                mediaPlayer.SetDataSource(resources[audioKey]);
+                mediaPlayer.Prepare();
+                mediaPlayer.Start();
+            }
+
+            // Load the visual media
+            string visualKey = scenario.events[currIndex].content.visual;
+            if(visualKey != null && resources.ContainsKey(visualKey))
+            {
+                eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[visualKey]) ));
             }
         }
 
@@ -242,6 +261,11 @@ namespace Droid_PeopleWithParkinsons
             }
             else
             {
+                if(mediaPlayer != null)
+                {
+                    mediaPlayer.Stop();
+                }
+
                 recording = true;
                 string fileAdd = Path.Combine(localExportDirectory, "res" + currIndex + ".3gpp");
                 scenario.events[currIndex].response.resultPath = fileAdd;

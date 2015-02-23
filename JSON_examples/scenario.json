@@ -11,7 +11,7 @@
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "driver.jpg",
-			"audio"	 : "greeting.mp3",
+			"audio"	 : "hello.mp3",
 			"text"	 : "Hello! Where would you like to go today?"
 		},
 		"response" : {
@@ -22,8 +22,8 @@
 	{
 		"content" : {
 			"type"	 : "VIDEO",
-			"visual" : "drivervideo.mp4",
-			"audio"	 : null,
+			"visual" : "driver.jpg",
+			"audio"	 : "thanks.mp3",
 			"text"	 : "No problem at all, looks like you have a valid card. Take a seat!"
 		},
 		"response" : {

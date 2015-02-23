@@ -8,4 +8,10 @@
   <item android:id="@+id/action_settings"
         android:title="Settings"
         android:showAsAction="never"/>
+  <item android:id="@+id/action_logOut"
+        android:title="Sign Out"
+        android:showAsAction="never"/>
+  <item android:id="@+id/action_about"
+        android:title="About Speeching"
+        android:showAsAction="never"/>
 </menu>
