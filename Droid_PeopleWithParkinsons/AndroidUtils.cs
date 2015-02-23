@@ -52,7 +52,7 @@ namespace Droid_PeopleWithParkinsons
 
         public class PagerAdapter : FragmentPagerAdapter
         {
-            private static int NUM_ITEMS = 3;
+            private static int NUM_ITEMS = 2;
             public override int Count
             {
                 get { return NUM_ITEMS; }
@@ -71,8 +71,6 @@ namespace Droid_PeopleWithParkinsons
                         return new TaskListFragment();
                     case 1: 
                         return new FriendListFragment();
-                    case 2: 
-                        return new ScenarioFragment();
                     default:
                         return null;
                 }
@@ -83,11 +81,9 @@ namespace Droid_PeopleWithParkinsons
                 switch (position)
                 {
                     case 0:
-                        return new Java.Lang.String("value 1");
+                        return new Java.Lang.String("Scenarios");
                     case 1:
-                        return new Java.Lang.String("value 2");
-                    case 2:
-                        return new Java.Lang.String("value 3");
+                        return new Java.Lang.String("Friends");
                     default:
                         return null;
                 }

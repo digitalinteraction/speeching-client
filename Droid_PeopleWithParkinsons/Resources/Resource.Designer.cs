@@ -403,13 +403,16 @@ namespace Droid_PeopleWithParkinsons
 			public const int RecordSoundRun = 2130903048;
 			
 			// aapt resource value: 0x7f030009
-			public const int ScenarioFragment = 2130903049;
+			public const int ScenarioActivity = 2130903049;
 			
 			// aapt resource value: 0x7f03000a
-			public const int UploadsActivity = 2130903050;
+			public const int ScenarioFragment = 2130903050;
 			
 			// aapt resource value: 0x7f03000b
-			public const int UploadsListItem = 2130903051;
+			public const int UploadsActivity = 2130903051;
+			
+			// aapt resource value: 0x7f03000c
+			public const int UploadsListItem = 2130903052;
 			
 			static Layout()
 			{

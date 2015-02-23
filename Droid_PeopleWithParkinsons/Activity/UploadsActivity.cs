@@ -8,7 +8,7 @@ using System;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Uploads")]
+    [Activity(Label = "Uploads", ParentActivity = typeof(MainActivity))]
     public class UploadsActivity : Activity
     {
         private Button uploadAllButton;

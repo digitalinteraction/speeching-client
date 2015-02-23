@@ -83,12 +83,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Activity\SplashActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
     <Compile Include="AndroidUtils.cs" />
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
-    <Compile Include="Fragment\ScenarioFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
@@ -145,7 +145,7 @@
     <AndroidResource Include="Resources\layout-land\MainFriendsListFragment.axml" />
     <AndroidResource Include="Resources\layout-large-port\MainFriendsListFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\MainFriendsListFragment.axml" />
-    <AndroidResource Include="Resources\layout\ScenarioFragment.axml">
+    <AndroidResource Include="Resources\layout\ScenarioActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large-port\ScenarioFragment.axml" />
@@ -171,7 +171,9 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\AndroidManifest.xml" />
+    <Content Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <AndroidResource Include="Resources\drawable\round_button.xml" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_mic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_mic.png" />

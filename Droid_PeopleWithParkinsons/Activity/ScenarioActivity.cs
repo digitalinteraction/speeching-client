@@ -1,20 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using ICSharpCode.SharpZipLib.Core;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using SpeechingCommon;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Core;
+using Android.Support.V4.App;
 
 namespace Droid_PeopleWithParkinsons
 {
-    public class ScenarioFragment : Android.Support.V4.App.Fragment
+    [Activity(Label = "ScenarioActivity", ParentActivity=typeof(MainActivity))]
+    public class ScenarioActivity : Activity
     {
         private Scenario scenario;
 
@@ -42,25 +47,19 @@ namespace Droid_PeopleWithParkinsons
         private AndroidUtils.RecordAudioManager audioManager;
         private bool recording = false;
 
-        public override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            RetainInstance = true;
+            scenario = Scenario.GetWithId(AppData.session.scenarios, Intent.GetStringExtra("ScenarioId"));
 
-            // TODO
-            string jsonString = "{\r\n\t\"id\" : \"testScenario\",\r\n\t\"creator\" : {\r\n\t\t\"id\"\t: \"thatId\",\r\n\t\t\"name\"\t: \"Justin Time\"\r\n\t},\r\n\t\"title\" : \"Getting the Bus\",\r\n\t\"resources\" : \"https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1\",\r\n\t\"events\" : [\r\n\t{\r\n\t\t\"content\" : {\r\n\t\t\t\"type\"\t : \"AUDIO\",\r\n\t\t\t\"visual\" : \"driver.jpg\",\r\n\t\t\t\"audio\"\t : \"greeting.mp3\",\r\n\t\t\t\"text\"\t : \"Hello! Where would you like to go today?\"\r\n\t\t},\r\n\t\t\"response\" : {\r\n\t\t\t\"type\"\t: \"promptedSpeech\",\r\n\t\t\t\"prompt\" : \"Hello, please may I have a return ticket to the train station?\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"content\" : {\r\n\t\t\t\"type\"\t : \"VIDEO\",\r\n\t\t\t\"visual\" : \"driver.jpg\",\r\n\t\t\t\"audio\"\t : null,\r\n\t\t\t\"text\"\t : \"No problem at all, looks like you have a valid card. Take a seat!\"\r\n\t\t},\r\n\t\t\"response\" : {\r\n\t\t\t\"type\"\t: \"promptedSpeech\",\r\n\t\t\t\"prompt\" : \"Thank you. Have a good day.\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"content\" : {\r\n\t\t\t\"type\"\t : \"TEXT\",\r\n\t\t\t\"visual\" : \"oldwoman.jpg\",\r\n\t\t\t\"audio\"\t : null,\r\n\t\t\t\"text\"\t : \"You sit next to an old woman, who asks what your plans are for the day. Greet her and explain how you're catching a train to the seaside.\"\r\n\t\t},\r\n\t\t\"response\" : {\r\n\t\t\t\"type\"\t: \"freeformSpeech\",\r\n\t\t\t\"prompt\" : null\r\n\t\t}\r\n\t}\r\n\t]\r\n}";
-            scenario = JsonConvert.DeserializeObject<Scenario>(jsonString);
-
-            //TODO
-            AppData.session.scenarios.Add(scenario);
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
 
             string scenarioFormatted = scenario.title.Replace(" ", String.Empty);
 
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
             localExportDirectory = localResourcesDirectory + "/exports";
-
             // Create these directories if they don't already exist
             if (!Directory.Exists(documentsPath))
             {
@@ -96,11 +95,52 @@ namespace Droid_PeopleWithParkinsons
                 }
             }
 
+            SetContentView(Resource.Layout.ScenarioFragment);
+            titleLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioTitleLayout);
+            scenarioTitle = FindViewById<TextView>(Resource.Id.scenarioTitle);
+            authorName = FindViewById<TextView>(Resource.Id.scenarioAuthor);
+            startButton = FindViewById<Button>(Resource.Id.scenarioStartBtn);
+            startButton.Click += delegate(object sender, EventArgs e)
+            {
+                titleLayout.Visibility = ViewStates.Gone;
+                eventLayout.Visibility = ViewStates.Visible;
+                ShowNextEvent();
+            };
+
+            scenarioTitle.Text = scenario.title;
+            authorName.Text = scenario.creator.name;
+
+            eventLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioEventLayout);
+            eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
+
+            eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
+            eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
+
+            recButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
+            recButton.Click += SoundRecorderButtonClicked;
+
+            titleLayout.Visibility = ViewStates.Visible;
+            eventLayout.Visibility = ViewStates.Gone;
+
         }
 
+        // For the home button in top left
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if(item.ItemId == Android.Resource.Id.Home)
+            {
+                NavUtils.NavigateUpFromSameTask(this);
+                return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+        /// <summary>
+        /// Downloads the data from the scenario's address
+        /// </summary>
         private async void PrepareData()
         {
-            Activity.RunOnUiThread(() => progress = ProgressDialog.Show(Activity, "Please Wait", "Downloading data to " + localZipPath, true));
+            RunOnUiThread(() => progress = ProgressDialog.Show(this, "Please Wait", "Downloading data to " + localZipPath, true));
             resources = new Dictionary<string, string>();
 
             WebClient request = new WebClient();
@@ -111,7 +151,7 @@ namespace Droid_PeopleWithParkinsons
             request.Dispose();
             request = null;
 
-            Activity.RunOnUiThread(() => progress.SetMessage("Unpacking data at " + localZipPath));
+            RunOnUiThread(() => progress.SetMessage("Unpacking data at " + localZipPath));
 
             ZipFile zip = null; 
             try
@@ -141,52 +181,17 @@ namespace Droid_PeopleWithParkinsons
                 }
             }
            
-            Activity.RunOnUiThread(() => progress.Hide());
+            RunOnUiThread(() => progress.Hide());
         }
 
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            base.OnCreateView(inflater, container, savedInstanceState);
-
-            var view = inflater.Inflate(Resource.Layout.ScenarioFragment, container, false);
-
-            titleLayout = view.FindViewById<RelativeLayout>(Resource.Id.scenarioTitleLayout);
-            scenarioTitle = view.FindViewById<TextView>(Resource.Id.scenarioTitle);
-            authorName = view.FindViewById<TextView>(Resource.Id.scenarioAuthor);
-            startButton = view.FindViewById<Button>(Resource.Id.scenarioStartBtn);
-            startButton.Click += delegate(object sender, EventArgs e)
-            {
-                titleLayout.Visibility = ViewStates.Gone;
-                eventLayout.Visibility = ViewStates.Visible;
-                ShowNextEvent();
-            };          
-
-            scenarioTitle.Text = scenario.title;
-            authorName.Text = scenario.creator.name;
-
-            eventLayout = view.FindViewById<RelativeLayout>(Resource.Id.scenarioEventLayout);
-            eventTranscript = view.FindViewById<TextView>(Resource.Id.scenarioText);
-
-            eventPrompt = view.FindViewById<TextView>(Resource.Id.scenarioPrompt);
-            eventImage = view.FindViewById<ImageView>(Resource.Id.scenarioImage);
-
-            recButton = view.FindViewById<Button>(Resource.Id.scenarioProgressBtn);
-            recButton.Click += SoundRecorderButtonClicked;
-
-            titleLayout.Visibility = ViewStates.Visible;
-            eventLayout.Visibility = ViewStates.Gone;
-
-            return view;
-        }
-
-        public override void OnResume ()
+        protected override void OnResume ()
         {
             base.OnResume();
-            audioManager = new AndroidUtils.RecordAudioManager(Activity, null);
+            audioManager = new AndroidUtils.RecordAudioManager(this, null);
         }
 
         // Make sure that the recorder is unallocated when the app goes into the background
-        public override void OnPause ()
+        protected override void OnPause ()
         {
             base.OnPause();
             if(audioManager != null)
@@ -293,7 +298,8 @@ namespace Droid_PeopleWithParkinsons
                     File.Delete(toDel[i]);
                 }
                     
-                Activity.StartActivity(typeof(UploadsActivity));
+                StartActivity(typeof(UploadsActivity));
+                this.Finish();
             }
             catch(Exception except)
             {
@@ -306,7 +312,7 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         private void FinishScenario()
         {
-            AlertDialog alert = new AlertDialog.Builder(Activity)
+            AlertDialog alert = new AlertDialog.Builder(this)
             .SetTitle("Scenario Complete!")
             .SetMessage("Well done! You've completed this scenario and we're ready to export your recordings. Would you like to export now or retry the scenario?")
             .SetCancelable(false)
@@ -320,7 +326,7 @@ namespace Droid_PeopleWithParkinsons
             Button negative = alert.GetButton((int)DialogButtonType.Negative);
             negative.Click += delegate(object sender, EventArgs e)
             {
-                AlertDialog.Builder confirm = new AlertDialog.Builder(Activity);
+                AlertDialog.Builder confirm = new AlertDialog.Builder(this);
                 confirm.SetTitle("Are you sure?");
                 confirm.SetMessage("Restarting will wipe your current progress. Restart the scenario?");
                 confirm.SetPositiveButton("Restart", (senderAlert, confArgs) =>

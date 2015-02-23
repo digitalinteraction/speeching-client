@@ -1,4 +1,5 @@
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -25,34 +26,37 @@ namespace Droid_PeopleWithParkinsons
 
             var view = inflater.Inflate(Resource.Layout.MainTaskListFragment, container, false);
 
-            UserTask[] sampleTasks = new UserTask[12];
-
-            for (int i = 0; i < sampleTasks.Length; i++)
-            {
-                sampleTasks[i] = new UserTask();
-                sampleTasks[i].title = "Task " + i;
-            }
-
             mainList = view.FindViewById<GridView>(Resource.Id.mainActivitiesList);
-            mainList.Adapter = new UserTaskListAdapter(Activity, Resource.Id.mainActivitiesList, sampleTasks);
+            mainList.Adapter = new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.scenarios.ToArray());
             mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
-                this.Activity.StartActivity(typeof(RecordSoundRunActivity));
+                Intent intent = new Intent(Activity, typeof(ScenarioActivity));
+                intent.PutExtra("ScenarioId", AppData.session.scenarios[args.Position].id);
+
+                StartActivity(intent);
+                //this.Activity.StartActivity(typeof(RecordSoundRunActivity));
             };
 
             return view;
         }
 
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            // Make sure we're showing the latest available scenarios
+            mainList.Adapter = new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.scenarios.ToArray());
+        }
     
-        public class UserTaskListAdapter : BaseAdapter<UserTask>
+        public class ScenarioListAdapter : BaseAdapter<Scenario>
         {
             Activity context;
-            UserTask[] tasks;
+            Scenario[] tasks;
 
             /// <summary>
             /// An adapter to be able to display the details on each task in a grid or list
             /// </summary>
-            public UserTaskListAdapter(Activity context, int resource, UserTask[] data)
+            public ScenarioListAdapter(Activity context, int resource, Scenario[] data)
             {
                 this.context = context;
                 this.tasks = data;
@@ -63,7 +67,7 @@ namespace Droid_PeopleWithParkinsons
                 return position;
             }
 
-            public override UserTask this[int position]
+            public override Scenario this[int position]
             {
                 get { return tasks[position]; }
             }
