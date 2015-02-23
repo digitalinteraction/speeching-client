@@ -90,6 +90,7 @@
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
+    <Compile Include="Fragment\UploadedFragment.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="Shared\ContentUploader.cs" />
@@ -148,10 +149,10 @@
     <AndroidResource Include="Resources\layout\ScenarioActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout-large-port\ScenarioFragment.axml" />
-    <AndroidResource Include="Resources\layout-land\ScenarioFragment.axml" />
-    <AndroidResource Include="Resources\layout-large-land\ScenarioFragment.axml" />
-    <AndroidResource Include="Resources\layout-xlarge-land\ScenarioFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-port\ScenarioActivity.axml" />
+    <AndroidResource Include="Resources\layout-land\ScenarioActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\ScenarioActivity.axml" />
+    <AndroidResource Include="Resources\layout-xlarge-land\ScenarioActivity.axml" />
     <AndroidResource Include="Resources\layout\UploadsActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

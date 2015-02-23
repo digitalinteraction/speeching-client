@@ -49,6 +49,7 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnCreate(savedInstanceState);
 
+            // Load the scenario with the id that was given inside the current intent
             scenario = Scenario.GetWithId(AppData.session.scenarios, Intent.GetStringExtra("ScenarioId"));
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
@@ -58,6 +59,7 @@ namespace Droid_PeopleWithParkinsons
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
             localExportDirectory = localResourcesDirectory + "/exports";
+
             // Create these directories if they don't already exist
             if (!Directory.Exists(documentsPath))
             {
@@ -93,7 +95,7 @@ namespace Droid_PeopleWithParkinsons
                 }
             }
 
-            SetContentView(Resource.Layout.ScenarioFragment);
+            SetContentView(Resource.Layout.ScenarioActivity);
             titleLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioTitleLayout);
             scenarioTitle = FindViewById<TextView>(Resource.Id.scenarioTitle);
             authorName = FindViewById<TextView>(Resource.Id.scenarioAuthor);
@@ -117,8 +119,25 @@ namespace Droid_PeopleWithParkinsons
             recButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
             recButton.Click += SoundRecorderButtonClicked;
 
-            titleLayout.Visibility = ViewStates.Visible;
-            eventLayout.Visibility = ViewStates.Gone;
+            if(savedInstanceState != null)
+            {
+                currIndex = savedInstanceState.GetInt("progress", -1);
+            }
+
+            if(currIndex < 0)
+            {
+                titleLayout.Visibility = ViewStates.Visible;
+                eventLayout.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                titleLayout.Visibility = ViewStates.Gone;
+                eventLayout.Visibility = ViewStates.Visible;
+
+                // Resume from where we left off
+                currIndex--;
+                ShowNextEvent();
+            }
         }
 
         // For the home button in top left
@@ -153,7 +172,7 @@ namespace Droid_PeopleWithParkinsons
             ZipFile zip = null; 
             try
             {
-                //Unzip the downloaded file
+                //Unzip the downloaded file and add references to its contents in the resources dictionary
                 zip = new ZipFile(File.OpenRead(localZipPath));
 
                 foreach(ZipEntry entry in zip)
@@ -185,9 +204,16 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnResume();
             audioManager = new AndroidUtils.RecordAudioManager(this, null);
+
+            // Reload the resources for this stage of the scenario, incase they were lost (e.g. audio, video)
+            if(currIndex >= 0)
+            {
+                currIndex--;
+                ShowNextEvent();
+            }
         }
 
-        // Make sure that the recorder is unallocated when the app goes into the background
+        // Make sure that the recorder + player are unallocated when the app goes into the background
         protected override void OnPause ()
         {
             base.OnPause();
@@ -203,20 +229,31 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+        // Save the current index on rotation so progress isn't lost (used in createview)
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            outState.PutInt("progress", currIndex);
+            base.OnSaveInstanceState(outState);
+        }
+
+        /// <summary>
+        /// Progress to the next part of the scenario
+        /// </summary>
         private void ShowNextEvent()
         {
             currIndex++;
 
             recButton.Text = "Record Response";
 
+            // Check if the scenario is complete
             if (currIndex >= scenario.events.Length)
             {
                 FinishScenario();
                 return;
             }
 
+            // Load text
             eventTranscript.Text = scenario.events[currIndex].content.text;
-            
             if(scenario.events[currIndex].response.type == "freeformSpeech")
             {
                 eventPrompt.Text = "";
@@ -240,10 +277,11 @@ namespace Droid_PeopleWithParkinsons
                 }
                 mediaPlayer.SetDataSource(resources[audioKey]);
                 mediaPlayer.Prepare();
+                mediaPlayer.Looping = false;
                 mediaPlayer.Start();
             }
 
-            // Load the visual media
+            // Load the visual media (TODO add video capabilities)
             string visualKey = scenario.events[currIndex].content.visual;
             if(visualKey != null && resources.ContainsKey(visualKey))
             {
@@ -251,6 +289,9 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+        /// <summary>
+        /// Start a new recording, or if already recording finish it and progress to the next event
+        /// </summary>
         private void SoundRecorderButtonClicked(object sender, EventArgs e)
         {
             if(recording)
@@ -311,7 +352,7 @@ namespace Droid_PeopleWithParkinsons
 
                 ResultItem res = new ResultItem(scenario.id, zipPath);
                 AppData.session.resultsToUpload.Add(res);
-                AppData.SaveCurrentData(localResourcesDirectory);
+                AppData.SaveCurrentData();
 
                 // Clean up zipped files
                 string[] toDel = Directory.GetFiles(localExportDirectory);

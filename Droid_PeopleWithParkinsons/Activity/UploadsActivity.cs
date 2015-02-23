@@ -21,7 +21,7 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.UploadsActivity);
 
             uploadsList = FindViewById<ListView>(Resource.Id.uploads_list);
-            uploadsList.Adapter = new UploadListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+            uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
             uploadsList.ItemClick += OnItemTap;
 
             uploadAllButton = FindViewById<Button>(Resource.Id.uploads_start);
@@ -52,69 +52,13 @@ namespace Droid_PeopleWithParkinsons
                     AppData.session.DeleteResult(AppData.session.resultsToUpload[args.Position]);
 
                     uploadsList.Adapter = null;
-                    uploadsList.Adapter = new UploadListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+                    uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
 
                     alert.Dismiss();
                 });
                 confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
                 confirm.Show();
             };     
-        }
-
-        public class UploadListAdapter : BaseAdapter<ResultItem>
-        {
-            Activity context;
-            ResultItem[] results;
-
-            /// <summary>
-            /// Display details about a result in a list entry
-            /// </summary>
-            public UploadListAdapter(Activity context, int resource, ResultItem[] data)
-            {
-                this.context = context;
-                this.results = data;
-            }
-
-            public override long GetItemId(int position)
-            {
-                return position;
-            }
-
-            public override ResultItem this[int position]
-            {
-                get { return results[position]; }
-            }
-
-            public override int Count
-            {
-                get { return results.Length; }
-            }
-
-            public override View GetView(int position, View convertView, ViewGroup parent)
-            {
-                View view = convertView;
-
-                if (view == null)
-                {
-                    view = context.LayoutInflater.Inflate(Resource.Layout.UploadsListItem, null);
-                }
-
-                Scenario thisScenario = Scenario.GetWithId(AppData.session.scenarios, results[position].scenarioId);
-
-                view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisScenario.title;
-                view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();
-
-                if(results[position].uploaded)
-                {
-                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Complete!";
-                }
-                else
-                {
-                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Ready to upload";
-                }
-
-                return view;
-            }
         }
     }
 }

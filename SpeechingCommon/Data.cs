@@ -21,10 +21,8 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="_cacheDir">The local data directory</param>
         /// <returns>true if successful, false if a request to the server is needed</returns>
-        public static bool TryLoadExistingData(string _cacheDir)
+        public static bool TryLoadExistingData()
         {
-            cacheDir = _cacheDir;
-
             try
             {
                 if (File.Exists(cacheDir + "/offline.json"))
@@ -44,14 +42,25 @@ namespace SpeechingCommon
         /// <summary>
         /// Saves the current data to the cache directory for loading later
         /// </summary>
-        public static async void SaveCurrentData(string _cacheDir = null)
+        public static async void SaveCurrentData()
         {
-            if (_cacheDir != null) cacheDir = _cacheDir;
-
             if (session == null || cacheDir == null) return; // Nothing to save
 
             string dataString = JsonConvert.SerializeObject(session);
-            File.WriteAllText(cacheDir + "/offline.json", dataString);
+
+            try
+            {
+                if (!Directory.Exists(cacheDir))
+                {
+                    Directory.CreateDirectory(cacheDir);
+                }
+
+                File.WriteAllText(cacheDir + "/offline.json", dataString);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("ERROR SAVING DATA: " + e);
+            }
         }
     }
 
