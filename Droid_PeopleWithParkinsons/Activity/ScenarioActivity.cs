@@ -93,6 +93,9 @@ namespace Droid_PeopleWithParkinsons
                 {
                     resources.Add(Path.GetFileName(files[i]), files[i]);
                 }
+
+                //Remove existing data from the upload queue
+                AppData.session.DeleteAllPendingForScenario(scenario.id);
             }
 
             SetContentView(Resource.Layout.ScenarioActivity);

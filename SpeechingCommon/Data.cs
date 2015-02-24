@@ -1,3 +1,5 @@
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace SpeechingCommon
 {
+    /// <summary>
+    /// A collection of server structures and methods, along with functions that will be used commonly across all platforms.
+    /// Methods starting with "Push" request changes be made to server data. Methods starting with "Fetch" pull data from the server.
+    /// </summary>
     public static class AppData
     {
         // Account related data
@@ -16,13 +22,16 @@ namespace SpeechingCommon
         // System data
         public static string cacheDir;
 
+        public static Random rand;
+
         /// <summary>
         /// Attempts to load existing data stored in a local file.
         /// </summary>
-        /// <param name="_cacheDir">The local data directory</param>
         /// <returns>true if successful, false if a request to the server is needed</returns>
         public static bool TryLoadExistingData()
         {
+            if (rand == null) rand = new Random();
+
             try
             {
                 if (File.Exists(cacheDir + "/offline.json"))
@@ -67,7 +76,7 @@ namespace SpeechingCommon
         /// <summary>
         /// Get a list of the user's submitted data from the server
         /// </summary>
-        public static ResultItem[] GetSubmittedResults()
+        public static ResultItem[] FetchSubmittedResults()
         {
             return session.resultsOnServer.ToArray(); //TEMP
         }
@@ -76,27 +85,37 @@ namespace SpeechingCommon
         /// Uploads a single result package to the server
         /// </summary>
         /// <param name="toUpload">The item to upload</param>
-        public static void UploadResult(ResultItem toUpload)
+        public static void PushResult(ResultItem toUpload)
         {
             session.resultsToUpload.Remove(toUpload);
             toUpload.uploaded = true;
-            session.resultsOnServer.Add(toUpload); //TEMP
+            session.resultsOnServer.Add((DownloadedResultItem)toUpload); //TEMP
             SaveCurrentData();
         }
 
         /// <summary>
         /// Complete all pending uploads
         /// </summary>
-        public static void UploadAllResults()
+        public static void PushAllResults()
         {
             for(int i = 0; i < session.resultsToUpload.Count; i++)
             {
-                UploadResult(session.resultsToUpload[i]);
+                PushResult(session.resultsToUpload[i]);
             }
+        }
+
+        /// <summary>
+        /// Requests the deletion of the result from the remote database
+        /// </summary>
+        public static void PushResultDeletion(ResultItem toDelete)
+        {
+            //TEMP
+            session.resultsOnServer.Remove((DownloadedResultItem)toDelete);
+            SaveCurrentData();
         }
         
         /// <summary>
-        /// Checks to see if the scenario has exported data either locally or on the server
+        /// Checks to see if the scenario has exported data waiting for upload
         /// </summary>
         /// <param name="id">The id of the scenario</param>
         /// <returns>Is Completed? bool</returns>
@@ -107,11 +126,6 @@ namespace SpeechingCommon
                 if (session.resultsToUpload[i].scenarioId == id) return true;
             }
 
-            for (int i = 0; i < session.resultsOnServer.Count; i++)
-            {
-                if (session.resultsOnServer[i].scenarioId == id) return true;
-            }
-
             return false;
         }
 
@@ -120,7 +134,7 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="username">The unique username of the friend</param>
         /// <returns>User found true / not recognised false</returns>
-        public static bool SendFriendRequest(string username)
+        public static bool PushFriendRequest(string username)
         {
             // TODO
             User added = new User();
@@ -130,6 +144,97 @@ namespace SpeechingCommon
 
             SaveCurrentData();
             return true;
+        }
+
+        /// <summary>
+        /// Prepares all of the submission's data, including audio recordings
+        /// </summary>
+        /// <param name="resultId"></param>
+        /// <returns></returns>
+        public static async Task<DownloadedResultItem> FetchResultItemComplete(string resultId)
+        {
+            // TEMP - should fetch from server
+            DownloadedResultItem ret = null;
+
+            foreach(DownloadedResultItem item in session.resultsOnServer)
+            {
+                if(item.id == resultId)
+                {
+                    ret = item;
+                    ret.resources = null;
+                    break;
+                }
+            }
+            if (ret == null) return null; // Not found on 'server'
+
+            string extractPath = cacheDir + "/DL_" + resultId;
+
+            ret.resources = new Dictionary<string, string>();
+            ret.scenario = Scenario.GetWithId(session.scenarios, ret.scenarioId);
+
+            // No need to download + unpack zip if this folder already exists
+            if(Directory.Exists(extractPath))
+            {
+                string[] files = Directory.GetFiles(extractPath);
+                foreach(string file in files)
+                {
+                    ret.resources.Add(Path.GetFileName(file), file);
+                }
+
+                return ret;
+            }
+
+            // Data isn't already present - download the zip and extract it!
+            // TODO zip needs to download
+            ZipFile zip = null;
+            try
+            {
+                //Unzip the downloaded file and add references to its contents in the resources dictionary
+                zip = new ZipFile(File.OpenRead(ret.dataLoc));
+
+                foreach (ZipEntry entry in zip)
+                {
+                    string filename = Path.Combine(extractPath, entry.Name);
+                    byte[] buffer = new byte[4096];
+                    System.IO.Stream zipStream = zip.GetInputStream(entry);
+                    using (FileStream streamWriter = File.Create(filename))
+                    {
+                        StreamUtils.Copy(zipStream, streamWriter, buffer);
+                    }
+                    ret.resources.Add(entry.Name, filename);
+                }
+
+            }
+            finally
+            {
+                if (zip != null)
+                {
+                    zip.IsStreamOwner = true;
+                    zip.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Polls the server for all available feedback for the given result
+        /// </summary>
+        /// <param name="resultId"></param>
+        /// <returns></returns>
+        public static FeedbackItem[] FetchFeedback(string resultId)
+        {
+            // TEMP
+            FeedbackItem[] arr = new FeedbackItem[5];
+
+            for(int i = 0; i < arr.Length; i++)
+            {
+                FeedbackItem fb = new FeedbackItem();
+                fb.comments = "Placeholder feedback to do with your speech - this is feedback item number " + i;
+                fb.id = "fb" + i;
+                fb.resultId = resultId;
+                fb.easeOfListeningRating = rand.Next(1, 5);
+            }
+
+            return arr;
         }
     }
 
@@ -141,7 +246,7 @@ namespace SpeechingCommon
         public List<User> friends;
 
         // TEMP - will be pulled from the server eventually but store here for now TODO
-        public List<ResultItem> resultsOnServer; 
+        public List<DownloadedResultItem> resultsOnServer; 
 
         public SessionData()
         {
@@ -150,18 +255,41 @@ namespace SpeechingCommon
             resultsToUpload = new List<ResultItem>();
             friends = new List<User>();
 
-            resultsOnServer = new List<ResultItem>();
+            resultsOnServer = new List<DownloadedResultItem>();
         }
 
         /// <summary>
         /// Removes the result object from the toUpload list and deletes the files on disk (local deletion only)
         /// </summary>
         /// <param name="result">The item to delete</param>
-        public void DeleteResult(ResultItem result)
+        public void DeleteResult(ResultItem result, bool save = true)
         {
             resultsToUpload.Remove(result);
 
             File.Delete(result.dataLoc);
+
+            if (save) AppData.SaveCurrentData();
+        }
+
+        /// <summary>
+        /// Find all results for the given scenario aand remove them from the upload queue
+        /// </summary>
+        /// <param name="scenarioId"></param>
+        public void DeleteAllPendingForScenario(string scenarioId)
+        {
+            List<ResultItem> toDelete = new List<ResultItem>();
+
+            foreach(ResultItem item in resultsToUpload)
+            {
+                if (item.scenarioId == scenarioId) toDelete.Add(item);
+            }
+
+            foreach(ResultItem del in toDelete)
+            {
+                DeleteResult(del, false);
+            }
+
+            AppData.SaveCurrentData();
         }
     }
 
@@ -205,6 +333,23 @@ namespace SpeechingCommon
             this.uploaded = false;
             this.allowedUsers = new List<string>();
         }
+    }
+
+    public class DownloadedResultItem : ResultItem
+    {
+        // Includes addresses for unzipped recordings and scenario for easy access
+        public Dictionary<string, string> resources;
+        public Scenario scenario;
+    }
+
+    // Are there different feedback models?
+    public class FeedbackItem
+    {
+        public string id;
+        public string resultId;
+        public string userId; //Null for HipHopAnonymous?
+        public int easeOfListeningRating;
+        public string comments;
     }
 
     public class EventContent

@@ -30,7 +30,7 @@ namespace Droid_PeopleWithParkinsons
 
         private void uploadAllButton_Click(object sender, EventArgs e)
         {
-            AppData.UploadAllResults();
+            AppData.PushAllResults();
             RefreshList();
         }
 
@@ -51,7 +51,7 @@ namespace Droid_PeopleWithParkinsons
             .SetCancelable(true)
             .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
             .SetPositiveButton("Upload", (s, a) => {
-                AppData.UploadResult(AppData.session.resultsToUpload[args.Position]);
+                AppData.PushResult(AppData.session.resultsToUpload[args.Position]);
                 RefreshList();
             })
             .SetNeutralButton("Cancel", (s, a) => { })

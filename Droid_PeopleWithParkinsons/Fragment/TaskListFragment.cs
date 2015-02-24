@@ -37,7 +37,7 @@ namespace Droid_PeopleWithParkinsons
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
                     .SetTitle("Existing results found...")
-                    .SetMessage("Redoing this scenario will wipe unuploaded progress for it. Are you sure you want to do this?")
+                    .SetMessage("Re-doing this scenario will wipe any progress for it which hasn't been uploaded. Are you sure you want to do this?")
                     .SetPositiveButton("Continue", (senderAlert, confArgs) => { StartActivity(intent); })
                     .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
                     .SetCancelable(true);

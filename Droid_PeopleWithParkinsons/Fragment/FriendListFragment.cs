@@ -26,7 +26,7 @@ namespace Droid_PeopleWithParkinsons
 
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainFriendsListHeader, null);
             mainList = view.FindViewById<ListView>(Resource.Id.mainFriendsList);
-            mainList.AddHeaderView(header);
+            mainList.AddHeaderView(header, null, false);
             mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.session.friends.ToArray());
             mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
@@ -51,7 +51,7 @@ namespace Droid_PeopleWithParkinsons
             alert.SetPositiveButton("Send", (senderAlert, confArgs) =>
             {
                 //TODO make awaitable
-                bool recognised = AppData.SendFriendRequest(textInput.Text);
+                bool recognised = AppData.PushFriendRequest(textInput.Text);
 
                 if(recognised)
                 {
