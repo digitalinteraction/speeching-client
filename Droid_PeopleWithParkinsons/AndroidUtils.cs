@@ -284,7 +284,7 @@ namespace Droid_PeopleWithParkinsons
 
                 if (results[position].uploaded)
                 {
-                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Uploaded";
+                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "";
                 }
                 else
                 {

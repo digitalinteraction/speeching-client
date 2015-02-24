@@ -8,7 +8,7 @@ using System;
 
 namespace Droid_PeopleWithParkinsons
 {
-    public class UploadededFragment : Android.Support.V4.App.Fragment
+    public class SubmittedListFragment : Android.Support.V4.App.Fragment
     {
         private ListView exportList;
 
@@ -22,19 +22,23 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnCreateView(inflater, container, savedInstanceState);
 
-            var view = inflater.Inflate(Resource.Layout.UploadsActivity, container, false);
+            var view = inflater.Inflate(Resource.Layout.SubmittedFragment, container, false);
 
-            exportList = view.FindViewById<ListView>(Resource.Id.uploads_list);
-            exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+            View header = Activity.LayoutInflater.Inflate(Resource.Layout.SubmittedHeader, null);
+
+            exportList = view.FindViewById<ListView>(Resource.Id.submitted_list);
+            exportList.AddHeaderView(header);
+            exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.submitted_list, AppData.GetSubmittedResults());
             exportList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
+                ResultItem res = AppData.session.resultsOnServer[args.Position - 1]; //TEMP
+
                 AlertDialog alert = new AlertDialog.Builder(Activity)
-                .SetTitle("Scenario Complete!")
+                .SetTitle("Your submission for '" + Scenario.GetWithId(AppData.session.scenarios, res.scenarioId).title + "'")
                 .SetMessage("What would you like to do with the results of this scenario?")
                 .SetCancelable(true)
-                .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
-                .SetPositiveButton("Upload", (s, a) => { })
-                .SetNeutralButton("Cancel", (s, a) => { })
+                .SetNegativeButton("Delete From Server", (EventHandler<DialogClickEventArgs>)null)
+                .SetNeutralButton("Close", (s, a) => { })
                 .Create();
 
                 alert.Show();

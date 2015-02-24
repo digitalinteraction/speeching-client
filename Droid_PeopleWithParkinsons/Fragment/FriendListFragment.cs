@@ -3,12 +3,14 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
+using System;
 
 namespace Droid_PeopleWithParkinsons
 {
     public class FriendListFragment : Android.Support.V4.App.Fragment
     {
         private ListView mainList;
+        private Button addFriendBtn;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -22,22 +24,50 @@ namespace Droid_PeopleWithParkinsons
 
             var view = inflater.Inflate(Resource.Layout.MainFriendsListFragment, container, false);
 
-            User[] users = new User[12];
-
-            for (int i = 0; i < users.Length; i++)
-            {
-                users[i] = new User();
-                users[i].name = "user " + i;
-            }
-
+            View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainFriendsListHeader, null);
             mainList = view.FindViewById<ListView>(Resource.Id.mainFriendsList);
-            mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, users);
+            mainList.AddHeaderView(header);
+            mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.session.friends.ToArray());
             mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 this.Activity.StartActivity(typeof(RecordSoundRunActivity));
             };
 
+            addFriendBtn = view.FindViewById<Button>(Resource.Id.addFriendButton);
+            addFriendBtn.Click += addFriendBtn_Click;
+
             return view;
+        }
+
+        void addFriendBtn_Click(object sender, System.EventArgs e)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(Activity);
+            alert.SetTitle("Add Friend");
+            alert.SetMessage("Enter your friend's username to send a friend request:");
+
+            EditText textInput = new EditText(Activity);
+            alert.SetView(textInput);
+
+            alert.SetPositiveButton("Send", (senderAlert, confArgs) =>
+            {
+                //TODO make awaitable
+                bool recognised = AppData.SendFriendRequest(textInput.Text);
+
+                if(recognised)
+                {
+                    // Redraw the list
+                    mainList.Adapter = null;
+                    mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.session.friends.ToArray());
+                }
+                else
+                {
+                    // TODO alert, re-enter text
+                }
+                
+            });
+            alert.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
+            alert.SetCancelable(true);
+            alert.Show();
         }
 
     
@@ -72,6 +102,8 @@ namespace Droid_PeopleWithParkinsons
 
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
+                if(users[position].status == User.FriendStatus.Denied) return null;
+
                 View view = convertView;
 
                 if (view == null)
@@ -80,6 +112,8 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 view.FindViewById<TextView>(Resource.Id.mainFriendListName).Text = users[position].name;
+                view.FindViewById<TextView>(Resource.Id.mainFriendListStatus).Text = users[position].status.ToString();
+
                 return view;
             }
         }

@@ -33,8 +33,20 @@ namespace Droid_PeopleWithParkinsons
                 Intent intent = new Intent(Activity, typeof(ScenarioActivity));
                 intent.PutExtra("ScenarioId", AppData.session.scenarios[args.Position].id);
 
-                StartActivity(intent);
-                //this.Activity.StartActivity(typeof(RecordSoundRunActivity));
+                if(AppData.CheckIfScenarioCompleted(AppData.session.scenarios[args.Position].id))
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
+                    .SetTitle("Existing results found...")
+                    .SetMessage("Redoing this scenario will wipe unuploaded progress for it. Are you sure you want to do this?")
+                    .SetPositiveButton("Continue", (senderAlert, confArgs) => { StartActivity(intent); })
+                    .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
+                    .SetCancelable(true);
+                    alert.Show();
+                }
+                else
+                {
+                    StartActivity(intent);
+                }
             };
 
             return view;

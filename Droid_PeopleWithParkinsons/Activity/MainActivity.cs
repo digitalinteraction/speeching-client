@@ -159,7 +159,7 @@ namespace Droid_PeopleWithParkinsons
                     case 1:
                         return new FriendListFragment();
                     case 2:
-                        return new UploadededFragment();
+                        return new SubmittedListFragment();
                     default:
                         return null;
                 }

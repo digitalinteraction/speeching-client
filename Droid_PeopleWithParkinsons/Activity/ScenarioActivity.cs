@@ -350,7 +350,7 @@ namespace Droid_PeopleWithParkinsons
                 string filter = @"-final\.zip$"; // Don't include yourself, you daft thing
                 fastZip.CreateZip(zipPath, localExportDirectory, recurse, filter);
 
-                ResultItem res = new ResultItem(scenario.id, zipPath);
+                ResultItem res = new ResultItem(scenario.id, zipPath, AppData.session.currentUser.id);
                 AppData.session.resultsToUpload.Add(res);
                 AppData.SaveCurrentData();
 

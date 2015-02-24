@@ -8,21 +8,13 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:id="@+id/taskList_title"
         android:textSize="35dp" />
-    <TextView
-        android:text="Here are the tasks and scenarios that have been made available to you..."
-        android:layout_width="fill_parent"
-        android:layout_below="@id/taskList_title"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/taskList_message"
-        android:textSize="18dp" />
     <GridView
         android:id="@+id/mainActivitiesList"
-        android:layout_below="@id/taskList_message"
+        android:layout_below="@id/taskList_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"

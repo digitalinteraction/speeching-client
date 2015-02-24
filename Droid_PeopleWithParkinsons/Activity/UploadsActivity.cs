@@ -25,6 +25,22 @@ namespace Droid_PeopleWithParkinsons
             uploadsList.ItemClick += OnItemTap;
 
             uploadAllButton = FindViewById<Button>(Resource.Id.uploads_start);
+            uploadAllButton.Click += uploadAllButton_Click;
+        }
+
+        private void uploadAllButton_Click(object sender, EventArgs e)
+        {
+            AppData.UploadAllResults();
+            RefreshList();
+        }
+
+        /// <summary>
+        /// Refresh the listview if the data has changed
+        /// </summary>
+        private void RefreshList()
+        {
+            uploadsList.Adapter = null;
+            uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
         }
 
         public void OnItemTap(object sender, AdapterView.ItemClickEventArgs args)
@@ -34,7 +50,10 @@ namespace Droid_PeopleWithParkinsons
             .SetMessage("What would you like to do with the results of this scenario?")
             .SetCancelable(true)
             .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
-            .SetPositiveButton("Upload", (s, a) => { })
+            .SetPositiveButton("Upload", (s, a) => {
+                AppData.UploadResult(AppData.session.resultsToUpload[args.Position]);
+                RefreshList();
+            })
             .SetNeutralButton("Cancel", (s, a) => { })
             .Create();
 
@@ -50,9 +69,7 @@ namespace Droid_PeopleWithParkinsons
                 confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>
                 {
                     AppData.session.DeleteResult(AppData.session.resultsToUpload[args.Position]);
-
-                    uploadsList.Adapter = null;
-                    uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+                    RefreshList();
 
                     alert.Dismiss();
                 });

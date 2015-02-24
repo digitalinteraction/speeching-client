@@ -31,11 +31,12 @@ namespace SpeechingCommon
                     return true;
                 }
             }
-            catch
+            catch(Exception e)
             {
-                return false;
+                Console.WriteLine("Error loading data: " + e);
             }
 
+            session = new SessionData();
             return false;
         }
 
@@ -62,6 +63,74 @@ namespace SpeechingCommon
                 Console.WriteLine("ERROR SAVING DATA: " + e);
             }
         }
+
+        /// <summary>
+        /// Get a list of the user's submitted data from the server
+        /// </summary>
+        public static ResultItem[] GetSubmittedResults()
+        {
+            return session.resultsOnServer.ToArray(); //TEMP
+        }
+
+        /// <summary>
+        /// Uploads a single result package to the server
+        /// </summary>
+        /// <param name="toUpload">The item to upload</param>
+        public static void UploadResult(ResultItem toUpload)
+        {
+            session.resultsToUpload.Remove(toUpload);
+            toUpload.uploaded = true;
+            session.resultsOnServer.Add(toUpload); //TEMP
+            SaveCurrentData();
+        }
+
+        /// <summary>
+        /// Complete all pending uploads
+        /// </summary>
+        public static void UploadAllResults()
+        {
+            for(int i = 0; i < session.resultsToUpload.Count; i++)
+            {
+                UploadResult(session.resultsToUpload[i]);
+            }
+        }
+        
+        /// <summary>
+        /// Checks to see if the scenario has exported data either locally or on the server
+        /// </summary>
+        /// <param name="id">The id of the scenario</param>
+        /// <returns>Is Completed? bool</returns>
+        public static bool CheckIfScenarioCompleted(string id)
+        {
+            for(int i = 0; i < session.resultsToUpload.Count; i++)
+            {
+                if (session.resultsToUpload[i].scenarioId == id) return true;
+            }
+
+            for (int i = 0; i < session.resultsOnServer.Count; i++)
+            {
+                if (session.resultsOnServer[i].scenarioId == id) return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Sends a friend request to the server
+        /// </summary>
+        /// <param name="username">The unique username of the friend</param>
+        /// <returns>User found true / not recognised false</returns>
+        public static bool SendFriendRequest(string username)
+        {
+            // TODO
+            User added = new User();
+            added.name = username;
+            added.status = User.FriendStatus.Sent;
+            session.friends.Add(added);
+
+            SaveCurrentData();
+            return true;
+        }
     }
 
     public class SessionData
@@ -71,8 +140,21 @@ namespace SpeechingCommon
         public List<ResultItem> resultsToUpload;
         public List<User> friends;
 
+        // TEMP - will be pulled from the server eventually but store here for now TODO
+        public List<ResultItem> resultsOnServer; 
+
+        public SessionData()
+        {
+            currentUser = new User();
+            scenarios = new List<Scenario>();
+            resultsToUpload = new List<ResultItem>();
+            friends = new List<User>();
+
+            resultsOnServer = new List<ResultItem>();
+        }
+
         /// <summary>
-        /// Removes the result object from the toUpload list and deletes the files on disk
+        /// Removes the result object from the toUpload list and deletes the files on disk (local deletion only)
         /// </summary>
         /// <param name="result">The item to delete</param>
         public void DeleteResult(ResultItem result)
@@ -86,11 +168,13 @@ namespace SpeechingCommon
     public class User
     {
         public enum UserType { Patient, Therapist, Rater };
+        public enum FriendStatus { Accepted, Denied, Sent, Received };
 
         public string id;
         public string name;
         public string avatar;
         public UserType userType;
+        public FriendStatus status;
     }
 
     public class UserTask
@@ -111,12 +195,12 @@ namespace SpeechingCommon
         public List<string> allowedUsers;
         public DateTime completedAt;
 
-        public ResultItem(string scenarioId, string dataLoc)
+        public ResultItem(string scenarioId, string dataLoc, string userId)
         {
             this.completedAt = DateTime.Now;
             this.id = scenarioId + "_" + completedAt.ToString();
             this.scenarioId = scenarioId;
-            this.userId = AppData.session.currentUser.id;
+            this.userId = userId;
             this.dataLoc = dataLoc;
             this.uploaded = false;
             this.allowedUsers = new List<string>();
@@ -161,6 +245,13 @@ namespace SpeechingCommon
 
             return null;
         }
+    }
+
+    public class ServerError
+    {
+        public string id;
+        public string title;
+        public string message;
     }
 
     public class Utils

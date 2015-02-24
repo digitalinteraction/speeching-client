@@ -90,7 +90,7 @@
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
-    <Compile Include="Fragment\UploadedFragment.cs" />
+    <Compile Include="Fragment\SubmittedListFragment.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="Shared\ContentUploader.cs" />
@@ -157,6 +157,15 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\UploadsListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainFriendsListHeader.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SubmittedFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SubmittedHeader.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

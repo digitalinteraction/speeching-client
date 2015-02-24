@@ -22,4 +22,15 @@
         android:layout_centerVertical="true"
         android:textColor="#999999"
         android:padding="15dp" />
+    <TextView
+        android:id="@+id/mainFriendListStatus"
+        android:text="ACCEPTED"
+        android:layout_toLeftOf="@id/mainFriendListAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textColor="#999999"
+        android:layout_marginRight="10dp" />
 </RelativeLayout>
