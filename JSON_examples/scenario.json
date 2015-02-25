@@ -5,6 +5,7 @@
 		"name"	: "Justin Time"
 	},
 	"title" : "Getting the Bus",
+	"icon"	: "http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png",
 	"resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
 	"events" : [
 	{

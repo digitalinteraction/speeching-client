@@ -12,11 +12,11 @@
         android:id="@+id/friendsList_title"
         android:textSize="35dp" />
     <TextView
-        android:text="Manage your friends here!"
+        android:text="Manage your friends list here! Adding friends makes it easier to quickly share your results with important people."
         android:layout_width="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:id="@+id/friendsList_message"
-        android:textSize="23dp" />
+        android:textSize="18dp" />
 </LinearLayout>

@@ -25,7 +25,7 @@
         android:id="@+id/uploads_title"
         android:textSize="35dp" />
     <TextView
-        android:text="Choose who can access your results and upload them to the cloud service!"
+        android:text="Upload your results to the cloud service!"
         android:layout_width="fill_parent"
         android:layout_below="@id/uploads_title"
         android:layout_marginTop="12dp"

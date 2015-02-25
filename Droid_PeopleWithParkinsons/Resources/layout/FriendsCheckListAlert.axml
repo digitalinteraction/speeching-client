@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="12dp"
+        android:textSize="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp" />
     <ListView

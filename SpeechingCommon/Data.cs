@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -385,6 +386,33 @@ namespace SpeechingCommon
 
             AppData.SaveCurrentData();
         }
+
+        /// <summary>
+        /// Prepare a new scenario based off of the given JSON
+        /// </summary>
+        /// <param name="json"></param>
+        public async void ProcessNewScenario(string json)
+        {
+            Scenario scenario = JsonConvert.DeserializeObject<Scenario>(json);
+            scenario.id = "scenario_" + AppData.rand.Next().ToString();
+
+            string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(scenario.icon);
+
+            // Download the icon if it isn't already stored locally
+            if(!File.Exists(localIconPath))
+            {
+                WebClient request = new WebClient();
+                await request.DownloadFileTaskAsync(
+                    new Uri(scenario.icon),
+                    localIconPath
+                    );
+                request.Dispose();
+                request = null;
+                scenarios.Add(scenario);
+            }
+
+            scenario.icon = localIconPath;
+        }
     }
 
     public class User
@@ -496,6 +524,7 @@ namespace SpeechingCommon
         public User creator;
         public string title;
         public string resources;
+        public string icon;
         public ScenarioEvent[] events;
 
         public static Scenario GetWithId(List<Scenario> coll, string id)

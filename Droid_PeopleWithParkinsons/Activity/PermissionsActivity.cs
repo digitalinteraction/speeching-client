@@ -86,12 +86,20 @@ namespace Droid_PeopleWithParkinsons
 
         void addOtherBtn_Click(object sender, EventArgs e)
         {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
             EditText textInput = new EditText(this);
-            alert.SetTitle("Add another user");
-            alert.SetMessage("Enter the person's username to give access permissions for this content:");
-            alert.SetView(textInput);
-            alert.SetPositiveButton("Send", (senderAlert, confArgs) =>
+            AlertDialog alert = new AlertDialog.Builder(this)
+            .SetTitle("Add another user")
+            .SetMessage("Enter the person's username to give access permissions for this content:")
+            .SetView(textInput)
+            .SetPositiveButton("Give Permission", (EventHandler<DialogClickEventArgs>)null)
+            .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
+            .SetCancelable(true)
+            .Create();
+
+            alert.Show();
+
+            Button positive = alert.GetButton((int)DialogButtonType.Positive);
+            positive.Click += delegate(object clickSender, EventArgs args)
             {
                 //TODO make awaitable
                 User foundUser = AppData.FetchUser(textInput.Text);
@@ -100,16 +108,17 @@ namespace Droid_PeopleWithParkinsons
                 {
                     resultItem.allowedUsers.Add(foundUser.id);
                     UpdateLayout();
+                    alert.Dismiss();
                 }
                 else
                 {
-                    // TODO alert, re-enter text
+                    AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+                    confirm.SetTitle("User not found!");
+                    confirm.SetMessage("No user was found with the given username!");
+                    confirm.SetPositiveButton("Ok", (senderAlert, confArgs) => { });
+                    confirm.Show();
                 }
-
-            });
-            alert.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
-            alert.SetCancelable(true);
-            alert.Show();
+            };   
         }
 
         /// <summary>
