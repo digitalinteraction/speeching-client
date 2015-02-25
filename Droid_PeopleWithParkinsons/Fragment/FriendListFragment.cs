@@ -27,7 +27,7 @@ namespace Droid_PeopleWithParkinsons
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainFriendsListHeader, null);
             mainList = view.FindViewById<ListView>(Resource.Id.mainFriendsList);
             mainList.AddHeaderView(header, null, false);
-            mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.session.friends.ToArray());
+            mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.FetchUsers(AppData.session.currentUser.friends));
             mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 this.Activity.StartActivity(typeof(RecordSoundRunActivity));
@@ -57,7 +57,7 @@ namespace Droid_PeopleWithParkinsons
                 {
                     // Redraw the list
                     mainList.Adapter = null;
-                    mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.session.friends.ToArray());
+                    mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, AppData.FetchUsers(AppData.session.currentUser.friends));
                 }
                 else
                 {

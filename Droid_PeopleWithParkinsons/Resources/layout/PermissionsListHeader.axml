@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView
+        android:text="Access Permissions"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="12dp"
+        android:padding="8dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/permissions_title"
+        android:textSize="35dp" />
+    <TextView
+        android:text="Choose who is able to access this uploaded content."
+        android:layout_width="fill_parent"
+        android:layout_below="@id/permissions_title"
+        android:layout_margin="12dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/permissions_message"
+        android:textSize="20dp" />
+</RelativeLayout>

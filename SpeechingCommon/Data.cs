@@ -82,6 +82,23 @@ namespace SpeechingCommon
         }
 
         /// <summary>
+        /// Get the submission with the given ID
+        /// </summary>
+        /// <param name="resultId"></param>
+        /// <returns></returns>
+        public static ResultItem FetchSubmittedResult(string resultId)
+        {
+            // Check if the item exists in cache before polling the server
+            foreach(ResultItem result in session.resultsOnServer)
+            {
+                if(result.id == resultId) return result;
+            }
+
+            //TODO poll server
+            return null;
+        }
+
+        /// <summary>
         /// Uploads a single result package to the server
         /// </summary>
         /// <param name="toUpload">The item to upload</param>
@@ -89,7 +106,7 @@ namespace SpeechingCommon
         {
             session.resultsToUpload.Remove(toUpload);
             toUpload.uploaded = true;
-            session.resultsOnServer.Add((DownloadedResultItem)toUpload); //TEMP
+            session.resultsOnServer.Add(toUpload); //TEMP
             SaveCurrentData();
         }
 
@@ -110,7 +127,7 @@ namespace SpeechingCommon
         public static void PushResultDeletion(ResultItem toDelete)
         {
             //TEMP
-            session.resultsOnServer.Remove((DownloadedResultItem)toDelete);
+            session.resultsOnServer.Remove(toDelete);
             SaveCurrentData();
         }
         
@@ -130,17 +147,93 @@ namespace SpeechingCommon
         }
 
         /// <summary>
+        /// Fetch a single user using the given id - TEMP will search by email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public static User FetchUser(string username)
+        {
+            foreach (User user in session.userCache)
+            {
+                if (user.name == username)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Polls the server for the users of the given IDs
+        /// </summary>
+        /// <param name="userIds"></param>
+        /// <returns></returns>
+        public static User[] FetchUsers(List<string> userIds)
+        {
+            List<User> users = new List<User>();
+
+            //TEMP - will be polling the server (although checking the cache would be useful...)
+            foreach(User user in session.userCache)
+            {
+                if(userIds.Contains(user.id))
+                {
+                    users.Add(user);
+                    if (users.Count >= userIds.Count) break; //Found all of them! :)
+                }
+            }
+
+            return users.ToArray();
+        }
+
+        /// <summary>
+        /// Filtered version of the friends list showing only users who have accepted a friend request
+        /// </summary>
+        /// <returns></returns>
+        public static List<User> FetchAcceptedFriends()
+        {
+            List<User> toRet = new List<User>();
+            User[] allFriends = AppData.FetchUsers(AppData.session.currentUser.friends);
+
+            foreach (User friend in allFriends)
+            {
+                if (friend.id != AppData.session.currentUser.id && friend.status == User.FriendStatus.Accepted)
+                {
+                    toRet.Add(friend);
+                }
+            }
+
+            return toRet;
+        }
+
+        /// <summary>
         /// Sends a friend request to the server
         /// </summary>
         /// <param name="username">The unique username of the friend</param>
         /// <returns>User found true / not recognised false</returns>
         public static bool PushFriendRequest(string username)
         {
-            // TODO
+            // TODO push friend request to the server, which will return user details if successful
             User added = new User();
             added.name = username;
             added.status = User.FriendStatus.Sent;
-            session.friends.Add(added);
+            added.id = DateTime.Now.ToLongTimeString();
+
+            // TODO Check if the server returns an error saying they're already friends, or the user doesn't exist etc
+
+            // If the user has already been cached, update the object. Else, just add it
+            bool cached = false;
+            for (int i = 0; i < session.userCache.Count; i++)
+            {
+                if (session.userCache[i].id == added.id)
+                {
+                    session.userCache[i] = added;
+                    cached = true;
+                    break;
+                }
+            }
+            if(!cached) session.userCache.Add(added);
+
+            session.currentUser.friends.Add(added.id);
 
             SaveCurrentData();
             return true;
@@ -151,16 +244,16 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="resultId"></param>
         /// <returns></returns>
-        public static async Task<DownloadedResultItem> FetchResultItemComplete(string resultId)
+        public static async Task<ResultPackage> FetchResultItemComplete(string resultId)
         {
-            // TEMP - should fetch from server
-            DownloadedResultItem ret = null;
+            ResultPackage ret = null;
 
-            foreach(DownloadedResultItem item in session.resultsOnServer)
+            // TEMP - should fetch from server
+            foreach(ResultItem item in session.resultsOnServer)
             {
                 if(item.id == resultId)
                 {
-                    ret = item;
+                    ret = new ResultPackage(item);
                     ret.resources = null;
                     break;
                 }
@@ -170,7 +263,7 @@ namespace SpeechingCommon
             string extractPath = cacheDir + "/DL_" + resultId;
 
             ret.resources = new Dictionary<string, string>();
-            ret.scenario = Scenario.GetWithId(session.scenarios, ret.scenarioId);
+            ret.scenario = Scenario.GetWithId(session.scenarios, ret.resultItem.scenarioId);
 
             // No need to download + unpack zip if this folder already exists
             if(Directory.Exists(extractPath))
@@ -190,7 +283,7 @@ namespace SpeechingCommon
             try
             {
                 //Unzip the downloaded file and add references to its contents in the resources dictionary
-                zip = new ZipFile(File.OpenRead(ret.dataLoc));
+                zip = new ZipFile(File.OpenRead(ret.resultItem.dataLoc));
 
                 foreach (ZipEntry entry in zip)
                 {
@@ -203,7 +296,6 @@ namespace SpeechingCommon
                     }
                     ret.resources.Add(entry.Name, filename);
                 }
-
             }
             finally
             {
@@ -211,8 +303,11 @@ namespace SpeechingCommon
                 {
                     zip.IsStreamOwner = true;
                     zip.Close();
+                    File.Delete(ret.resultItem.dataLoc);
                 }
             }
+
+            return ret;
         }
 
         /// <summary>
@@ -243,19 +338,18 @@ namespace SpeechingCommon
         public User currentUser;
         public List<Scenario> scenarios;
         public List<ResultItem> resultsToUpload;
-        public List<User> friends;
+        public List<User> userCache;
 
         // TEMP - will be pulled from the server eventually but store here for now TODO
-        public List<DownloadedResultItem> resultsOnServer; 
+        public List<ResultItem> resultsOnServer; 
 
         public SessionData()
         {
             currentUser = new User();
             scenarios = new List<Scenario>();
             resultsToUpload = new List<ResultItem>();
-            friends = new List<User>();
-
-            resultsOnServer = new List<DownloadedResultItem>();
+            userCache = new List<User>();
+            resultsOnServer = new List<ResultItem>();
         }
 
         /// <summary>
@@ -303,6 +397,12 @@ namespace SpeechingCommon
         public string avatar;
         public UserType userType;
         public FriendStatus status;
+        public List<string> friends;
+
+        public User()
+        {
+            friends = new List<string>();
+        }
     }
 
     public class UserTask
@@ -320,6 +420,7 @@ namespace SpeechingCommon
         public string scenarioId;
         public string dataLoc;
         public bool uploaded;
+        public bool isPublic;
         public List<string> allowedUsers;
         public DateTime completedAt;
 
@@ -331,15 +432,31 @@ namespace SpeechingCommon
             this.userId = userId;
             this.dataLoc = dataLoc;
             this.uploaded = false;
+            this.isPublic = false;
             this.allowedUsers = new List<string>();
+        }
+
+        /// <summary>
+        /// Commit the current permissions list to the server
+        /// </summary>
+        public void PushPermissionUpdates()
+        {
+            //TODO
         }
     }
 
-    public class DownloadedResultItem : ResultItem
+    public class ResultPackage
     {
         // Includes addresses for unzipped recordings and scenario for easy access
         public Dictionary<string, string> resources;
         public Scenario scenario;
+        public ResultItem resultItem;
+
+        public ResultPackage(ResultItem result)
+        {
+            resultItem = result;
+            resources = new Dictionary<string, string>();
+        }
     }
 
     // Are there different feedback models?

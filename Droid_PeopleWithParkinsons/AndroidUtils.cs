@@ -17,7 +17,7 @@ using SpeechingCommon;
 
 namespace Droid_PeopleWithParkinsons
 {
-    public class AndroidUtils
+    public static class AndroidUtils
     {
         /// <summary>
         /// Add a tab to the given activity's ActionBar
@@ -49,6 +49,45 @@ namespace Droid_PeopleWithParkinsons
                 args.FragmentTransaction.Add(fragContainerId, view);
             };
             activity.ActionBar.AddTab(tab);
+        }
+
+        /// <summary>
+        /// Cast from Java Object to class type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T Cast<T>(this Java.Lang.Object obj) where T : class
+        {
+            var propertyInfo = obj.GetType().GetProperty("Instance");
+            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as T;
+        }
+
+        /// <summary>
+        /// Helper function for creating alert dialogues
+        /// </summary>
+        public static AlertDialog.Builder CreateAlert(Activity context, string title, string message, 
+                                        string posLabel = null, EventHandler<DialogClickEventArgs> posAction = null,
+                                        string negLabel = null, EventHandler<DialogClickEventArgs> negAction = null,
+                                        string neuLabel = null, EventHandler<DialogClickEventArgs> neuAction = null, bool cancelable = true)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                .SetTitle(title)
+                .SetMessage(message);
+
+            if (posAction != null)
+                alert.SetPositiveButton(posLabel, posAction);
+
+            if(negAction != null)
+                alert.SetNegativeButton(negLabel, negAction);
+
+            if(neuAction != null)
+                alert.SetNeutralButton(neuLabel, neuAction);
+
+            alert.SetCancelable(cancelable);
+            alert.Show();
+
+            return alert;
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace Droid_PeopleWithParkinsons
     public class SubmittedListFragment : Android.Support.V4.App.Fragment
     {
         private ListView exportList;
+        private ResultItem res;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -32,7 +33,7 @@ namespace Droid_PeopleWithParkinsons
             exportList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 // The list's header borks indexing
-                ResultItem res = AppData.session.resultsOnServer[args.Position - 1]; //TEMP
+                res = AppData.session.resultsOnServer[args.Position - 1]; //TEMP
 
                 View alertView = Activity.LayoutInflater.Inflate(Resource.Layout.SubmittedAlert, null);
 
@@ -78,7 +79,9 @@ namespace Droid_PeopleWithParkinsons
 
         void permissionsBtn_Click(object sender, EventArgs e)
         {
-            Toast.MakeText(Activity, "Permissions", ToastLength.Short).Show();
+            Intent intent = new Intent(Activity, typeof(PermissionsActivity));
+            intent.PutExtra("ResultId", res.id);
+            StartActivity(intent);
         }
 
         void feedbackBtn_Click(object sender, EventArgs e)

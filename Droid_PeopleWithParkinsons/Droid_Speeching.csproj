@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\PermissionsActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Activity\SplashActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
@@ -169,6 +170,15 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SubmittedAlert.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PermissionsActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FriendsCheckListAlert.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PermissionsListHeader.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
