@@ -53,7 +53,7 @@
         android:visibility="visible">
     <!-- TODO make this a mini fragment to allow for video instead -->
         <ImageView
-            android:src="@drawable/driver"
+            android:src="@drawable/Icon"
             android:id="@+id/scenarioImage"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"

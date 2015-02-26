@@ -22,7 +22,7 @@
 	},
 	{
 		"content" : {
-			"type"	 : "VIDEO",
+			"type"	 : "AUDIO",
 			"visual" : "driver.jpg",
 			"audio"	 : "thanks.mp3",
 			"text"	 : "No problem at all, looks like you have a valid card. Take a seat!"

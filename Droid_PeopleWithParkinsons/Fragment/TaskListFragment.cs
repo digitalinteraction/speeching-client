@@ -99,6 +99,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 view.FindViewById<TextView>(Resource.Id.mainListActivityTitle).Text = tasks[position].title;
+                view.FindViewById<ImageView>(Resource.Id.mainListActivityIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(tasks[position].icon)));
                 return view;
             }
         }

@@ -1,0 +1,60 @@
+{
+	"id" : "testScenario3",
+	"creator" : {
+		"id"	: "thatId",
+		"name"	: "Justin Time"
+	},
+	"title" : "Ordering a Pizza",
+	"icon"	: "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
+	"resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
+	"events" : [
+	{
+		"content" : {
+			"type"	 : "AUDIO",
+			"visual" : "phone.jpg",
+			"audio"	 : "hello.mp3",
+			"text"	 : "You are ordering pizza over the phone for both yourself and a friend who has a gluten alergy.\n'Tony's Pizza Parlour, how can I help you?'"
+		},
+		"response" : {
+			"type"	: "promptedSpeech",
+			"prompt" : "Hello, can I order some pizza please?"
+		}
+	},
+	{
+		"content" : {
+			"type"	 : "AUDIO",
+			"visual" : "pizza.jpg",
+			"audio"	 : "order1.mp3",
+			"text"	 : "Of course! What kind would you like?"
+		},
+		"response" : {
+			"type"	: "freeformSpeech",
+			"prompt" : "Describe your favourite pizza"
+		}
+	},
+	{
+		"content" : {
+			"type"	 : "AUDIO",
+			"visual" : "pizza.jpg",
+			"audio"	 : "order2.mp3",
+			"text"	 : "That sounds delicious! Would you like anything else?"
+		},
+		"response" : {
+			"type"	: "freeformSpeech",
+			"prompt" : "Describe another kind of pizza, but make sure it's gluten free!"
+		}
+	},
+	{
+		"content" : {
+			"type"	 : "AUDIO",
+			"visual" : "making.jpg",
+			"audio"	 : "end.mp3",
+			"text"	 : "No problem at all, we can do that. See you soon!"
+		},
+		"response" : {
+			"type"	: "promptedSpeech",
+			"prompt" : "Thank you, see you later."
+		}
+	},
+	]
+}

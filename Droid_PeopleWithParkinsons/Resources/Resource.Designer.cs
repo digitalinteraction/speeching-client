@@ -164,40 +164,37 @@ namespace Droid_PeopleWithParkinsons
 			public const int circle = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int driver = 2130837508;
+			public const int ic_action_mic = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int ic_action_mic = 2130837509;
+			public const int ic_drawer = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int ic_drawer = 2130837510;
+			public const int Icon = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int Icon = 2130837511;
+			public const int iconupload128 = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int iconupload128 = 2130837512;
+			public const int listCell = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int listCell = 2130837513;
+			public const int pagerslidingtabstrip_background_tab = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int pagerslidingtabstrip_background_tab = 2130837514;
+			public const int recordButton = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int recordButton = 2130837515;
+			public const int round_button = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int round_button = 2130837516;
+			public const int round_button_alt = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int round_button_alt = 2130837517;
+			public const int splash = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int splash = 2130837518;
-			
-			// aapt resource value: 0x7f02000f
-			public const int tabs_pattern = 2130837519;
+			public const int tabs_pattern = 2130837518;
 			
 			static Drawable()
 			{
@@ -266,17 +263,17 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090027
 			public const int TextToSpeak = 2131296295;
 			
+			// aapt resource value: 0x7f090049
+			public const int action_about = 2131296329;
+			
 			// aapt resource value: 0x7f090048
-			public const int action_about = 2131296328;
+			public const int action_logOut = 2131296328;
 			
 			// aapt resource value: 0x7f090047
-			public const int action_logOut = 2131296327;
+			public const int action_settings = 2131296327;
 			
 			// aapt resource value: 0x7f090046
-			public const int action_settings = 2131296326;
-			
-			// aapt resource value: 0x7f090045
-			public const int action_uploads = 2131296325;
+			public const int action_uploads = 2131296326;
 			
 			// aapt resource value: 0x7f09000b
 			public const int addFriendButton = 2131296267;
@@ -293,8 +290,8 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f09000d
 			public const int friendsList_title = 2131296269;
 			
-			// aapt resource value: 0x7f090049
-			public const int help = 2131296329;
+			// aapt resource value: 0x7f09004a
+			public const int help = 2131296330;
 			
 			// aapt resource value: 0x7f090006
 			public const int left_drawer = 2131296262;
@@ -350,53 +347,56 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090018
 			public const int permissions_title = 2131296280;
 			
-			// aapt resource value: 0x7f09002e
-			public const int scenarioAuthor = 2131296302;
-			
-			// aapt resource value: 0x7f090033
-			public const int scenarioBreaker = 2131296307;
-			
-			// aapt resource value: 0x7f090030
-			public const int scenarioEventLayout = 2131296304;
-			
-			// aapt resource value: 0x7f090031
-			public const int scenarioImage = 2131296305;
-			
-			// aapt resource value: 0x7f090035
-			public const int scenarioProgressBtn = 2131296309;
+			// aapt resource value: 0x7f09002f
+			public const int scenarioAuthor = 2131296303;
 			
 			// aapt resource value: 0x7f090034
-			public const int scenarioPrompt = 2131296308;
+			public const int scenarioBreaker = 2131296308;
 			
-			// aapt resource value: 0x7f09002f
-			public const int scenarioStartBtn = 2131296303;
-			
-			// aapt resource value: 0x7f090032
-			public const int scenarioText = 2131296306;
+			// aapt resource value: 0x7f090031
+			public const int scenarioEventLayout = 2131296305;
 			
 			// aapt resource value: 0x7f09002d
-			public const int scenarioTitle = 2131296301;
+			public const int scenarioIcon = 2131296301;
+			
+			// aapt resource value: 0x7f090032
+			public const int scenarioImage = 2131296306;
+			
+			// aapt resource value: 0x7f090036
+			public const int scenarioProgressBtn = 2131296310;
+			
+			// aapt resource value: 0x7f090035
+			public const int scenarioPrompt = 2131296309;
+			
+			// aapt resource value: 0x7f090030
+			public const int scenarioStartBtn = 2131296304;
+			
+			// aapt resource value: 0x7f090033
+			public const int scenarioText = 2131296307;
+			
+			// aapt resource value: 0x7f09002e
+			public const int scenarioTitle = 2131296302;
 			
 			// aapt resource value: 0x7f09002c
 			public const int scenarioTitleLayout = 2131296300;
 			
-			// aapt resource value: 0x7f090036
-			public const int submittedAlert_Message = 2131296310;
-			
 			// aapt resource value: 0x7f090037
-			public const int submittedAlert_feedbackBtn = 2131296311;
+			public const int submittedAlert_Message = 2131296311;
 			
 			// aapt resource value: 0x7f090038
-			public const int submittedAlert_permission = 2131296312;
+			public const int submittedAlert_feedbackBtn = 2131296312;
 			
 			// aapt resource value: 0x7f090039
-			public const int submitted_list = 2131296313;
-			
-			// aapt resource value: 0x7f09003b
-			public const int submitted_message = 2131296315;
+			public const int submittedAlert_permission = 2131296313;
 			
 			// aapt resource value: 0x7f09003a
-			public const int submitted_title = 2131296314;
+			public const int submitted_list = 2131296314;
+			
+			// aapt resource value: 0x7f09003c
+			public const int submitted_message = 2131296316;
+			
+			// aapt resource value: 0x7f09003b
+			public const int submitted_title = 2131296315;
 			
 			// aapt resource value: 0x7f090004
 			public const int tabs = 2131296260;
@@ -404,32 +404,32 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090012
 			public const int taskList_title = 2131296274;
 			
-			// aapt resource value: 0x7f090044
-			public const int uploadsList_completedAt = 2131296324;
-			
-			// aapt resource value: 0x7f090041
-			public const int uploadsList_icon = 2131296321;
-			
-			// aapt resource value: 0x7f090043
-			public const int uploadsList_scenarioTitle = 2131296323;
+			// aapt resource value: 0x7f090045
+			public const int uploadsList_completedAt = 2131296325;
 			
 			// aapt resource value: 0x7f090042
-			public const int uploadsList_uploadStatus = 2131296322;
+			public const int uploadsList_icon = 2131296322;
 			
-			// aapt resource value: 0x7f09003f
-			public const int uploads_list = 2131296319;
+			// aapt resource value: 0x7f090044
+			public const int uploadsList_scenarioTitle = 2131296324;
 			
-			// aapt resource value: 0x7f09003e
-			public const int uploads_message = 2131296318;
+			// aapt resource value: 0x7f090043
+			public const int uploadsList_uploadStatus = 2131296323;
 			
 			// aapt resource value: 0x7f090040
-			public const int uploads_start = 2131296320;
+			public const int uploads_list = 2131296320;
+			
+			// aapt resource value: 0x7f09003f
+			public const int uploads_message = 2131296319;
+			
+			// aapt resource value: 0x7f090041
+			public const int uploads_start = 2131296321;
+			
+			// aapt resource value: 0x7f09003e
+			public const int uploads_title = 2131296318;
 			
 			// aapt resource value: 0x7f09003d
-			public const int uploads_title = 2131296317;
-			
-			// aapt resource value: 0x7f09003c
-			public const int uploads_warning = 2131296316;
+			public const int uploads_warning = 2131296317;
 			
 			// aapt resource value: 0x7f090005
 			public const int viewPager = 2131296261;

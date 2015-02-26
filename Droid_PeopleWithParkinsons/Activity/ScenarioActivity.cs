@@ -1,5 +1,6 @@
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.App;
@@ -27,7 +28,7 @@ namespace Droid_PeopleWithParkinsons
         private Button startButton;
 
         // Scenario event screen
-        private RelativeLayout eventLayout;
+        private LinearLayout eventLayout;
         private ImageView eventImage; //TODO make this a sub-fragment to allow switching between image and video
         private TextView eventTranscript;
         private TextView eventPrompt;
@@ -72,7 +73,7 @@ namespace Droid_PeopleWithParkinsons
                 Directory.CreateDirectory(localResourcesDirectory);
                 Directory.CreateDirectory(localExportDirectory);
 
-                localZipPath = Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
+                localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
                 try
                 {
                     PrepareData();
@@ -91,7 +92,7 @@ namespace Droid_PeopleWithParkinsons
 
                 for(int i = 0; i < files.Length; i++)
                 {
-                    resources.Add(Path.GetFileName(files[i]), files[i]);
+                    resources.Add(System.IO.Path.GetFileName(files[i]), files[i]);
                 }
 
                 //Remove existing data from the upload queue
@@ -113,7 +114,7 @@ namespace Droid_PeopleWithParkinsons
             scenarioTitle.Text = scenario.title;
             authorName.Text = scenario.creator.name;
 
-            eventLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioEventLayout);
+            eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
             eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
 
             eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
@@ -180,7 +181,7 @@ namespace Droid_PeopleWithParkinsons
 
                 foreach(ZipEntry entry in zip)
                 {
-                    string filename = Path.Combine(localResourcesDirectory, entry.Name);
+                    string filename = System.IO.Path.Combine(localResourcesDirectory, entry.Name);
                     byte[] buffer = new byte[4096];
                     System.IO.Stream zipStream = zip.GetInputStream(entry);
                     using(FileStream streamWriter = File.Create(filename))
@@ -191,6 +192,10 @@ namespace Droid_PeopleWithParkinsons
                 }
                 
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error! " + e.Message);
+            }
             finally
             {
                 if(zip != null)
@@ -199,7 +204,14 @@ namespace Droid_PeopleWithParkinsons
                     zip.Close();
                 }
             }
-           
+
+            ImageView icon = FindViewById<ImageView>(Resource.Id.scenarioIcon);
+            
+            if(icon != null)
+            {
+                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.icon)));
+            }
+
             RunOnUiThread(() => progress.Hide());
         }
 
@@ -213,6 +225,15 @@ namespace Droid_PeopleWithParkinsons
             {
                 currIndex--;
                 ShowNextEvent();
+            }
+            else
+            {
+                ImageView icon = FindViewById<ImageView>(Resource.Id.scenarioIcon);
+
+                if (icon != null)
+                {
+                    icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.icon)));
+                }
             }
         }
 
@@ -259,11 +280,15 @@ namespace Droid_PeopleWithParkinsons
             eventTranscript.Text = scenario.events[currIndex].content.text;
             if(scenario.events[currIndex].response.type == "freeformSpeech")
             {
-                eventPrompt.Text = "";
+                // Make freeform prompts italic
+                string given = scenario.events[currIndex].response.prompt;
+                eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
+                eventPrompt.Text = (given != null) ? given : ""; ;
             }
             else
             {
                 eventPrompt.Text = scenario.events[currIndex].response.prompt;
+                eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
             }
 
             // Load audio
@@ -311,7 +336,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 recording = true;
-                string fileAdd = Path.Combine(localExportDirectory, "res" + currIndex + ".3gpp");
+                string fileAdd = System.IO.Path.Combine(localExportDirectory, "res" + currIndex + ".3gpp");
                 scenario.events[currIndex].response.resultPath = fileAdd;
                 audioManager.StartRecording(fileAdd);
                 recButton.Text = "Stop";
@@ -343,7 +368,7 @@ namespace Droid_PeopleWithParkinsons
         {
             // Compress exported recordings into zip (Delete existing zip first)
             // TODO set password? https://github.com/icsharpcode/SharpZipLib/wiki/Zip-Samples#anchorCreate  
-            string zipPath = Path.Combine(localExportDirectory, "final.zip");
+            string zipPath = System.IO.Path.Combine(localExportDirectory, "final.zip");
             File.Delete(zipPath);
 
             try

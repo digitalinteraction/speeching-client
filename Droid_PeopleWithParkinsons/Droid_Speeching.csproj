@@ -225,7 +225,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\splash.png" />
-    <AndroidResource Include="Resources\drawable\driver.jpg" />
     <AndroidResource Include="Resources\drawable\iconupload128.png" />
     <AndroidResource Include="Resources\menu\mainActivityActions.xml" />
     <AndroidResource Include="Resources\drawable\background_tabs.xml" />

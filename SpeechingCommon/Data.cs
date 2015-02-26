@@ -35,7 +35,11 @@ namespace SpeechingCommon
 
             try
             {
-                if (File.Exists(cacheDir + "/offline.json"))
+                if(!Directory.Exists(cacheDir))
+                {
+                    Directory.CreateDirectory(cacheDir);
+                }
+                else if (File.Exists(cacheDir + "/offline.json"))
                 {
                     session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"));
                     return true;
@@ -391,27 +395,37 @@ namespace SpeechingCommon
         /// Prepare a new scenario based off of the given JSON
         /// </summary>
         /// <param name="json"></param>
-        public async void ProcessNewScenario(string json)
+        public async Task ProcessNewScenario(string json, bool shouldSave = true)
         {
-            Scenario scenario = JsonConvert.DeserializeObject<Scenario>(json);
-            scenario.id = "scenario_" + AppData.rand.Next().ToString();
-
-            string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(scenario.icon);
-
-            // Download the icon if it isn't already stored locally
-            if(!File.Exists(localIconPath))
+            try
             {
-                WebClient request = new WebClient();
-                await request.DownloadFileTaskAsync(
-                    new Uri(scenario.icon),
-                    localIconPath
-                    );
-                request.Dispose();
-                request = null;
-                scenarios.Add(scenario);
-            }
+                Scenario scenario = JsonConvert.DeserializeObject<Scenario>(json);
+                scenario.id = "scenario_" + AppData.rand.Next().ToString();
 
-            scenario.icon = localIconPath;
+                string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(scenario.icon);
+
+                // Download the icon if it isn't already stored locally
+                if (!File.Exists(localIconPath))
+                {
+                    WebClient request = new WebClient();
+                    await request.DownloadFileTaskAsync(
+                        new Uri(scenario.icon),
+                        localIconPath
+                        );
+                    request.Dispose();
+                    request = null;
+                }
+
+                scenario.icon = localIconPath;
+                scenarios.Add(scenario);
+
+                if (shouldSave) AppData.SaveCurrentData();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error adding new scenario: " + e);
+            }
+            
         }
     }
 
