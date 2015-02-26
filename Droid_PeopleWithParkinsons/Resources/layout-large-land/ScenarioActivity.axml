@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="visible">
+        android:visibility="gone">
         <ImageView
             android:src="@drawable/Icon"
             android:id="@+id/scenarioIcon"
@@ -58,18 +58,29 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:id="@+id/scenarioEventLayout"
-        android:visibility="gone">
-    <!-- TODO make this a mini fragment to allow for video instead -->
+        android:visibility="visible">
+        <VideoView
+            android:src="@drawable/Icon"
+            android:id="@+id/scenarioVideo"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:visibility="visible" />
         <ImageView
             android:src="@drawable/Icon"
             android:id="@+id/scenarioImage"
-            android:layout_alignParentLeft="true"
+            android:layout_gravity="center"
             android:layout_centerVertical="true"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:visibility="gone" />
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="0dp"

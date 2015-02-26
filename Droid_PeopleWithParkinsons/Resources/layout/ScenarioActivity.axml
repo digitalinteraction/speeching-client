@@ -63,18 +63,33 @@
         android:orientation="vertical"
         android:id="@+id/scenarioEventLayout"
         android:visibility="visible">
-    <!-- TODO make this a mini fragment to allow for video instead -->
-        <ImageView
-            android:src="@drawable/Icon"
-            android:id="@+id/scenarioImage"
-            android:layout_width="150dp"
+        <VideoView
+            android:id="@+id/scenarioVideo"
+            android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:scaleType="centerCrop"
-            android:layout_margin="10dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:visibility="visible" />
+        <ImageView
+            android:src="@drawable/Icon"
+            android:id="@+id/scenarioImage"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
         <RelativeLayout
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"

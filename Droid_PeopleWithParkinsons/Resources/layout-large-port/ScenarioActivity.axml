@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="visible">
+        android:visibility="gone">
         <ImageView
             android:src="@drawable/Icon"
             android:id="@+id/scenarioIcon"
@@ -63,12 +63,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/scenarioEventLayout"
-        android:visibility="gone">
-    <!-- TODO make this a mini fragment to allow for video instead -->
-        <ImageView
-            android:src="@drawable/Icon"
-            android:id="@+id/scenarioImage"
-            android:layout_width="300dp"
+        android:visibility="visible">
+        <VideoView
+            android:id="@+id/scenarioVideo"
+            android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:scaleType="centerCrop"
@@ -76,8 +74,23 @@
             android:paddingBottom="25dp"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:visibility="visible" />
+        <ImageView
+            android:src="@drawable/Icon"
+            android:id="@+id/scenarioImage"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:scaleType="centerCrop"
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
         <RelativeLayout
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"

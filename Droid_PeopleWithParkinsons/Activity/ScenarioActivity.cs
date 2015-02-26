@@ -29,7 +29,8 @@ namespace Droid_PeopleWithParkinsons
 
         // Scenario event screen
         private LinearLayout eventLayout;
-        private ImageView eventImage; //TODO make this a sub-fragment to allow switching between image and video
+        private ImageView eventImage;
+        private VideoView eventVideo;
         private TextView eventTranscript;
         private TextView eventPrompt;
         private Button recButton;
@@ -119,6 +120,7 @@ namespace Droid_PeopleWithParkinsons
 
             eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
             eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
+            eventVideo = FindViewById<VideoView>(Resource.Id.scenarioVideo);
 
             recButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
             recButton.Click += SoundRecorderButtonClicked;
@@ -251,6 +253,10 @@ namespace Droid_PeopleWithParkinsons
                 mediaPlayer.Release();
                 mediaPlayer = null;
             }
+            if(eventVideo.IsPlaying)
+            {
+                eventVideo.StopPlayback();
+            }
         }
 
         // Save the current index on rotation so progress isn't lost (used in createview)
@@ -291,29 +297,48 @@ namespace Droid_PeopleWithParkinsons
                 eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
             }
 
-            // Load audio
-            string audioKey = scenario.events[currIndex].content.audio;
-            if(audioKey != null && resources.ContainsKey(audioKey))
+            if(scenario.events[currIndex].content.type == "VIDEO")
             {
-                if (mediaPlayer == null)
-                {
-                    mediaPlayer = new MediaPlayer();
-                }
-                else
-                {
-                    mediaPlayer.Reset();
-                }
-                mediaPlayer.SetDataSource(resources[audioKey]);
-                mediaPlayer.Prepare();
-                mediaPlayer.Looping = false;
-                mediaPlayer.Start();
+                // load video instead of audio + image
+                eventVideo.Visibility = ViewStates.Visible;
+                eventImage.Visibility = ViewStates.Gone;
+                string vidKey = scenario.events[currIndex].content.visual;
+                var vidUri = Android.Net.Uri.Parse( resources[vidKey]);
+                eventVideo.SetVideoURI(vidUri);
+                eventVideo.Start();
             }
-
-            // Load the visual media (TODO add video capabilities)
-            string visualKey = scenario.events[currIndex].content.visual;
-            if(visualKey != null && resources.ContainsKey(visualKey))
+            else
             {
-                eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[visualKey]) ));
+                eventVideo.Visibility = ViewStates.Gone;
+                eventImage.Visibility = ViewStates.Visible;
+
+                // Load the image if it exists
+                string visualKey = scenario.events[currIndex].content.visual;
+                if(visualKey != null && resources.ContainsKey(visualKey))
+                {
+                    eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[visualKey]) ));
+                }
+
+                if (scenario.events[currIndex].content.type == "AUDIO")
+                {
+                    // Load audio
+                    string audioKey = scenario.events[currIndex].content.audio;
+                    if (audioKey != null && resources.ContainsKey(audioKey))
+                    {
+                        if (mediaPlayer == null)
+                        {
+                            mediaPlayer = new MediaPlayer();
+                        }
+                        else
+                        {
+                            mediaPlayer.Reset();
+                        }
+                        mediaPlayer.SetDataSource(resources[audioKey]);
+                        mediaPlayer.Prepare();
+                        mediaPlayer.Looping = false;
+                        mediaPlayer.Start();
+                    }
+                }
             }
         }
 
