@@ -16,8 +16,9 @@
 			"text"	 : "You are ordering pizza over the phone for both yourself and a friend who has a gluten alergy.\n'Tony's Pizza Parlour, how can I help you?'"
 		},
 		"response" : {
-			"type"	: "promptedSpeech",
-			"prompt" : "Hello, can I order some pizza please?"
+			"type"	: "choice",
+			"prompt" : "Choose the spaghetti from the shelf.",
+			"data" : "[\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\" : \"Spaghetti\",\r\n\t\t\t\t\t\"image\": \"phone.jpg\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\" : \"Cereal\",\r\n\t\t\t\t\t\"image\": \"pizza.jpg\"\r\n\t\t\t\t}\r\n\t\t\t]"
 		}
 	},
 	{

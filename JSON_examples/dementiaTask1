@@ -1,19 +1,19 @@
 {
-	"id" : "testScenario3",
+	"id" : "dmentia1",
 	"creator" : {
 		"id"	: "thatId",
 		"name"	: "Justin Time"
 	},
-	"title" : "Missing Puppy",
+	"title" : "Preparing Dinner",
 	"icon"	: "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
 	"resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
 	"events" : [
 	{
 		"content" : {
 			"type"	 : "AUDIO",
-			"visual" : "poster.jpg",
-			"audio"	 : "poster.mp3",
-			"text"	 : "You see a flyer for a missing puppy and decide you want to help the owner find it."
+			"visual" : "spagBol.jpg",
+			"audio"	 : "spag1.mp3",
+			"text"	 : "You've decided to cook spaghetti bolognese for your dinner and will use your favourite recipe."
 		},
 		"response" : {
 			"type"	: "none",
@@ -23,13 +23,23 @@
 	{
 		"content" : {
 			"type"	 : "AUDIO",
-			"visual" : "neighbour.jpg",
-			"audio"	 : "neighbour.mp3",
-			"text"	 : "You knock on your neigbour's door to see if she's seen the puppy."
+			"visual" : "supermarket.jpg",
+			"audio"	 : "spag2.mp3",
+			"text"	 : "You go to the supermarket to buy some of the ingredients."
 		},
 		"response" : {
-			"type"	: "promptedSpeech",
-			"prompt" : "Good morning! I'm looking for a lost puppy. Have you seen one?"
+			"type"	: "choice",
+			"prompt" : "Choose the spaghetti from the shelf.",
+			"data" : [
+				{
+					"name" : "Spaghetti",
+					"image": "spaghettiPacket.jpg"
+				},
+				{
+					"name" : "Cereal",
+					"image": "cerealBox.jpg"
+				}
+			]
 		}
 	},
 	{

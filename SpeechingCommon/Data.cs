@@ -447,20 +447,13 @@ namespace SpeechingCommon
         }
     }
 
-    public class UserTask
-    {
-        public string id;
-        public string title;
-        public string icon;
-        public DateTime lastActive;
-    }
-
     public class ResultItem
     {
         public string id;
         public string userId;
         public string scenarioId;
         public string dataLoc;
+        public Dictionary<string, string> results;
         public bool uploaded;
         public bool isPublic;
         public List<string> allowedUsers;
@@ -476,6 +469,7 @@ namespace SpeechingCommon
             this.uploaded = false;
             this.isPublic = false;
             this.allowedUsers = new List<string>();
+            this.results = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -524,10 +518,18 @@ namespace SpeechingCommon
         public string type;
         public string prompt;
         public string resultPath;
+        public string data; // extra json information
+    }
+
+    public class ChoiceItem
+    {
+        public string name;
+        public string image;
     }
 
     public class ScenarioEvent
     {
+        public string id;
         public EventContent content;
         public EventResponse response;
     }

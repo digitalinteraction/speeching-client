@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using SpeechingCommon;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ using System.Net;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "ScenarioActivity", ParentActivity=typeof(MainActivity))]
+    [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity))]
     public class ScenarioActivity : Activity
     {
         private Scenario scenario;
@@ -31,10 +32,14 @@ namespace Droid_PeopleWithParkinsons
         private LinearLayout eventLayout;
         private ImageView eventImage;
         private VideoView eventVideo;
+        private GridView eventChoicesGrid;
         private TextView eventTranscript;
         private TextView eventPrompt;
-        private Button recButton;
+        private Button mainButton;
         private MediaPlayer mediaPlayer;
+
+        string resultsZipPath;
+        ResultItem results;
 
         Dictionary<string, string> resources;
         ProgressDialog progress;
@@ -122,8 +127,11 @@ namespace Droid_PeopleWithParkinsons
             eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
             eventVideo = FindViewById<VideoView>(Resource.Id.scenarioVideo);
 
-            recButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
-            recButton.Click += SoundRecorderButtonClicked;
+            mainButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
+            mainButton.Click += MainButtonClicked;
+
+            resultsZipPath = System.IO.Path.Combine(localExportDirectory, "final.zip");
+            results = new ResultItem(scenario.id, resultsZipPath, AppData.session.currentUser.id);
 
             if(savedInstanceState != null)
             {
@@ -134,6 +142,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 titleLayout.Visibility = ViewStates.Visible;
                 eventLayout.Visibility = ViewStates.Gone;
+                this.Title = scenario.title;
             }
             else
             {
@@ -273,13 +282,27 @@ namespace Droid_PeopleWithParkinsons
         {
             currIndex++;
 
-            recButton.Text = "Record Response";
+            mainButton.Text = "Record Response";
 
             // Check if the scenario is complete
             if (currIndex >= scenario.events.Length)
             {
                 FinishScenario();
                 return;
+            }
+
+            this.Title = scenario.title + " | " + (currIndex + 1) + " of " + scenario.events.Length;
+
+            if (scenario.events[currIndex].response.type == "none")
+            {
+                eventPrompt.Text = "";
+                eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
+                mainButton.Text = "Continue";
+                return;
+            }
+            else if (scenario.events[currIndex].response.type == "choice")
+            {
+                mainButton.Text = "Make a choice";
             }
 
             // Load text
@@ -345,12 +368,27 @@ namespace Droid_PeopleWithParkinsons
         /// <summary>
         /// Start a new recording, or if already recording finish it and progress to the next event
         /// </summary>
-        private void SoundRecorderButtonClicked(object sender, EventArgs e)
+        private void MainButtonClicked(object sender, EventArgs e)
         {
-            if(recording)
+            if(scenario.events[currIndex].response.type == "choice")
+            {
+                ChoiceItem[] choices = JsonConvert.DeserializeObject<ChoiceItem[]>(scenario.events[currIndex].response.data);
+
+                View popupView = LayoutInflater.Inflate(Resource.Layout.ScenarioChoicePopup, null);
+                popupView.FindViewById<TextView>(Resource.Id.choice_title).Text = scenario.events[currIndex].response.prompt;
+                GridView grid = popupView.FindViewById<GridView>(Resource.Id.choice_grid);
+                grid.Adapter = new ChoiceListAdapter(this, Resource.Id.choice_grid, choices);
+                PopupWindow popup = new PopupWindow(popupView, WindowManagerLayoutParams.WrapContent, WindowManagerLayoutParams.WrapContent);
+
+                //centre of screen
+                popup.ShowAtLocation(this.FindViewById(Android.Resource.Id.Content), GravityFlags.Center, 0, 0);
+
+            }
+            else if(recording)
             {
                 recording = false;
                 audioManager.StopRecording();
+                results.results.Add(scenario.events[currIndex].id, scenario.events[currIndex].id + ".3gpp");
                 ShowNextEvent();
             }
             else
@@ -361,11 +399,12 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 recording = true;
-                string fileAdd = System.IO.Path.Combine(localExportDirectory, "res" + currIndex + ".3gpp");
+                string fileAdd = System.IO.Path.Combine(localExportDirectory, scenario.events[currIndex].id + ".3gpp");
                 scenario.events[currIndex].response.resultPath = fileAdd;
                 audioManager.StartRecording(fileAdd);
-                recButton.Text = "Stop";
+                mainButton.Text = "Stop";
             }
+            
         }
 
         /// <summary>
@@ -393,18 +432,16 @@ namespace Droid_PeopleWithParkinsons
         {
             // Compress exported recordings into zip (Delete existing zip first)
             // TODO set password? https://github.com/icsharpcode/SharpZipLib/wiki/Zip-Samples#anchorCreate  
-            string zipPath = System.IO.Path.Combine(localExportDirectory, "final.zip");
-            File.Delete(zipPath);
+            File.Delete(resultsZipPath);
 
             try
             {
                 FastZip fastZip = new FastZip();
                 bool recurse = true;
                 string filter = @"-final\.zip$"; // Don't include yourself, you daft thing
-                fastZip.CreateZip(zipPath, localExportDirectory, recurse, filter);
+                fastZip.CreateZip(resultsZipPath, localExportDirectory, recurse, filter);
 
-                ResultItem res = new ResultItem(scenario.id, zipPath, AppData.session.currentUser.id);
-                AppData.session.resultsToUpload.Add(res);
+                AppData.session.resultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 // Clean up zipped files
@@ -412,7 +449,7 @@ namespace Droid_PeopleWithParkinsons
 
                 for (int i = 0; i < toDel.Length; i++ )
                 {
-                    if (toDel[i] == zipPath) continue;
+                    if (toDel[i] == resultsZipPath) continue;
                     File.Delete(toDel[i]);
                 }
                     
@@ -455,6 +492,50 @@ namespace Droid_PeopleWithParkinsons
                 confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
                 confirm.Show();
             };      
+        }
+
+        public class ChoiceListAdapter : BaseAdapter<ChoiceItem>
+        {
+            Activity context;
+            ChoiceItem[] choices;
+
+            /// <summary>
+            /// An adapter to be able to display choices in a grid or list
+            /// </summary>
+            public ChoiceListAdapter(Activity context, int resource, ChoiceItem[] data)
+            {
+                this.context = context;
+                this.choices = data;
+            }
+
+            public override long GetItemId(int position)
+            {
+                return position;
+            }
+
+            public override ChoiceItem this[int position]
+            {
+                get { return choices[position]; }
+            }
+
+            public override int Count
+            {
+                get { return choices.Length; }
+            }
+
+            public override View GetView(int position, View convertView, ViewGroup parent)
+            {
+                View view = convertView;
+
+                if (view == null)
+                {
+                    view = context.LayoutInflater.Inflate(Resource.Layout.ScenarioChoiceItem, null);
+                }
+
+                view.FindViewById<TextView>(Resource.Id.choice_name).Text = choices[position].name;
+                //view.FindViewById<ImageView>(Resource.Id.choice_image).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(choices[position].image)));
+                return view;
+            }
         }
     }
 }
