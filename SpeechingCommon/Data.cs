@@ -517,14 +517,8 @@ namespace SpeechingCommon
     {
         public string type;
         public string prompt;
-        public string resultPath;
-        public string data; // extra json information
-    }
-
-    public class ChoiceItem
-    {
-        public string name;
-        public string image;
+        public string choice1;
+        public string choice2;
     }
 
     public class ScenarioEvent

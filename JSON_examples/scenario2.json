@@ -4,11 +4,12 @@
 		"id"	: "thatId",
 		"name"	: "Justin Time"
 	},
-	"title" : "Ordering a Pizza",
+	"title" : "Choice test",
 	"icon"	: "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
 	"resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
 	"events" : [
 	{
+		"id" : "sc2ev1",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "phone.jpg",
@@ -18,10 +19,12 @@
 		"response" : {
 			"type"	: "choice",
 			"prompt" : "Choose the spaghetti from the shelf.",
-			"data" : "[\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\" : \"Spaghetti\",\r\n\t\t\t\t\t\"image\": \"phone.jpg\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"name\" : \"Cereal\",\r\n\t\t\t\t\t\"image\": \"pizza.jpg\"\r\n\t\t\t\t}\r\n\t\t\t]"
+			"choice1" : "pizza.jpg",
+			"choice2"	: "making.jpg"
 		}
 	},
 	{
+		"id" : "sc2ev2",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "pizza.jpg",
@@ -34,6 +37,7 @@
 		}
 	},
 	{
+		"id" : "sc2ev3",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "pizza.jpg",
@@ -46,6 +50,7 @@
 		}
 	},
 	{
+		"id" : "sc2ev4",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "making.jpg",

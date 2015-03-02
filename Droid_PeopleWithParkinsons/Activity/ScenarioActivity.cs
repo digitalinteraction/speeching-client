@@ -34,19 +34,28 @@ namespace Droid_PeopleWithParkinsons
         private VideoView eventVideo;
         private GridView eventChoicesGrid;
         private TextView eventTranscript;
-        private TextView eventPrompt;
-        private Button mainButton;
         private MediaPlayer mediaPlayer;
 
-        string resultsZipPath;
-        ResultItem results;
+        // Event main layout
+        private RelativeLayout mainLayout;
+        private TextView eventPrompt;
+        private Button mainButton;
 
-        Dictionary<string, string> resources;
-        ProgressDialog progress;
-        string documentsPath;
-        string localResourcesDirectory;
-        string localExportDirectory;
-        string localZipPath;
+        // Event choice layout
+        private LinearLayout choiceLayout;
+        private TextView choicePrompt;
+        private ImageView choiceImage1;
+        private ImageView choiceImage2;
+
+        private string resultsZipPath;
+        private ResultItem results;
+
+        private Dictionary<string, string> resources;
+        private ProgressDialog progress;
+        private string documentsPath;
+        private string localResourcesDirectory;
+        private string localExportDirectory;
+        private string localZipPath;
 
         private int currIndex = -1;
         private AndroidUtils.RecordAudioManager audioManager;
@@ -117,12 +126,20 @@ namespace Droid_PeopleWithParkinsons
                 ShowNextEvent();
             };
 
+            choiceLayout = FindViewById<LinearLayout>(Resource.Id.scenarioChoiceLayout);
+            choicePrompt = FindViewById<TextView>(Resource.Id.scenarioChoicePrompt);
+            choiceImage1 = FindViewById<ImageView>(Resource.Id.scenarioChoice1);
+            choiceImage1.Click += ChoiceImageClicked;
+            choiceImage2 = FindViewById<ImageView>(Resource.Id.scenarioChoice2);
+            choiceImage2.Click += ChoiceImageClicked;
+
             scenarioTitle.Text = scenario.title;
             authorName.Text = scenario.creator.name;
 
             eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
             eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
 
+            mainLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioRecordLayout);
             eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
             eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
             eventVideo = FindViewById<VideoView>(Resource.Id.scenarioVideo);
@@ -293,31 +310,55 @@ namespace Droid_PeopleWithParkinsons
 
             this.Title = scenario.title + " | " + (currIndex + 1) + " of " + scenario.events.Length;
 
-            if (scenario.events[currIndex].response.type == "none")
+            // Use the alternative layout for giving the user a choice between 2 items
+            if (scenario.events[currIndex].response.type == "choice")
             {
-                eventPrompt.Text = "";
-                eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
-                mainButton.Text = "Continue";
-                return;
-            }
-            else if (scenario.events[currIndex].response.type == "choice")
-            {
-                mainButton.Text = "Make a choice";
-            }
+                mainLayout.Visibility = ViewStates.Gone;
+                choiceLayout.Visibility = ViewStates.Visible;
 
-            // Load text
-            eventTranscript.Text = scenario.events[currIndex].content.text;
-            if(scenario.events[currIndex].response.type == "freeformSpeech")
-            {
-                // Make freeform prompts italic
-                string given = scenario.events[currIndex].response.prompt;
-                eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
-                eventPrompt.Text = (given != null) ? given : ""; ;
+                choicePrompt.Text = scenario.events[currIndex].response.prompt;
+
+                // Load the choice images
+                string choice1Key = scenario.events[currIndex].response.choice1;
+                if (choice1Key != null && resources.ContainsKey(choice1Key))
+                {
+                    choiceImage1.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice1Key])));
+                }
+
+                string choice2Key = scenario.events[currIndex].response.choice2;
+                if (choice2Key != null && resources.ContainsKey(choice2Key))
+                {
+                    choiceImage2.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice2Key])));
+                }
             }
             else
             {
-                eventPrompt.Text = scenario.events[currIndex].response.prompt;
-                eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
+                // Use the standard layout
+                mainLayout.Visibility = ViewStates.Visible;
+                choiceLayout.Visibility = ViewStates.Gone;
+
+                if (scenario.events[currIndex].response.type == "none")
+                {
+                    eventPrompt.Text = "";
+                    eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
+                    mainButton.Text = "Continue";
+                    return;
+                }
+
+                // Load text
+                eventTranscript.Text = scenario.events[currIndex].content.text;
+                if (scenario.events[currIndex].response.type == "freeformSpeech")
+                {
+                    // Make freeform prompts italic
+                    string given = scenario.events[currIndex].response.prompt;
+                    eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
+                    eventPrompt.Text = (given != null) ? given : ""; ;
+                }
+                else
+                {
+                    eventPrompt.Text = scenario.events[currIndex].response.prompt;
+                    eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
+                }
             }
 
             if(scenario.events[currIndex].content.type == "VIDEO")
@@ -366,25 +407,27 @@ namespace Droid_PeopleWithParkinsons
         }
 
         /// <summary>
+        /// Called when the user taps one of the two choices
+        /// </summary>
+        private void ChoiceImageClicked(object sender, EventArgs e)
+        {
+            if(sender == choiceImage1)
+            {
+                results.results.Add(scenario.events[currIndex].id, scenario.events[currIndex].response.choice1);
+            }
+            else if(sender == choiceImage2)
+            {
+                results.results.Add(scenario.events[currIndex].id, scenario.events[currIndex].response.choice2);
+            }
+            ShowNextEvent();
+        }
+
+        /// <summary>
         /// Start a new recording, or if already recording finish it and progress to the next event
         /// </summary>
         private void MainButtonClicked(object sender, EventArgs e)
         {
-            if(scenario.events[currIndex].response.type == "choice")
-            {
-                ChoiceItem[] choices = JsonConvert.DeserializeObject<ChoiceItem[]>(scenario.events[currIndex].response.data);
-
-                View popupView = LayoutInflater.Inflate(Resource.Layout.ScenarioChoicePopup, null);
-                popupView.FindViewById<TextView>(Resource.Id.choice_title).Text = scenario.events[currIndex].response.prompt;
-                GridView grid = popupView.FindViewById<GridView>(Resource.Id.choice_grid);
-                grid.Adapter = new ChoiceListAdapter(this, Resource.Id.choice_grid, choices);
-                PopupWindow popup = new PopupWindow(popupView, WindowManagerLayoutParams.WrapContent, WindowManagerLayoutParams.WrapContent);
-
-                //centre of screen
-                popup.ShowAtLocation(this.FindViewById(Android.Resource.Id.Content), GravityFlags.Center, 0, 0);
-
-            }
-            else if(recording)
+            if(recording)
             {
                 recording = false;
                 audioManager.StopRecording();
@@ -400,7 +443,6 @@ namespace Droid_PeopleWithParkinsons
 
                 recording = true;
                 string fileAdd = System.IO.Path.Combine(localExportDirectory, scenario.events[currIndex].id + ".3gpp");
-                scenario.events[currIndex].response.resultPath = fileAdd;
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }
@@ -492,50 +534,6 @@ namespace Droid_PeopleWithParkinsons
                 confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
                 confirm.Show();
             };      
-        }
-
-        public class ChoiceListAdapter : BaseAdapter<ChoiceItem>
-        {
-            Activity context;
-            ChoiceItem[] choices;
-
-            /// <summary>
-            /// An adapter to be able to display choices in a grid or list
-            /// </summary>
-            public ChoiceListAdapter(Activity context, int resource, ChoiceItem[] data)
-            {
-                this.context = context;
-                this.choices = data;
-            }
-
-            public override long GetItemId(int position)
-            {
-                return position;
-            }
-
-            public override ChoiceItem this[int position]
-            {
-                get { return choices[position]; }
-            }
-
-            public override int Count
-            {
-                get { return choices.Length; }
-            }
-
-            public override View GetView(int position, View convertView, ViewGroup parent)
-            {
-                View view = convertView;
-
-                if (view == null)
-                {
-                    view = context.LayoutInflater.Inflate(Resource.Layout.ScenarioChoiceItem, null);
-                }
-
-                view.FindViewById<TextView>(Resource.Id.choice_name).Text = choices[position].name;
-                //view.FindViewById<ImageView>(Resource.Id.choice_image).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(choices[position].image)));
-                return view;
-            }
         }
     }
 }
