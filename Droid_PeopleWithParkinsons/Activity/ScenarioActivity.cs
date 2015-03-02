@@ -54,7 +54,7 @@ namespace Droid_PeopleWithParkinsons
         private ProgressDialog progress;
         private string documentsPath;
         private string localResourcesDirectory;
-        private string localExportDirectory;
+        private string localTempDirectory;
         private string localZipPath;
 
         private int currIndex = -1;
@@ -74,19 +74,24 @@ namespace Droid_PeopleWithParkinsons
 
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
-            localExportDirectory = localResourcesDirectory + "/exports";
+            localTempDirectory = localResourcesDirectory + "/temp";
 
             // Create these directories if they don't already exist
             if (!Directory.Exists(documentsPath))
             {
                 Directory.CreateDirectory(documentsPath);
             }
-            
+            if(!Directory.Exists(localTempDirectory))
+            {
+                Directory.CreateDirectory(localTempDirectory);
+            }
+
+
             // If the scenario folder doesn't exist we need to download the additional files
             if (!Directory.Exists(localResourcesDirectory))
             {
                 Directory.CreateDirectory(localResourcesDirectory);
-                Directory.CreateDirectory(localExportDirectory);
+                Directory.CreateDirectory(localTempDirectory);
 
                 localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
                 try
@@ -147,7 +152,7 @@ namespace Droid_PeopleWithParkinsons
             mainButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
             mainButton.Click += MainButtonClicked;
 
-            resultsZipPath = System.IO.Path.Combine(localExportDirectory, "final.zip");
+            resultsZipPath = System.IO.Path.Combine(localResourcesDirectory, "final.zip");
             results = new ResultItem(scenario.id, resultsZipPath, AppData.session.currentUser.id);
 
             if(savedInstanceState != null)
@@ -428,6 +433,12 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         private void MainButtonClicked(object sender, EventArgs e)
         {
+            if (currIndex >= scenario.events.Length)
+            {
+                FinishScenario();
+                return;
+            }
+
             if(recording)
             {
                 recording = false;
@@ -443,7 +454,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 recording = true;
-                string fileAdd = System.IO.Path.Combine(localExportDirectory, scenario.events[currIndex].id + ".3gpp");
+                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.events[currIndex].id + ".3gpp");
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }
@@ -457,7 +468,7 @@ namespace Droid_PeopleWithParkinsons
         {
             currIndex = -1;
 
-            string[] files = Directory.GetFiles(localExportDirectory);
+            string[] files = Directory.GetFiles(localTempDirectory);
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -482,13 +493,13 @@ namespace Droid_PeopleWithParkinsons
                 FastZip fastZip = new FastZip();
                 bool recurse = true;
                 string filter = @"-final\.zip$"; // Don't include yourself, you daft thing
-                fastZip.CreateZip(resultsZipPath, localExportDirectory, recurse, filter);
+                fastZip.CreateZip(resultsZipPath, localTempDirectory, recurse, filter);
 
                 AppData.session.resultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 // Clean up zipped files
-                string[] toDel = Directory.GetFiles(localExportDirectory);
+                string[] toDel = Directory.GetFiles(localTempDirectory);
 
                 for (int i = 0; i < toDel.Length; i++ )
                 {

@@ -144,7 +144,7 @@ namespace Droid_PeopleWithParkinsons
                 Array.Copy(Titles, _titles, Titles.Length);
             }
 
-            protected internal static readonly string[] Titles = { "Scenarios", "Friends", "Submitted" };
+            protected internal static readonly string[] Titles = { "Profile", "Practice", "Friends", "Submitted" };
 
             protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
 
@@ -155,10 +155,12 @@ namespace Droid_PeopleWithParkinsons
                 switch (position)
                 {
                     case 0:
-                        return new TaskListFragment();
+                        return new UserProfileFragment();
                     case 1:
-                        return new FriendListFragment();
+                        return new TaskListFragment();
                     case 2:
+                        return new FriendListFragment();
+                    case 3:
                         return new SubmittedListFragment();
                     default:
                         return null;

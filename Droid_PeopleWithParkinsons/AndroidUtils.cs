@@ -14,6 +14,7 @@ using Android.Media;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
 using SpeechingCommon;
+using System.IO;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -211,6 +212,7 @@ namespace Droid_PeopleWithParkinsons
             public void StartRecording(string outputPath)
             {
                 this.outputPath = outputPath;
+
                 audioRecorder = new MediaRecorder();
                 audioRecorder.SetAudioSource(AudioSource.Mic);
                 audioRecorder.SetOutputFormat(OutputFormat.ThreeGpp);

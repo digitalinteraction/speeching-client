@@ -92,6 +92,7 @@
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Fragment\SubmittedListFragment.cs" />
+    <Compile Include="Fragment\UserProfileFragment.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="Shared\ContentUploader.cs" />
@@ -184,6 +185,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ScenarioChoicePopup.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ProfileFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\rounded_layout.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

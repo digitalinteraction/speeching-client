@@ -30,28 +30,22 @@
 		"response" : {
 			"type"	: "choice",
 			"prompt" : "Choose the spaghetti from the shelf.",
-			"data" : [
-				{
-					"name" : "Spaghetti",
-					"image": "spaghettiPacket.jpg"
-				},
-				{
-					"name" : "Cereal",
-					"image": "cerealBox.jpg"
-				}
-			]
+			"choice1" : "spaghetti.jpg",
+			"choice2"	: "bakedBeans.jpg"
 		}
 	},
 	{
 		"content" : {
 			"type"	 : "AUDIO",
-			"visual" : "neigbour.jpg",
-			"audio"	 : "neighbour2.mp3",
-			"text"	 : "I think I might have - what does it look like?"
+			"visual" : "supermarket.jpg",
+			"audio"	 : "spag3.mp3",
+			"text"	 : "You also need something to make the sauce from..."
 		},
 		"response" : {
-			"type"	: "freeformSpeech",
-			"prompt" : "Describe the puppy that was on the poster."
+			"type"	: "choice",
+			"prompt" : "Which of these could you make a pasta sauce from?",
+			"choice1" : "dogFood.jpg",
+			"choice2"	: "tomatoes.jpg"
 		}
 	},
 	{

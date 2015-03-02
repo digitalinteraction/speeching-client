@@ -9,6 +9,7 @@
 	"resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
 	"events" : [
 	{
+		"id" : "sc1ev1",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "driver.jpg",
@@ -21,6 +22,7 @@
 		}
 	},
 	{
+		"id" : "sc1ev2",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "driver.jpg",
@@ -33,6 +35,7 @@
 		}
 	},
 	{
+		"id" : "sc1ev3",
 		"content" : {
 			"type"	 : "TEXT",
 			"visual" : "oldwoman.jpg",
