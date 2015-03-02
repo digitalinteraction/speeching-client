@@ -177,9 +177,8 @@
                     android:id="@+id/scenarioChoicePrompt"
                     android:gravity="center_horizontal|center_vertical"
                     android:layout_centerHorizontal="true"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:textSize="22sp"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
                     android:paddingLeft="25dp"
                     android:paddingRight="25dp" />
                 <TextView
@@ -188,18 +187,15 @@
                     android:id="@+id/scenarioPromptHead"
                     android:gravity="center_horizontal|center_vertical"
                     android:layout_centerHorizontal="true"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:textStyle="italic"
-                    android:textSize="18sp"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp" />
+                    android:textSize="20sp"
+                    android:padding="15dp" />
                 <LinearLayout
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/scenarioBreaker"
                     android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="10"
+                    android:layout_height="fill_parent"
                     android:visibility="visible">
                     <ImageView
                         android:src="@drawable/Icon"
@@ -207,7 +203,6 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="fill_parent"
-                        android:layout_margin="10dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:scaleType="fitCenter" />

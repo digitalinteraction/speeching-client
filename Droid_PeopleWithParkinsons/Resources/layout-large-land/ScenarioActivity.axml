@@ -69,7 +69,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:layout_margin="10dp"
-            android:visibility="gone" />
+            android:visibility="visible" />
         <ImageView
             android:src="@drawable/Icon"
             android:id="@+id/scenarioImage"
@@ -94,7 +94,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal|center_vertical"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:layout_margin="20dp" />
             <View
                 android:layout_below="@id/scenarioText"
@@ -105,43 +105,104 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/darkBlue"
                 android:paddingBottom="12dp" />
-            <TextView
-                android:text="Your response:"
-                android:layout_width="match_parent"
-                android:id="@+id/scenarioPromptHead"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_centerHorizontal="true"
-                android:layout_height="wrap_content"
+        <!-- Standard layout with big red button -->
+            <RelativeLayout
+                android:id="@+id/scenarioRecordLayout"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
                 android:layout_below="@id/scenarioBreaker"
-                android:textStyle="italic"
-                android:textSize="18sp"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp"
-                android:paddingTop="17dp" />
-            <TextView
-                android:text="This is the prompt - try to read is as carefully as possible."
-                android:layout_alignParentRight="true"
-                android:id="@+id/scenarioPrompt"
-                android:gravity="center_horizontal|center_vertical"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/scenarioPromptHead"
-                android:textSize="18sp"
-                android:layout_centerHorizontal="true"
                 android:layout_width="fill_parent"
-                android:layout_margin="20dp"
-                android:paddingTop="12dp" />
-            <Button
-                android:id="@+id/scenarioProgressBtn"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/recordButton"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="Begin Recording!"
-                android:textColor="#fff"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="20dp"
-                android:textSize="22sp" />
+                android:layout_height="fill_parent"
+                android:visibility="gone">
+                <TextView
+                    android:text="Your response:"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioPromptHead"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="18sp"
+                    android:padding="5dp" />
+                <TextView
+                    android:text="This is the prompt - try to read it as carefully as possible."
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioPrompt"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scenarioPromptHead"
+                    android:textSize="22sp"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="7dp" />
+                <Button
+                    android:id="@+id/scenarioProgressBtn"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:background="@drawable/recordButton"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="Begin Recording!"
+                    android:textColor="#fff"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="22sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="10dp" />
+            </RelativeLayout>
+        <!-- Alternative layout for presenting a choice to the user -->
+            <LinearLayout
+                android:id="@+id/scenarioChoiceLayout"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_below="@id/scenarioBreaker"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="visible">
+                <TextView
+                    android:text="Make a choice, using this prompt!"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioChoicePrompt"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp" />
+                <TextView
+                    android:text="Tap your choice:"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioPromptHead"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="18sp"
+                    android:padding="10dp" />
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/scenarioBreaker"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:visibility="visible">
+                    <ImageView
+                        android:src="@drawable/Icon"
+                        android:id="@+id/scenarioChoice1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitCenter" />
+                    <ImageView
+                        android:src="@drawable/Icon"
+                        android:id="@+id/scenarioChoice2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitCenter" />
+                </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

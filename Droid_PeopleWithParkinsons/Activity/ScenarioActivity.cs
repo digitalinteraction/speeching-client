@@ -346,7 +346,6 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 // Load text
-                eventTranscript.Text = scenario.events[currIndex].content.text;
                 if (scenario.events[currIndex].response.type == "freeformSpeech")
                 {
                     // Make freeform prompts italic
@@ -360,6 +359,8 @@ namespace Droid_PeopleWithParkinsons
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                 }
             }
+
+            eventTranscript.Text = scenario.events[currIndex].content.text;
 
             if(scenario.events[currIndex].content.type == "VIDEO")
             {
