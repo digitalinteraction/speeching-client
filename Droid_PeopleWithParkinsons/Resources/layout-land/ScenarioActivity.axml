@@ -171,6 +171,7 @@
                     android:layout_below="@id/scenarioBreaker"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_margin="5dp"
                     android:visibility="visible">
                     <ImageView
                         android:src="@drawable/Icon"
@@ -178,8 +179,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="fill_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_margin="6dp"
                         android:scaleType="fitCenter" />
                     <ImageView
                         android:src="@drawable/Icon"

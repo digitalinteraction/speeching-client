@@ -199,6 +199,7 @@
     <AndroidResource Include="Resources\drawable\listCellChild.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout-land\ProfileFragment.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

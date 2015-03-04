@@ -34,6 +34,8 @@ namespace Droid_PeopleWithParkinsons
         private TextView eventTranscript;
         private MediaPlayer mediaPlayer;
 
+        private TextView inputHint;
+
         // Event main layout
         private RelativeLayout mainLayout;
         private TextView eventPrompt;
@@ -123,6 +125,8 @@ namespace Droid_PeopleWithParkinsons
                 eventLayout.Visibility = ViewStates.Visible;
                 ShowNextEvent();
             };
+
+            inputHint = FindViewById<TextView>(Resource.Id.scenarioPromptHead);
 
             choiceLayout = FindViewById<LinearLayout>(Resource.Id.scenarioChoiceLayout);
             choicePrompt = FindViewById<TextView>(Resource.Id.scenarioChoicePrompt);
@@ -307,6 +311,7 @@ namespace Droid_PeopleWithParkinsons
             }
 
             this.Title = scenario.title + " | " + (currIndex + 1) + " of " + scenario.tasks.Length;
+            inputHint.Visibility = ViewStates.Visible;
 
             // Use the alternative layout for giving the user a choice between 2 items
             if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.Choice)
@@ -337,6 +342,7 @@ namespace Droid_PeopleWithParkinsons
 
                 if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.None)
                 {
+                    inputHint.Visibility = ViewStates.Gone;
                     eventPrompt.Text = "";
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     mainButton.Text = "Continue";

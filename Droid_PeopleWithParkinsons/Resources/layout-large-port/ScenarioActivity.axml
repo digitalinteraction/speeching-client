@@ -196,6 +196,7 @@
                     android:layout_below="@id/scenarioBreaker"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
+                    android:layout_margin="10dp"
                     android:visibility="visible">
                     <ImageView
                         android:src="@drawable/Icon"

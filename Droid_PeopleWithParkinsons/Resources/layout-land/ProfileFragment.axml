@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-<!-- Top half -->
+<!-- LEFT SIDE -->
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="10dp"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="fill_parent"
+        android:layout_margin="15dp"
         android:background="@color/darkBlue">
     <!-- Profile header -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="2">
             <ImageView
                 android:src="@drawable/Icon"
                 android:id="@+id/profile_avatar"
@@ -70,7 +70,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="3">
             <TextView
                 android:text="Your Total Score:"
                 android:gravity="center_horizontal"
@@ -101,29 +101,28 @@
                 android:layout_margin="8dp"
                 android:textColor="@color/white" />
         </LinearLayout>
-    <!-- Strengths and weaknesses -->
     </LinearLayout>
-<!-- Bottom half -->
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp">
+    <!-- Strengths and weaknesses -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="5.5">
+            android:layout_weight="5">
         <!-- STRENGTH -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="6dp"
                 android:gravity="top"
                 android:background="@color/darkGreen">
                 <TextView
@@ -169,7 +168,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="6dp"
                 android:gravity="top"
                 android:background="@color/darkRed">
                 <TextView
