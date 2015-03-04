@@ -66,7 +66,7 @@ namespace Droid_PeopleWithParkinsons
             base.OnCreate(savedInstanceState);
 
             // Load the scenario with the id that was given inside the current intent
-            scenario = Scenario.GetWithId(AppData.session.scenarios, Intent.GetStringExtra("ScenarioId"));
+            scenario = Scenario.GetWithId(AppData.session.categories, Intent.GetStringExtra("ScenarioId"));
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 
@@ -307,30 +307,30 @@ namespace Droid_PeopleWithParkinsons
             mainButton.Text = "Record Response";
 
             // Check if the scenario is complete
-            if (currIndex >= scenario.events.Length)
+            if (currIndex >= scenario.tasks.Length)
             {
                 FinishScenario();
                 return;
             }
 
-            this.Title = scenario.title + " | " + (currIndex + 1) + " of " + scenario.events.Length;
+            this.Title = scenario.title + " | " + (currIndex + 1) + " of " + scenario.tasks.Length;
 
             // Use the alternative layout for giving the user a choice between 2 items
-            if (scenario.events[currIndex].response.type == "choice")
+            if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.Choice)
             {
                 mainLayout.Visibility = ViewStates.Gone;
                 choiceLayout.Visibility = ViewStates.Visible;
 
-                choicePrompt.Text = scenario.events[currIndex].response.prompt;
+                choicePrompt.Text = scenario.tasks[currIndex].response.prompt;
 
                 // Load the choice images
-                string choice1Key = scenario.events[currIndex].response.choice1;
+                string choice1Key = scenario.tasks[currIndex].response.choice1;
                 if (choice1Key != null && resources.ContainsKey(choice1Key))
                 {
                     choiceImage1.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice1Key])));
                 }
 
-                string choice2Key = scenario.events[currIndex].response.choice2;
+                string choice2Key = scenario.tasks[currIndex].response.choice2;
                 if (choice2Key != null && resources.ContainsKey(choice2Key))
                 {
                     choiceImage2.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice2Key])));
@@ -342,7 +342,7 @@ namespace Droid_PeopleWithParkinsons
                 mainLayout.Visibility = ViewStates.Visible;
                 choiceLayout.Visibility = ViewStates.Gone;
 
-                if (scenario.events[currIndex].response.type == "none")
+                if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.None)
                 {
                     eventPrompt.Text = "";
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
@@ -351,28 +351,28 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 // Load text
-                if (scenario.events[currIndex].response.type == "freeformSpeech")
+                if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.Freeform)
                 {
                     // Make freeform prompts italic
-                    string given = scenario.events[currIndex].response.prompt;
+                    string given = scenario.tasks[currIndex].response.prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
                     eventPrompt.Text = (given != null) ? given : ""; ;
                 }
                 else
                 {
-                    eventPrompt.Text = scenario.events[currIndex].response.prompt;
+                    eventPrompt.Text = scenario.tasks[currIndex].response.prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                 }
             }
 
-            eventTranscript.Text = scenario.events[currIndex].content.text;
+            eventTranscript.Text = scenario.tasks[currIndex].content.text;
 
-            if(scenario.events[currIndex].content.type == "VIDEO")
+            if(scenario.tasks[currIndex].content.type == TaskContent.ContentType.Video)
             {
                 // load video instead of audio + image
                 eventVideo.Visibility = ViewStates.Visible;
                 eventImage.Visibility = ViewStates.Gone;
-                string vidKey = scenario.events[currIndex].content.visual;
+                string vidKey = scenario.tasks[currIndex].content.visual;
                 var vidUri = Android.Net.Uri.Parse( resources[vidKey]);
                 eventVideo.SetVideoURI(vidUri);
                 eventVideo.Start();
@@ -383,16 +383,16 @@ namespace Droid_PeopleWithParkinsons
                 eventImage.Visibility = ViewStates.Visible;
 
                 // Load the image if it exists
-                string visualKey = scenario.events[currIndex].content.visual;
+                string visualKey = scenario.tasks[currIndex].content.visual;
                 if(visualKey != null && resources.ContainsKey(visualKey))
                 {
                     eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[visualKey]) ));
                 }
 
-                if (scenario.events[currIndex].content.type == "AUDIO")
+                if (scenario.tasks[currIndex].content.type == TaskContent.ContentType.Audio)
                 {
                     // Load audio
-                    string audioKey = scenario.events[currIndex].content.audio;
+                    string audioKey = scenario.tasks[currIndex].content.audio;
                     if (audioKey != null && resources.ContainsKey(audioKey))
                     {
                         if (mediaPlayer == null)
@@ -419,11 +419,11 @@ namespace Droid_PeopleWithParkinsons
         {
             if(sender == choiceImage1)
             {
-                results.results.Add(scenario.events[currIndex].id, scenario.events[currIndex].response.choice1);
+                results.results.Add(scenario.tasks[currIndex].id, scenario.tasks[currIndex].response.choice1);
             }
             else if(sender == choiceImage2)
             {
-                results.results.Add(scenario.events[currIndex].id, scenario.events[currIndex].response.choice2);
+                results.results.Add(scenario.tasks[currIndex].id, scenario.tasks[currIndex].response.choice2);
             }
             ShowNextEvent();
         }
@@ -433,7 +433,7 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         private void MainButtonClicked(object sender, EventArgs e)
         {
-            if (currIndex >= scenario.events.Length)
+            if (currIndex >= scenario.tasks.Length)
             {
                 FinishScenario();
                 return;
@@ -443,7 +443,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 recording = false;
                 audioManager.StopRecording();
-                results.results.Add(scenario.events[currIndex].id, scenario.events[currIndex].id + ".3gpp");
+                results.results.Add(scenario.tasks[currIndex].id, scenario.tasks[currIndex].id + ".3gpp");
                 ShowNextEvent();
             }
             else
@@ -454,7 +454,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 recording = true;
-                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.events[currIndex].id + ".3gpp");
+                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.tasks[currIndex].id + ".3gpp");
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }

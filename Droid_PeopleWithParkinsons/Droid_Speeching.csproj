@@ -129,7 +129,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large-land\RecordSound.axml" />
     <AndroidResource Include="Resources\layout-large-port\RecordSound.axml" />
-    <AndroidResource Include="Resources\layout\MainMenuListItem.axml">
+    <AndroidResource Include="Resources\layout\MainTaskListParent.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large\Main.axml" />
@@ -191,6 +191,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\rounded_layout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainTaskListChild.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\listCellChild.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

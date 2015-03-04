@@ -318,7 +318,7 @@ namespace Droid_PeopleWithParkinsons
                     view = context.LayoutInflater.Inflate(Resource.Layout.UploadsListItem, null);
                 }
 
-                Scenario thisScenario = Scenario.GetWithId(AppData.session.scenarios, results[position].scenarioId);
+                Scenario thisScenario = Scenario.GetWithId(AppData.session.categories, results[position].scenarioId);
 
                 view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisScenario.title;
                 view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();

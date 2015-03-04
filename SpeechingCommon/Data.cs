@@ -79,6 +79,38 @@ namespace SpeechingCommon
         }
 
         /// <summary>
+        /// Get the categories from the server
+        /// </summary>
+        public static async Task FetchCategories()
+        {
+            string json = "[\r\n{\r\n    \"id\" : \"anId\",\r\n    \"title\" : \"Dysfluency\",\r\n    \"icon\"  : \"https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png\",\r\n    \"recommended\" : false,\r\n    \"scenarios\" : [\r\n    {\r\n        \"id\" : \"testScenario\",\r\n        \"creator\" : {\r\n            \"id\"    : \"thatId\",\r\n            \"name\"  : \"Justin Time\"\r\n        },\r\n        \"title\" : \"Getting the Bus\",\r\n        \"icon\"  : \"http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png\",\r\n        \"resources\" : \"https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1\",\r\n        \"tasks\" : [\r\n        {\r\n            \"id\" : \"sc1ev1\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"driver.jpg\",\r\n                \"audio\"  : \"hello.mp3\",\r\n                \"text\"   : \"Hello! Where would you like to go today?\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Hello, please may I have a return ticket to the train station?\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc1ev2\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"driver.jpg\",\r\n                \"audio\"  : \"thanks.mp3\",\r\n                \"text\"   : \"No problem at all, looks like you have a valid card. Take a seat!\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Thank you. Have a good day.\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc1ev3\",\r\n            \"content\" : {\r\n                \"type\"   : \"Text\",\r\n                \"visual\" : \"oldwoman.jpg\",\r\n                \"audio\"  : null,\r\n                \"text\"   : \"You sit next to an old woman, who asks what your plans are for the day. Greet her and explain how you're catching a train to the seaside.\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Freeform\",\r\n                \"prompt\" : null\r\n            }\r\n        }\r\n        ]\r\n    },\r\n    {\r\n        \"id\" : \"testScenario2\",\r\n        \"creator\" : {\r\n            \"id\"    : \"thatId\",\r\n            \"name\"  : \"Justin Time\"\r\n        },\r\n        \"title\" : \"Ordering a Pizza\",\r\n        \"icon\"  : \"http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png\",\r\n        \"resources\" : \"https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1\",\r\n        \"tasks\" : [\r\n        {\r\n            \"id\" : \"sc2ev1\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"phone.jpg\",\r\n                \"audio\"  : \"hello.mp3\",\r\n                \"text\"   : \"You are ordering pizza over the phone for both yourself and a friend who has a gluten alergy.\\n'Tony's Pizza Parlour, how can I help you?'\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Hello, can I order a pizza please?\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc2ev2\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"pizza.jpg\",\r\n                \"audio\"  : \"order1.mp3\",\r\n                \"text\"   : \"Of course! What kind would you like?\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Freeform\",\r\n                \"prompt\" : \"Describe your favourite pizza\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc2ev3\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"pizza.jpg\",\r\n                \"audio\"  : \"order2.mp3\",\r\n                \"text\"   : \"That sounds delicious! Would you like anything else?\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Freeform\",\r\n                \"prompt\" : \"Describe another kind of pizza, but make sure it's gluten free!\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc2ev4\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"making.jpg\",\r\n                \"audio\"  : \"end.mp3\",\r\n                \"text\"   : \"No problem at all, we can do that. See you soon!\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Thank you, see you later.\"\r\n            }\r\n        },\r\n        ]\r\n    }\r\n    ]\r\n},\r\n{\r\n\"id\" : \"anId2\",\r\n    \"title\" : \"Dementia\",\r\n    \"icon\"  : \"https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png\",\r\n    \"recommended\" : false,\r\n    \"scenarios\" : [\r\n    {\r\n    \"id\" : \"dmentia1\",\r\n    \"creator\" : {\r\n        \"id\"    : \"thatId\",\r\n        \"name\"  : \"Justin Time\"\r\n    },\r\n    \"title\" : \"Preparing Dinner\",\r\n    \"icon\"  : \"http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png\",\r\n    \"resources\" : \"https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1\",\r\n    \"tasks\" : [\r\n    {\r\n        \"id\" : \"sc3ev1\",\r\n        \"content\" : {\r\n            \"type\"   : \"AUDIO\",\r\n            \"visual\" : \"spagBol.jpg\",\r\n            \"audio\"  : \"spag1.mp3\",\r\n            \"text\"   : \"You've invited your best friend over for dinner and have decided to make spaghetti bolognese.\"\r\n        },\r\n        \"response\" : {\r\n            \"type\"  : \"none\",\r\n            \"prompt\" : null\r\n        }\r\n    },\r\n    {\r\n        \"id\" : \"sc3ev2\",\r\n        \"content\" : {\r\n            \"type\"   : \"AUDIO\",\r\n            \"visual\" : \"supermarket.jpg\",\r\n            \"audio\"  : \"spag2.mp3\",\r\n            \"text\"   : \"You go to the supermarket to buy some of the ingredients.\"\r\n        },\r\n        \"response\" : {\r\n            \"type\"  : \"Choice\",\r\n            \"prompt\" : \"Choose the spaghetti from the shelf.\",\r\n            \"choice1\" : \"spaghetti.jpg\",\r\n            \"choice2\"   : \"bakedBeans.png\"\r\n        }\r\n    },\r\n    {\r\n        \"id\" : \"sc3ev3\",\r\n        \"content\" : {\r\n            \"type\"   : \"AUDIO\",\r\n            \"visual\" : \"supermarket.jpg\",\r\n            \"audio\"  : \"spag3.mp3\",\r\n            \"text\"   : \"You also need something to make the sauce from...\"\r\n        },\r\n        \"response\" : {\r\n            \"type\"  : \"Choice\",\r\n            \"prompt\" : \"Which of these could you make a pasta sauce from?\",\r\n            \"choice1\" : \"dogFood.jpg\",\r\n            \"choice2\"   : \"tomatoes.jpg\"\r\n        }\r\n    },\r\n    {\r\n        \"id\" : \"sc3ev4\",\r\n        \"content\" : {\r\n            \"type\"   : \"AUDIO\",\r\n            \"visual\" : \"cashier.jpg\",\r\n            \"audio\"  : \"spag4.mp3\",\r\n            \"text\"   : \"As you pay for your items, the cashier asks about your bolognese recipe.\"\r\n        },\r\n        \"response\" : {\r\n            \"type\"  : \"Freeform\",\r\n            \"prompt\" : \"Describe the process of cooking spaghetti bolognese to the cashier.\"\r\n        }\r\n    },\r\n    {\r\n        \"id\" : \"sc3ev5\",\r\n        \"content\" : {\r\n            \"type\"   : \"AUDIO\",\r\n            \"visual\" : \"cashier.jpg\",\r\n            \"audio\"  : \"spag5.mp3\",\r\n            \"text\"   : \"Oh, that sounds delicious! Are you having anyone over?\"\r\n        },\r\n        \"response\" : {\r\n            \"type\"  : \"Freeform\",\r\n            \"prompt\" : \"Describe your best friend to the cashier.\"\r\n        }\r\n    },\r\n    ]\r\n}]\r\n}\r\n]";
+            session.categories = JsonConvert.DeserializeObject<List<ScenarioCategory>>(json);
+
+            // Loop over all categories, downloading icons as needed for them and their scenarios
+            for(int i = 0; i < session.categories.Count; i++)
+            {
+                session.categories[i].DownloadIcon();
+                
+                for(int j = 0; j < session.categories[i].scenarios.Length; j++)
+                {
+                    session.ProcessScenario(i, j, true);
+                }
+            }
+
+            // More efficient to await them all collectively than one at a time
+            int timeout = 10000;
+            int waited = 0;
+            int interval = 100;
+
+            while (waited < timeout)
+            {
+                if (SessionData.scenariosProcessing == 0 && ScenarioCategory.runningDLs == 0) return;
+                waited += interval;
+                await Task.Delay(interval);
+            }
+        }
+
+        /// <summary>
         /// Get a list of the user's submitted data from the server
         /// </summary>
         public static ResultItem[] FetchSubmittedResults()
@@ -268,7 +300,7 @@ namespace SpeechingCommon
             string extractPath = cacheDir + "/DL_" + resultId;
 
             ret.resources = new Dictionary<string, string>();
-            ret.scenario = Scenario.GetWithId(session.scenarios, ret.resultItem.scenarioId);
+            ret.scenario = Scenario.GetWithId(session.categories, ret.resultItem.scenarioId);
 
             // No need to download + unpack zip if this folder already exists
             if(Directory.Exists(extractPath))
@@ -331,7 +363,7 @@ namespace SpeechingCommon
                 fb.comments = "Placeholder feedback to do with your speech - this is feedback item number " + i;
                 fb.id = "fb" + i;
                 fb.resultId = resultId;
-                fb.easeOfListeningRating = rand.Next(1, 5);
+                fb.rating = rand.Next(1, 5);
             }
 
             return arr;
@@ -341,9 +373,11 @@ namespace SpeechingCommon
     public class SessionData
     {
         public User currentUser;
-        public List<Scenario> scenarios;
+        public List<ScenarioCategory> categories;
         public List<ResultItem> resultsToUpload;
         public List<User> userCache;
+
+        public static int scenariosProcessing = 0;
 
         // TEMP - will be pulled from the server eventually but store here for now TODO
         public List<ResultItem> resultsOnServer; 
@@ -351,7 +385,7 @@ namespace SpeechingCommon
         public SessionData()
         {
             currentUser = new User();
-            scenarios = new List<Scenario>();
+            categories = new List<ScenarioCategory>();
             resultsToUpload = new List<ResultItem>();
             userCache = new List<User>();
             resultsOnServer = new List<ResultItem>();
@@ -371,7 +405,7 @@ namespace SpeechingCommon
         }
 
         /// <summary>
-        /// Find all results for the given scenario aand remove them from the upload queue
+        /// Find all results for the given scenario and remove them from the upload queue
         /// </summary>
         /// <param name="scenarioId"></param>
         public void DeleteAllPendingForScenario(string scenarioId)
@@ -395,12 +429,14 @@ namespace SpeechingCommon
         /// Prepare a new scenario based off of the given JSON
         /// </summary>
         /// <param name="json"></param>
-        public async Task ProcessNewScenario(string json, bool shouldSave = true)
+        public async Task ProcessScenario(int catIndex, int scenIndex, bool shouldSave = true)
         {
             try
             {
-                Scenario scenario = JsonConvert.DeserializeObject<Scenario>(json);
-                scenario.id = "scenario_" + AppData.rand.Next().ToString();
+                scenariosProcessing++;
+
+                Scenario scenario = categories[catIndex].scenarios[scenIndex];
+                if(scenario.id == null) scenario.id = "scenario_" + AppData.rand.Next().ToString();
 
                 string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(scenario.icon);
 
@@ -417,9 +453,10 @@ namespace SpeechingCommon
                 }
 
                 scenario.icon = localIconPath;
-                scenarios.Add(scenario);
+                categories[catIndex].scenarios[scenIndex] = scenario;
 
                 if (shouldSave) AppData.SaveCurrentData();
+                scenariosProcessing--;
             }
             catch(Exception e)
             {
@@ -501,31 +538,33 @@ namespace SpeechingCommon
         public string id;
         public string resultId;
         public string userId; //Null for HipHopAnonymous?
-        public int easeOfListeningRating;
+        public int rating;
         public string comments;
     }
 
-    public class EventContent
+    public class TaskContent
     {
-        public string type;
+        public enum ContentType { Audio, Video, Text };
+        public ContentType type;
         public string visual;
         public string audio;
         public string text;
     }
 
-    public class EventResponse
+    public class TaskResponse
     {
-        public string type;
+        public enum ResponseType { None, Prompted, Freeform, Choice };
+        public ResponseType type;
         public string prompt;
         public string choice1;
         public string choice2;
     }
 
-    public class ScenarioEvent
+    public class SpeechingTask
     {
         public string id;
-        public EventContent content;
-        public EventResponse response;
+        public TaskContent content;
+        public TaskResponse response;
     }
 
     public class Scenario
@@ -535,16 +574,59 @@ namespace SpeechingCommon
         public string title;
         public string resources;
         public string icon;
-        public ScenarioEvent[] events;
+        public SpeechingTask[] tasks;
 
-        public static Scenario GetWithId(List<Scenario> coll, string id)
+        public static Scenario GetWithId(List<ScenarioCategory> coll, string id)
         {
-            for (int i = 0; i < coll.Count; i++)
+            foreach(ScenarioCategory cat in coll)
             {
-                if (coll[i].id == id) return coll[i];
+                foreach(Scenario scen in cat.scenarios)
+                {
+                    if (scen.id == id) return scen;
+                }
             }
 
             return null;
+        }
+    }
+
+    public class ScenarioCategory
+    {
+        public string id;
+        public string title;
+        public string icon;
+        public bool recommended;
+        public Scenario[] scenarios;
+
+        public static int runningDLs = 0;
+
+        public async Task DownloadIcon()
+        {
+            runningDLs++;
+            string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(icon);
+
+            try
+            {
+                // Download the icon if it isn't already stored locally
+                if (!File.Exists(localIconPath))
+                {
+                    WebClient request = new WebClient();
+                    await request.DownloadFileTaskAsync(
+                        new Uri(icon),
+                        localIconPath
+                        );
+                    request.Dispose();
+                    request = null;
+                }
+            }
+            catch(Exception e)
+            {
+                // We might be downloading into the same file simultaneously
+                // Not actually an issue, as long as the icon path still gets reassigned to the local one below
+            }
+
+            icon = localIconPath;
+            runningDLs--;
         }
     }
 

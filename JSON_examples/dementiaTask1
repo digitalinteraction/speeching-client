@@ -5,15 +5,16 @@
 		"name"	: "Justin Time"
 	},
 	"title" : "Preparing Dinner",
-	"icon"	: "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
-	"resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
+	"icon"	: "http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png",
+	"resources" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
 	"events" : [
 	{
+		"id" : "sc3ev1",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "spagBol.jpg",
 			"audio"	 : "spag1.mp3",
-			"text"	 : "You've decided to cook spaghetti bolognese for your dinner and will use your favourite recipe."
+			"text"	 : "You've invited your best friend over for dinner and have decided to make spaghetti bolognese."
 		},
 		"response" : {
 			"type"	: "none",
@@ -21,6 +22,7 @@
 		}
 	},
 	{
+		"id" : "sc3ev2",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "supermarket.jpg",
@@ -28,13 +30,14 @@
 			"text"	 : "You go to the supermarket to buy some of the ingredients."
 		},
 		"response" : {
-			"type"	: "choice",
+			"type"	: "Choice",
 			"prompt" : "Choose the spaghetti from the shelf.",
 			"choice1" : "spaghetti.jpg",
-			"choice2"	: "bakedBeans.jpg"
+			"choice2"	: "bakedBeans.png"
 		}
 	},
 	{
+		"id" : "sc3ev3",
 		"content" : {
 			"type"	 : "AUDIO",
 			"visual" : "supermarket.jpg",
@@ -42,22 +45,36 @@
 			"text"	 : "You also need something to make the sauce from..."
 		},
 		"response" : {
-			"type"	: "choice",
+			"type"	: "Choice",
 			"prompt" : "Which of these could you make a pasta sauce from?",
 			"choice1" : "dogFood.jpg",
 			"choice2"	: "tomatoes.jpg"
 		}
 	},
 	{
+		"id" : "sc3ev4",
 		"content" : {
 			"type"	 : "AUDIO",
-			"visual" : "puppy.jpg",
-			"audio"	 : "neighbour3.mp3",
-			"text"	 : "That's him alright! I actually found him in my garden this morning. If you read me the telephone number I'll call his owner."
+			"visual" : "cashier.jpg",
+			"audio"	 : "spag4.mp3",
+			"text"	 : "As you pay for your items, the cashier asks about your bolognese recipe."
 		},
 		"response" : {
-			"type"	: "promptedSpeech",
-			"prompt" : "It's 07745352515. Thank you!"
+			"type"	: "Freeform",
+			"prompt" : "Describe the process of cooking spaghetti bolognese to the cashier."
+		}
+	},
+	{
+		"id" : "sc3ev5",
+		"content" : {
+			"type"	 : "AUDIO",
+			"visual" : "cashier.jpg",
+			"audio"	 : "spag5.mp3",
+			"text"	 : "Oh, that sounds delicious! Are you having anyone over?"
+		},
+		"response" : {
+			"type"	: "Freeform",
+			"prompt" : "Describe your best friend to the cashier."
 		}
 	},
 	]

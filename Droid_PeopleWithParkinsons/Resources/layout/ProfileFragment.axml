@@ -12,7 +12,7 @@
         android:layout_marginBottom="5dp">
         <ImageView
             android:src="@drawable/Icon"
-            android:id="@+id/profileAvatar"
+            android:id="@+id/profile_avatar"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight="2"
@@ -25,7 +25,7 @@
             android:layout_weight="3">
             <TextView
                 android:text="Your Profile"
-                android:id="@+id/profileTitle"
+                android:id="@+id/profile_title"
                 android:gravity="left"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
@@ -35,7 +35,7 @@
                 android:layout_marginRight="20dp" />
             <TextView
                 android:text="Justin Time"
-                android:id="@+id/profileName"
+                android:id="@+id/profile_name"
                 android:gravity="left"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
@@ -45,7 +45,7 @@
                 android:layout_marginRight="20dp" />
             <TextView
                 android:text="Member since 11/11/11"
-                android:id="@+id/profileDate"
+                android:id="@+id/profile_date"
                 android:gravity="left"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -63,7 +63,6 @@
         android:background="@color/darkBlue">
         <TextView
             android:text="Your Total Score:"
-            android:id="@+id/profileTitle"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -73,7 +72,7 @@
             android:layout_marginBottom="6dp"
             android:textColor="@color/white" />
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/profile_totalRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -83,7 +82,7 @@
             android:rating="3.5" />
         <TextView
             android:text="This was your average score across all categories as of 11/12/13. Practice and see if you can improve!"
-            android:id="@+id/profileTitle"
+            android:id="@+id/profile_ratingSummary"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
@@ -112,7 +111,6 @@
             android:background="@color/darkGreen">
             <TextView
                 android:text="Your best score:"
-                android:id="@+id/profileName"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
@@ -121,7 +119,7 @@
                 android:textColor="@color/white" />
             <ImageView
                 android:src="@drawable/Icon"
-                android:id="@+id/profileAvatar"
+                android:id="@+id/profile_strongIcon"
                 android:layout_width="fill_parent"
                 android:layout_height="120dp"
                 android:scaleType="fitCenter"
@@ -132,14 +130,14 @@
                 android:textColor="@color/white" />
             <TextView
                 android:text="Category Name"
-                android:id="@+id/profileName"
+                android:id="@+id/profile_strongTitle"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:textSize="24sp"
                 android:textColor="@color/white" />
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/profile_ratingStrong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -149,7 +147,6 @@
                 android:rating="4.5" />
             <TextView
                 android:text="AVERAGE SCORE"
-                android:id="@+id/profileName"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
@@ -171,7 +168,6 @@
             android:background="@color/darkRed">
             <TextView
                 android:text="Needs practice..."
-                android:id="@+id/profileName"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
@@ -180,7 +176,7 @@
                 android:textColor="@color/white" />
             <ImageView
                 android:src="@drawable/Icon"
-                android:id="@+id/profileAvatar"
+                android:id="@+id/profile_weakIcon"
                 android:layout_width="fill_parent"
                 android:layout_height="120dp"
                 android:scaleType="fitCenter"
@@ -191,14 +187,14 @@
                 android:textColor="@color/white" />
             <TextView
                 android:text="Category Name"
-                android:id="@+id/profileName"
+                android:id="@+id/profile_weakTitle"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:textSize="24sp"
                 android:textColor="@color/white" />
             <RatingBar
-                android:id="@+id/ratingBar"
+                android:id="@+id/profile_ratingWeak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -208,7 +204,6 @@
                 android:rating="2.0" />
             <TextView
                 android:text="AVERAGE SCORE"
-                android:id="@+id/profileName"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
@@ -218,7 +213,7 @@
         </LinearLayout>
     </LinearLayout>
     <Button
-        android:id="@+id/scenarioProgressBtn"
+        android:id="@+id/profile_ReassessBtn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
