@@ -8,7 +8,6 @@ using Android.Views;
 using Android.Widget;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using SpeechingCommon;
 using System;
 using System.Collections.Generic;
@@ -32,7 +31,6 @@ namespace Droid_PeopleWithParkinsons
         private LinearLayout eventLayout;
         private ImageView eventImage;
         private VideoView eventVideo;
-        private GridView eventChoicesGrid;
         private TextView eventTranscript;
         private MediaPlayer mediaPlayer;
 
@@ -81,11 +79,6 @@ namespace Droid_PeopleWithParkinsons
             {
                 Directory.CreateDirectory(documentsPath);
             }
-            if(!Directory.Exists(localTempDirectory))
-            {
-                Directory.CreateDirectory(localTempDirectory);
-            }
-
 
             // If the scenario folder doesn't exist we need to download the additional files
             if (!Directory.Exists(localResourcesDirectory))
@@ -347,11 +340,10 @@ namespace Droid_PeopleWithParkinsons
                     eventPrompt.Text = "";
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     mainButton.Text = "Continue";
-                    return;
                 }
 
                 // Load text
-                if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.Freeform)
+                else if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.Freeform)
                 {
                     // Make freeform prompts italic
                     string given = scenario.tasks[currIndex].response.prompt;
@@ -439,7 +431,12 @@ namespace Droid_PeopleWithParkinsons
                 return;
             }
 
-            if(recording)
+            if (scenario.tasks[currIndex].response.type == TaskResponse.ResponseType.None)
+            {
+                // No need to record
+                ShowNextEvent();
+            }
+            else if(recording)
             {
                 recording = false;
                 audioManager.StopRecording();
