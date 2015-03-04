@@ -26,7 +26,9 @@ namespace Droid_PeopleWithParkinsons
 
             var view = inflater.Inflate(Resource.Layout.MainTaskListFragment, container, false);
 
+            View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainTaskListHeader, null);
             mainList = view.FindViewById<ExpandableListView>(Resource.Id.mainActivitiesList);
+            mainList.AddHeaderView(header, null, false);
             mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.categories.ToArray()));
             mainList.ChildClick += delegate(object sender, ExpandableListView.ChildClickEventArgs args)
             {

@@ -10,7 +10,7 @@
         android:padding="8dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_title"
-        android:textSize="30sp" />
+        android:textSize="35dp" />
     <TextView
         android:text="Manage the data that you have already submitted!"
         android:layout_width="fill_parent"
@@ -18,5 +18,5 @@
         android:layout_margin="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_message"
-        android:textSize="18sp" />
+        android:textSize="20dp" />
 </RelativeLayout>

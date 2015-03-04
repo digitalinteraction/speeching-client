@@ -47,11 +47,11 @@
                 "type"   : "Text",
                 "visual" : "oldwoman.jpg",
                 "audio"  : null,
-                "text"   : "You sit next to an old woman, who asks what your plans are for the day. Greet her and explain how you're catching a train to the seaside."
+                "text"   : "You sit next to an old woman, who asks what your plans are for the day."
             },
             "response" : {
                 "type"  : "Freeform",
-                "prompt" : null
+                "prompt" : "Greet her and explain that you're catching a train to the seaside."
             }
         }
         ]

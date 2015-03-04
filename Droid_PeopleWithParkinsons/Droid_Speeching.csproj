@@ -200,6 +200,17 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-land\ProfileFragment.axml" />
+    <AndroidResource Include="Resources\layout\MainTaskListHeader.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-land\MainTaskListFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListParent.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListChild.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-land\MainTaskListFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\PermissionsListHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\SubmittedHeader.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

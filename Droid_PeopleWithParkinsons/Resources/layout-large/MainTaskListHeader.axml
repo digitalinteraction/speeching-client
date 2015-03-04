@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
-        android:text="Your Submissions"
+        android:text="Practice Activities"
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
-        android:padding="8dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_title"
-        android:textSize="30sp" />
+        android:textSize="35dp" />
     <TextView
-        android:text="Manage the data that you have already submitted!"
+        android:text="Hone your skills in preparation for your next assessment with these practice activites! Tap a category to see all of the activities available for it."
         android:layout_width="fill_parent"
-        android:layout_below="@id/submitted_title"
-        android:layout_margin="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_message"
-        android:textSize="18sp" />
-</RelativeLayout>
+        android:textSize="20dp" />
+</LinearLayout>

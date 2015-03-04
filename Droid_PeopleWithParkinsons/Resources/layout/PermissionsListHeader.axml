@@ -10,7 +10,7 @@
         android:padding="8dp"
         android:layout_height="wrap_content"
         android:id="@+id/permissions_title"
-        android:textSize="35dp" />
+        android:textSize="30dp" />
     <TextView
         android:text="Choose who is able to access this uploaded content."
         android:layout_width="fill_parent"
@@ -18,5 +18,5 @@
         android:layout_margin="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/permissions_message"
-        android:textSize="20dp" />
+        android:textSize="18dp" />
 </RelativeLayout>
