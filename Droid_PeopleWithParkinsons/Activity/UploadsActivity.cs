@@ -13,6 +13,7 @@ namespace Droid_PeopleWithParkinsons
     {
         private Button uploadAllButton;
         private ListView uploadsList;
+        private ProgressDialog progressDialog;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -43,16 +44,39 @@ namespace Droid_PeopleWithParkinsons
             uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
         }
 
+        private void OnUploadComplete(bool success)
+        {
+            RunOnUiThread(() => progressDialog.Hide());
+
+            string message = (success) ? "Upload successful!" : "Unable to upload your content. Please try again later.";
+            RefreshList();
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetMessage(message);
+            alert.SetPositiveButton("Continue", (s, a) =>
+            {
+            });
+            alert.Show();
+        }
+
         public void OnItemTap(object sender, AdapterView.ItemClickEventArgs args)
         {
+            if(progressDialog == null)
+            {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.SetMessage("Uploading your content. Please wait.");
+                progressDialog.Indeterminate = true;
+            }
+
             AlertDialog alert = new AlertDialog.Builder(this)
             .SetTitle("Scenario Complete!")
             .SetMessage("What would you like to do with the results of this scenario?")
             .SetCancelable(true)
             .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
             .SetPositiveButton("Upload", (s, a) => {
-                AppData.PushResult(AppData.session.resultsToUpload[args.Position]);
-                RefreshList();
+                ResultItem toUpload = AppData.session.resultsToUpload[args.Position];
+                progressDialog.Show();
+                AppData.PushResult(toUpload, OnUploadComplete);
             })
             .SetNeutralButton("Cancel", (s, a) => { })
             .Create();

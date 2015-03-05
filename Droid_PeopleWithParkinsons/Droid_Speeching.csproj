@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\GuideActivity.cs" />
     <Compile Include="Activity\PermissionsActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Activity\SplashActivity.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="AndroidUtils.cs" />
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
+    <Compile Include="Fragment\GuideFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Fragment\SubmittedListFragment.cs" />
     <Compile Include="Fragment\UserProfileFragment.cs" />
@@ -211,6 +213,15 @@
     <AndroidResource Include="Resources\layout-large\MainTaskListHeader.axml" />
     <AndroidResource Include="Resources\layout-large\PermissionsListHeader.axml" />
     <AndroidResource Include="Resources\layout-large\SubmittedHeader.axml" />
+    <AndroidResource Include="Resources\layout\GuideFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\shadowed.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GuideActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -259,6 +270,7 @@
     <AndroidResource Include="Resources\menu\mainActivityActions.xml" />
     <AndroidResource Include="Resources\drawable\background_tabs.xml" />
     <AndroidResource Include="Resources\drawable\tabs_pattern.png" />
+    <AndroidResource Include="Resources\drawable\TutPlaceholder.jpg" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="json.net">

@@ -215,7 +215,7 @@ namespace Droid_PeopleWithParkinsons
 
                 audioRecorder = new MediaRecorder();
                 audioRecorder.SetAudioSource(AudioSource.Mic);
-                audioRecorder.SetOutputFormat(OutputFormat.ThreeGpp);
+                audioRecorder.SetOutputFormat(OutputFormat.Mpeg4);
                 audioRecorder.SetAudioEncoder(AudioEncoder.AmrNb);
                 audioRecorder.SetOutputFile(outputPath);
                 audioRecorder.Prepare();

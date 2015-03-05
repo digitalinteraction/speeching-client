@@ -23,6 +23,8 @@ namespace SpeechingCommon
         // System data
         public static string cacheDir;
 
+        public static string server = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
+        public static string remoteUploads;
         public static Random rand;
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace SpeechingCommon
                 else if (File.Exists(cacheDir + "/offline.json"))
                 {
                     session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"));
+                    remoteUploads = "uploads/" + session.currentUser.id + "/";
                     return true;
                 }
             }
@@ -51,6 +54,8 @@ namespace SpeechingCommon
             }
 
             session = new SessionData();
+            remoteUploads = "uploads/" + session.currentUser.id + "/";
+
             return false;
         }
 
@@ -139,12 +144,70 @@ namespace SpeechingCommon
         /// Uploads a single result package to the server
         /// </summary>
         /// <param name="toUpload">The item to upload</param>
-        public static void PushResult(ResultItem toUpload)
+        public static async Task PushResult(ResultItem toUpload, Action<bool> callback = null)
         {
-            session.resultsToUpload.Remove(toUpload);
-            toUpload.uploaded = true;
-            session.resultsOnServer.Add(toUpload); //TEMP
-            SaveCurrentData();
+            bool success = false;
+
+            try
+            {
+                string millis = DateTime.Now.Subtract(DateTime.MinValue.AddYears(1969)).TotalMilliseconds.ToString();
+                string filename = millis + "_" + toUpload.scenarioId + ".zip";
+
+                FileStream fs = File.OpenRead(toUpload.dataLoc);
+                byte[] content = new byte[fs.Length];
+                fs.Read(content, 0, content.Length);
+                fs.Close();
+
+                string username = @"speeching";
+                string password = @"BlahBlah123";
+
+                HttpWebRequest putReq = (HttpWebRequest)WebRequest.Create(server + remoteUploads + filename);
+                putReq.Credentials = new NetworkCredential(username, password);
+                putReq.PreAuthenticate = true;
+                putReq.Method = @"PUT";
+                putReq.Headers.Add(@"Overwrite", @"T");
+                putReq.ContentLength = content.Length;
+                putReq.SendChunked = true;
+
+                Stream reqStream = putReq.GetRequestStream();
+                await reqStream.WriteAsync(content, 0, content.Length);
+                reqStream.Close();
+
+                try
+                {
+                    HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
+                    success = true;
+                }
+                catch(System.Net.WebException ex)
+                {
+                    // Might need to make the folder first...
+                    HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(server + remoteUploads);
+                    httpMkColRequest.Credentials = new NetworkCredential(username, password);
+                    httpMkColRequest.PreAuthenticate = true;
+                    httpMkColRequest.Method = @"MKCOL";
+                    HttpWebResponse httpMkColResponse = (HttpWebResponse)httpMkColRequest.GetResponse();
+
+                    // Try again!
+                    reqStream = putReq.GetRequestStream();
+                    reqStream.Write(content, 0, content.Length);
+                    reqStream.Close();
+                    HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
+                    success = true;
+                }
+
+            }
+            catch(Exception except)
+            {
+                Console.WriteLine("Oh dear! " + except);
+            }
+
+            if(success)
+            {
+                session.resultsToUpload.Remove(toUpload);
+                SaveCurrentData();
+            }
+
+            if (callback != null) callback(success);
         }
 
         /// <summary>
@@ -154,7 +217,7 @@ namespace SpeechingCommon
         {
             for(int i = 0; i < session.resultsToUpload.Count; i++)
             {
-                PushResult(session.resultsToUpload[i]);
+                //PushResult(session.resultsToUpload[i]); TODO
             }
         }
 
@@ -376,6 +439,7 @@ namespace SpeechingCommon
         public List<ScenarioCategory> categories;
         public List<ResultItem> resultsToUpload;
         public List<User> userCache;
+        public bool serverFolderExists = false;
 
         public static int scenariosProcessing = 0;
 
@@ -480,6 +544,7 @@ namespace SpeechingCommon
 
         public User()
         {
+            id = "placeholder";
             friends = new List<string>();
         }
     }

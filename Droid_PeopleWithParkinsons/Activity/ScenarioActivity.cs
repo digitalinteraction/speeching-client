@@ -446,7 +446,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 recording = false;
                 audioManager.StopRecording();
-                results.results.Add(scenario.tasks[currIndex].id, scenario.tasks[currIndex].id + ".3gpp");
+                results.results.Add(scenario.tasks[currIndex].id, scenario.tasks[currIndex].id + ".mp3");
                 ShowNextEvent();
             }
             else
@@ -457,7 +457,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 recording = true;
-                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.tasks[currIndex].id + ".3gpp");
+                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.tasks[currIndex].id + ".mp3");
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }
