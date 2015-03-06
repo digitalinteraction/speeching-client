@@ -36,14 +36,15 @@ namespace Droid_PeopleWithParkinsons
 
                 System.Type objectType = thisItem.GetType();
                 System.Type targetActivity = typeof(MainActivity);
-                
-                if(objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
+
+                if (objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
+                else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
 
                 Intent intent = new Intent(Activity, targetActivity);
-                string scenarioId = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition].Id;
-                intent.PutExtra("ActivityId", scenarioId);
+                string itemId = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition].Id;
+                intent.PutExtra("ActivityId", itemId);
 
-                if(AppData.CheckIfScenarioCompleted(scenarioId))
+                if(AppData.CheckIfScenarioCompleted(itemId))
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
                     .SetTitle("Existing results found...")

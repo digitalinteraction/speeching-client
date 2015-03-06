@@ -84,4 +84,29 @@ namespace SpeechingCommon
 
     }
 
+    public class TaskContent
+    {
+        public enum ContentType { Audio, Video, Text };
+        public ContentType type;
+        public string visual;
+        public string audio;
+        public string text;
+    }
+
+    public class TaskResponse
+    {
+        public enum ResponseType { None, Prompted, Freeform, Choice };
+        public ResponseType type;
+        public string prompt;
+        public string choice1;
+        public string choice2;
+    }
+
+    public class SpeechingTask
+    {
+        public string id;
+        public TaskContent content;
+        public TaskResponse response;
+    }
+
 }

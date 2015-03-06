@@ -11,6 +11,11 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
+using System.Net;
+using SpeechingCommon;
+using ICSharpCode.SharpZipLib.Zip;
+using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -19,30 +24,131 @@ namespace Droid_PeopleWithParkinsons
     {
         GuideAdapter adapter;
         ViewPager pager;
+        Dictionary<string, string> resources;
+        Guide guide;
+
+        ProgressDialog progress;
+        string localZipPath;
+        string localResourcesDirectory;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
+            guide = (Guide)AppData.session.GetActivityWithId(Intent.GetStringExtra("ActivityId"));
+            string scenarioFormatted = guide.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
+
+            string documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
+            localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
+
+             // Create these directories if they don't already exist
+            if (!Directory.Exists(documentsPath))
+            {
+                Directory.CreateDirectory(documentsPath);
+            }
+
+            // If the scenario folder doesn't exist we need to download the additional files
+            if (!Directory.Exists(localResourcesDirectory))
+            {
+                Directory.CreateDirectory(localResourcesDirectory);
+
+                localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
+                PrepareData();
+            }
+            else
+            {
+                // We need to populate the resources dictionary with the existing files
+                string[] files = Directory.GetFiles(localResourcesDirectory);
+                resources = new Dictionary<string, string>();
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    resources.Add(System.IO.Path.GetFileName(files[i]), files[i]);
+                }
+                DisplayContent();
+            }
+        }
+
+        /// <summary>
+        /// Show the content once it is ready
+        /// </summary>
+        private void DisplayContent()
+        {
             SetContentView(Resource.Layout.GuideActivity);
             ActionBar.Hide();
 
-            adapter = new GuideAdapter(SupportFragmentManager);
+            adapter = new GuideAdapter(SupportFragmentManager, guide.slides, resources);
             pager = FindViewById<ViewPager>(Resource.Id.guide_pager);
             pager.Adapter = adapter;
             pager.SetPageTransformer(true, new DepthPageTransformer());
+        }
+
+        /// <summary>
+        /// Downloads the data from the scenario's address
+        /// </summary>
+        private async void PrepareData()
+        {
+            RunOnUiThread(() => progress = ProgressDialog.Show(this, "Please Wait", "Downloading data to " + localZipPath, true));
+            resources = new Dictionary<string, string>();
+
+            WebClient request = new WebClient();
+            await request.DownloadFileTaskAsync(
+                new Uri(guide.Resources),
+                localZipPath
+                );
+            request.Dispose();
+            request = null;
+
+            RunOnUiThread(() => progress.SetMessage("Unpacking data at " + localZipPath));
+
+            ZipFile zip = null;
+            try
+            {
+                //Unzip the downloaded file and add references to its contents in the resources dictionary
+                zip = new ZipFile(File.OpenRead(localZipPath));
+
+                foreach (ZipEntry entry in zip)
+                {
+                    string filename = System.IO.Path.Combine(localResourcesDirectory, entry.Name);
+                    byte[] buffer = new byte[4096];
+                    System.IO.Stream zipStream = zip.GetInputStream(entry);
+                    using (FileStream streamWriter = File.Create(filename))
+                    {
+                        StreamUtils.Copy(zipStream, streamWriter, buffer);
+                    }
+                    resources.Add(entry.Name, filename);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error! " + e.Message);
+            }
+            finally
+            {
+                if (zip != null)
+                {
+                    zip.IsStreamOwner = true;
+                    zip.Close();
+                }
+            }
+            RunOnUiThread(() => progress.Hide());
+            DisplayContent();
         }
     }
 
         public class GuideAdapter : FragmentStatePagerAdapter
         {
             private Android.Support.V4.App.FragmentManager SupportFragmentManager;
+            private Guide.Slide[] slides;
+            private Dictionary<string, string> resources;
 
-            public GuideAdapter(Android.Support.V4.App.FragmentManager SupportFragmentManager)
+            public GuideAdapter(Android.Support.V4.App.FragmentManager SupportFragmentManager, Guide.Slide[] slides, Dictionary<string, string> resources)
                 : base(SupportFragmentManager)
             {
                 this.SupportFragmentManager = SupportFragmentManager;
-                _count = 5;
+                this.slides = slides;
+                this.resources = resources;
             }
 
             protected internal readonly string[] _titles;
@@ -51,28 +157,22 @@ namespace Droid_PeopleWithParkinsons
             {
                 Android.Support.V4.App.Fragment fragment = new GuideFragment();
                 Bundle args = new Bundle();
-                args.PutString("content","Testing!");
+                args.PutString("content", slides[position].text);
+                args.PutString("image", resources[slides[position].visualMediaLoc]);
                 args.PutBoolean("first", position == 0);
-                args.PutBoolean("last", position == _count - 1);
+                args.PutBoolean("last", position == slides.Length - 1);
                 fragment.Arguments = args;
                 return fragment;
             }
 
-            private int _count;
             public override int Count
             {
-                get { return _count; }
+                get { return slides.Length; }
             }
 
             public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
             {
                 return new Java.Lang.String(_titles[position]);
-            }
-
-            public void SetCount(int count)
-            {
-                _count = count;
-                NotifyDataSetChanged();
             }
         }
 

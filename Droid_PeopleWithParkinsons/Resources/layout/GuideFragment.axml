@@ -68,7 +68,7 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="125dp"
         android:background="@color/white"
         android:alpha="0.85">
         <TextView
@@ -78,10 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:textSize="27sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
+            android:textSize="24sp"
+            android:layout_margin="12dp"
             android:textColor="@color/darkBlue" />
     </LinearLayout>
 </RelativeLayout>

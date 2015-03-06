@@ -26,6 +26,10 @@ namespace Droid_PeopleWithParkinsons
             Bundle args = this.Arguments;
 
             view.FindViewById<TextView>(Resource.Id.guide_content).Text = args.GetString("content");
+
+            ImageView bg = view.FindViewById<ImageView>(Resource.Id.guide_mainImage);
+            bg.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(args.GetString("image"))));
+
             view.FindViewById<LinearLayout>(Resource.Id.guide_left).Visibility = (args.GetBoolean("first")) ? ViewStates.Gone : ViewStates.Visible;
             view.FindViewById<LinearLayout>(Resource.Id.guide_right).Visibility = (args.GetBoolean("last")) ? ViewStates.Gone : ViewStates.Visible;
             return view;

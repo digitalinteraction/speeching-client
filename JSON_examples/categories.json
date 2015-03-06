@@ -14,7 +14,6 @@
         "Title" : "Getting the Bus",
         "Icon"  : "http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png",
         "Resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
-        "ActivityType" : "Scenario",
         "Tasks" : [
         {
             "id" : "sc1ev1",
@@ -66,7 +65,6 @@
         "Title" : "Ordering a Pizza",
         "Icon"  : "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
         "Resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
-        "ActivityType" : "Scenario",
         "tasks" : [
         {
             "id" : "sc2ev1",
@@ -125,92 +123,124 @@
     ]
 },
 {
-"id" : "anId2",
+    "id" : "anId2",
     "title" : "Dementia",
     "icon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
     "recommended" : false,
     "activities" : [
-    {
-    "Id" : "dmentia1",
-    "Creator" : {
-        "id"    : "thatId",
-        "name"  : "Justin Time"
-    },
-    "Title" : "Preparing Dinner",
-    "Icon"  : "http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png",
-    "Resources" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
-    "ActivityType" : "Scenario",
-    "tasks" : [
-    {
-        "id" : "sc3ev1",
-        "content" : {
-            "type"   : "AUDIO",
-            "visual" : "spagBol.jpg",
-            "audio"  : "spag1.mp3",
-            "text"   : "You've invited your best friend over for dinner and have decided to make spaghetti bolognese."
-        },
-        "response" : {
-            "type"  : "none",
-            "prompt" : null
+        {
+            "Id" : "dmentia1",
+            "Creator" : {
+                "id"    : "thatId",
+                "name"  : "Justin Time"
+            },
+            "Title" : "Preparing Dinner",
+            "Icon"  : "http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png",
+            "Resources" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
+            "tasks" : [
+            {
+                "id" : "sc3ev1",
+                "content" : {
+                    "type"   : "AUDIO",
+                    "visual" : "spagBol.jpg",
+                    "audio"  : "spag1.mp3",
+                    "text"   : "You've invited your best friend over for dinner and have decided to make spaghetti bolognese."
+                },
+                "response" : {
+                    "type"  : "none",
+                    "prompt" : null
+                }
+            },
+            {
+                "id" : "sc3ev2",
+                "content" : {
+                    "type"   : "AUDIO",
+                    "visual" : "supermarket.jpg",
+                    "audio"  : "spag2.mp3",
+                    "text"   : "You go to the supermarket to buy some of the ingredients."
+                },
+                "response" : {
+                    "type"  : "Choice",
+                    "prompt" : "Choose the spaghetti from the shelf.",
+                    "choice1" : "spaghetti.jpg",
+                    "choice2"   : "bakedBeans.png"
+                }
+            },
+            {
+                "id" : "sc3ev3",
+                "content" : {
+                    "type"   : "AUDIO",
+                    "visual" : "supermarket.jpg",
+                    "audio"  : "spag3.mp3",
+                    "text"   : "You also need something to make the sauce from..."
+                },
+                "response" : {
+                    "type"  : "Choice",
+                    "prompt" : "Which of these could you make a pasta sauce from?",
+                    "choice1" : "dogFood.jpg",
+                    "choice2"   : "tomatoes.jpg"
+                }
+            },
+            {
+                "id" : "sc3ev4",
+                "content" : {
+                    "type"   : "AUDIO",
+                    "visual" : "cashier.jpg",
+                    "audio"  : "spag4.mp3",
+                    "text"   : "As you pay for your items, the cashier asks about your bolognese recipe."
+                },
+                "response" : {
+                    "type"  : "Freeform",
+                    "prompt" : "Describe the process of cooking spaghetti bolognese to the cashier."
+                }
+            },
+            {
+                "id" : "sc3ev5",
+                "content" : {
+                    "type"   : "AUDIO",
+                    "visual" : "cashier.jpg",
+                    "audio"  : "spag5.mp3",
+                    "text"   : "Oh, that sounds delicious! Are you having anyone over?"
+                },
+                "response" : {
+                    "type"  : "Freeform",
+                    "prompt" : "Describe your best friend to the cashier."
+                }
+            }
+            ]
         }
-    },
-    {
-        "id" : "sc3ev2",
-        "content" : {
-            "type"   : "AUDIO",
-            "visual" : "supermarket.jpg",
-            "audio"  : "spag2.mp3",
-            "text"   : "You go to the supermarket to buy some of the ingredients."
-        },
-        "response" : {
-            "type"  : "Choice",
-            "prompt" : "Choose the spaghetti from the shelf.",
-            "choice1" : "spaghetti.jpg",
-            "choice2"   : "bakedBeans.png"
-        }
-    },
-    {
-        "id" : "sc3ev3",
-        "content" : {
-            "type"   : "AUDIO",
-            "visual" : "supermarket.jpg",
-            "audio"  : "spag3.mp3",
-            "text"   : "You also need something to make the sauce from..."
-        },
-        "response" : {
-            "type"  : "Choice",
-            "prompt" : "Which of these could you make a pasta sauce from?",
-            "choice1" : "dogFood.jpg",
-            "choice2"   : "tomatoes.jpg"
-        }
-    },
-    {
-        "id" : "sc3ev4",
-        "content" : {
-            "type"   : "AUDIO",
-            "visual" : "cashier.jpg",
-            "audio"  : "spag4.mp3",
-            "text"   : "As you pay for your items, the cashier asks about your bolognese recipe."
-        },
-        "response" : {
-            "type"  : "Freeform",
-            "prompt" : "Describe the process of cooking spaghetti bolognese to the cashier."
-        }
-    },
-    {
-        "id" : "sc3ev5",
-        "content" : {
-            "type"   : "AUDIO",
-            "visual" : "cashier.jpg",
-            "audio"  : "spag5.mp3",
-            "text"   : "Oh, that sounds delicious! Are you having anyone over?"
-        },
-        "response" : {
-            "type"  : "Freeform",
-            "prompt" : "Describe your best friend to the cashier."
-        }
-    },
     ]
-}]
-}
+    },
+    {
+    "id" : "anId3",
+    "title" : "Helpful Guides",
+    "icon"  : "https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png",
+    "recommended" : false,
+    "activities" : [
+        {
+            "Id" : "guide1",
+            "Creator" : {
+                "id"    : "thatId",
+                "name"  : "Justin Time"
+            },
+            "Title" : "Interaction Tips",
+            "Icon"  : "http://www.pursuittraining.co.uk/images/care-icon.gif",
+            "Resources" : "https://www.dropbox.com/s/pw1ubz20nwatxtl/guide.zip?raw=1",
+            "slides" : [
+                {
+                    "visualMediaLoc" : "pic1.jpg",
+                    "text"           : "Try to think through how it might feel to struggle to communicate if you were living with dementia and think about what might help and what has helped in the past."
+                },
+                {
+                    "visualMediaLoc" : "pic2.jpg",
+                    "text"           : "Smile where you can and offer reassuring physical contact where it is appropriate. Make sure people can see your face and that you have engaged their attention."
+                },
+                {
+                    "visualMediaLoc" : "pic3.jpg",
+                    "text"           : "Relax as much as you can and help the person you are talking with to relax. Be prepared to be treated as someone you are not (for example being mistaken for another relative)."
+                }
+            ]
+        }
+    ]
+    }
 ]

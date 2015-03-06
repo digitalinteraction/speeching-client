@@ -70,7 +70,7 @@ namespace Droid_PeopleWithParkinsons
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            string scenarioFormatted = scenario.Title.Replace(" ", String.Empty);
+            string scenarioFormatted = scenario.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
