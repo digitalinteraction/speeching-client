@@ -1,10 +1,8 @@
 using Android.App;
 using Android.OS;
 using Android.Widget;
-using Newtonsoft.Json;
 using SpeechingCommon;
 using System;
-using System.Collections.Generic; 
 
 namespace Droid_PeopleWithParkinsons
 {

@@ -58,8 +58,8 @@ namespace Droid_PeopleWithParkinsons
             ActionBar.SetHomeButtonEnabled(true);
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
-            StartService(uploadServiceIntent);
+            //Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
+            //StartService(uploadServiceIntent);
 
             AudioFileManager.DeleteAllTemp();
 

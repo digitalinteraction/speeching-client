@@ -4,9 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpeechingCommon
@@ -46,7 +44,12 @@ namespace SpeechingCommon
                 }
                 else if (File.Exists(cacheDir + "/offline.json"))
                 {
-                    session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"));
+                    var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
+                    session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"), new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Auto,
+                        Binder = binder
+                    });
                     remoteUploads = "uploads/" + session.currentUser.id + "/";
                     return true;
                 }
@@ -68,8 +71,12 @@ namespace SpeechingCommon
         public static async void SaveCurrentData()
         {
             if (session == null || cacheDir == null) return; // Nothing to save
-
-            string dataString = JsonConvert.SerializeObject(session);
+            var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
+            string dataString = JsonConvert.SerializeObject(session, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                Binder = binder
+            });
 
             try
             {

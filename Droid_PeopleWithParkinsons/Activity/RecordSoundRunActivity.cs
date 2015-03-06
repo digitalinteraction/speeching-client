@@ -134,7 +134,7 @@ namespace Droid_PeopleWithParkinsons
             model.path = serviceParameter;
             model.sentence = sentence;
 
-            ModelManager.AddModel(model);
+            //ModelManager.AddModel(model);
 
             //uploadServiceBinder.GetUploadService().AddFile(serviceParameter, sentence);
             Toast.MakeText(this, "Added sound to upload queue.", ToastLength.Short).Show();
@@ -142,8 +142,8 @@ namespace Droid_PeopleWithParkinsons
             SentenceManager.DeleteQuestion(sentence);
 
             // Starts a service (Ensures it carries on after activity ends)
-            Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
-            StartService(uploadServiceIntent);
+            //Intent uploadServiceIntent = new Intent(this, typeof(UploadService));
+            //StartService(uploadServiceIntent);
 
             Intent mainMenu = new Intent(this, typeof(MainActivity));
             StartActivity(mainMenu);           
