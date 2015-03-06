@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:paddingLeft="12dp"
@@ -18,7 +19,6 @@
     <TextView
         android:text="Your Uploads"
         android:layout_width="fill_parent"
-        android:layout_below="@id/uploads_warning"
         android:layout_marginTop="12dp"
         android:padding="8dp"
         android:layout_height="wrap_content"
@@ -27,7 +27,6 @@
     <TextView
         android:text="Upload your results to the cloud service!"
         android:layout_width="fill_parent"
-        android:layout_below="@id/uploads_title"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="12dp"
         android:layout_height="wrap_content"
@@ -35,18 +34,18 @@
         android:textSize="20dp" />
     <ListView
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
+        android:layout_weight="8"
         android:id="@+id/uploads_list"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/uploads_message" />
+        android:layout_marginTop="10dp" />
     <ToggleButton
         android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="5dp"
-        android:gravity="center"
-        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
         android:id="@+id/uploads_start"
         android:textSize="20dp"
         android:textOff="Start Uploading"
-        android:textOn="Stop Uploading"
-        android:layout_alignParentBottom="true" />
-</RelativeLayout>
+        android:textOn="Stop Uploading" />
+</LinearLayout>

@@ -11,7 +11,7 @@ namespace Droid_PeopleWithParkinsons
     [Activity(Label = "Uploads", ParentActivity = typeof(MainActivity))]
     public class UploadsActivity : Activity
     {
-        private Button uploadAllButton;
+        private ToggleButton uploadAllButton;
         private ListView uploadsList;
         private ProgressDialog progressDialog;
 
@@ -25,14 +25,26 @@ namespace Droid_PeopleWithParkinsons
             uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
             uploadsList.ItemClick += OnItemTap;
 
-            uploadAllButton = FindViewById<Button>(Resource.Id.uploads_start);
+            uploadAllButton = FindViewById<ToggleButton>(Resource.Id.uploads_start);
             uploadAllButton.Click += uploadAllButton_Click;
+        }
+
+        private void MultiUploadComplete(bool isFinal)
+        {
+            RefreshList();
+            if(isFinal)
+            {
+                RunOnUiThread(() =>
+                {
+                    uploadAllButton.Checked = false;
+                    Toast.MakeText(this, "Finished all uploads!", ToastLength.Long).Show();
+                });
+            }
         }
 
         private void uploadAllButton_Click(object sender, EventArgs e)
         {
-            AppData.PushAllResults();
-            RefreshList();
+            AppData.PushAllResults(MultiUploadComplete);
         }
 
         /// <summary>

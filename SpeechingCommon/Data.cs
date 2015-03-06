@@ -25,6 +25,8 @@ namespace SpeechingCommon
 
         public static string server = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
         public static string remoteUploads;
+        public static string username = @"speeching";
+        public static string password = @"BlahBlah123";
         public static Random rand;
 
         /// <summary>
@@ -150,6 +152,8 @@ namespace SpeechingCommon
 
             try
             {
+                toUpload.uploadState = ResultItem.UploadState.Uploading;
+
                 string millis = DateTime.Now.Subtract(DateTime.MinValue.AddYears(1969)).TotalMilliseconds.ToString();
                 string filename = millis + "_" + toUpload.scenarioId + ".zip";
 
@@ -157,9 +161,6 @@ namespace SpeechingCommon
                 byte[] content = new byte[fs.Length];
                 fs.Read(content, 0, content.Length);
                 fs.Close();
-
-                string username = @"speeching";
-                string password = @"BlahBlah123";
 
                 HttpWebRequest putReq = (HttpWebRequest)WebRequest.Create(server + remoteUploads + filename);
                 putReq.Credentials = new NetworkCredential(username, password);
@@ -169,32 +170,32 @@ namespace SpeechingCommon
                 putReq.ContentLength = content.Length;
                 putReq.SendChunked = true;
 
-                Stream reqStream = putReq.GetRequestStream();
-                await reqStream.WriteAsync(content, 0, content.Length);
-                reqStream.Close();
-
-                try
+                using(Stream reqStream = putReq.GetRequestStream())
                 {
-                    HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
-                    success = true;
-                }
-                catch(System.Net.WebException ex)
-                {
-                    // Might need to make the folder first...
-                    HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(server + remoteUploads);
-                    httpMkColRequest.Credentials = new NetworkCredential(username, password);
-                    httpMkColRequest.PreAuthenticate = true;
-                    httpMkColRequest.Method = @"MKCOL";
-                    HttpWebResponse httpMkColResponse = (HttpWebResponse)httpMkColRequest.GetResponse();
-
-                    // Try again!
-                    reqStream = putReq.GetRequestStream();
-                    reqStream.Write(content, 0, content.Length);
+                    await reqStream.WriteAsync(content, 0, content.Length);
                     reqStream.Close();
-                    HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
-                    success = true;
-                }
 
+                    try
+                    {
+                        HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
+                        success = true;
+                    }
+                    catch (System.Net.WebException ex)
+                    {
+                        // Might need to make the folder first...
+                        HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(server + remoteUploads);
+                        httpMkColRequest.Credentials = new NetworkCredential(username, password);
+                        httpMkColRequest.PreAuthenticate = true;
+                        httpMkColRequest.Method = @"MKCOL";
+                        HttpWebResponse httpMkColResponse = (HttpWebResponse)httpMkColRequest.GetResponse();
+
+                        // Try again!
+                        reqStream.Write(content, 0, content.Length);
+                        reqStream.Close();
+                        HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
+                        success = true;
+                    }
+                }
             }
             catch(Exception except)
             {
@@ -204,20 +205,45 @@ namespace SpeechingCommon
             if(success)
             {
                 session.resultsToUpload.Remove(toUpload);
-                SaveCurrentData();
+                toUpload.uploadState = ResultItem.UploadState.Uploaded;
             }
 
             if (callback != null) callback(success);
         }
 
         /// <summary>
-        /// Complete all pending uploads
+        /// Uploads all items in the queue
         /// </summary>
-        public static void PushAllResults()
+        /// <param name="callback">The function to get called on an item finishing. Is called as true when all items have been processed.</param>
+        /// <returns></returns>
+        public static async Task PushAllResults(Action<bool> callback )
         {
-            for(int i = 0; i < session.resultsToUpload.Count; i++)
+            HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(server + remoteUploads);
+            httpMkColRequest.Credentials = new NetworkCredential(username, password);
+            httpMkColRequest.PreAuthenticate = true;
+            httpMkColRequest.Method = @"MKCOL";
+            try
             {
-                //PushResult(session.resultsToUpload[i]); TODO
+                HttpWebResponse httpMkColResponse = (System.Net.HttpWebResponse)await httpMkColRequest.GetResponseAsync();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            DateTime old = DateTime.MinValue.AddYears(1969);
+            ResultItem[] toUpload = session.resultsToUpload.ToArray();
+            int completed = 0;
+
+            Action<bool> OnUpload = (bool success) =>
+                {
+                    completed++;
+                    callback(completed >= toUpload.Length);
+                };
+
+            for(int i = 0; i < toUpload.Length; i++)
+            {
+                await PushResult(toUpload[i], OnUpload);
             }
         }
 
@@ -551,12 +577,13 @@ namespace SpeechingCommon
 
     public class ResultItem
     {
+        public enum UploadState { Incomplete, Ready, Uploading, Uploaded };
         public string id;
         public string userId;
         public string scenarioId;
         public string dataLoc;
         public Dictionary<string, string> results;
-        public bool uploaded;
+        public UploadState uploadState;
         public bool isPublic;
         public List<string> allowedUsers;
         public DateTime completedAt;
@@ -568,7 +595,7 @@ namespace SpeechingCommon
             this.scenarioId = scenarioId;
             this.userId = userId;
             this.dataLoc = dataLoc;
-            this.uploaded = false;
+            this.uploadState = UploadState.Ready;
             this.isPublic = false;
             this.allowedUsers = new List<string>();
             this.results = new Dictionary<string, string>();

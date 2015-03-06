@@ -215,7 +215,7 @@ namespace Droid_PeopleWithParkinsons
 
                 audioRecorder = new MediaRecorder();
                 audioRecorder.SetAudioSource(AudioSource.Mic);
-                audioRecorder.SetOutputFormat(OutputFormat.Mpeg4);
+                audioRecorder.SetOutputFormat(OutputFormat.ThreeGpp);
                 audioRecorder.SetAudioEncoder(AudioEncoder.AmrNb);
                 audioRecorder.SetOutputFile(outputPath);
                 audioRecorder.Prepare();
@@ -323,11 +323,11 @@ namespace Droid_PeopleWithParkinsons
                 view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisScenario.title;
                 view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();
 
-                if (results[position].uploaded)
+                if (results[position].uploadState == ResultItem.UploadState.Uploading)
                 {
-                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "";
+                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Uploading...";
                 }
-                else
+                else if (results[position].uploadState == ResultItem.UploadState.Ready)
                 {
                     view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Ready to upload";
                 }
