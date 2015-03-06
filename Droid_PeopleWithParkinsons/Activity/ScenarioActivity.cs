@@ -66,11 +66,11 @@ namespace Droid_PeopleWithParkinsons
             base.OnCreate(savedInstanceState);
 
             // Load the scenario with the id that was given inside the current intent
-            scenario = Scenario.GetWithId(AppData.session.categories, Intent.GetStringExtra("ScenarioId"));
+            scenario = (Scenario)AppData.session.GetActivityWithId(Intent.GetStringExtra("ActivityId"));
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            string scenarioFormatted = scenario.title.Replace(" ", String.Empty);
+            string scenarioFormatted = scenario.Title.Replace(" ", String.Empty);
 
             documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
@@ -111,7 +111,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 //Remove existing data from the upload queue
-                AppData.session.DeleteAllPendingForScenario(scenario.id);
+                AppData.session.DeleteAllPendingForScenario(scenario.Id);
             }
 
             SetContentView(Resource.Layout.ScenarioActivity);
@@ -135,8 +135,8 @@ namespace Droid_PeopleWithParkinsons
             choiceImage2 = FindViewById<ImageView>(Resource.Id.scenarioChoice2);
             choiceImage2.Click += ChoiceImageClicked;
 
-            scenarioTitle.Text = scenario.title;
-            authorName.Text = scenario.creator.name;
+            scenarioTitle.Text = scenario.Title;
+            authorName.Text = scenario.Creator.name;
 
             eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
             eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
@@ -150,7 +150,7 @@ namespace Droid_PeopleWithParkinsons
             mainButton.Click += MainButtonClicked;
 
             resultsZipPath = System.IO.Path.Combine(localResourcesDirectory, "final.zip");
-            results = new ResultItem(scenario.id, resultsZipPath, AppData.session.currentUser.id);
+            results = new ResultItem(scenario.Id, resultsZipPath, AppData.session.currentUser.id);
 
             if(savedInstanceState != null)
             {
@@ -161,7 +161,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 titleLayout.Visibility = ViewStates.Visible;
                 eventLayout.Visibility = ViewStates.Gone;
-                this.Title = scenario.title;
+                this.Title = scenario.Title;
             }
             else
             {
@@ -195,7 +195,7 @@ namespace Droid_PeopleWithParkinsons
 
             WebClient request = new WebClient();
             await request.DownloadFileTaskAsync(
-                new Uri(scenario.resources),
+                new Uri(scenario.Resources),
                 localZipPath
                 );
             request.Dispose();
@@ -239,7 +239,7 @@ namespace Droid_PeopleWithParkinsons
             
             if(icon != null)
             {
-                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.icon)));
+                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
             }
 
             RunOnUiThread(() => progress.Hide());
@@ -262,7 +262,7 @@ namespace Droid_PeopleWithParkinsons
 
                 if (icon != null)
                 {
-                    icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.icon)));
+                    icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
                 }
             }
         }
@@ -310,7 +310,7 @@ namespace Droid_PeopleWithParkinsons
                 return;
             }
 
-            this.Title = scenario.title + " | " + (currIndex + 1) + " of " + scenario.tasks.Length;
+            this.Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.tasks.Length;
             inputHint.Visibility = ViewStates.Visible;
 
             // Use the alternative layout for giving the user a choice between 2 items

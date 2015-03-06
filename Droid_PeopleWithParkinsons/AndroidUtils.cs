@@ -318,9 +318,9 @@ namespace Droid_PeopleWithParkinsons
                     view = context.LayoutInflater.Inflate(Resource.Layout.UploadsListItem, null);
                 }
 
-                Scenario thisScenario = Scenario.GetWithId(AppData.session.categories, results[position].scenarioId);
+                ISpeechingActivityItem thisItem = AppData.session.GetActivityWithId( results[position].activityId);
 
-                view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisScenario.title;
+                view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisItem.Title;
                 view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();
 
                 if (results[position].uploadState == ResultItem.UploadState.Uploading)

@@ -49,7 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityTypes\ActivityConverter.cs" />
+    <Compile Include="ActivityTypes\Guide.cs" />
+    <Compile Include="ActivityTypes\Scenario.cs" />
+    <Compile Include="ActivityTypes\_Interface.cs" />
     <Compile Include="Data.cs" />
+    <Compile Include="JsonCreationConverter.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

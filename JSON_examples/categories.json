@@ -4,17 +4,18 @@
     "title" : "Dysfluency",
     "icon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
     "recommended" : false,
-    "scenarios" : [
+    "activities" : [
     {
-        "id" : "testScenario",
-        "creator" : {
+        "Id" : "testScenario",
+        "Creator" : {
             "id"    : "thatId",
             "name"  : "Justin Time"
         },
-        "title" : "Getting the Bus",
-        "icon"  : "http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png",
-        "resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
-        "tasks" : [
+        "Title" : "Getting the Bus",
+        "Icon"  : "http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png",
+        "Resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
+        "ActivityType" : "Scenario",
+        "Tasks" : [
         {
             "id" : "sc1ev1",
             "content" : {
@@ -57,14 +58,15 @@
         ]
     },
     {
-        "id" : "testScenario2",
-        "creator" : {
+        "Id" : "testScenario2",
+        "Creator" : {
             "id"    : "thatId",
             "name"  : "Justin Time"
         },
-        "title" : "Ordering a Pizza",
-        "icon"  : "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
-        "resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
+        "Title" : "Ordering a Pizza",
+        "Icon"  : "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
+        "Resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
+        "ActivityType" : "Scenario",
         "tasks" : [
         {
             "id" : "sc2ev1",
@@ -127,16 +129,17 @@
     "title" : "Dementia",
     "icon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
     "recommended" : false,
-    "scenarios" : [
+    "activities" : [
     {
-    "id" : "dmentia1",
-    "creator" : {
+    "Id" : "dmentia1",
+    "Creator" : {
         "id"    : "thatId",
         "name"  : "Justin Time"
     },
-    "title" : "Preparing Dinner",
-    "icon"  : "http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png",
-    "resources" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
+    "Title" : "Preparing Dinner",
+    "Icon"  : "http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png",
+    "Resources" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
+    "ActivityType" : "Scenario",
     "tasks" : [
     {
         "id" : "sc3ev1",

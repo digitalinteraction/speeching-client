@@ -32,9 +32,16 @@ namespace Droid_PeopleWithParkinsons
             mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.categories.ToArray()));
             mainList.ChildClick += delegate(object sender, ExpandableListView.ChildClickEventArgs args)
             {
-                Intent intent = new Intent(Activity, typeof(ScenarioActivity));
-                string scenarioId = AppData.session.categories[args.GroupPosition].scenarios[args.ChildPosition].id;
-                intent.PutExtra("ScenarioId", scenarioId);
+                ISpeechingActivityItem thisItem = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition];
+
+                System.Type objectType = thisItem.GetType();
+                System.Type targetActivity = typeof(MainActivity);
+                
+                if(objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
+
+                Intent intent = new Intent(Activity, targetActivity);
+                string scenarioId = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition].Id;
+                intent.PutExtra("ActivityId", scenarioId);
 
                 if(AppData.CheckIfScenarioCompleted(scenarioId))
                 {
@@ -72,12 +79,12 @@ namespace Droid_PeopleWithParkinsons
         {
             Activity context;
 
-            ScenarioCategory[] categories;
+            ActivityCategory[] categories;
 
             /// <summary>
             /// An adapter to be able to display the details on each task in an expandable list
             /// </summary>
-            public ScenarioListAdapter(Activity context, int resource, ScenarioCategory[] data)
+            public ScenarioListAdapter(Activity context, int resource, ActivityCategory[] data)
             {
                 this.context = context;
                 this.categories = data;
@@ -95,7 +102,7 @@ namespace Droid_PeopleWithParkinsons
 
             public override int GetChildrenCount(int groupPosition)
             {
-                return categories[groupPosition].scenarios.Length;
+                return categories[groupPosition].activities.Length;
             }
 
             public override Java.Lang.Object GetGroup(int groupPosition)
@@ -116,21 +123,21 @@ namespace Droid_PeopleWithParkinsons
             public override View GetChildView(int groupPosition, int childPosition, bool isLastChild, View convertView, ViewGroup parent)
             {
                 View view = convertView;
-                Scenario scenario = categories[groupPosition].scenarios[childPosition];
+                ISpeechingActivityItem scenario = categories[groupPosition].activities[childPosition];
                 if (view == null)
                 {
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListChild, null);
                 }
 
-                view.FindViewById<TextView>(Resource.Id.tasklist_childTitle).Text = scenario.title;
-                view.FindViewById<ImageView>(Resource.Id.tasklist_childIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.icon)));
+                view.FindViewById<TextView>(Resource.Id.tasklist_childTitle).Text = scenario.Title;
+                view.FindViewById<ImageView>(Resource.Id.tasklist_childIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
                 return view;
             }
 
             public override View GetGroupView(int groupPosition, bool isExpanded, View convertView, ViewGroup parent)
             {
                 View view = convertView;
-                ScenarioCategory category = categories[groupPosition];
+                ActivityCategory category = categories[groupPosition];
                 if (view == null)
                 {
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListParent, null);
