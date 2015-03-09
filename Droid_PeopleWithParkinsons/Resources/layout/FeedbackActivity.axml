@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/feedback_drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<!-- CONTENT -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <ImageView
+                android:src="@drawable/Icon"
+                android:id="@+id/feedback_icon"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:layout_margin="20dp" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3">
+                <TextView
+                    android:text="Feedback for"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:textSize="18sp"
+                    android:layout_marginTop="20dp" />
+                <TextView
+                    android:text="Some sort of activity"
+                    android:id="@+id/feedback_title"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:textSize="30sp"
+                    android:layout_marginRight="20dp" />
+                <TextView
+                    android:text="Completed on 11/11/11"
+                    android:id="@+id/feedback_completionDate"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_margin="20dp"
+            android:background="@color/darkBlue" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6">
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/feedback_feedbackList" />
+        </LinearLayout>
+    </LinearLayout>
+<!-- SIDEBAR -->
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_height="match_parent"
+        android:layout_width="260dp"
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        android:background="#111">
+        <ListView
+            android:id="@+id/feedback_itemsList"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

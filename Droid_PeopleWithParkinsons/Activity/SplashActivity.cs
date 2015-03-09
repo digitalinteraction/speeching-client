@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Widget;
 using SpeechingCommon;
 using System;
+using System.Collections.Generic;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -16,6 +17,16 @@ namespace Droid_PeopleWithParkinsons
             AppData.cacheDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             bool loaded = AppData.TryLoadExistingData();
 
+            /*AppData.PostRequest<User>("post");
+
+
+            Dictionary<string, string> test = new Dictionary<string, string>();
+            test.Add("key1", "val1");
+            test.Add("key2", "val2");
+            test.Add("key3", "val3");
+
+            AppData.GetRequest<User>("get", test);*/
+
             if(!loaded)
             {
                 CreateData();
@@ -23,7 +34,7 @@ namespace Droid_PeopleWithParkinsons
             else
             {
                 Toast.MakeText(this, "Loaded existing data", ToastLength.Short).Show();
-                StartActivity(typeof(MainActivity));
+                StartActivity(typeof(FeedbackActivity));
             }
         }
 

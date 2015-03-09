@@ -1,6 +1,7 @@
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using RestSharp.Portable;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,11 +23,137 @@ namespace SpeechingCommon
         // System data
         public static string cacheDir;
 
-        public static string server = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
-        public static string remoteUploads;
-        public static string username = @"speeching";
-        public static string password = @"BlahBlah123";
+        public static string storageServer = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
+        public static string storageRemoteDir;
+        public static string storageUsername = @"speeching";
+        public static string storagePassword = @"BlahBlah123";
         public static Random rand;
+
+        public static string serviceUrl = "http://httpbin.org/";
+
+
+        /// <summary>
+        /// Send a POST request to the server and return an Object of type T in response
+        /// </summary>
+        /// <typeparam name="T">The object type to deserialize from JSON</typeparam>
+        /// <param name="route">The route on the server to query</param>
+        /// <param name="jsonData">Serialized data to send to the server in the request</param>
+        /// <returns>The response's JSON in type T</returns>
+        public static async Task<T> PostRequest<T>(string route, string jsonData = null)
+        {
+           var request = HttpWebRequest.Create(serviceUrl + route);
+            request.ContentType = "application/json";
+            request.Method = "POST";
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(jsonData))
+                {
+                    using (StreamWriter writer = new StreamWriter(request.GetRequestStream()))
+                    {
+                        writer.Write(jsonData);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            using(HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                if(response.StatusCode != HttpStatusCode.OK)
+                {
+                    Console.WriteLine("Error fetching data!");
+                    return default(T);
+                }
+                using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string content = await reader.ReadToEndAsync();
+                    response.Close();
+                    if(string.IsNullOrWhiteSpace(content))
+                    {
+                        Console.WriteLine("Error fetching data! Returned empty data");
+                        return default(T);
+                    }
+                    else
+                    {
+                        Console.Out.WriteLine("Response Body: \r\n {0}", content);
+
+                        try
+                        {
+                            return JsonConvert.DeserializeObject<T>(content);
+                        }
+                        catch(Exception except)
+                        {
+                            Console.WriteLine(except);
+                            return default(T);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Send a GET request to the server and return an Object of type T in response
+        /// </summary>
+        /// <typeparam name="T">The expected object type to return from JSON</typeparam>
+        /// <param name="route">The route on the server to query</param>
+        /// <param name="data">Keys + values to include in the sent URL</param>
+        /// <returns>The response's JSON as a type T</returns>
+        public static async Task<T> GetRequest<T>(string route, Dictionary<string, string> data = null)
+        {
+            string url = serviceUrl + route;
+
+            if(data != null && data.Count > 0)
+            {
+                url += "?";
+                int i = 0;
+                foreach(KeyValuePair<string, string> entry in data)
+                {
+                    url += entry.Key + "=" + entry.Value;
+                    if(++i != data.Count) url += "&";
+                }
+            }
+
+            var request = HttpWebRequest.Create(url);
+            request.ContentType = "application/json";
+            request.Method = "GET";
+
+            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    Console.WriteLine("Error fetching data!");
+                    return default(T);
+                }
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string content = await reader.ReadToEndAsync();
+                    response.Close();
+                    if (string.IsNullOrWhiteSpace(content))
+                    {
+                        Console.WriteLine("Error fetching data! Returned empty data");
+                        return default(T);
+                    }
+                    else
+                    {
+                        Console.Out.WriteLine("Response Body: \r\n {0}", content);
+
+                        try
+                        {
+                            return JsonConvert.DeserializeObject<T>(content);
+                        }
+                        catch (Exception except)
+                        {
+                            Console.WriteLine(except);
+                            return default(T);
+                        }
+                    }
+                }
+            }
+
+        }
 
         /// <summary>
         /// Attempts to load existing data stored in a local file.
@@ -50,7 +177,7 @@ namespace SpeechingCommon
                         TypeNameHandling = TypeNameHandling.Auto,
                         Binder = binder
                     });
-                    remoteUploads = "uploads/" + session.currentUser.id + "/";
+                    storageRemoteDir = "uploads/" + session.currentUser.id + "/";
                     return true;
                 }
             }
@@ -60,7 +187,7 @@ namespace SpeechingCommon
             }
 
             session = new SessionData();
-            remoteUploads = "uploads/" + session.currentUser.id + "/";
+            storageRemoteDir = "uploads/" + session.currentUser.id + "/";
 
             return false;
         }
@@ -177,8 +304,8 @@ namespace SpeechingCommon
                 fs.Read(content, 0, content.Length);
                 fs.Close();
 
-                HttpWebRequest putReq = (HttpWebRequest)WebRequest.Create(server + remoteUploads + filename);
-                putReq.Credentials = new NetworkCredential(username, password);
+                HttpWebRequest putReq = (HttpWebRequest)WebRequest.Create(storageServer + storageRemoteDir + filename);
+                putReq.Credentials = new NetworkCredential(storageUsername, storagePassword);
                 putReq.PreAuthenticate = true;
                 putReq.Method = @"PUT";
                 putReq.Headers.Add(@"Overwrite", @"T");
@@ -198,8 +325,8 @@ namespace SpeechingCommon
                     catch (System.Net.WebException ex)
                     {
                         // Might need to make the folder first...
-                        HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(server + remoteUploads);
-                        httpMkColRequest.Credentials = new NetworkCredential(username, password);
+                        HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(storageServer + storageRemoteDir);
+                        httpMkColRequest.Credentials = new NetworkCredential(storageUsername, storagePassword);
                         httpMkColRequest.PreAuthenticate = true;
                         httpMkColRequest.Method = @"MKCOL";
                         HttpWebResponse httpMkColResponse = (HttpWebResponse)httpMkColRequest.GetResponse();
@@ -233,8 +360,8 @@ namespace SpeechingCommon
         /// <returns></returns>
         public static async Task PushAllResults(Action<bool> callback )
         {
-            HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(server + remoteUploads);
-            httpMkColRequest.Credentials = new NetworkCredential(username, password);
+            HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(storageServer + storageRemoteDir);
+            httpMkColRequest.Credentials = new NetworkCredential(storageUsername, storagePassword);
             httpMkColRequest.PreAuthenticate = true;
             httpMkColRequest.Method = @"MKCOL";
             try
@@ -456,137 +583,22 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="resultId"></param>
         /// <returns></returns>
-        public static FeedbackItem[] FetchFeedback(string resultId)
+        public static IFeedbackItem[] FetchFeedback(string resultId)
         {
             // TEMP
-            FeedbackItem[] arr = new FeedbackItem[5];
+            IFeedbackItem[] arr = new IFeedbackItem[8];
 
             for(int i = 0; i < arr.Length; i++)
             {
-                FeedbackItem fb = new FeedbackItem();
-                fb.comments = "Placeholder feedback to do with your speech - this is feedback item number " + i;
-                fb.id = "fb" + i;
-                fb.resultId = resultId;
-                fb.rating = rand.Next(1, 5);
+                PercentageFeedback fb = new PercentageFeedback();
+                fb.Title = "Stammering";
+                fb.Caption = "90% of users thought you stammered over the word \"sausage\"";
+                fb.ActivityId = "sossie";
+                fb.Percentage = AppData.rand.Next(0, 100);
+                arr[i] = fb;
             }
 
             return arr;
-        }
-    }
-
-    public class SessionData
-    {
-        public User currentUser;
-        public List<ActivityCategory> categories;
-        public List<ResultItem> resultsToUpload;
-        public List<User> userCache;
-        public bool serverFolderExists = false;
-
-        public static int scenariosProcessing = 0;
-
-        // TEMP - will be pulled from the server eventually but store here for now TODO
-        public List<ResultItem> resultsOnServer; 
-
-        public SessionData()
-        {
-            currentUser = new User();
-            categories = new List<ActivityCategory>();
-            resultsToUpload = new List<ResultItem>();
-            userCache = new List<User>();
-            resultsOnServer = new List<ResultItem>();
-        }
-
-        /// <summary>
-        /// Attempt to find an activity with the given id
-        /// </summary>
-        /// <param name="activityId"></param>
-        /// <returns></returns>
-        public ISpeechingActivityItem GetActivityWithId(string activityId)
-        {
-            for(int i = 0; i < categories.Count; i++)
-            {
-                for(int j = 0; j < categories[i].activities.Length; j++)
-                {
-                    if (categories[i].activities[j].Id == activityId) return categories[i].activities[j];
-                }
-            }
-
-            // TODO check server
-            return null;
-        }
-
-        /// <summary>
-        /// Removes the result object from the toUpload list and deletes the files on disk (local deletion only)
-        /// </summary>
-        /// <param name="result">The item to delete</param>
-        public void DeleteResult(ResultItem result, bool save = true)
-        {
-            resultsToUpload.Remove(result);
-
-            File.Delete(result.dataLoc);
-
-            if (save) AppData.SaveCurrentData();
-        }
-
-        /// <summary>
-        /// Find all results for the given scenario and remove them from the upload queue
-        /// </summary>
-        /// <param name="scenarioId"></param>
-        public void DeleteAllPendingForScenario(string scenarioId)
-        {
-            List<ResultItem> toDelete = new List<ResultItem>();
-
-            foreach(ResultItem item in resultsToUpload)
-            {
-                if (item.activityId == scenarioId) toDelete.Add(item);
-            }
-
-            foreach(ResultItem del in toDelete)
-            {
-                DeleteResult(del, false);
-            }
-
-            AppData.SaveCurrentData();
-        }
-
-        /// <summary>
-        /// Prepare a new scenario based off of the given JSON
-        /// </summary>
-        /// <param name="json"></param>
-        public async Task ProcessScenario(int catIndex, int scenIndex, bool shouldSave = true)
-        {
-            try
-            {
-                scenariosProcessing++;
-
-                ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
-                if(activity.Id == null) activity.Id = "act_" + AppData.rand.Next().ToString();
-
-                string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(activity.Icon);
-
-                // Download the icon if it isn't already stored locally
-                if (!File.Exists(localIconPath))
-                {
-                    WebClient request = new WebClient();
-                    await request.DownloadFileTaskAsync(
-                        new Uri(activity.Icon),
-                        localIconPath
-                        );
-                    request.Dispose();
-                    request = null;
-                }
-
-                activity.Icon = localIconPath;
-                categories[catIndex].activities[scenIndex] = activity;
-
-                if (shouldSave) AppData.SaveCurrentData();
-                scenariosProcessing--;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Error adding new activity item: " + e);
-            }
-            
         }
     }
 
@@ -655,56 +667,6 @@ namespace SpeechingCommon
         {
             resultItem = result;
             resources = new Dictionary<string, string>();
-        }
-    }
-
-    // Are there different feedback models?
-    public class FeedbackItem
-    {
-        public string id;
-        public string resultId;
-        public string userId; //Null for HipHopAnonymous?
-        public int rating;
-        public string comments;
-    }
-
-    public class ActivityCategory
-    {
-        public string id;
-        public string title;
-        public string icon;
-        public bool recommended;
-        public ISpeechingActivityItem[] activities;
-
-        public static int runningDLs = 0;
-
-        public async Task DownloadIcon()
-        {
-            runningDLs++;
-            string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(icon);
-
-            try
-            {
-                // Download the icon if it isn't already stored locally
-                if (!File.Exists(localIconPath))
-                {
-                    WebClient request = new WebClient();
-                    await request.DownloadFileTaskAsync(
-                        new Uri(icon),
-                        localIconPath
-                        );
-                    request.Dispose();
-                    request = null;
-                }
-            }
-            catch(Exception e)
-            {
-                // We might be downloading into the same file simultaneously
-                // Not actually an issue, as long as the icon path still gets reassigned to the local one below
-            }
-
-            icon = localIconPath;
-            runningDLs--;
         }
     }
 

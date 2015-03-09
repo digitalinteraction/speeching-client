@@ -13,3 +13,5 @@ C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\res\val
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\R.cs.flag
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\uploadflags.txt
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.csprojResolveAssemblyReference.cache
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.xml

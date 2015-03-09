@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <radialprogress.RadialProgressView
+        android:id="@+id/feedback_progressView"
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:layout_margin="10dp"
+        min_value="0"
+        max_value="100"
+        progress_type="big"
+        hide_label="false"
+        progress_color="#0099CC" />
+    <TextView
+        android:text="The Title"
+        android:id="@+id/feedback_itemTitle"
+        android:layout_toRightOf="@id/feedback_progressView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="18sp" />
+    <TextView
+        android:text="Some sort of summary about the percentage. Why is it important?"
+        android:id="@+id/feedback_itemCaption"
+        android:layout_below="@id/feedback_itemTitle"
+        android:layout_toRightOf="@id/feedback_progressView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="18sp" />
+</RelativeLayout>

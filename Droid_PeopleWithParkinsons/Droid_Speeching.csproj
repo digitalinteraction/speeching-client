@@ -53,6 +53,9 @@
     <Reference Include="PagerSlidingTabStrip">
       <HintPath>..\packages\PagerSlidingTabStrip.Net.1.2.40604.0921\lib\MonoAndroid2.2\PagerSlidingTabStrip.dll</HintPath>
     </Reference>
+    <Reference Include="RadialProgress.Android">
+      <HintPath>..\Components\radialprogress-1.0.1.2\lib\android\RadialProgress.Android.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp.MonoDroid">
       <HintPath>..\Components\restsharp-105.0.1.0\lib\android\RestSharp.MonoDroid.dll</HintPath>
     </Reference>
@@ -80,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\FeedbackActivity.cs" />
     <Compile Include="Activity\GuideActivity.cs" />
     <Compile Include="Activity\PermissionsActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
@@ -214,6 +218,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\GuideActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
