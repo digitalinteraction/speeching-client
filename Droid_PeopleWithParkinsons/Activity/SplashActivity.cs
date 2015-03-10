@@ -32,12 +32,12 @@ namespace Droid_PeopleWithParkinsons
         {
             try
             {
-                 // FUDGE DATA - TODO
+                 // FUDGE USER DATA - TODO
                 AppData.session.currentUser.id = "aUserId";
 
                 await AppData.FetchCategories();
 
-                Toast.MakeText(this, "Created data", ToastLength.Short).Show();
+                Toast.MakeText(this, "Downloaded data!", ToastLength.Short).Show();
 
                 StartActivity(typeof(MainActivity));
             }

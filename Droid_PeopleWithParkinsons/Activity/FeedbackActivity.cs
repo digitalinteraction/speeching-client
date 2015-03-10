@@ -27,6 +27,7 @@ namespace Droid_PeopleWithParkinsons
         private ListView feedbackList;
         private ResultItem[] submissions;
         private IFeedbackItem[] currentFeedback;
+        private ISpeechingActivityItem thisActivity;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -65,14 +66,37 @@ namespace Droid_PeopleWithParkinsons
                 ActionBar.SetDisplayHomeAsUpEnabled(true);
             }
 
-            currentFeedback = await AppData.FetchFeedbackFor(submissions[0].id);
-
             feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
-            feedbackList.Adapter = new FeedbackAdapter(this, Resource.Id.mainFriendsList, currentFeedback);
             feedbackList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 Toast.MakeText(this, ((PercentageFeedback)currentFeedback[args.Position]).Percentage.ToString(), ToastLength.Short).Show();
             };
+            LoadFeedbackForActivity(submissions[0]);
+        }
+
+        /// <summary>
+        /// Make the main view about the given activity
+        /// </summary>
+        /// <param name="actId">The ID fo the activity to show feedback for</param>
+        /// <returns></returns>
+        private async Task LoadFeedbackForActivity(ResultItem result)
+        {
+            currentFeedback = await AppData.FetchFeedbackFor(result.id);
+
+            thisActivity = await AppData.session.FetchActivityWithId(result.activityId);
+            string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);
+
+            FindViewById<ImageView>(Resource.Id.tasklist_childIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));
+
+            if(feedbackList.Adapter == null)
+            {
+                feedbackList.Adapter = new FeedbackAdapter(this, Resource.Id.mainFriendsList, currentFeedback);
+            }
+            else
+            {
+                ((FeedbackAdapter)feedbackList.Adapter).feedbackItems = currentFeedback;
+                RunOnUiThread(() => ((FeedbackAdapter)feedbackList.Adapter).NotifyDataSetChanged());
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -102,9 +126,9 @@ namespace Droid_PeopleWithParkinsons
 
     public class FeedbackAdapter : BaseAdapter<IFeedbackItem>
     {
-        Activity context;
-        IFeedbackItem[] feedbackItems;
-        Dictionary<Type, int> viewTypes;
+        private Activity context;
+        public IFeedbackItem[] feedbackItems;
+        private Dictionary<Type, int> viewTypes;
 
         /// <summary>
         /// Lists feedback in multiple layout and object types

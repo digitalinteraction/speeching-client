@@ -15,6 +15,7 @@ using Android.Support.V4.App;
 using Android.Support.V4.View;
 using SpeechingCommon;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -309,6 +310,13 @@ namespace Droid_PeopleWithParkinsons
                 get { return results.Length; }
             }
 
+            private async Task PopulateView(string activityId, View view)
+            {
+                ISpeechingActivityItem thisItem = await AppData.session.FetchActivityWithId(activityId);
+
+                view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisItem.Title;
+            }
+
             public override View GetView(int position, View convertView, ViewGroup parent)
             {
                 View view = convertView;
@@ -318,9 +326,8 @@ namespace Droid_PeopleWithParkinsons
                     view = context.LayoutInflater.Inflate(Resource.Layout.UploadsListItem, null);
                 }
 
-                ISpeechingActivityItem thisItem = AppData.session.GetActivityWithId( results[position].activityId);
+                PopulateView(results[position].activityId, view);
 
-                view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisItem.Title;
                 view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();
 
                 if (results[position].uploadState == ResultItem.UploadState.Uploading)

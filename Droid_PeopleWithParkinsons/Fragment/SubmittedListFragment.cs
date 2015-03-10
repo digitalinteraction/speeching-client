@@ -46,7 +46,7 @@ namespace Droid_PeopleWithParkinsons
                 permissionsBtn.Click += permissionsBtn_Click;
 
                 AlertDialog alert = new AlertDialog.Builder(Activity)
-                .SetTitle(res.completedAt.ToShortDateString() + " submission for '" + AppData.session.GetActivityWithId(res.activityId).Title + "'")
+                .SetTitle("Submission made on " + res.completedAt.ToShortDateString())
                 .SetView(alertView)
                 .SetCancelable(true)
                 .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)

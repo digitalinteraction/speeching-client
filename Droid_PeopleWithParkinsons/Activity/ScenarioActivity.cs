@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -65,8 +66,31 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnCreate(savedInstanceState);
 
+            choiceLayout = FindViewById<LinearLayout>(Resource.Id.scenarioChoiceLayout);
+            choicePrompt = FindViewById<TextView>(Resource.Id.scenarioChoicePrompt);
+            choiceImage1 = FindViewById<ImageView>(Resource.Id.scenarioChoice1);
+            choiceImage1.Click += ChoiceImageClicked;
+            choiceImage2 = FindViewById<ImageView>(Resource.Id.scenarioChoice2);
+            choiceImage2.Click += ChoiceImageClicked;
+
+            eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
+            eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
+
+            mainLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioRecordLayout);
+            eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
+            eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
+            eventVideo = FindViewById<VideoView>(Resource.Id.scenarioVideo);
+
+            mainButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
+            mainButton.Click += MainButtonClicked;
+
+            InitialiseData(savedInstanceState);
+        }
+
+        private async Task InitialiseData(Bundle savedInstanceState)
+        {
             // Load the scenario with the id that was given inside the current intent
-            scenario = (Scenario)AppData.session.GetActivityWithId(Intent.GetStringExtra("ActivityId"));
+            scenario = (Scenario) await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 
@@ -105,7 +129,7 @@ namespace Droid_PeopleWithParkinsons
                 string[] files = Directory.GetFiles(localResourcesDirectory);
                 resources = new Dictionary<string, string>();
 
-                for(int i = 0; i < files.Length; i++)
+                for (int i = 0; i < files.Length; i++)
                 {
                     resources.Add(System.IO.Path.GetFileName(files[i]), files[i]);
                 }
@@ -128,36 +152,18 @@ namespace Droid_PeopleWithParkinsons
 
             inputHint = FindViewById<TextView>(Resource.Id.scenarioPromptHead);
 
-            choiceLayout = FindViewById<LinearLayout>(Resource.Id.scenarioChoiceLayout);
-            choicePrompt = FindViewById<TextView>(Resource.Id.scenarioChoicePrompt);
-            choiceImage1 = FindViewById<ImageView>(Resource.Id.scenarioChoice1);
-            choiceImage1.Click += ChoiceImageClicked;
-            choiceImage2 = FindViewById<ImageView>(Resource.Id.scenarioChoice2);
-            choiceImage2.Click += ChoiceImageClicked;
-
             scenarioTitle.Text = scenario.Title;
             authorName.Text = scenario.Creator.name;
-
-            eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
-            eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
-
-            mainLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioRecordLayout);
-            eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
-            eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
-            eventVideo = FindViewById<VideoView>(Resource.Id.scenarioVideo);
-
-            mainButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
-            mainButton.Click += MainButtonClicked;
 
             resultsZipPath = System.IO.Path.Combine(localResourcesDirectory, "final.zip");
             results = new ResultItem(scenario.Id, resultsZipPath, AppData.session.currentUser.id);
 
-            if(savedInstanceState != null)
+            if (savedInstanceState != null)
             {
                 currIndex = savedInstanceState.GetInt("progress", -1);
             }
 
-            if(currIndex < 0)
+            if (currIndex < 0)
             {
                 titleLayout.Visibility = ViewStates.Visible;
                 eventLayout.Visibility = ViewStates.Gone;

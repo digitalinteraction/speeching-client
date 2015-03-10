@@ -16,6 +16,7 @@ using SpeechingCommon;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using ICSharpCode.SharpZipLib.Core;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -34,14 +35,18 @@ namespace Droid_PeopleWithParkinsons
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            InitialiseData();
+        }
 
-            guide = (Guide)AppData.session.GetActivityWithId(Intent.GetStringExtra("ActivityId"));
+        private async Task InitialiseData()
+        {
+            guide = (Guide) await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
             string scenarioFormatted = guide.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
             string documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
 
-             // Create these directories if they don't already exist
+            // Create these directories if they don't already exist
             if (!Directory.Exists(documentsPath))
             {
                 Directory.CreateDirectory(documentsPath);

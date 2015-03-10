@@ -35,7 +35,7 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
-        public ISpeechingActivityItem GetActivityWithId(string activityId)
+        public async Task<ISpeechingActivityItem> FetchActivityWithId(string activityId)
         {
             for (int i = 0; i < categories.Count; i++)
             {
@@ -45,8 +45,8 @@ namespace SpeechingCommon
                 }
             }
 
-            // TODO check server
-            return null;
+            // We don't have it locally - check the server!
+            return await AppData.GetRequest<ISpeechingActivityItem>("activity", activityId);
         }
 
         /// <summary>
