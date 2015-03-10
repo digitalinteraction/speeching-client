@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_margin="10dp"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
     <TextView
         android:text="Some sort of summary about the percentage. Why is it important?"
         android:id="@+id/feedback_itemCaption"

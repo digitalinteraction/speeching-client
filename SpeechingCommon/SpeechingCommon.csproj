@@ -64,6 +64,7 @@
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="FeedbackStructs\PercentageFeedback.cs" />
+    <Compile Include="FeedbackStructs\StarRatingFeedback.cs" />
     <Compile Include="FeedbackStructs\_FeedbackInterface.cs" />
     <Compile Include="JsonCreationConverter.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

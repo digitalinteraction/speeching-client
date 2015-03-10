@@ -586,16 +586,28 @@ namespace SpeechingCommon
         public static IFeedbackItem[] FetchFeedback(string resultId)
         {
             // TEMP
-            IFeedbackItem[] arr = new IFeedbackItem[8];
+            IFeedbackItem[] arr = new IFeedbackItem[12];
 
             for(int i = 0; i < arr.Length; i++)
             {
-                PercentageFeedback fb = new PercentageFeedback();
-                fb.Title = "Stammering";
-                fb.Caption = "90% of users thought you stammered over the word \"sausage\"";
-                fb.ActivityId = "sossie";
-                fb.Percentage = AppData.rand.Next(0, 100);
-                arr[i] = fb;
+                if(AppData.rand.Next(0, 100) >= 50)
+                {
+                    PercentageFeedback fb = new PercentageFeedback();
+                    fb.Title = "Stammering";
+                    fb.Percentage = AppData.rand.Next(0, 100);
+                    fb.Caption = (int)fb.Percentage + "% of users thought you stammered over the word \"sausage\"";
+                    fb.ActivityId = "sossie";
+                    arr[i] = fb;
+                }
+                else
+                {
+                    StarRatingFeedback st = new StarRatingFeedback();
+                    st.Title = "Your Rating";
+                    st.Caption = "This is your rating for something you did. Hopefully it's meaningful!";
+                    st.ActivityId = "sossie";
+                    st.Rating = (float)AppData.rand.Next(0, 10) /2;
+                    arr[i] = st;
+                }
             }
 
             return arr;

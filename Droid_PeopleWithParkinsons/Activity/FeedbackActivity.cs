@@ -96,14 +96,19 @@ namespace Droid_PeopleWithParkinsons
     {
         Activity context;
         IFeedbackItem[] feedbackItems;
+        Dictionary<Type, int> viewTypes;
 
         /// <summary>
-        /// An adapter to be able to display the details on each task in a grid or list
+        /// Lists feedback in multiple layout and object types
         /// </summary>
         public FeedbackAdapter(Activity context, int resource, IFeedbackItem[] data)
         {
             this.context = context;
             this.feedbackItems = data;
+
+            viewTypes = new Dictionary<Type, int>();
+            viewTypes.Add(typeof(PercentageFeedback), 0);
+            viewTypes.Add(typeof(StarRatingFeedback), 1);
         }
 
         public override long GetItemId(int position)
@@ -121,24 +126,44 @@ namespace Droid_PeopleWithParkinsons
             get { return feedbackItems.Length; }
         }
 
+        public override int ViewTypeCount
+        {
+            get { return viewTypes.Count; }
+        }
+
+        // Helps decide which layout to use, based on object type
+        public override int GetItemViewType(int position)
+        {
+            return viewTypes[feedbackItems[position].GetType()];
+        }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            View view = convertView;
             IFeedbackItem thisItem = feedbackItems[position];
-
-            if (view == null)
-            {
-                view = context.LayoutInflater.Inflate(Resource.Layout.FeedbackListItem, null);
-            }
-
-            //view.FindViewById<TextView>(Resource.Id.feedback_progressView).Value = ((PercentageFeedback)feedbackItems[position]).Percentage;
 
             if(thisItem.GetType() == typeof(PercentageFeedback))
             {
-                AnimatePercentage(((PercentageFeedback)feedbackItems[position]).Percentage, 2000, view.FindViewById<RadialProgressView>(Resource.Id.feedback_progressView));
+                if (convertView == null)
+                {
+                     convertView = context.LayoutInflater.Inflate(Resource.Layout.FeedbackPercentItem, null);
+                }
+                AnimatePercentage(((PercentageFeedback)feedbackItems[position]).Percentage, 1500, convertView.FindViewById<RadialProgressView>(Resource.Id.feedback_progressView));
             }
 
-            return view;
+            if (thisItem.GetType() == typeof(StarRatingFeedback))
+            {
+                if (convertView == null)
+                {
+                    convertView = context.LayoutInflater.Inflate(Resource.Layout.FeedbackRatingItem, null);
+                }
+                convertView.FindViewById<RatingBar>(Resource.Id.feedback_ratingBar).Rating = ((StarRatingFeedback)thisItem).Rating;
+            }
+
+            // If this list is going to be really big, it might be worth setting up a view holder? Don't think it will be
+            convertView.FindViewById<TextView>(Resource.Id.feedback_itemTitle).Text = thisItem.Title;
+            convertView.FindViewById<TextView>(Resource.Id.feedback_itemCaption).Text = thisItem.Caption;
+
+            return convertView;
         }
 
         /// <summary>
