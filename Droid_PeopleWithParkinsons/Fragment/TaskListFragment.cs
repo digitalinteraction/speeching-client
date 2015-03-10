@@ -1,9 +1,11 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
+using System;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -12,6 +14,7 @@ namespace Droid_PeopleWithParkinsons
     /// </summary>
     public class TaskListFragment : Android.Support.V4.App.Fragment
     {
+        private SwipeRefreshLayout refresher;
         private ExpandableListView mainList;
         private Button viewFeedbackBtn;
 
@@ -26,7 +29,7 @@ namespace Droid_PeopleWithParkinsons
             base.OnCreateView(inflater, container, savedInstanceState);
 
             var view = inflater.Inflate(Resource.Layout.MainTaskListFragment, container, false);
-
+                
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainTaskListHeader, null);
             mainList = view.FindViewById<ExpandableListView>(Resource.Id.mainActivitiesList);
             mainList.AddHeaderView(header, null, false);
@@ -61,6 +64,23 @@ namespace Droid_PeopleWithParkinsons
                 }
             };
 
+            refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
+            refresher.Refresh += async delegate
+            {
+                try
+                {
+                    await AppData.FetchCategories();
+                    refresher.Refreshing = false;
+
+                    ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.session.categories.ToArray();
+                    Activity.RunOnUiThread(() => ((ScenarioListAdapter)mainList.ExpandableListAdapter).NotifyDataSetChanged());
+                }
+                catch(Exception except)
+                {
+                    Console.WriteLine("Howdy:" + except);
+                }
+            };
+
             if(AppData.session.categories.Count == 1)
             {
                 mainList.ExpandGroup(0, true);
@@ -88,7 +108,7 @@ namespace Droid_PeopleWithParkinsons
         {
             Activity context;
 
-            ActivityCategory[] categories;
+            public ActivityCategory[] categories;
 
             /// <summary>
             /// An adapter to be able to display the details on each task in an expandable list

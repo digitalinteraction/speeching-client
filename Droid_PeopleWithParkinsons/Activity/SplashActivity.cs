@@ -16,17 +16,7 @@ namespace Droid_PeopleWithParkinsons
 
             AppData.cacheDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
             bool loaded = AppData.TryLoadExistingData();
-
-            /*AppData.PostRequest<User>("post");
-
-
-            Dictionary<string, string> test = new Dictionary<string, string>();
-            test.Add("key1", "val1");
-            test.Add("key2", "val2");
-            test.Add("key3", "val3");
-
-            AppData.GetRequest<User>("get", test);*/
-
+            
             if(!loaded)
             {
                 CreateData();

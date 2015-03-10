@@ -92,10 +92,7 @@ namespace SpeechingCommon
         {
             if (!force && (tasks != null && tasks.Length > 0)) return tasks;
 
-            Dictionary<string, string> data = new Dictionary<string,string>();
-            data.Add("ScenarioId", id);
-
-            tasks = await AppData.GetRequest<SpeechingTask[]>("GetTasksForScenario", data);
+            tasks = await AppData.GetRequest<SpeechingTask[]>("activity", id);
 
             AppData.SaveCurrentData();
 

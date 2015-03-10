@@ -205,7 +205,6 @@
     <AndroidResource Include="Resources\layout-land\MainTaskListFragment.axml" />
     <AndroidResource Include="Resources\layout-large\MainTaskListParent.axml" />
     <AndroidResource Include="Resources\layout-large\MainTaskListChild.axml" />
-    <AndroidResource Include="Resources\layout-large\MainTaskListFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\MainTaskListFragment.axml" />
     <AndroidResource Include="Resources\layout-large\MainTaskListHeader.axml" />
     <AndroidResource Include="Resources\layout-large\PermissionsListHeader.axml" />

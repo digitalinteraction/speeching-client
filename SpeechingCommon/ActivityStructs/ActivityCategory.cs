@@ -38,6 +38,7 @@ namespace SpeechingCommon
             {
                 // We might be downloading into the same file simultaneously
                 // Not actually an issue, as long as the icon path still gets reassigned to the local one below
+                Console.WriteLine(e);
             }
 
             icon = localIconPath;
