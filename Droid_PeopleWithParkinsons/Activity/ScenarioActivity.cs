@@ -186,13 +186,18 @@ namespace Droid_PeopleWithParkinsons
         }
 
         /// <summary>
-        /// Downloads the data from the scenario's address
+        /// Downloads the data needed to display the scenario
         /// </summary>
         private async void PrepareData()
         {
-            RunOnUiThread(() => progress = ProgressDialog.Show(this, "Please Wait", "Downloading data to " + localZipPath, true));
+            RunOnUiThread(() => progress = ProgressDialog.Show(this, "Please Wait", "Downloading data!", true));
+
+            // Ask the server for the scenario's tasks if they aren't present
+            if(scenario.tasks == null) await scenario.FetchTasks();
+
             resources = new Dictionary<string, string>();
 
+            // Download the scenario's resource zip
             WebClient request = new WebClient();
             await request.DownloadFileTaskAsync(
                 new Uri(scenario.Resources),

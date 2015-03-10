@@ -579,12 +579,26 @@ namespace SpeechingCommon
         }
 
         /// <summary>
-        /// Polls the server for all available feedback for the given result
+        /// Get a list of submissions from the server
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<ResultItem[]> FetchSubmittedList()
+        {
+            return await GetRequest<ResultItem[]>("GetSubmissions", null);
+        }
+
+        /// <summary>
+        /// Polls the server for all available feedback for the given activity
         /// </summary>
         /// <param name="resultId"></param>
         /// <returns></returns>
-        public static IFeedbackItem[] FetchFeedback(string resultId)
+        public static async Task<IFeedbackItem[]> FetchFeedbackFor(string resultId)
         {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data.Add("submissionId", resultId);
+
+            //return await GetRequest<IFeedbackItem[]>("GetFeedback", data);
+
             // TEMP
             IFeedbackItem[] arr = new IFeedbackItem[12];
 

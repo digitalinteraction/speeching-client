@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.Threading.Tasks;
 
 namespace SpeechingCommon
 {
@@ -82,6 +83,24 @@ namespace SpeechingCommon
             }
         }
 
+        /// <summary>
+        /// Returns the scenario's tasks or fetches them from the server if they aren't present
+        /// </summary>
+        /// <param name="force">Force a server refresh even if data already exists</param>
+        /// <returns></returns>
+        public async Task<SpeechingTask[]> FetchTasks(bool force = false)
+        {
+            if (!force && (tasks != null && tasks.Length > 0)) return tasks;
+
+            Dictionary<string, string> data = new Dictionary<string,string>();
+            data.Add("ScenarioId", id);
+
+            tasks = await AppData.GetRequest<SpeechingTask[]>("GetTasksForScenario", data);
+
+            AppData.SaveCurrentData();
+
+            return tasks;
+        }
     }
 
     public class TaskContent

@@ -25,14 +25,22 @@ namespace Droid_PeopleWithParkinsons
         private ListView drawerList;
 
         private ListView feedbackList;
-        private ISpeechingActivityItem currentActivity;
+        private ResultItem[] submissions;
         private IFeedbackItem[] currentFeedback;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
+            FetchFeedbackDataInit();
+        }
+
+        private async Task FetchFeedbackDataInit()
+        {
+
             SetContentView(Resource.Layout.FeedbackActivity);
+
+            submissions = await AppData.FetchSubmittedList();
 
             //TODO
             string[] fakeOptions = new string[] { "these are", "some fake", "options to fill", "up sidebar space" };
@@ -46,7 +54,7 @@ namespace Droid_PeopleWithParkinsons
                 Toast.MakeText(this, "Option selected!", ToastLength.Short).Show();
             };
 
-            if(drawer != null)
+            if (drawer != null)
             {
                 // this won't be present on some layouts as the drawer might be a list which is always visible
                 drawerToggle = new ActionBarDrawerToggle(this, drawer, Resource.Drawable.ic_drawer, Resource.String.drawer_open, Resource.String.drawer_close);
@@ -57,7 +65,7 @@ namespace Droid_PeopleWithParkinsons
                 ActionBar.SetDisplayHomeAsUpEnabled(true);
             }
 
-            currentFeedback = AppData.FetchFeedback("sossie");
+            currentFeedback = await AppData.FetchFeedbackFor(submissions[0].id);
 
             feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
             feedbackList.Adapter = new FeedbackAdapter(this, Resource.Id.mainFriendsList, currentFeedback);
