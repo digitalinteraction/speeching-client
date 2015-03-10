@@ -230,6 +230,9 @@ namespace SpeechingCommon
                 string json = "[\r\n{\r\n    \"id\" : \"anId\",\r\n    \"title\" : \"Dysfluency\",\r\n    \"icon\"  : \"https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png\",\r\n    \"recommended\" : false,\r\n    \"activities\" : [\r\n    {\r\n        \"Id\" : \"testScenario\",\r\n        \"Creator\" : {\r\n            \"id\"    : \"thatId\",\r\n            \"name\"  : \"Justin Time\"\r\n        },\r\n        \"Title\" : \"Getting the Bus\",\r\n        \"Icon\"  : \"http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png\",\r\n        \"Resources\" : \"https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1\",\r\n        \"Tasks\" : [\r\n        {\r\n            \"id\" : \"sc1ev1\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"driver.jpg\",\r\n                \"audio\"  : \"hello.mp3\",\r\n                \"text\"   : \"Hello! Where would you like to go today?\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Hello, please may I have a return ticket to the train station?\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc1ev2\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"driver.jpg\",\r\n                \"audio\"  : \"thanks.mp3\",\r\n                \"text\"   : \"No problem at all, looks like you have a valid card. Take a seat!\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Thank you. Have a good day.\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc1ev3\",\r\n            \"content\" : {\r\n                \"type\"   : \"Text\",\r\n                \"visual\" : \"oldwoman.jpg\",\r\n                \"audio\"  : null,\r\n                \"text\"   : \"You sit next to an old woman, who asks what your plans are for the day.\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Freeform\",\r\n                \"prompt\" : \"Greet her and explain that you're catching a train to the seaside.\"\r\n            }\r\n        }\r\n        ]\r\n    },\r\n    {\r\n        \"Id\" : \"testScenario2\",\r\n        \"Creator\" : {\r\n            \"id\"    : \"thatId\",\r\n            \"name\"  : \"Justin Time\"\r\n        },\r\n        \"Title\" : \"Ordering a Pizza\",\r\n        \"Icon\"  : \"http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png\",\r\n        \"Resources\" : \"https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1\",\r\n        \"tasks\" : [\r\n        {\r\n            \"id\" : \"sc2ev1\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"phone.jpg\",\r\n                \"audio\"  : \"hello.mp3\",\r\n                \"text\"   : \"You are ordering pizza over the phone for both yourself and a friend who has a gluten alergy.\\n'Tony's Pizza Parlour, how can I help you?'\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Hello, can I order a pizza please?\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc2ev2\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"pizza.jpg\",\r\n                \"audio\"  : \"order1.mp3\",\r\n                \"text\"   : \"Of course! What kind would you like?\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Freeform\",\r\n                \"prompt\" : \"Describe your favourite pizza\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc2ev3\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"pizza.jpg\",\r\n                \"audio\"  : \"order2.mp3\",\r\n                \"text\"   : \"That sounds delicious! Would you like anything else?\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Freeform\",\r\n                \"prompt\" : \"Describe another kind of pizza, but make sure it's gluten free!\"\r\n            }\r\n        },\r\n        {\r\n            \"id\" : \"sc2ev4\",\r\n            \"content\" : {\r\n                \"type\"   : \"Audio\",\r\n                \"visual\" : \"making.jpg\",\r\n                \"audio\"  : \"end.mp3\",\r\n                \"text\"   : \"No problem at all, we can do that. See you soon!\"\r\n            },\r\n            \"response\" : {\r\n                \"type\"  : \"Prompted\",\r\n                \"prompt\" : \"Thank you, see you later.\"\r\n            }\r\n        },\r\n        ]\r\n    }\r\n    ]\r\n},\r\n{\r\n    \"id\" : \"anId2\",\r\n    \"title\" : \"Dementia\",\r\n    \"icon\"  : \"https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png\",\r\n    \"recommended\" : false,\r\n    \"activities\" : [\r\n        {\r\n            \"Id\" : \"dmentia1\",\r\n            \"Creator\" : {\r\n                \"id\"    : \"thatId\",\r\n                \"name\"  : \"Justin Time\"\r\n            },\r\n            \"Title\" : \"Preparing Dinner\",\r\n            \"Icon\"  : \"http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png\",\r\n            \"Resources\" : \"https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1\",\r\n            \"tasks\" : [\r\n            {\r\n                \"id\" : \"sc3ev1\",\r\n                \"content\" : {\r\n                    \"type\"   : \"AUDIO\",\r\n                    \"visual\" : \"spagBol.jpg\",\r\n                    \"audio\"  : \"spag1.mp3\",\r\n                    \"text\"   : \"You've invited your best friend over for dinner and have decided to make spaghetti bolognese.\"\r\n                },\r\n                \"response\" : {\r\n                    \"type\"  : \"none\",\r\n                    \"prompt\" : null\r\n                }\r\n            },\r\n            {\r\n                \"id\" : \"sc3ev2\",\r\n                \"content\" : {\r\n                    \"type\"   : \"AUDIO\",\r\n                    \"visual\" : \"supermarket.jpg\",\r\n                    \"audio\"  : \"spag2.mp3\",\r\n                    \"text\"   : \"You go to the supermarket to buy some of the ingredients.\"\r\n                },\r\n                \"response\" : {\r\n                    \"type\"  : \"Choice\",\r\n                    \"prompt\" : \"Choose the spaghetti from the shelf.\",\r\n                    \"choice1\" : \"spaghetti.jpg\",\r\n                    \"choice2\"   : \"bakedBeans.png\"\r\n                }\r\n            },\r\n            {\r\n                \"id\" : \"sc3ev3\",\r\n                \"content\" : {\r\n                    \"type\"   : \"AUDIO\",\r\n                    \"visual\" : \"supermarket.jpg\",\r\n                    \"audio\"  : \"spag3.mp3\",\r\n                    \"text\"   : \"You also need something to make the sauce from...\"\r\n                },\r\n                \"response\" : {\r\n                    \"type\"  : \"Choice\",\r\n                    \"prompt\" : \"Which of these could you make a pasta sauce from?\",\r\n                    \"choice1\" : \"dogFood.jpg\",\r\n                    \"choice2\"   : \"tomatoes.jpg\"\r\n                }\r\n            },\r\n            {\r\n                \"id\" : \"sc3ev4\",\r\n                \"content\" : {\r\n                    \"type\"   : \"AUDIO\",\r\n                    \"visual\" : \"cashier.jpg\",\r\n                    \"audio\"  : \"spag4.mp3\",\r\n                    \"text\"   : \"As you pay for your items, the cashier asks about your bolognese recipe.\"\r\n                },\r\n                \"response\" : {\r\n                    \"type\"  : \"Freeform\",\r\n                    \"prompt\" : \"Describe the process of cooking spaghetti bolognese to the cashier.\"\r\n                }\r\n            },\r\n            {\r\n                \"id\" : \"sc3ev5\",\r\n                \"content\" : {\r\n                    \"type\"   : \"AUDIO\",\r\n                    \"visual\" : \"cashier.jpg\",\r\n                    \"audio\"  : \"spag5.mp3\",\r\n                    \"text\"   : \"Oh, that sounds delicious! Are you having anyone over?\"\r\n                },\r\n                \"response\" : {\r\n                    \"type\"  : \"Freeform\",\r\n                    \"prompt\" : \"Describe your best friend to the cashier.\"\r\n                }\r\n            }\r\n            ]\r\n        }\r\n    ]\r\n    },\r\n    {\r\n    \"id\" : \"anId3\",\r\n    \"title\" : \"Helpful Guides\",\r\n    \"icon\"  : \"https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png\",\r\n    \"recommended\" : false,\r\n    \"activities\" : [\r\n        {\r\n            \"Id\" : \"guide1\",\r\n            \"Creator\" : {\r\n                \"id\"    : \"thatId\",\r\n                \"name\"  : \"Justin Time\"\r\n            },\r\n            \"Title\" : \"Interaction Tips\",\r\n            \"Icon\"  : \"http://www.pursuittraining.co.uk/images/care-icon.gif\",\r\n            \"Resources\" : \"https://www.dropbox.com/s/pw1ubz20nwatxtl/guide.zip?raw=1\",\r\n            \"slides\" : [\r\n                {\r\n                    \"visualMediaLoc\" : \"pic1.jpg\",\r\n                    \"text\"           : \"Try to think through how it might feel to struggle to communicate if you were living with dementia and think about what might help and what has helped in the past.\"\r\n                },\r\n                {\r\n                    \"visualMediaLoc\" : \"pic2.jpg\",\r\n                    \"text\"           : \"Smile where you can and offer reassuring physical contact where it is appropriate. Make sure people can see your face and that you have engaged their attention.\"\r\n                },\r\n                {\r\n                    \"visualMediaLoc\" : \"pic3.jpg\",\r\n                    \"text\"           : \"Relax as much as you can and help the person you are talking with to relax. Be prepared to be treated as someone you are not (for example being mistaken for another relative).\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n    }\r\n]";
                 session.categories = JsonConvert.DeserializeObject<List<ActivityCategory>>(json, new ActivityConverter());
 
+                //session.categories = await AppData.GetRequest<List<ActivityCategory>>("GetCategories", null);
+                AppData.SaveCurrentData();
+
                 // Loop over all categories, downloading icons as needed for them and their scenarios
                 for (int i = 0; i < session.categories.Count; i++)
                 {
@@ -260,44 +263,18 @@ namespace SpeechingCommon
         }
 
         /// <summary>
-        /// Get a list of the user's submitted data from the server
-        /// </summary>
-        public static ResultItem[] FetchSubmittedResults()
-        {
-            return session.resultsOnServer.ToArray(); //TEMP
-        }
-
-        /// <summary>
-        /// Get the submission with the given ID
-        /// </summary>
-        /// <param name="resultId"></param>
-        /// <returns></returns>
-        public static ResultItem FetchSubmittedResult(string resultId)
-        {
-            // Check if the item exists in cache before polling the server
-            foreach(ResultItem result in session.resultsOnServer)
-            {
-                if(result.id == resultId) return result;
-            }
-
-            //TODO poll server
-            return null;
-        }
-
-        /// <summary>
-        /// Uploads a single result package to the server
+        /// Uploads a single result package to the storage server
         /// </summary>
         /// <param name="toUpload">The item to upload</param>
         public static async Task PushResult(ResultItem toUpload, Action<bool> callback = null)
         {
             bool success = false;
+            string millis = DateTime.Now.Subtract(DateTime.MinValue.AddYears(1969)).TotalMilliseconds.ToString();
+            string filename = millis + "_" + toUpload.activityId + ".zip";
 
             try
             {
                 toUpload.uploadState = ResultItem.UploadState.Uploading;
-
-                string millis = DateTime.Now.Subtract(DateTime.MinValue.AddYears(1969)).TotalMilliseconds.ToString();
-                string filename = millis + "_" + toUpload.activityId + ".zip";
 
                 FileStream fs = File.OpenRead(toUpload.dataLoc);
                 byte[] content = new byte[fs.Length];
@@ -346,8 +323,13 @@ namespace SpeechingCommon
 
             if(success)
             {
-                session.resultsToUpload.Remove(toUpload);
-                toUpload.uploadState = ResultItem.UploadState.Uploaded;
+                toUpload.dataLoc = storageServer + storageRemoteDir + filename;
+                success = await PushResultToDatabase(toUpload);
+                if(success)
+                {
+                    session.resultsToUpload.Remove(toUpload);
+                    toUpload.uploadState = ResultItem.UploadState.Uploaded;
+                }
             }
 
             if (callback != null) callback(success);
@@ -387,6 +369,15 @@ namespace SpeechingCommon
             {
                 await PushResult(toUpload[i], OnUpload);
             }
+        }
+
+        private static async Task<bool> PushResultToDatabase(ResultItem toUpload)
+        {
+            bool success = false;
+
+            AppData.PostRequest<ServerError>("SubmitResult", JsonConvert.SerializeObject(toUpload));
+
+            return success;
         }
 
         /// <summary>
@@ -508,7 +499,7 @@ namespace SpeechingCommon
         }
 
         /// <summary>
-        /// Prepares all of the submission's data, including audio recordings
+        /// TODO Prepares all of the submission's data, including audio recordings
         /// </summary>
         /// <param name="resultId"></param>
         /// <returns></returns>

@@ -25,7 +25,7 @@
         android:id="@+id/RecordButton"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/recordButton"
+        android:background="@drawable/recordButtonBlue"
         android:gravity="center_vertical|center_horizontal"
         android:text="Begin Recording!"
         android:textColor="#fff"

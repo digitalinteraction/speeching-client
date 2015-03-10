@@ -41,7 +41,7 @@ namespace Droid_PeopleWithParkinsons
             makePublicBtn = FindViewById<Button>(Resource.Id.permissions_publicButton);
             makePublicBtn.Click += makePublicBtn_Click;
 
-            resultItem = AppData.FetchSubmittedResult(Intent.GetStringExtra("ResultId"));
+            //resultItem = AppData.FetchSubmittedResult(Intent.GetStringExtra("ResultId"));
             View header = LayoutInflater.Inflate(Resource.Layout.PermissionsListHeader, null);
             headerText = header.FindViewById<TextView>(Resource.Id.permissions_message);
             allowedList = FindViewById<ListView>(Resource.Id.permissions_list);

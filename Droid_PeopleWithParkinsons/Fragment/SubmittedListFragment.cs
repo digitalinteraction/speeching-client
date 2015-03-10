@@ -5,12 +5,14 @@ using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
 using System;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
     public class SubmittedListFragment : Android.Support.V4.App.Fragment
     {
         private ListView exportList;
+        private ResultItem[] results;
         private ResultItem res;
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -29,7 +31,7 @@ namespace Droid_PeopleWithParkinsons
 
             exportList = view.FindViewById<ListView>(Resource.Id.submitted_list);
             exportList.AddHeaderView(header, null, false);
-            exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.submitted_list, AppData.FetchSubmittedResults());
+            LoadData();
             exportList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 // The list's header borks indexing
@@ -65,7 +67,7 @@ namespace Droid_PeopleWithParkinsons
                         AppData.PushResultDeletion(res);
 
                         exportList.Adapter = null;
-                        exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.uploads_list, AppData.FetchSubmittedResults());
+                        LoadData();
 
                         alert.Dismiss();
                     });
@@ -75,6 +77,13 @@ namespace Droid_PeopleWithParkinsons
             };
 
             return view;
+        }
+
+        private async Task LoadData()
+        {
+            results = await AppData.FetchSubmittedList();
+
+            exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.submitted_list, results);
         }
 
         void permissionsBtn_Click(object sender, EventArgs e)

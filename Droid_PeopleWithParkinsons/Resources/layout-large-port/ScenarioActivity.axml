@@ -48,7 +48,7 @@
             android:id="@+id/scenarioStartBtn"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@drawable/recordButton"
+            android:background="@drawable/recordButtonBlue"
             android:gravity="center_vertical|center_horizontal"
             android:text="Start!"
             android:textColor="#fff"
@@ -124,7 +124,7 @@
                 android:layout_below="@id/scenarioBreaker"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:visibility="gone">
+                android:visibility="visible">
                 <TextView
                     android:text="Your response:"
                     android:layout_width="match_parent"
@@ -153,7 +153,7 @@
                     android:id="@+id/scenarioProgressBtn"
                     android:layout_width="170dp"
                     android:layout_height="170dp"
-                    android:background="@drawable/recordButton"
+                    android:background="@drawable/recordButtonBlue"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="Begin Recording!"
                     android:textColor="#fff"
@@ -170,7 +170,7 @@
                 android:layout_below="@id/scenarioBreaker"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:visibility="visible">
+                android:visibility="gone">
                 <TextView
                     android:text="Make a choice, using this prompt!"
                     android:layout_width="match_parent"

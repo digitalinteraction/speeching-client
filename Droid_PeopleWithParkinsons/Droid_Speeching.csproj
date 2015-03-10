@@ -121,7 +121,7 @@
     <AndroidResource Include="Resources\layout\RecordSound.axml" />
     <AndroidResource Include="Resources\layout\RecordSoundRun.axml" />
     <AndroidResource Include="Resources\layout\RecordCompleted.axml" />
-    <AndroidResource Include="Resources\drawable\recordButton.xml">
+    <AndroidResource Include="Resources\drawable\recordButtonRed.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\values\AutoResizeTextViewStyleable.axml">
@@ -278,6 +278,7 @@
     <AndroidResource Include="Resources\drawable\background_tabs.xml" />
     <AndroidResource Include="Resources\drawable\tabs_pattern.png" />
     <AndroidResource Include="Resources\drawable\TutPlaceholder.jpg" />
+    <AndroidResource Include="Resources\drawable\recordButtonBlue.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="json.net">

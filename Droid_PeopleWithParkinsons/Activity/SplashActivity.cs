@@ -34,7 +34,7 @@ namespace Droid_PeopleWithParkinsons
             else
             {
                 Toast.MakeText(this, "Loaded existing data", ToastLength.Short).Show();
-                StartActivity(typeof(FeedbackActivity));
+                StartActivity(typeof(MainActivity));
             }
         }
 
@@ -47,7 +47,6 @@ namespace Droid_PeopleWithParkinsons
 
                 await AppData.FetchCategories();
 
-                AppData.SaveCurrentData();
                 Toast.MakeText(this, "Created data", ToastLength.Short).Show();
 
                 StartActivity(typeof(MainActivity));

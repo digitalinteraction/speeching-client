@@ -137,14 +137,13 @@ namespace Droid_PeopleWithParkinsons
             public MyPagerAdapter(Android.Support.V4.App.FragmentManager SupportFragmentManager)
                 : base(SupportFragmentManager)
             {
-                // TODO: Complete member initialization
                 this.SupportFragmentManager = SupportFragmentManager;
                 _count =  Titles.Length;
                 _titles = new string[Titles.Length];
                 Array.Copy(Titles, _titles, Titles.Length);
             }
 
-            protected internal static readonly string[] Titles = { "Profile", "Practice", "Friends", "Submitted" };
+            protected internal static readonly string[] Titles = { "Practice", "Friends", "Submitted" };
 
             protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
 
@@ -155,12 +154,10 @@ namespace Droid_PeopleWithParkinsons
                 switch (position)
                 {
                     case 0:
-                        return new UserProfileFragment();
-                    case 1:
                         return new TaskListFragment();
-                    case 2:
+                    case 1:
                         return new FriendListFragment();
-                    case 3:
+                    case 2:
                         return new SubmittedListFragment();
                     default:
                         return null;

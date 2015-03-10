@@ -255,6 +255,8 @@ namespace Droid_PeopleWithParkinsons
             base.OnResume();
             audioManager = new AndroidUtils.RecordAudioManager(this, null);
 
+            mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
+
             // Reload the resources for this stage of the scenario, incase they were lost (e.g. audio, video)
             if(currIndex >= 0)
             {
@@ -307,6 +309,7 @@ namespace Droid_PeopleWithParkinsons
             currIndex++;
 
             mainButton.Text = "Record Response";
+            mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
             // Check if the scenario is complete
             if (currIndex >= scenario.tasks.Length)
@@ -456,6 +459,7 @@ namespace Droid_PeopleWithParkinsons
             }
             else
             {
+                mainButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
                 if(mediaPlayer != null)
                 {
                     mediaPlayer.Stop();
