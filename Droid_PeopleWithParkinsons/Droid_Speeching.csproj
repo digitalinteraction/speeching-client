@@ -132,7 +132,6 @@
     <AndroidResource Include="Resources\layout\MainTaskListParent.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout-large\Main.axml" />
     <AndroidResource Include="Resources\layout\MainTaskListFragment.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

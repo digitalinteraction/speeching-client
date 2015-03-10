@@ -13,6 +13,7 @@ namespace Droid_PeopleWithParkinsons
     public class TaskListFragment : Android.Support.V4.App.Fragment
     {
         private ExpandableListView mainList;
+        private Button viewFeedbackBtn;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -65,7 +66,14 @@ namespace Droid_PeopleWithParkinsons
                 mainList.ExpandGroup(0, true);
             }
 
+            viewFeedbackBtn = header.FindViewById<Button>(Resource.Id.viewSubmittedBtn);
+            viewFeedbackBtn.Click += viewFeedbackBtn_Click;
             return view;
+        }
+
+        void viewFeedbackBtn_Click(object sender, System.EventArgs e)
+        {
+            this.Activity.StartActivity(typeof(FeedbackActivity));
         }
 
         public override void OnResume()
