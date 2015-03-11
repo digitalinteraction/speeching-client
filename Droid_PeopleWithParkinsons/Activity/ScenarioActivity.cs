@@ -277,7 +277,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 ImageView icon = FindViewById<ImageView>(Resource.Id.scenarioIcon);
 
-                if (icon != null)
+                if (icon != null && scenario != null)
                 {
                     icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
                 }

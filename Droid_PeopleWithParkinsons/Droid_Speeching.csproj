@@ -272,6 +272,10 @@
     <AndroidResource Include="Resources\drawable\recordButtonBlue.xml" />
   </ItemGroup>
   <ItemGroup>
+    <XamarinComponentReference Include="googleplayservices">
+      <Visible>False</Visible>
+      <Version>22.0.0.0</Version>
+    </XamarinComponentReference>
     <XamarinComponentReference Include="json.net">
       <Visible>False</Visible>
       <Version>6.0.8.1</Version>

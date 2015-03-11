@@ -26,7 +26,7 @@ namespace SpeechingCommon
         private string resources;
         private string icon;
 
-        public Page[] pages;
+        public Page[] Pages;
 
         public string Id
         {

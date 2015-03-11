@@ -1,10 +1,10 @@
 [
 {
-    "id" : "anId",
-    "title" : "Dysfluency",
-    "icon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
-    "recommended" : false,
-    "activities" : [
+    "Id" : "anId",
+    "Title" : "Dysfluency",
+    "Ccon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
+    "Recommended" : false,
+    "Activities" : [
     {
         "Id" : "testScenario",
         "Creator" : {
@@ -13,43 +13,43 @@
         },
         "Title" : "Getting the Bus",
         "Icon"  : "http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png",
-        "Resources" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
+        "Resource" : "https://www.dropbox.com/s/0h2f8pyrh6xte3s/bus.zip?raw=1",
         "Tasks" : [
         {
-            "id" : "sc1ev1",
-            "content" : {
+            "Id" : "sc1ev1",
+            "TaskContentModel" : {
                 "type"   : "Audio",
                 "visual" : "driver.jpg",
                 "audio"  : "hello.mp3",
                 "text"   : "Hello! Where would you like to go today?"
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Prompted",
                 "prompt" : "Hello, please may I have a return ticket to the train station?"
             }
         },
         {
-            "id" : "sc1ev2",
-            "content" : {
+            "Id" : "sc1ev2",
+            "TaskContentModel" : {
                 "type"   : "Audio",
                 "visual" : "driver.jpg",
                 "audio"  : "thanks.mp3",
                 "text"   : "No problem at all, looks like you have a valid card. Take a seat!"
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Prompted",
                 "prompt" : "Thank you. Have a good day."
             }
         },
         {
-            "id" : "sc1ev3",
-            "content" : {
+            "Id" : "sc1ev3",
+            "TaskContentModel" : {
                 "type"   : "Text",
                 "visual" : "oldwoman.jpg",
                 "audio"  : null,
                 "text"   : "You sit next to an old woman, who asks what your plans are for the day."
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Freeform",
                 "prompt" : "Greet her and explain that you're catching a train to the seaside."
             }
@@ -64,56 +64,56 @@
         },
         "Title" : "Ordering a Pizza",
         "Icon"  : "http://img3.wikia.nocookie.net/__cb20131231163822/cardfight/images/6/6f/Pizza_slice_combo_clipart.png",
-        "Resources" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
-        "tasks" : [
+        "Resource" : "https://www.dropbox.com/s/8gt7pqh6zq6p18h/pizza.zip?raw=1",
+        "Tasks" : [
         {
-            "id" : "sc2ev1",
-            "content" : {
+            "Id" : "sc2ev1",
+            "TaskContentModel" : {
                 "type"   : "Audio",
                 "visual" : "phone.jpg",
                 "audio"  : "hello.mp3",
                 "text"   : "You are ordering pizza over the phone for both yourself and a friend who has a gluten alergy.\n'Tony's Pizza Parlour, how can I help you?'"
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Prompted",
                 "prompt" : "Hello, can I order a pizza please?"
             }
         },
         {
-            "id" : "sc2ev2",
-            "content" : {
+            "Id" : "sc2ev2",
+            "TaskContentModel" : {
                 "type"   : "Audio",
                 "visual" : "pizza.jpg",
                 "audio"  : "order1.mp3",
                 "text"   : "Of course! What kind would you like?"
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Freeform",
                 "prompt" : "Describe your favourite pizza"
             }
         },
         {
-            "id" : "sc2ev3",
-            "content" : {
+            "Id" : "sc2ev3",
+            "TaskContentModel" : {
                 "type"   : "Audio",
                 "visual" : "pizza.jpg",
                 "audio"  : "order2.mp3",
                 "text"   : "That sounds delicious! Would you like anything else?"
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Freeform",
                 "prompt" : "Describe another kind of pizza, but make sure it's gluten free!"
             }
         },
         {
-            "id" : "sc2ev4",
-            "content" : {
+            "Id" : "sc2ev4",
+            "TaskContentModel" : {
                 "type"   : "Audio",
                 "visual" : "making.jpg",
                 "audio"  : "end.mp3",
                 "text"   : "No problem at all, we can do that. See you soon!"
             },
-            "response" : {
+            "TaskResponseModel" : {
                 "type"  : "Prompted",
                 "prompt" : "Thank you, see you later."
             }
@@ -123,11 +123,11 @@
     ]
 },
 {
-    "id" : "anId2",
-    "title" : "Dementia",
-    "icon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
-    "recommended" : false,
-    "activities" : [
+    "Id" : "anId2",
+    "Title" : "Dementia",
+    "Icon"  : "https://cdn0.iconfinder.com/data/icons/cosmo-medicine/40/test-tube_1-128.png",
+    "Recommended" : false,
+    "Activities" : [
         {
             "Id" : "dmentia1",
             "Creator" : {
@@ -136,30 +136,30 @@
             },
             "Title" : "Preparing Dinner",
             "Icon"  : "http://img3.wikia.nocookie.net/__cb20110528210150/restaurantcity/images/4/46/Spaghetti_Bolognese.png",
-            "Resources" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
-            "tasks" : [
+            "Resource" : "https://www.dropbox.com/s/3isleqzen5gt0hf/dinner.zip?raw=1",
+            "Tasks" : [
             {
-                "id" : "sc3ev1",
-                "content" : {
+                "Id" : "sc3ev1",
+                "TaskContentModel" : {
                     "type"   : "AUDIO",
                     "visual" : "spagBol.jpg",
                     "audio"  : "spag1.mp3",
                     "text"   : "You've invited your best friend over for dinner and have decided to make spaghetti bolognese."
                 },
-                "response" : {
+                "TaskResponseModel" : {
                     "type"  : "none",
                     "prompt" : null
                 }
             },
             {
-                "id" : "sc3ev2",
-                "content" : {
+                "Id" : "sc3ev2",
+                "TaskContentModel" : {
                     "type"   : "AUDIO",
                     "visual" : "supermarket.jpg",
                     "audio"  : "spag2.mp3",
                     "text"   : "You go to the supermarket to buy some of the ingredients."
                 },
-                "response" : {
+                "TaskResponseModel" : {
                     "type"  : "Choice",
                     "prompt" : "Choose the spaghetti from the shelf.",
                     "choice1" : "spaghetti.jpg",
@@ -167,14 +167,14 @@
                 }
             },
             {
-                "id" : "sc3ev3",
-                "content" : {
+                "Id" : "sc3ev3",
+                "TaskContentModel" : {
                     "type"   : "AUDIO",
                     "visual" : "supermarket.jpg",
                     "audio"  : "spag3.mp3",
                     "text"   : "You also need something to make the sauce from..."
                 },
-                "response" : {
+                "TaskResponseModel" : {
                     "type"  : "Choice",
                     "prompt" : "Which of these could you make a pasta sauce from?",
                     "choice1" : "dogFood.jpg",
@@ -182,27 +182,27 @@
                 }
             },
             {
-                "id" : "sc3ev4",
-                "content" : {
+                "Id" : "sc3ev4",
+                "TaskContentModel" : {
                     "type"   : "AUDIO",
                     "visual" : "cashier.jpg",
                     "audio"  : "spag4.mp3",
                     "text"   : "As you pay for your items, the cashier asks about your bolognese recipe."
                 },
-                "response" : {
+                "TaskResponseModel" : {
                     "type"  : "Freeform",
                     "prompt" : "Describe the process of cooking spaghetti bolognese to the cashier."
                 }
             },
             {
-                "id" : "sc3ev5",
-                "content" : {
+                "Id" : "sc3ev5",
+                "TaskContentModel" : {
                     "type"   : "AUDIO",
                     "visual" : "cashier.jpg",
                     "audio"  : "spag5.mp3",
                     "text"   : "Oh, that sounds delicious! Are you having anyone over?"
                 },
-                "response" : {
+                "TaskResponseModel" : {
                     "type"  : "Freeform",
                     "prompt" : "Describe your best friend to the cashier."
                 }
@@ -212,11 +212,11 @@
     ]
     },
     {
-    "id" : "anId3",
-    "title" : "Helpful Guides",
-    "icon"  : "https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png",
-    "recommended" : false,
-    "activities" : [
+    "Id" : "anId3",
+    "Title" : "Helpful Guides",
+    "Icon"  : "https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png",
+    "Recommended" : false,
+    "Activities" : [
         {
             "Id" : "guide1",
             "Creator" : {
@@ -225,8 +225,8 @@
             },
             "Title" : "Interaction Tips",
             "Icon"  : "http://www.pursuittraining.co.uk/images/care-icon.gif",
-            "Resources" : "https://www.dropbox.com/s/pw1ubz20nwatxtl/guide.zip?raw=1",
-            "slides" : [
+            "Resource" : "https://www.dropbox.com/s/pw1ubz20nwatxtl/guide.zip?raw=1",
+            "Pages" : [
                 {
                     "visualMediaLoc" : "pic1.jpg",
                     "text"           : "Try to think through how it might feel to struggle to communicate if you were living with dementia and think about what might help and what has helped in the past."

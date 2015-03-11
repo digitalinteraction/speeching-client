@@ -12,6 +12,7 @@ namespace SpeechingCommon
         public List<ActivityCategory> categories;
         public List<ResultItem> resultsToUpload;
         public List<User> userCache;
+        public List<ISpeechingActivityItem> activityCache;
         public bool serverFolderExists = false;
 
         public static int scenariosProcessing = 0;
@@ -35,6 +36,7 @@ namespace SpeechingCommon
         /// <returns></returns>
         public async Task<ISpeechingActivityItem> FetchActivityWithId(string activityId)
         {
+            // See if it is in one of the categories already in memory
             for (int i = 0; i < categories.Count; i++)
             {
                 for (int j = 0; j < categories[i].activities.Length; j++)
@@ -43,8 +45,22 @@ namespace SpeechingCommon
                 }
             }
 
-            // We don't have it locally - check the server!
-            return await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId);
+            if (activityCache == null) activityCache = new List<ISpeechingActivityItem>();
+
+            // Check if it's already been downloaded and exists in the cache
+            foreach(ISpeechingActivityItem activity in activityCache)
+            {
+                if (activity.Id == activityId) return activity;
+            }
+
+            // We don't have it locally - check the server and add to the cache for next time!
+            ISpeechingActivityItem newActivity = await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId, new ActivityConverter());
+            activityCache.Add(newActivity);
+
+            AppData.SaveCurrentData();
+
+            return newActivity;
+
         }
 
         /// <summary>

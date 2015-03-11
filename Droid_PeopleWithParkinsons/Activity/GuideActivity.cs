@@ -84,7 +84,7 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.GuideActivity);
             ActionBar.Hide();
 
-            adapter = new GuideAdapter(SupportFragmentManager, guide.pages, resources);
+            adapter = new GuideAdapter(SupportFragmentManager, guide.Pages, resources);
             pager = FindViewById<ViewPager>(Resource.Id.guide_pager);
             pager.Adapter = adapter;
             pager.SetPageTransformer(true, new DepthPageTransformer());
