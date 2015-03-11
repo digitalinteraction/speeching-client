@@ -17,7 +17,7 @@ namespace SpeechingCommon
         string Id { get; set; }
         User Creator { get; set; }
         string Title { get; set; }
-        string Resources { get; set; }
+        string Resource { get; set; }
         string Icon { get; set; }
     }
 }

@@ -99,7 +99,6 @@
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="DownloadService.cs" />
-    <Compile Include="Fragment\PlaceholderFragment.cs" />
     <Compile Include="Fragment\RecordCompletedFragment.cs" />
     <Compile Include="Shared\IAudioRecorder.cs" />
     <Compile Include="Activity\MainActivity.cs" />
@@ -178,12 +177,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PermissionsListHeader.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ScenarioChoiceItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\ScenarioChoicePopup.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ProfileFragment.axml">

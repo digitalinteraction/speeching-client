@@ -66,7 +66,7 @@ namespace Droid_PeopleWithParkinsons
             tab.TabSelected += (sender, args) =>
             {
                 Bundle arguments = Intent.Extras;
-                LoadFragment(new PlaceholderFragment(), arguments, "PlaceholderFragment");
+                //LoadFragment(new PlaceholderFragment(), arguments, "PlaceholderFragment");
             };
 
             ActionBar.AddTab(tab);

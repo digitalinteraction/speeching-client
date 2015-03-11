@@ -21,7 +21,7 @@ namespace SpeechingCommon
         private string resources;
         private string icon;
 
-        public SpeechingTask[] tasks;
+        public SpeechingTask[] Tasks;
 
         public string Id
         {
@@ -59,7 +59,7 @@ namespace SpeechingCommon
             }
         }
 
-        public string Resources
+        public string Resource
         {
             get
             {
@@ -90,13 +90,13 @@ namespace SpeechingCommon
         /// <returns></returns>
         public async Task<SpeechingTask[]> FetchTasks(bool force = false)
         {
-            if (!force && (tasks != null && tasks.Length > 0)) return tasks;
+            if (!force && (Tasks != null && Tasks.Length > 0)) return Tasks;
 
-            tasks = await ServerData.GetRequest<SpeechingTask[]>("activity", id);
+            Tasks = await ServerData.GetRequest<SpeechingTask[]>("task", id);
 
             AppData.SaveCurrentData();
 
-            return tasks;
+            return Tasks;
         }
     }
 
@@ -120,9 +120,9 @@ namespace SpeechingCommon
 
     public class SpeechingTask
     {
-        public string id;
-        public TaskContent content;
-        public TaskResponse response;
+        public string Id;
+        public TaskContent TaskContentModel;
+        public TaskResponse TaskResponseModel;
     }
 
 }

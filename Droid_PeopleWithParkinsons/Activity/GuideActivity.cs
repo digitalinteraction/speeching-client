@@ -84,7 +84,7 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.GuideActivity);
             ActionBar.Hide();
 
-            adapter = new GuideAdapter(SupportFragmentManager, guide.slides, resources);
+            adapter = new GuideAdapter(SupportFragmentManager, guide.pages, resources);
             pager = FindViewById<ViewPager>(Resource.Id.guide_pager);
             pager.Adapter = adapter;
             pager.SetPageTransformer(true, new DepthPageTransformer());
@@ -100,7 +100,7 @@ namespace Droid_PeopleWithParkinsons
 
             WebClient request = new WebClient();
             await request.DownloadFileTaskAsync(
-                new Uri(guide.Resources),
+                new Uri(guide.Resource),
                 localZipPath
                 );
             request.Dispose();
@@ -147,10 +147,10 @@ namespace Droid_PeopleWithParkinsons
         public class GuideAdapter : FragmentStatePagerAdapter
         {
             private Android.Support.V4.App.FragmentManager SupportFragmentManager;
-            private Guide.Slide[] slides;
+            private Guide.Page[] slides;
             private Dictionary<string, string> resources;
 
-            public GuideAdapter(Android.Support.V4.App.FragmentManager SupportFragmentManager, Guide.Slide[] slides, Dictionary<string, string> resources)
+            public GuideAdapter(Android.Support.V4.App.FragmentManager SupportFragmentManager, Guide.Page[] slides, Dictionary<string, string> resources)
                 : base(SupportFragmentManager)
             {
                 this.SupportFragmentManager = SupportFragmentManager;

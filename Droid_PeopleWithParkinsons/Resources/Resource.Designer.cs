@@ -296,32 +296,20 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090046
 			public const int TextToSpeak = 2131296326;
 			
-			// aapt resource value: 0x7f090071
-			public const int action_about = 2131296369;
+			// aapt resource value: 0x7f09006d
+			public const int action_about = 2131296365;
 			
-			// aapt resource value: 0x7f090070
-			public const int action_logOut = 2131296368;
+			// aapt resource value: 0x7f09006c
+			public const int action_logOut = 2131296364;
 			
-			// aapt resource value: 0x7f09006f
-			public const int action_settings = 2131296367;
+			// aapt resource value: 0x7f09006b
+			public const int action_settings = 2131296363;
 			
-			// aapt resource value: 0x7f09006e
-			public const int action_uploads = 2131296366;
+			// aapt resource value: 0x7f09006a
+			public const int action_uploads = 2131296362;
 			
 			// aapt resource value: 0x7f090018
 			public const int addFriendButton = 2131296280;
-			
-			// aapt resource value: 0x7f090060
-			public const int choice_grid = 2131296352;
-			
-			// aapt resource value: 0x7f09005d
-			public const int choice_image = 2131296349;
-			
-			// aapt resource value: 0x7f09005e
-			public const int choice_name = 2131296350;
-			
-			// aapt resource value: 0x7f09005f
-			public const int choice_title = 2131296351;
 			
 			// aapt resource value: 0x7f090003
 			public const int feedback_completionDate = 2131296259;
@@ -380,8 +368,8 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090010
 			public const int guide_right = 2131296272;
 			
-			// aapt resource value: 0x7f090072
-			public const int help = 2131296370;
+			// aapt resource value: 0x7f09006e
+			public const int help = 2131296366;
 			
 			// aapt resource value: 0x7f090005
 			public const int left_drawer = 2131296261;
@@ -518,17 +506,17 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090051
 			public const int scenarioVideo = 2131296337;
 			
-			// aapt resource value: 0x7f090061
-			public const int submittedAlert_Message = 2131296353;
+			// aapt resource value: 0x7f09005d
+			public const int submittedAlert_Message = 2131296349;
 			
-			// aapt resource value: 0x7f090062
-			public const int submittedAlert_feedbackBtn = 2131296354;
+			// aapt resource value: 0x7f09005e
+			public const int submittedAlert_feedbackBtn = 2131296350;
 			
-			// aapt resource value: 0x7f090063
-			public const int submittedAlert_permission = 2131296355;
+			// aapt resource value: 0x7f09005f
+			public const int submittedAlert_permission = 2131296351;
 			
-			// aapt resource value: 0x7f090064
-			public const int submitted_list = 2131296356;
+			// aapt resource value: 0x7f090060
+			public const int submitted_list = 2131296352;
 			
 			// aapt resource value: 0x7f090021
 			public const int submitted_message = 2131296289;
@@ -554,32 +542,32 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090024
 			public const int tasklist_parentTitle = 2131296292;
 			
-			// aapt resource value: 0x7f09006d
-			public const int uploadsList_completedAt = 2131296365;
-			
-			// aapt resource value: 0x7f09006a
-			public const int uploadsList_icon = 2131296362;
-			
-			// aapt resource value: 0x7f09006c
-			public const int uploadsList_scenarioTitle = 2131296364;
-			
-			// aapt resource value: 0x7f09006b
-			public const int uploadsList_uploadStatus = 2131296363;
-			
-			// aapt resource value: 0x7f090068
-			public const int uploads_list = 2131296360;
-			
-			// aapt resource value: 0x7f090067
-			public const int uploads_message = 2131296359;
-			
 			// aapt resource value: 0x7f090069
-			public const int uploads_start = 2131296361;
+			public const int uploadsList_completedAt = 2131296361;
 			
 			// aapt resource value: 0x7f090066
-			public const int uploads_title = 2131296358;
+			public const int uploadsList_icon = 2131296358;
+			
+			// aapt resource value: 0x7f090068
+			public const int uploadsList_scenarioTitle = 2131296360;
+			
+			// aapt resource value: 0x7f090067
+			public const int uploadsList_uploadStatus = 2131296359;
+			
+			// aapt resource value: 0x7f090064
+			public const int uploads_list = 2131296356;
+			
+			// aapt resource value: 0x7f090063
+			public const int uploads_message = 2131296355;
 			
 			// aapt resource value: 0x7f090065
-			public const int uploads_warning = 2131296357;
+			public const int uploads_start = 2131296357;
+			
+			// aapt resource value: 0x7f090062
+			public const int uploads_title = 2131296354;
+			
+			// aapt resource value: 0x7f090061
+			public const int uploads_warning = 2131296353;
 			
 			// aapt resource value: 0x7f090014
 			public const int viewPager = 2131296276;
@@ -667,25 +655,19 @@ namespace Droid_PeopleWithParkinsons
 			public const int ScenarioActivity = 2130903061;
 			
 			// aapt resource value: 0x7f030016
-			public const int ScenarioChoiceItem = 2130903062;
+			public const int SubmittedAlert = 2130903062;
 			
 			// aapt resource value: 0x7f030017
-			public const int ScenarioChoicePopup = 2130903063;
+			public const int SubmittedFragment = 2130903063;
 			
 			// aapt resource value: 0x7f030018
-			public const int SubmittedAlert = 2130903064;
+			public const int SubmittedHeader = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int SubmittedFragment = 2130903065;
+			public const int UploadsActivity = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
-			public const int SubmittedHeader = 2130903066;
-			
-			// aapt resource value: 0x7f03001b
-			public const int UploadsActivity = 2130903067;
-			
-			// aapt resource value: 0x7f03001c
-			public const int UploadsListItem = 2130903068;
+			public const int UploadsListItem = 2130903066;
 			
 			static Layout()
 			{

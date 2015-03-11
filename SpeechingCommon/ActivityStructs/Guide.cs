@@ -14,7 +14,7 @@ namespace SpeechingCommon
 {
     public class Guide : ISpeechingActivityItem
     {
-        public struct Slide
+        public struct Page
         {
             public string visualMediaLoc;
             public string text;
@@ -26,7 +26,7 @@ namespace SpeechingCommon
         private string resources;
         private string icon;
 
-        public Slide[] slides;
+        public Page[] pages;
 
         public string Id
         {
@@ -64,7 +64,7 @@ namespace SpeechingCommon
             }
         }
 
-        public string Resources
+        public string Resource
         {
             get
             {

@@ -19,7 +19,7 @@ namespace SpeechingCommon
         /// <summary>
         /// How many icon downloads are currently running
         /// </summary>
-        public static int runningDLs { public get; private set;}
+        public static int runningDLs;
 
         /// <summary>
         /// Download the icon for this category

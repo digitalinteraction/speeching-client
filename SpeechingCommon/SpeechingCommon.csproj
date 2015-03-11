@@ -62,8 +62,8 @@
     <Compile Include="ActivityStructs\Guide.cs" />
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
-    <Compile Include="AppData.cs" />
-    <Compile Include="ServerData.cs" />
+    <Compile Include="_AppData.cs" />
+    <Compile Include="_ServerData.cs" />
     <Compile Include="FeedbackStructs\PercentageFeedback.cs" />
     <Compile Include="FeedbackStructs\StarRatingFeedback.cs" />
     <Compile Include="FeedbackStructs\_FeedbackInterface.cs" />
