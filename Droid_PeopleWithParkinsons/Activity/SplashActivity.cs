@@ -35,7 +35,7 @@ namespace Droid_PeopleWithParkinsons
                  // FUDGE USER DATA - TODO
                 AppData.session.currentUser.id = "aUserId";
 
-                await AppData.FetchCategories();
+                await ServerData.FetchCategories();
 
                 Toast.MakeText(this, "Downloaded data!", ToastLength.Short).Show();
 

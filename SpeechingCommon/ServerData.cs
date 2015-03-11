@@ -1,7 +1,6 @@
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using RestSharp.Portable;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,26 +10,19 @@ using System.Threading.Tasks;
 namespace SpeechingCommon
 {
     /// <summary>
-    /// A collection of server structures and methods, along with functions that will be used commonly across all platforms.
+    /// A collection of server structures, variables and methods
     /// Methods starting with "Push" request changes be made to server data. Methods starting with "Fetch" pull data from the server.
     /// </summary>
-    public static class AppData
+    public static class ServerData
     {
-        // Account related data
-        public static SessionData session;
         public enum ActivityType { Scenario, Guide };
-
-        // System data
-        public static string cacheDir;
 
         public static string storageServer = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
         public static string storageRemoteDir;
         public static string storageUsername = @"speeching";
         public static string storagePassword = @"BlahBlah123";
-        public static Random rand;
 
-        public static string serviceUrl = " http://api.opescode.com/api/";
-
+        public static string serviceUrl = "http://api.opescode.com/api/";
 
         /// <summary>
         /// Send a POST request to the server and return an Object of type T in response
@@ -105,6 +97,8 @@ namespace SpeechingCommon
         {
             string url = serviceUrl + route;
 
+            //string url = "http://httpbin.org/get";
+
             if (!string.IsNullOrEmpty(data))
             {
                 url += "/" + data;
@@ -157,94 +151,36 @@ namespace SpeechingCommon
             request.ContentType = "application/json";
             request.Method = "GET";
 
-            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            try
             {
-                if (response.StatusCode != HttpStatusCode.OK)
+                using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
                 {
-                    Console.WriteLine("Error fetching data!");
-                    return null;
-                }
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string content = await reader.ReadToEndAsync();
-                    response.Close();
-                    if (string.IsNullOrWhiteSpace(content))
+                    if (response.StatusCode != HttpStatusCode.OK)
                     {
-                        Console.WriteLine("Error fetching data! Returned empty data");
+                        Console.WriteLine("Error fetching data!");
                         return null;
                     }
-                    else
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
-                        Console.Out.WriteLine("Response Body: \r\n {0}", content);
+                        string content = await reader.ReadToEndAsync();
+                        response.Close();
+                        if (string.IsNullOrWhiteSpace(content))
+                        {
+                            Console.WriteLine("Error fetching data! Returned empty data");
+                            return null;
+                        }
+                        else
+                        {
+                            Console.Out.WriteLine("Response Body: \r\n {0}", content);
 
-                        return content;
+                            return content;
+                        }
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Attempts to load existing data stored in a local file.
-        /// </summary>
-        /// <returns>true if successful, false if a request to the server is needed</returns>
-        public static bool TryLoadExistingData()
-        {
-            if (rand == null) rand = new Random();
-
-            try
+            catch(Exception except)
             {
-                if(!Directory.Exists(cacheDir))
-                {
-                    Directory.CreateDirectory(cacheDir);
-                }
-                else if (File.Exists(cacheDir + "/offline.json"))
-                {
-                    var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
-                    session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"), new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto,
-                        Binder = binder
-                    });
-                    storageRemoteDir = "uploads/" + session.currentUser.id + "/";
-                    return true;
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Error loading data: " + e);
-            }
-
-            session = new SessionData();
-            storageRemoteDir = "uploads/" + session.currentUser.id + "/";
-
-            return false;
-        }
-
-        /// <summary>
-        /// Saves the current data to the cache directory for loading later
-        /// </summary>
-        public static async void SaveCurrentData()
-        {
-            if (session == null || cacheDir == null) return; // Nothing to save
-            var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
-            string dataString = JsonConvert.SerializeObject(session, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto,
-                Binder = binder
-            });
-
-            try
-            {
-                if (!Directory.Exists(cacheDir))
-                {
-                    Directory.CreateDirectory(cacheDir);
-                }
-
-                File.WriteAllText(cacheDir + "/offline.json", dataString);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("ERROR SAVING DATA: " + e);
+                return "Error: " + except;
             }
         }
 
@@ -255,12 +191,12 @@ namespace SpeechingCommon
         {
             try
             {
-                session.categories = await AppData.GetRequest<List<ActivityCategory>>("category", "");
+                AppData.session.categories = await ServerData.GetRequest<List<ActivityCategory>>("category", "");
 
                 // Loop over all categories, downloading icons as needed for them and their scenarios
-                for (int i = 0; i < session.categories.Count; i++)
+                for (int i = 0; i < AppData.session.categories.Count; i++)
                 {
-                    session.categories[i].DownloadIcon();
+                    AppData.session.categories[i].DownloadIcon();
 
                     /*for (int j = 0; j < session.categories[i].activities.Length; j++)
                     {
@@ -355,7 +291,7 @@ namespace SpeechingCommon
                 success = await PushResultToDatabase(toUpload);
                 if(success)
                 {
-                    session.resultsToUpload.Remove(toUpload);
+                    AppData.session.resultsToUpload.Remove(toUpload);
                     toUpload.uploadState = ResultItem.UploadState.Uploaded;
                 }
             }
@@ -384,7 +320,7 @@ namespace SpeechingCommon
             }
 
             DateTime old = DateTime.MinValue.AddYears(1969);
-            ResultItem[] toUpload = session.resultsToUpload.ToArray();
+            ResultItem[] toUpload = AppData.session.resultsToUpload.ToArray();
             int completed = 0;
 
             Action<bool> OnUpload = (bool success) =>
@@ -399,11 +335,16 @@ namespace SpeechingCommon
             }
         }
 
+        /// <summary>
+        /// Notify the web service that an output zip has been uploaded
+        /// </summary>
+        /// <param name="toUpload"></param>
+        /// <returns></returns>
         private static async Task<bool> PushResultToDatabase(ResultItem toUpload)
         {
             bool success = false;
 
-            AppData.PostRequest<ServerError>("SubmitResult", JsonConvert.SerializeObject(toUpload));
+            ServerData.PostRequest<ServerError>("SubmitResult", JsonConvert.SerializeObject(toUpload));
 
             return success;
         }
@@ -414,23 +355,8 @@ namespace SpeechingCommon
         public static void PushResultDeletion(ResultItem toDelete)
         {
             //TEMP
-            session.resultsOnServer.Remove(toDelete);
-            SaveCurrentData();
-        }
-        
-        /// <summary>
-        /// Checks to see if the scenario has exported data waiting for upload
-        /// </summary>
-        /// <param name="id">The id of the scenario</param>
-        /// <returns>Is Completed? bool</returns>
-        public static bool CheckIfScenarioCompleted(string id)
-        {
-            for(int i = 0; i < session.resultsToUpload.Count; i++)
-            {
-                if (session.resultsToUpload[i].activityId == id) return true;
-            }
-
-            return false;
+            AppData.session.resultsOnServer.Remove(toDelete);
+            AppData.SaveCurrentData();
         }
 
         /// <summary>
@@ -440,7 +366,7 @@ namespace SpeechingCommon
         /// <returns></returns>
         public static User FetchUser(string username)
         {
-            foreach (User user in session.userCache)
+            foreach (User user in AppData.session.userCache)
             {
                 if (user.name == username)
                 {
@@ -460,7 +386,7 @@ namespace SpeechingCommon
             List<User> users = new List<User>();
 
             //TEMP - will be polling the server (although checking the cache would be useful...)
-            foreach(User user in session.userCache)
+            foreach (User user in AppData.session.userCache)
             {
                 if(userIds.Contains(user.id))
                 {
@@ -479,7 +405,7 @@ namespace SpeechingCommon
         public static List<User> FetchAcceptedFriends()
         {
             List<User> toRet = new List<User>();
-            User[] allFriends = AppData.FetchUsers(AppData.session.currentUser.friends);
+            User[] allFriends = ServerData.FetchUsers(AppData.session.currentUser.friends);
 
             foreach (User friend in allFriends)
             {
@@ -509,20 +435,20 @@ namespace SpeechingCommon
 
             // If the user has already been cached, update the object. Else, just add it
             bool cached = false;
-            for (int i = 0; i < session.userCache.Count; i++)
+            for (int i = 0; i < AppData.session.userCache.Count; i++)
             {
-                if (session.userCache[i].id == added.id)
+                if (AppData.session.userCache[i].id == added.id)
                 {
-                    session.userCache[i] = added;
+                    AppData.session.userCache[i] = added;
                     cached = true;
                     break;
                 }
             }
-            if(!cached) session.userCache.Add(added);
+            if (!cached) AppData.session.userCache.Add(added);
 
-            session.currentUser.friends.Add(added.id);
+            AppData.session.currentUser.friends.Add(added.id);
 
-            SaveCurrentData();
+            AppData.SaveCurrentData();
             return true;
         }
 
@@ -536,7 +462,7 @@ namespace SpeechingCommon
             ResultPackage ret = null;
 
             // TEMP - should fetch from server
-            foreach(ResultItem item in session.resultsOnServer)
+            foreach (ResultItem item in AppData.session.resultsOnServer)
             {
                 if(item.id == resultId)
                 {
@@ -547,7 +473,7 @@ namespace SpeechingCommon
             }
             if (ret == null) return null; // Not found on 'server'
 
-            string extractPath = cacheDir + "/DL_" + resultId;
+            string extractPath = AppData.cacheDir + "/DL_" + resultId;
 
             ret.resources = new Dictionary<string, string>();
             //ret.activity = ISpeechingActivityItem.GetWithId(session.categories, ret.resultItem.activityId);
@@ -638,66 +564,12 @@ namespace SpeechingCommon
                     st.Title = "Your Rating";
                     st.Caption = "This is your rating for something you did. Hopefully it's meaningful!";
                     st.ActivityId = "sossie";
-                    st.Rating = (float)AppData.rand.Next(0, 10) /2;
+                    st.Rating = (float)AppData.rand.Next(0, 10) / 2;
                     arr[i] = st;
                 }
             }
 
             return arr;
-        }
-    }
-
-    public class User
-    {
-        public enum UserType { Patient, Therapist, Rater };
-        public enum FriendStatus { Accepted, Denied, Sent, Received };
-
-        public string id;
-        public string name;
-        public string avatar;
-        public UserType userType;
-        public FriendStatus status;
-        public List<string> friends;
-
-        public User()
-        {
-            id = "placeholder";
-            friends = new List<string>();
-        }
-    }
-
-    public class ResultItem
-    {
-        public enum UploadState { Incomplete, Ready, Uploading, Uploaded };
-        public string id;
-        public string userId;
-        public string activityId;
-        public string dataLoc;
-        public Dictionary<string, string> results;
-        public UploadState uploadState;
-        public bool isPublic;
-        public List<string> allowedUsers;
-        public DateTime completedAt;
-
-        public ResultItem(string activityId, string dataLoc, string userId)
-        {
-            this.completedAt = DateTime.Now;
-            this.id = activityId + "_" + completedAt.ToString();
-            this.activityId = activityId;
-            this.userId = userId;
-            this.dataLoc = dataLoc;
-            this.uploadState = UploadState.Ready;
-            this.isPublic = false;
-            this.allowedUsers = new List<string>();
-            this.results = new Dictionary<string, string>();
-        }
-
-        /// <summary>
-        /// Commit the current permissions list to the server
-        /// </summary>
-        public void PushPermissionUpdates()
-        {
-            //TODO
         }
     }
 
@@ -720,44 +592,5 @@ namespace SpeechingCommon
         public string id;
         public string title;
         public string message;
-    }
-
-    public class Utils
-    {
-        public static async Task LoadStringFromFile(string fileAddress, Action<string> callback)
-        {
-            callback(System.IO.File.ReadAllText(fileAddress));
-        }
-
-        /// <summary>
-        /// Returns a local version of the linked file, downloading it if necessary
-        /// </summary>
-        /// <param name="remoteUrl"></param>
-        /// <returns></returns>
-        public static async Task<string> FetchLocalCopy(string remoteUrl)
-        {
-            string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(remoteUrl);
-
-            try
-            {
-                // Download the file if it isn't already stored locally
-                if (!File.Exists(localIconPath))
-                {
-                    WebClient request = new WebClient();
-                    await request.DownloadFileTaskAsync(
-                        new Uri(remoteUrl),
-                        localIconPath
-                        );
-                    request.Dispose();
-                    request = null;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return localIconPath;
-        }
     }
 }

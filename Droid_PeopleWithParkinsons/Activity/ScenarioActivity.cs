@@ -90,7 +90,7 @@ namespace Droid_PeopleWithParkinsons
         private async Task InitialiseData(Bundle savedInstanceState)
         {
             // Load the scenario with the id that was given inside the current intent
-            scenario = (Scenario) await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
+            scenario = (Scenario)await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 

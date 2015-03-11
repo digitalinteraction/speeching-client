@@ -40,7 +40,7 @@ namespace Droid_PeopleWithParkinsons
 
         private async Task InitialiseData()
         {
-            guide = (Guide) await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
+            guide = (Guide)await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
             string scenarioFormatted = guide.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
             string documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";

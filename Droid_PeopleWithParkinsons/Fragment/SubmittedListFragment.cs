@@ -64,7 +64,7 @@ namespace Droid_PeopleWithParkinsons
                     confirm.SetMessage("The recorded data will be deleted from the server and irrecoverably lost. Continue?");
                     confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>
                     {
-                        AppData.PushResultDeletion(res);
+                        ServerData.PushResultDeletion(res);
 
                         exportList.Adapter = null;
                         LoadData();
@@ -81,7 +81,7 @@ namespace Droid_PeopleWithParkinsons
 
         private async Task LoadData()
         {
-            results = await AppData.FetchSubmittedList();
+            results = await ServerData.FetchSubmittedList();
 
             exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.submitted_list, results);
         }

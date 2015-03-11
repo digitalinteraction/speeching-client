@@ -44,7 +44,7 @@ namespace Droid_PeopleWithParkinsons
 
         private void uploadAllButton_Click(object sender, EventArgs e)
         {
-            AppData.PushAllResults(MultiUploadComplete);
+            ServerData.PushAllResults(MultiUploadComplete);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Droid_PeopleWithParkinsons
             .SetPositiveButton("Upload", (s, a) => {
                 ResultItem toUpload = AppData.session.resultsToUpload[args.Position];
                 progressDialog.Show();
-                AppData.PushResult(toUpload, OnUploadComplete);
+                ServerData.PushResult(toUpload, OnUploadComplete);
             })
             .SetNeutralButton("Cancel", (s, a) => { })
             .Create();

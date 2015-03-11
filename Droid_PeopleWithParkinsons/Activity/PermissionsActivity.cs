@@ -102,7 +102,7 @@ namespace Droid_PeopleWithParkinsons
             positive.Click += delegate(object clickSender, EventArgs args)
             {
                 //TODO make awaitable
-                User foundUser = AppData.FetchUser(textInput.Text);
+                User foundUser = ServerData.FetchUser(textInput.Text);
 
                 if (foundUser != null)
                 {
@@ -126,7 +126,7 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         private void UpdateLayout()
         {
-            User[] allowedUsers = AppData.FetchUsers(resultItem.allowedUsers);
+            User[] allowedUsers = ServerData.FetchUsers(resultItem.allowedUsers);
 
             if(resultItem.isPublic)
             {
@@ -143,7 +143,7 @@ namespace Droid_PeopleWithParkinsons
             AppData.SaveCurrentData();
 
             allowedList.Adapter = null;
-            allowedList.Adapter = new FriendListFragment.UserListAdapter(this, Resource.Id.mainFriendsList, AppData.FetchUsers(resultItem.allowedUsers));
+            allowedList.Adapter = new FriendListFragment.UserListAdapter(this, Resource.Id.mainFriendsList, ServerData.FetchUsers(resultItem.allowedUsers));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Droid_PeopleWithParkinsons
         void addFriendBtn_Click(object sender, EventArgs e)
         {
             List<User> notAdded = new List<User>();
-            List<User> allFriends = AppData.FetchAcceptedFriends();
+            List<User> allFriends = ServerData.FetchAcceptedFriends();
 
             foreach(User user in allFriends)
             {

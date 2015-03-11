@@ -62,14 +62,18 @@
     <Compile Include="ActivityStructs\Guide.cs" />
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
-    <Compile Include="Data.cs" />
+    <Compile Include="AppData.cs" />
+    <Compile Include="ServerData.cs" />
     <Compile Include="FeedbackStructs\PercentageFeedback.cs" />
     <Compile Include="FeedbackStructs\StarRatingFeedback.cs" />
     <Compile Include="FeedbackStructs\_FeedbackInterface.cs" />
     <Compile Include="JsonCreationConverter.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultItem.cs" />
     <Compile Include="SessionData.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

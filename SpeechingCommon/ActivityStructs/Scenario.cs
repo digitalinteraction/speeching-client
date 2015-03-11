@@ -92,7 +92,7 @@ namespace SpeechingCommon
         {
             if (!force && (tasks != null && tasks.Length > 0)) return tasks;
 
-            tasks = await AppData.GetRequest<SpeechingTask[]>("activity", id);
+            tasks = await ServerData.GetRequest<SpeechingTask[]>("activity", id);
 
             AppData.SaveCurrentData();
 

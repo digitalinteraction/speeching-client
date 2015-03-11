@@ -41,7 +41,7 @@ namespace Droid_PeopleWithParkinsons
 
             SetContentView(Resource.Layout.FeedbackActivity);
 
-            submissions = await AppData.FetchSubmittedList();
+            submissions = await ServerData.FetchSubmittedList();
 
             //TODO
             string[] fakeOptions = new string[] { "these are", "some fake", "options to fill", "up sidebar space" };
@@ -81,7 +81,7 @@ namespace Droid_PeopleWithParkinsons
         /// <returns></returns>
         private async Task LoadFeedbackForActivity(ResultItem result)
         {
-            currentFeedback = await AppData.FetchFeedbackFor(result.id);
+            currentFeedback = await ServerData.FetchFeedbackFor(result.id);
 
             thisActivity = await AppData.session.FetchActivityWithId(result.activityId);
             string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);

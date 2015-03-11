@@ -46,7 +46,7 @@ namespace SpeechingCommon
             }
 
             // We don't have it locally - check the server!
-            return await AppData.GetRequest<ISpeechingActivityItem>("activity", activityId);
+            return await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId);
         }
 
         /// <summary>

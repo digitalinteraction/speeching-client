@@ -48,7 +48,7 @@ namespace Droid_PeopleWithParkinsons
                 string itemId = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition].Id;
                 intent.PutExtra("ActivityId", itemId);
 
-                if(AppData.CheckIfScenarioCompleted(itemId))
+                if (AppData.CheckForActivityResultData(itemId))
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
                     .SetTitle("Existing results found...")
@@ -69,7 +69,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 try
                 {
-                    await AppData.FetchCategories();
+                    await ServerData.FetchCategories();
                     refresher.Refreshing = false;
 
                     ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.session.categories.ToArray();
@@ -81,7 +81,7 @@ namespace Droid_PeopleWithParkinsons
                 }
             };
 
-            if(AppData.session.categories.Count == 1)
+            if (AppData.session.categories.Count == 1)
             {
                 mainList.ExpandGroup(0, true);
             }
