@@ -5,7 +5,6 @@ using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
-using System;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -34,53 +33,20 @@ namespace Droid_PeopleWithParkinsons
             mainList = view.FindViewById<ExpandableListView>(Resource.Id.mainActivitiesList);
             mainList.AddHeaderView(header, null, false);
             mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.categories.ToArray()));
-            mainList.ChildClick += delegate(object sender, ExpandableListView.ChildClickEventArgs args)
-            {
-                ISpeechingActivityItem thisItem = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition];
+            mainList.ChildClick += mainList_ChildClick;  
 
-                System.Type objectType = thisItem.GetType();
-                System.Type targetActivity = typeof(MainActivity);
-
-                if (objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
-                else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
-
-                Intent intent = new Intent(Activity, targetActivity);
-                string itemId = AppData.session.categories[args.GroupPosition].activities[args.ChildPosition].Id;
-                intent.PutExtra("ActivityId", itemId);
-
-                if (AppData.CheckForActivityResultData(itemId))
-                {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
-                    .SetTitle("Existing results found...")
-                    .SetMessage("Re-doing this scenario will wipe any progress for it which hasn't been uploaded. Are you sure you want to do this?")
-                    .SetPositiveButton("Continue", (senderAlert, confArgs) => { StartActivity(intent); })
-                    .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
-                    .SetCancelable(true);
-                    alert.Show();
-                }
-                else
-                {
-                    StartActivity(intent);
-                }
-            };
-
+            // When the pull to refresh is activated, pull new data from the server and refresh the list with the new data
             refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
             refresher.Refresh += async delegate
             {
-                try
-                {
-                    await ServerData.FetchCategories();
-                    refresher.Refreshing = false;
+                await ServerData.FetchCategories();
+                refresher.Refreshing = false;
 
-                    ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.session.categories.ToArray();
-                    Activity.RunOnUiThread(() => ((ScenarioListAdapter)mainList.ExpandableListAdapter).NotifyDataSetChanged());
-                }
-                catch(Exception except)
-                {
-                    Console.WriteLine("Howdy:" + except);
-                }
+                ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.session.categories.ToArray();
+                Activity.RunOnUiThread(() => ((ScenarioListAdapter)mainList.ExpandableListAdapter).NotifyDataSetChanged());
             };
 
+            // If there's only one category, it makes sense to expand it by default
             if (AppData.session.categories.Count == 1)
             {
                 mainList.ExpandGroup(0, true);
@@ -91,28 +57,54 @@ namespace Droid_PeopleWithParkinsons
             return view;
         }
 
+        /// <summary>
+        /// A child in the list (an activity) has been selected. Check to see if existing data for this activity
+        /// already exists before launching it.
+        /// </summary>
+        void mainList_ChildClick(object sender, ExpandableListView.ChildClickEventArgs e)
+        {
+            ISpeechingActivityItem thisItem = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition];
+
+            System.Type objectType = thisItem.GetType();
+            System.Type targetActivity = typeof(MainActivity);
+
+            if (objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
+            else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
+
+            Intent intent = new Intent(Activity, targetActivity);
+            string itemId = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition].Id;
+            intent.PutExtra("ActivityId", itemId);
+
+            if (AppData.CheckForActivityResultData(itemId))
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
+                .SetTitle("Existing results found...")
+                .SetMessage("Re-doing this scenario will wipe any progress for it which hasn't been uploaded. Are you sure you want to do this?")
+                .SetPositiveButton("Continue", (senderAlert, confArgs) => { StartActivity(intent); })
+                .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
+                .SetCancelable(true);
+                alert.Show();
+            }
+            else
+            {
+                StartActivity(intent);
+            }
+        }
+
         void viewFeedbackBtn_Click(object sender, System.EventArgs e)
         {
             this.Activity.StartActivity(typeof(FeedbackActivity));
         }
-
-        public override void OnResume()
-        {
-            base.OnResume();
-
-            // Make sure we're showing the latest available scenarios
-            //mainList.Adapter = new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.scenarios.ToArray());
-        }
     
+        /// <summary>
+        /// An expandable list adapter which displays the available categories and the activities under them
+        /// </summary>
         public class ScenarioListAdapter : BaseExpandableListAdapter
         {
             Activity context;
 
             public ActivityCategory[] categories;
 
-            /// <summary>
-            /// An adapter to be able to display the details on each task in an expandable list
-            /// </summary>
             public ScenarioListAdapter(Activity context, int resource, ActivityCategory[] data)
             {
                 this.context = context;

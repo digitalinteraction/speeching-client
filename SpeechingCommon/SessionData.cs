@@ -31,7 +31,7 @@ namespace SpeechingCommon
         }
 
         /// <summary>
-        /// Attempt to find an activity with the given id
+        /// Attempt to find an activity with the given id. Poll the server if it isn't found
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>

@@ -1,25 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
-using System.Net;
-using SpeechingCommon;
-using ICSharpCode.SharpZipLib.Zip;
-using System.IO;
+using Android.Views;
 using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
+using SpeechingCommon;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
+    /// <summary>
+    /// Acts as a slideshow, creating fragments for each page/slide of information which can be swiped between
+    /// </summary>
     [Activity(Label = "Guide Activity")]
     public class GuideActivity : FragmentActivity
     {
@@ -38,6 +36,10 @@ namespace Droid_PeopleWithParkinsons
             InitialiseData();
         }
 
+        /// <summary>
+        /// Retrieve the data needed to display the guide. 
+        /// May connect to the server or need to download files, so has to be asynchronous
+        /// </summary>
         private async Task InitialiseData()
         {
             guide = (Guide)await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));

@@ -49,8 +49,7 @@ namespace Droid_PeopleWithParkinsons
             _adapter = new MyPagerAdapter(SupportFragmentManager);
             pager.Adapter = _adapter;
             _tabs.SetViewPager(pager);
-            //have to dispose it after we've set the view pager, otherwise an error occurs because we've dumped out
-            //the Java Reference.
+
             if (oldAdapter != null)
             {
                 oldAdapter.Dispose();
@@ -130,10 +129,6 @@ namespace Droid_PeopleWithParkinsons
                 return new Java.Lang.String(_titles[position]);
             }
 
-            /// <summary>
-            /// used to demonstrate how the control can respond to tabs being added and removed.
-            /// </summary>
-            /// <param name="count"></param>
             public void SetCount(int count)
             {
                 if (count < 0 || count > Titles.Length)

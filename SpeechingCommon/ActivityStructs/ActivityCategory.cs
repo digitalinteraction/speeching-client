@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace SpeechingCommon
 {
+    /// <summary>
+    /// An object which holds activities of a given type or genre, as decided by the server
+    /// </summary>
     public class ActivityCategory
     {
         public string id;
@@ -13,8 +16,15 @@ namespace SpeechingCommon
         public bool recommended;
         public ISpeechingActivityItem[] activities;
 
-        public static int runningDLs = 0;
+        /// <summary>
+        /// How many icon downloads are currently running
+        /// </summary>
+        public static int runningDLs { public get; private set;}
 
+        /// <summary>
+        /// Download the icon for this category
+        /// </summary>
+        /// <returns></returns>
         public async Task DownloadIcon()
         {
             runningDLs++;

@@ -28,6 +28,9 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+        /// <summary>
+        /// Existing data wasn't found/failed to load so get details from the server
+        /// </summary>
         private async void CreateData()
         {
             try
