@@ -9,27 +9,27 @@ namespace SpeechingCommon
     public class ResultItem
     {
         public enum UploadState { Incomplete, Ready, Uploading, Uploaded };
-        public string id;
-        public string userId;
-        public string activityId;
-        public string dataLoc;
-        public Dictionary<string, string> results;
+        public int id;
+        public int userId;
+        public int CrowdActivityId;
+        public string ResourceUrl;
+        public Dictionary<int, string> ParticpantTaskIdResults;
         public UploadState uploadState;
         public bool isPublic;
-        public List<string> allowedUsers;
+        public List<int> allowedUsers;
         public DateTime completedAt;
 
-        public ResultItem(string activityId, string dataLoc, string userId)
+        public ResultItem(int activityId, string dataLoc, int userId)
         {
             this.completedAt = DateTime.Now;
-            this.id = activityId + "_" + completedAt.ToString();
-            this.activityId = activityId;
+            this.id = AppData.rand.Next(0, 100000); // TEMP
+            this.CrowdActivityId = activityId;
             this.userId = userId;
-            this.dataLoc = dataLoc;
+            this.ResourceUrl = dataLoc;
             this.uploadState = UploadState.Ready;
             this.isPublic = false;
-            this.allowedUsers = new List<string>();
-            this.results = new Dictionary<string, string>();
+            this.allowedUsers = new List<int>();
+            this.ParticpantTaskIdResults = new Dictionary<int, string>();
         }
 
         /// <summary>

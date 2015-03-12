@@ -20,7 +20,7 @@ namespace SpeechingCommon
             public string text;
         };
 
-        private string id;
+        private int id;
         private User creator;
         private string title;
         private string resources;
@@ -28,7 +28,7 @@ namespace SpeechingCommon
 
         public Page[] Pages;
 
-        public string Id
+        public int Id
         {
             get
             {

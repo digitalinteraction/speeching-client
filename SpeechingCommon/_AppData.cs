@@ -82,11 +82,11 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="id">The id of the scenario</param>
         /// <returns>Is Completed? bool</returns>
-        public static bool CheckForActivityResultData(string id)
+        public static bool CheckForActivityResultData(int id)
         {
             for (int i = 0; i < session.resultsToUpload.Count; i++)
             {
-                if (session.resultsToUpload[i].activityId == id) return true;
+                if (session.resultsToUpload[i].CrowdActivityId == id) return true;
             }
 
             return false;

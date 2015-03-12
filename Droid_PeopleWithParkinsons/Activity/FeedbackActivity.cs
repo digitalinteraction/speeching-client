@@ -83,7 +83,7 @@ namespace Droid_PeopleWithParkinsons
         {
             currentFeedback = await ServerData.FetchFeedbackFor(result.id);
 
-            thisActivity = await AppData.session.FetchActivityWithId(result.activityId);
+            thisActivity = await AppData.session.FetchActivityWithId(result.CrowdActivityId);
             string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);
 
             FindViewById<ImageView>(Resource.Id.tasklist_childIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));

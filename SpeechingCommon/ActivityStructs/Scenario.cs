@@ -15,7 +15,7 @@ namespace SpeechingCommon
 {
     public class Scenario : ISpeechingActivityItem
     {
-        private string id;
+        private int id;
         private User creator;
         private string title;
         private string resources;
@@ -23,7 +23,7 @@ namespace SpeechingCommon
 
         public SpeechingTask[] Tasks;
 
-        public string Id
+        public int Id
         {
             get
             {
@@ -92,7 +92,7 @@ namespace SpeechingCommon
         {
             if (!force && (Tasks != null && Tasks.Length > 0)) return Tasks;
 
-            Tasks = await ServerData.GetRequest<SpeechingTask[]>("task", id);
+            Tasks = await ServerData.GetRequest<SpeechingTask[]>("task", id.ToString());
 
             AppData.SaveCurrentData();
 
@@ -120,7 +120,7 @@ namespace SpeechingCommon
 
     public class SpeechingTask
     {
-        public string Id;
+        public int Id;
         public TaskContent TaskContentModel;
         public TaskResponse TaskResponseModel;
     }

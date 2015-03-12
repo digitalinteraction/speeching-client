@@ -310,7 +310,7 @@ namespace Droid_PeopleWithParkinsons
                 get { return results.Length; }
             }
 
-            private async Task PopulateView(string activityId, View view)
+            private async Task PopulateView(int activityId, View view)
             {
                 ISpeechingActivityItem thisItem = await AppData.session.FetchActivityWithId(activityId);
 
@@ -326,7 +326,7 @@ namespace Droid_PeopleWithParkinsons
                     view = context.LayoutInflater.Inflate(Resource.Layout.UploadsListItem, null);
                 }
 
-                PopulateView(results[position].activityId, view);
+                PopulateView(results[position].CrowdActivityId, view);
 
                 view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();
 

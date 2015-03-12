@@ -72,7 +72,7 @@ namespace Droid_PeopleWithParkinsons
             else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
 
             Intent intent = new Intent(Activity, targetActivity);
-            string itemId = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition].Id;
+            int itemId = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition].Id;
             intent.PutExtra("ActivityId", itemId);
 
             if (AppData.CheckForActivityResultData(itemId))

@@ -36,7 +36,7 @@ namespace Droid_PeopleWithParkinsons
             try
             {
                  // FUDGE USER DATA - TODO
-                AppData.session.currentUser.id = "aUserId";
+                AppData.session.currentUser.id = 7041992;
 
                 await ServerData.FetchCategories();
 

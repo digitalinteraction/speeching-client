@@ -34,7 +34,7 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
-        public async Task<ISpeechingActivityItem> FetchActivityWithId(string activityId)
+        public async Task<ISpeechingActivityItem> FetchActivityWithId(int activityId)
         {
             // See if it is in one of the categories already in memory
             for (int i = 0; i < categories.Count; i++)
@@ -54,7 +54,7 @@ namespace SpeechingCommon
             }
 
             // We don't have it locally - check the server and add to the cache for next time!
-            ISpeechingActivityItem newActivity = await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId, new ActivityConverter());
+            ISpeechingActivityItem newActivity = await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId.ToString(), new ActivityConverter());
             activityCache.Add(newActivity);
 
             AppData.SaveCurrentData();
@@ -71,7 +71,7 @@ namespace SpeechingCommon
         {
             resultsToUpload.Remove(result);
 
-            File.Delete(result.dataLoc);
+            File.Delete(result.ResourceUrl);
 
             if (save) AppData.SaveCurrentData();
         }
@@ -80,13 +80,13 @@ namespace SpeechingCommon
         /// Find all results for the given scenario and remove them from the upload queue
         /// </summary>
         /// <param name="scenarioId"></param>
-        public void DeleteAllPendingForScenario(string scenarioId)
+        public void DeleteAllPendingForScenario(int scenarioId)
         {
             List<ResultItem> toDelete = new List<ResultItem>();
 
             foreach (ResultItem item in resultsToUpload)
             {
-                if (item.activityId == scenarioId) toDelete.Add(item);
+                if (item.CrowdActivityId == scenarioId) toDelete.Add(item);
             }
 
             foreach (ResultItem del in toDelete)
@@ -108,7 +108,7 @@ namespace SpeechingCommon
                 scenariosProcessing++;
 
                 ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
-                if (activity.Id == null) activity.Id = "act_" + AppData.rand.Next().ToString();
+                if (activity.Id == null) activity.Id = AppData.rand.Next(0, 1000);
 
                 string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(activity.Icon);
 

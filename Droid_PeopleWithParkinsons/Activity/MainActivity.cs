@@ -32,6 +32,8 @@ namespace Droid_PeopleWithParkinsons
             // Register for tabs
             SetContentView(Resource.Layout.Main);
 
+            string packageName = ApplicationContext.PackageName;
+
             _tabs = FindViewById<PagerSlidingTabStrip.PagerSlidingTabStrip>(Resource.Id.tabs);
             pager = FindViewById<ViewPager>(Resource.Id.viewPager);
 
@@ -107,7 +109,7 @@ namespace Droid_PeopleWithParkinsons
                     case 1:
                         return new FriendListFragment();
                     case 2:
-                        return new SubmittedListFragment();
+                        return new LocationFragment();//SubmittedListFragment();
                     default:
                         return null;
                 }

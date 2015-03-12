@@ -14,7 +14,7 @@ namespace SpeechingCommon
 {
     public interface ISpeechingActivityItem
     {
-        string Id { get; set; }
+        int Id { get; set; }
         User Creator { get; set; }
         string Title { get; set; }
         string Resource { get; set; }

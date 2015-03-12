@@ -10,17 +10,17 @@ namespace SpeechingCommon
         public enum UserType { Patient, Therapist, Rater };
         public enum FriendStatus { Accepted, Denied, Sent, Received };
 
-        public string id;
+        public int id;
         public string name;
         public string avatar;
         public UserType userType;
         public FriendStatus status;
-        public List<string> friends;
+        public List<int> friends;
 
         public User()
         {
-            id = "placeholder";
-            friends = new List<string>();
+            id = 7041992;
+            friends = new List<int>();
         }
     }
 }

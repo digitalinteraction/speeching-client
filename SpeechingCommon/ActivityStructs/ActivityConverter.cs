@@ -17,11 +17,11 @@ namespace SpeechingCommon
     {
         protected override ISpeechingActivityItem Create(Type objectType, JObject jObject)
         {
-            if (FieldExists("tasks", jObject))
+            if (FieldExists("Tasks", jObject))
             {
                 return new Scenario();
             }
-            else if (FieldExists("slides", jObject))
+            else if (FieldExists("Pages", jObject))
             {
                 return new Guide();
             }

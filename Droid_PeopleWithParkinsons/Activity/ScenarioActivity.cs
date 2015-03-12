@@ -107,7 +107,7 @@ namespace Droid_PeopleWithParkinsons
         private async Task InitialiseData(Bundle savedInstanceState)
         {
             // Load the scenario with the id that was given inside the current intent
-            scenario = (Scenario)await AppData.session.FetchActivityWithId(Intent.GetStringExtra("ActivityId"));
+            scenario = (Scenario)await AppData.session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
 
             ActionBar.SetDisplayHomeAsUpEnabled(true);
 
@@ -435,11 +435,11 @@ namespace Droid_PeopleWithParkinsons
         {
             if(sender == choiceImage1)
             {
-                results.results.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice1);
+                results.ParticpantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice1);
             }
             else if(sender == choiceImage2)
             {
-                results.results.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice2);
+                results.ParticpantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice2);
             }
             ShowNextEvent();
         }
@@ -464,7 +464,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 recording = false;
                 audioManager.StopRecording();
-                results.results.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".3gp");
+                results.ParticpantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".3gp");
                 ShowNextEvent();
             }
             else

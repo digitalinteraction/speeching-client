@@ -47,6 +47,9 @@
     <Reference Include="FormsViewGroup">
       <HintPath>..\packages\Xamarin.Forms.1.3.1.6296\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
+    <Reference Include="GooglePlayServicesLib">
+      <HintPath>..\Components\googleplayservices-22.0.0.0\lib\android\GooglePlayServicesLib.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
@@ -93,6 +96,7 @@
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\GuideFragment.cs" />
+    <Compile Include="Fragment\LocationFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Fragment\SubmittedListFragment.cs" />
     <Compile Include="Fragment\UserProfileFragment.cs" />
@@ -218,6 +222,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\FeedbackRatingItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\LocationFragment.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
