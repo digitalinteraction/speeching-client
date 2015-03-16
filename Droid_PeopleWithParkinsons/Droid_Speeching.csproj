@@ -94,6 +94,7 @@
     <Compile Include="Activity\GuideActivity.cs" />
     <Compile Include="Activity\LocationActivity.cs" />
     <Compile Include="Activity\PermissionsActivity.cs" />
+    <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Activity\SplashActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
@@ -235,6 +236,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PlacesListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PlacesRecordEntry.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

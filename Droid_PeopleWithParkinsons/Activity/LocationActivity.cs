@@ -50,10 +50,47 @@ namespace Droid_PeopleWithParkinsons
             mainList = FindViewById<ListView>(Resource.Id.placesList);
             View header = LayoutInflater.Inflate(Resource.Layout.PlacesListHeader, null);
             mainList.AddHeaderView(header, null, false);
+            mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
+            {
+                GooglePlace thisPlace = nearby[args.Position - 1];
+                ZoomToLoc(thisPlace.geometry.location.lat, thisPlace.geometry.location.lng, 17);
+
+                AlertDialog alert = new AlertDialog.Builder(this)
+                    .SetTitle("Record an entry?")
+                    .SetMessage("Would you like to record a new voice entry about " + thisPlace.name + "?")
+                    .SetCancelable(true)
+                    .SetPositiveButton("Create new entry", (s, a) => { LaunchRecorder(thisPlace); })
+                    .SetNegativeButton("Cancel", (s, a) => { })
+                    .Create();
+
+                alert.Show();
+            };
             mainList.Visibility = ViewStates.Gone;
 
             mapFragment.GetMapAsync(this);
             ReadyGoogleApi();
+        }
+
+        private async Task LaunchRecorder(GooglePlace place)
+        {
+            ProgressDialog dialog = ProgressDialog.Show(this, "Please wait", "Readying data...", true);
+
+            Intent intent = new Intent(this, typeof(RecordPlaceEntryActivity));
+
+            string imgRef = (place.photos != null) ? place.photos[0].photo_reference : null;
+
+            if(imgRef != null)
+            {
+                imgRef = await ServerData.FetchPlacePhoto(place, 1024, 768);
+            }
+
+            intent.PutExtra("PlaceImage", imgRef);
+            intent.PutExtra("PlaceName", place.name);
+            intent.PutExtra("PlaceID", place.place_id);
+
+            dialog.Dismiss();
+
+            StartActivity(intent);
         }
 
         private void ReadyGoogleApi()
@@ -144,11 +181,6 @@ namespace Droid_PeopleWithParkinsons
         public void PopulateList()
         {
             mainList.Adapter = new PlacesListAdapter(this, Resource.Id.placesList, nearby);
-            mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
-            {
-                GooglePlace thisPlace = nearby[args.Position - 1];
-                ZoomToLoc(thisPlace.geometry.location.lat, thisPlace.geometry.location.lng, 17);
-            };
             mainList.Visibility = ViewStates.Visible;
         }
 
@@ -228,15 +260,15 @@ namespace Droid_PeopleWithParkinsons
                 if (places[position].photos != null && places[position].photos.Length > 0)
                 {
                     // A photo is available to show!
-                    LoadImage(photoView, places[position].photos[0].photo_reference);
+                    LoadImage(photoView, places[position]);
                 }
 
                 return view;
             }
 
-            private async Task LoadImage(ImageView image, string photoRef)
+            private async Task LoadImage(ImageView image, GooglePlace place)
             {
-                string imageLoc = await ServerData.FetchPlacePhoto(photoRef, 120, 120);
+                string imageLoc = await ServerData.FetchPlacePhoto(place, 120, 120);
                 image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
                 image.Visibility = ViewStates.Visible;
             }
