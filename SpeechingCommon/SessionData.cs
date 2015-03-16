@@ -14,6 +14,7 @@ namespace SpeechingCommon
         public List<User> userCache;
         public List<ISpeechingActivityItem> activityCache;
         public bool serverFolderExists = false;
+        public Dictionary<string, string> placesPhotos;
 
         public static int scenariosProcessing = 0;
 
@@ -27,6 +28,8 @@ namespace SpeechingCommon
             resultsToUpload = new List<ResultItem>();
             userCache = new List<User>();
             resultsOnServer = new List<ResultItem>();
+
+            placesPhotos = new Dictionary<string, string>();
         }
 
         /// <summary>

@@ -48,6 +48,8 @@ namespace Droid_PeopleWithParkinsons
             spinner.Visibility = ViewStates.Visible;
 
             mainList = FindViewById<ListView>(Resource.Id.placesList);
+            View header = LayoutInflater.Inflate(Resource.Layout.PlacesListHeader, null);
+            mainList.AddHeaderView(header, null, false);
             mainList.Visibility = ViewStates.Gone;
 
             mapFragment.GetMapAsync(this);
@@ -144,8 +146,7 @@ namespace Droid_PeopleWithParkinsons
             mainList.Adapter = new PlacesListAdapter(this, Resource.Id.placesList, nearby);
             mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
-                GooglePlace thisPlace = nearby[args.Position];
-
+                GooglePlace thisPlace = nearby[args.Position - 1];
                 ZoomToLoc(thisPlace.geometry.location.lat, thisPlace.geometry.location.lng, 17);
             };
             mainList.Visibility = ViewStates.Visible;
@@ -175,6 +176,12 @@ namespace Droid_PeopleWithParkinsons
         {
             //TODO show alert
             throw new NotImplementedException();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            AppData.SaveCurrentData();
         }
 
         public class PlacesListAdapter : BaseAdapter<GooglePlace>
@@ -210,12 +217,28 @@ namespace Droid_PeopleWithParkinsons
 
                 if (view == null)
                 {
-                    view = context.LayoutInflater.Inflate(Resource.Layout.MainFriendListItem, null);
+                    view = context.LayoutInflater.Inflate(Resource.Layout.PlacesListItem, null);
                 }
 
-                view.FindViewById<TextView>(Resource.Id.mainFriendListName).Text = places[position].name;
+                view.FindViewById<TextView>(Resource.Id.placesList_name).Text = places[position].name;
+
+                ImageView photoView = view.FindViewById<ImageView>(Resource.Id.placesList_photo);
+                photoView.Visibility = ViewStates.Invisible;
+
+                if (places[position].photos != null && places[position].photos.Length > 0)
+                {
+                    // A photo is available to show!
+                    LoadImage(photoView, places[position].photos[0].photo_reference);
+                }
 
                 return view;
+            }
+
+            private async Task LoadImage(ImageView image, string photoRef)
+            {
+                string imageLoc = await ServerData.FetchPlacePhoto(photoRef, 120, 120);
+                image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+                image.Visibility = ViewStates.Visible;
             }
         }
     }

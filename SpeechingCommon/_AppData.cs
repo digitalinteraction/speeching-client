@@ -10,6 +10,7 @@ namespace SpeechingCommon
         public static SessionData session;
         // System data
         public static string cacheDir;
+        public static string placesCache = "/places";
         public static Random rand;
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace SpeechingCommon
                 if (!Directory.Exists(cacheDir))
                 {
                     Directory.CreateDirectory(cacheDir);
+                    Directory.CreateDirectory(cacheDir + placesCache);
                 }
                 else if (File.Exists(cacheDir + "/offline.json"))
                 {
