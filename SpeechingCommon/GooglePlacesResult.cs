@@ -12,6 +12,9 @@ using Android.Widget;
 
 namespace SpeechingCommon
 {
+    /// <summary>
+    /// Holds the data passed by the Google Places API for a single location
+    /// </summary>
     public class GooglePlace
     {
         public struct GeometryData
