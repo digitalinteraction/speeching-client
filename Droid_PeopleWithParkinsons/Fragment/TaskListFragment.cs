@@ -93,7 +93,7 @@ namespace Droid_PeopleWithParkinsons
 
         void viewFeedbackBtn_Click(object sender, System.EventArgs e)
         {
-            this.Activity.StartActivity(typeof(FeedbackActivity));
+            this.Activity.StartActivity(typeof(LocationActivity));//FeedbackActivity));
         }
     
         /// <summary>

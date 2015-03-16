@@ -3,12 +3,12 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <fragment
-        android:id="@+id/map"
+    <FrameLayout
+        android:id="@+id/map_fragment_container"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        class="com.google.android.gms.maps.MapFragment" />
+        android:layout_weight="1" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"

@@ -62,6 +62,7 @@
     <Compile Include="ActivityStructs\Guide.cs" />
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
+    <Compile Include="GooglePlacesResult.cs" />
     <Compile Include="_AppData.cs" />
     <Compile Include="_ServerData.cs" />
     <Compile Include="FeedbackStructs\PercentageFeedback.cs" />
