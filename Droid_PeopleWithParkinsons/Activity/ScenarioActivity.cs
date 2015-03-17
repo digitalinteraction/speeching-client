@@ -435,11 +435,11 @@ namespace Droid_PeopleWithParkinsons
         {
             if(sender == choiceImage1)
             {
-                results.ParticpantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice1);
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice1);
             }
             else if(sender == choiceImage2)
             {
-                results.ParticpantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice2);
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice2);
             }
             ShowNextEvent();
         }
@@ -464,7 +464,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 recording = false;
                 audioManager.StopRecording();
-                results.ParticpantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".3gp");
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".3gp");
                 ShowNextEvent();
             }
             else

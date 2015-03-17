@@ -16,11 +16,90 @@ using Android.Support.V4.View;
 using SpeechingCommon;
 using System.IO;
 using System.Threading.Tasks;
+using Android.Gms.Gcm;
+using Android.Content.PM;
 
 namespace Droid_PeopleWithParkinsons
 {
     public static class AndroidUtils
     {
+        public static String EXTRA_MESSAGE = "message";
+        public static String PROPERTY_REG_ID = "registration_id";
+        public static String PROPERTY_APP_VERSION = "app_version";
+        public static int PLAY_SERVICES_RESOLUTION_REQUEST = 8675309;
+        public static GoogleCloudMessaging gcm;
+        public static string GooglePlayRegId;
+
+        /// <summary>
+        /// Get the registration ID used by Google Cloud Messaging
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetGoogleRegId(Context context)
+        {
+            ISharedPreferences prefs = context.GetSharedPreferences("SpeechingData", 0);
+            string regId = prefs.GetString(PROPERTY_REG_ID, "");
+            if(string.IsNullOrEmpty(regId))
+            {
+                return "";
+            }
+
+            int registeredVersion = prefs.GetInt(PROPERTY_APP_VERSION, int.MinValue);
+            int currentVersion = GetAppVersion(context);
+
+            if(registeredVersion != currentVersion)
+            {
+                Console.WriteLine("Current version does not match the registered app version");
+                return "";
+            }
+
+            return regId;
+        }
+
+        public static int GetAppVersion(Context context)
+        {
+            try
+            {
+                PackageInfo packageInfo = context.PackageManager.GetPackageInfo(context.PackageName, 0);
+                return packageInfo.VersionCode;
+            }
+            catch(Exception except)
+            {
+                Console.WriteLine("Oh no! " + except);
+                throw except;
+            }
+        }
+
+        public static void RegisterGCM(Context context)
+        {
+            try
+            {
+                if (gcm == null)
+                {
+                    gcm = GoogleCloudMessaging.GetInstance(context);
+                }
+
+                ThreadPool.QueueUserWorkItem(o =>
+                    {
+                        GooglePlayRegId = gcm.Register(ServerData.GoogleProjectNum);
+
+                        // TODO send registration ID to server
+
+                        // Save reg Id for later use
+                        ISharedPreferences prefs = context.GetSharedPreferences("SpeechingData", 0);
+                        int appVersion = GetAppVersion(context);
+                        ISharedPreferencesEditor editor = prefs.Edit();
+                        editor.PutString(PROPERTY_REG_ID, GooglePlayRegId);
+                        editor.PutInt(PROPERTY_APP_VERSION, appVersion);
+                        editor.Commit();
+                    });
+            }
+            catch(Exception except)
+            {
+                throw except;
+            }
+        }
+
         /// <summary>
         /// Add a tab to the given activity's ActionBar
         /// </summary>

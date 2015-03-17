@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using SpeechingCommon;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -35,10 +36,11 @@ namespace Droid_PeopleWithParkinsons
             }
             else
             {
-                // TODO do something which is less disappointing
+                // TODO do something which is less disappointing, because the image does look pretty nice
                 FindViewById<ImageView>(Resource.Id.placesRecord_photo).Visibility = ViewStates.Gone;
             }
             FindViewById<TextView>(Resource.Id.placesRecord_title).Text = "Create an entry about " + placeName;
+
         }
     }
 }

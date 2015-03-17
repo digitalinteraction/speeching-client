@@ -13,7 +13,7 @@ namespace SpeechingCommon
         public int userId;
         public int CrowdActivityId;
         public string ResourceUrl;
-        public Dictionary<int, string> ParticpantTaskIdResults;
+        public Dictionary<int, string> ParticipantTaskIdResults;
         public UploadState uploadState;
         public bool isPublic;
         public List<int> allowedUsers;
@@ -29,7 +29,7 @@ namespace SpeechingCommon
             this.uploadState = UploadState.Ready;
             this.isPublic = false;
             this.allowedUsers = new List<int>();
-            this.ParticpantTaskIdResults = new Dictionary<int, string>();
+            this.ParticipantTaskIdResults = new Dictionary<int, string>();
         }
 
         /// <summary>

@@ -105,6 +105,7 @@
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Fragment\SubmittedListFragment.cs" />
     <Compile Include="Fragment\UserProfileFragment.cs" />
+    <Compile Include="NotificationService.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="DownloadService.cs" />

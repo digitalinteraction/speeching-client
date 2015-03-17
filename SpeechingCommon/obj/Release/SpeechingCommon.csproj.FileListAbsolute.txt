@@ -1,0 +1,15 @@
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\SpeechingCommon.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\SpeechingCommon.pdb
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\SpeechingCommon.SpeechingCommon.apk
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\SpeechingCommon.SpeechingCommon-Signed.apk
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\Newtonsoft.Json.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\RestSharp.Portable.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\SharpZipLib.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\Newtonsoft.Json.xml
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Release\RestSharp.Portable.xml
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Release\SpeechingCommon.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Release\SpeechingCommon.pdb
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Release\android\bin\SpeechingCommon.SpeechingCommon.apk
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Release\res\values\strings.xml
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Release\R.cs.flag
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Release\uploadflags.txt

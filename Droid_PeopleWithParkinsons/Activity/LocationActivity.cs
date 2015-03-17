@@ -81,7 +81,7 @@ namespace Droid_PeopleWithParkinsons
 
             if(imgRef != null)
             {
-                imgRef = await ServerData.FetchPlacePhoto(place, 1024, 768);
+                imgRef = await ServerData.FetchPlacePhoto(place, 800, 600);
             }
 
             intent.PutExtra("PlaceImage", imgRef);
