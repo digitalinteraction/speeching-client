@@ -80,6 +80,10 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+        /// <summary>
+        /// Registers for a new Google Play ID and saves it to the app preferences
+        /// </summary>
+        /// <param name="context"></param>
         public static void RegisterGCM(Context context)
         {
             try

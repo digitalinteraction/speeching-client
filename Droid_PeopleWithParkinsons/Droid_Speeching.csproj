@@ -242,6 +242,7 @@
     <AndroidResource Include="Resources\layout\PlacesRecordEntry.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout-land\LocationActivity.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
