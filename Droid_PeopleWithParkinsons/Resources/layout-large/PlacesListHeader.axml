@@ -10,7 +10,7 @@
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:id="@+id/placesList_title"
-        android:textSize="25sp" />
+        android:textSize="35sp" />
     <TextView
         android:text="Here are the points of interest we found near you."
         android:layout_width="wrap_content"
@@ -18,5 +18,5 @@
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:id="@+id/placesList_message"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 </LinearLayout>

@@ -9,7 +9,7 @@
         android:layout_marginTop="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_title"
-        android:textSize="30dp" />
+        android:textSize="25sp" />
     <TextView
         android:text="Hone your skills in preparation for your next assessment with these practice activites! Tap a category to see all of the activities available for it."
         android:layout_width="fill_parent"
@@ -17,7 +17,7 @@
         android:layout_marginBottom="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_message"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
     <Button
         android:id="@+id/viewSubmittedBtn"
         android:text="View feedback for your submissions!"

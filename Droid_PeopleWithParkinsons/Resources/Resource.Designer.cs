@@ -1888,11 +1888,11 @@ namespace Droid_PeopleWithParkinsons
 			// aapt resource value: 0x7f090083
 			public const int placesList_message = 2131296387;
 			
-			// aapt resource value: 0x7f090085
-			public const int placesList_name = 2131296389;
-			
 			// aapt resource value: 0x7f090084
-			public const int placesList_photo = 2131296388;
+			public const int placesList_name = 2131296388;
+			
+			// aapt resource value: 0x7f090085
+			public const int placesList_photo = 2131296389;
 			
 			// aapt resource value: 0x7f090082
 			public const int placesList_title = 2131296386;

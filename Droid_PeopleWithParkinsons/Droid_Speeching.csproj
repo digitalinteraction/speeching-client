@@ -243,6 +243,10 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-land\LocationActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\PlacesListHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\LocationActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\LocationActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\PlacesListItem.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

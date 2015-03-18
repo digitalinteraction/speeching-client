@@ -22,7 +22,7 @@ using Android.Gms.Maps.Model;
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "LocationActivity")]
-    public class LocationActivity : Activity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener
+    public class LocationActivity : Activity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, GoogleMap.IOnMarkerClickListener
     {
         MapFragment mapFragment;
         GoogleMap map;
@@ -109,8 +109,9 @@ namespace Droid_PeopleWithParkinsons
 
         public void OnMapReady(GoogleMap finalMap)
         {
-            Toast.MakeText(this, "Map ready!", ToastLength.Long).Show();
             map = finalMap;
+
+            map.SetOnMarkerClickListener(this);
 
             if(nearby != null && !placed)
             {
@@ -280,6 +281,45 @@ namespace Droid_PeopleWithParkinsons
                     image.Visibility = ViewStates.Visible;
                 }
             }
+        }
+
+        /// <summary>
+        /// When a marker is tapped on the map, scroll the list so that place is in view
+        /// </summary>
+        public bool OnMarkerClick(Marker marker)
+        {
+            LatLng pos = marker.Position;
+
+            int foundPos = -1;
+
+            // If the user's current location was tapped, scroll to the top of the list
+            if(lastLoc.Latitude == pos.Latitude &&
+                lastLoc.Longitude == pos.Longitude)
+            {
+                mainList.SmoothScrollToPosition(0);
+                return false;
+            }
+
+            for(int i = 0; i < nearby.Length; i++)
+            {
+                if(nearby[i].geometry.location.lat == pos.Latitude &&
+                    nearby[i].geometry.location.lng == pos.Longitude)
+                {
+                    foundPos = i + 1; // account for list header
+                    break;
+                }
+            }
+
+            if(foundPos != -1)
+            {
+                mainList.SmoothScrollToPosition(foundPos);
+            }
+            else
+            {
+                Toast.MakeText(this, "Not found", ToastLength.Short).Show();
+            }
+
+            return false;
         }
     }
 }
