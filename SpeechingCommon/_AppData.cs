@@ -1,6 +1,9 @@
+using Android.Content;
+using Android.Widget;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SpeechingCommon
 {
@@ -12,6 +15,31 @@ namespace SpeechingCommon
         public static string cacheDir;
         public static string placesCache = "/places";
         public static Random rand;
+
+        static bool initializing = false;
+
+        public static async Task InitializeIfNeeded()
+        {
+            if (session != null) return;
+
+            while(initializing)
+            {
+                Task.Delay(100);
+            }
+            initializing = true;
+
+            if(session == null)
+            {
+                if(!TryLoadExistingData())
+                {
+
+                    AppData.session.currentUser.id = 7041992;
+
+                    await ServerData.FetchCategories();
+                }
+            }
+            initializing = false;
+        }
 
         /// <summary>
         /// Attempts to load existing data stored in a local file.

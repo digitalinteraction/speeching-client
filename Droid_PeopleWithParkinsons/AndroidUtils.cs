@@ -31,6 +31,16 @@ namespace Droid_PeopleWithParkinsons
         public static string GooglePlayRegId;
 
         /// <summary>
+        /// Set up Android specific variables and get the session loaded/created
+        /// </summary>
+        /// <returns></returns>
+        public static async Task InitSession()
+        {
+            AppData.cacheDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
+            await AppData.InitializeIfNeeded();
+        }
+
+        /// <summary>
         /// Get the registration ID used by Google Cloud Messaging
         /// </summary>
         /// <param name="context"></param>

@@ -30,17 +30,7 @@ namespace Droid_PeopleWithParkinsons
             }
 
             AppData.cacheDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
-            bool loaded = AppData.TryLoadExistingData();
-
-            if(!loaded)
-            {
-                CreateData();
-            }
-            else
-            {
-                Toast.MakeText(this, "Loaded existing data", ToastLength.Short).Show();
-                StartActivity(typeof(MainActivity));
-            }
+            CreateData();
         }
 
         protected override void OnResume()
@@ -56,12 +46,7 @@ namespace Droid_PeopleWithParkinsons
         {
             try
             {
-                 // FUDGE USER DATA - TODO
-                AppData.session.currentUser.id = 7041992;
-
-                await ServerData.FetchCategories();
-
-                Toast.MakeText(this, "Downloaded data!", ToastLength.Short).Show();
+                await AndroidUtils.InitSession();
 
                 StartActivity(typeof(MainActivity));
             }

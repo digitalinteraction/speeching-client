@@ -97,6 +97,11 @@ namespace Droid_PeopleWithParkinsons
             PendingIntent contentIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(LocationActivity)), 0);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .SetPriority(0)
+                .SetLights(300, 1000, 1000)
+                .SetVisibility(1)
+                .SetLocalOnly(false)
+                .SetAutoCancel(true)
                 .SetSmallIcon(Resource.Drawable.Icon)
                 .SetContentTitle(title)
                 .SetContentText(message)

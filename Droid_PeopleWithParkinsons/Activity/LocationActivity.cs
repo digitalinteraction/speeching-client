@@ -67,6 +67,9 @@ namespace Droid_PeopleWithParkinsons
             };
             mainList.Visibility = ViewStates.Gone;
 
+            nearby = null;
+            placed = false;
+
             mapFragment.GetMapAsync(this);
             ReadyGoogleApi();
         }
@@ -106,6 +109,7 @@ namespace Droid_PeopleWithParkinsons
 
         public void OnMapReady(GoogleMap finalMap)
         {
+            Toast.MakeText(this, "Map ready!", ToastLength.Long).Show();
             map = finalMap;
 
             if(nearby != null && !placed)
@@ -171,16 +175,16 @@ namespace Droid_PeopleWithParkinsons
                 marker.SetTitle(place.name);
                 map.AddMarker(marker);
             }
-
-            spinner.Visibility = ViewStates.Gone;
         }
 
         /// <summary>
         /// Create the list using the found nearby locations
         /// </summary>
-        public void PopulateList()
+        public async Task PopulateList()
         {
+            await AndroidUtils.InitSession();
             mainList.Adapter = new PlacesListAdapter(this, Resource.Id.placesList, nearby);
+            spinner.Visibility = ViewStates.Gone;
             mainList.Visibility = ViewStates.Visible;
         }
 
@@ -268,9 +272,13 @@ namespace Droid_PeopleWithParkinsons
 
             private async Task LoadImage(ImageView image, GooglePlace place)
             {
-                string imageLoc = await ServerData.FetchPlacePhoto(place, 120, 120);
-                image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
-                image.Visibility = ViewStates.Visible;
+                string imageLoc = await ServerData.FetchPlacePhoto(place, 110, 110);
+
+                if(!string.IsNullOrEmpty(imageLoc))
+                {
+                    image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+                    image.Visibility = ViewStates.Visible;
+                }
             }
         }
     }
