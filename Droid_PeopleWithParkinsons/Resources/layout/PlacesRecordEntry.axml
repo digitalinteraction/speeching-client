@@ -60,7 +60,7 @@
                 android:layout_height="150dp"
                 android:background="@drawable/recordButtonBlue"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="Start!"
+                android:text="Start recording!"
                 android:textColor="#fff"
                 android:layout_centerHorizontal="true"
                 android:textSize="20sp"

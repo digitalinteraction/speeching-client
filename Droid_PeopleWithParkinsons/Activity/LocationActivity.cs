@@ -137,7 +137,7 @@ namespace Droid_PeopleWithParkinsons
         }
 
         /// <summary>
-        /// We'v successfully connected to the Google Play API, so we can get the last known location of the device
+        /// We've successfully connected to the Google Play API, so we can get the last known location of the device
         /// </summary>
         /// <param name="connectionHint"></param>
         public void OnConnected(Bundle connectionHint)
@@ -146,7 +146,7 @@ namespace Droid_PeopleWithParkinsons
 
             if(lastLoc != null)
             {
-                ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
+                ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 1000, OnPlacesReturned);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         public async Task PopulateList()
         {
-            await AndroidUtils.InitSession();
+            await AndroidUtils.InitSession(this);
             mainList.Adapter = new PlacesListAdapter(this, Resource.Id.placesList, nearby);
             spinner.Visibility = ViewStates.Gone;
             mainList.Visibility = ViewStates.Visible;

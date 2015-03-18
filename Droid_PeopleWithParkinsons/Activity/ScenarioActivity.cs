@@ -53,7 +53,6 @@ namespace Droid_PeopleWithParkinsons
 
         private Dictionary<string, string> resources;
         private ProgressDialog progress;
-        private string documentsPath;
         private string localResourcesDirectory;
         private string localTempDirectory;
         private string localZipPath;
@@ -113,15 +112,8 @@ namespace Droid_PeopleWithParkinsons
 
             string scenarioFormatted = scenario.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
-            documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
-            localResourcesDirectory = documentsPath + "/" + scenarioFormatted;
+            localResourcesDirectory = AppData.cacheDir + "/" + scenarioFormatted;
             localTempDirectory = localResourcesDirectory + "/temp";
-
-            // Create these directories if they don't already exist
-            if (!Directory.Exists(documentsPath))
-            {
-                Directory.CreateDirectory(documentsPath);
-            }
 
             // If the scenario folder doesn't exist we need to download the additional files
             if (!Directory.Exists(localResourcesDirectory))

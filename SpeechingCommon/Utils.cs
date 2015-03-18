@@ -15,6 +15,30 @@ namespace SpeechingCommon
             callback(System.IO.File.ReadAllText(fileAddress));
         }
 
+        public static long DirSize(string directoryAddress)
+        {
+            DirectoryInfo d = new DirectoryInfo(directoryAddress);
+            return DirSize(d);
+        }
+
+        public static long DirSize(DirectoryInfo d)
+        {
+            long Size = 0;
+            // Add file sizes.
+            FileInfo[] fis = d.GetFiles();
+            foreach (FileInfo fi in fis)
+            {
+                Size += fi.Length;
+            }
+            // Add subdirectory sizes.
+            DirectoryInfo[] dis = d.GetDirectories();
+            foreach (DirectoryInfo di in dis)
+            {
+                Size += DirSize(di);
+            }
+            return (Size);
+        }
+
         /// <summary>
         /// Returns a local version of the linked file, downloading it if necessary
         /// </summary>

@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Android.Gms.Gcm;
 using Android.Content.PM;
+using Android.Gms.Common;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -34,10 +35,52 @@ namespace Droid_PeopleWithParkinsons
         /// Set up Android specific variables and get the session loaded/created
         /// </summary>
         /// <returns></returns>
-        public static async Task InitSession()
+        public static async Task<bool> InitSession(Activity context)
         {
             AppData.cacheDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
+
+            bool gpsSuccess = CheckForGooglePlayServices(context);
+
+            if (!gpsSuccess) return false;
+
+            AndroidUtils.gcm = GoogleCloudMessaging.GetInstance(context);
+            AndroidUtils.GooglePlayRegId = AndroidUtils.GetGoogleRegId(context);
+
+            if (string.IsNullOrEmpty(AndroidUtils.GooglePlayRegId))
+            {
+                AndroidUtils.RegisterGCM(context);
+            }
+
             await AppData.InitializeIfNeeded();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempt a connection to Google Play Services to make sure this application is able to recieve push messages
+        /// </summary>
+        /// <returns></returns>
+        private static bool CheckForGooglePlayServices(Activity context)
+        {
+            int resultCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(context);
+            if (resultCode != ConnectionResult.Success)
+            {
+                if (GooglePlayServicesUtil.IsUserRecoverableError(resultCode))
+                {
+                    GooglePlayServicesUtil.GetErrorDialog(resultCode, context, AndroidUtils.PLAY_SERVICES_RESOLUTION_REQUEST).Show();
+                }
+                else
+                {
+                    AlertDialog alert = new AlertDialog.Builder(context)
+                        .SetTitle("Fatal Error")
+                        .SetMessage("Speeching was unable to connect to Google Play Services - your device may not be supported.")
+                        .SetCancelable(false)
+                        .SetPositiveButton("Close Application", (s, a) => {  })
+                        .Show();
+                }
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
