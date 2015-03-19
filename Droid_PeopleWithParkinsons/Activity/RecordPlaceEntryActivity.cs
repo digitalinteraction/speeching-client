@@ -35,7 +35,7 @@ namespace Droid_PeopleWithParkinsons
 
             SetContentView(Resource.Layout.PlacesRecordEntry);
 
-            recordTo = System.IO.Path.Combine(AppData.cacheDir + AppData.placesCache, placeId + ".3gp");
+            recordTo = System.IO.Path.Combine(AppData.cacheDir + AppData.placesCache, placeId + ".mp4");
 
             if(imageLoc != null)
             {
@@ -48,8 +48,6 @@ namespace Droid_PeopleWithParkinsons
                 FindViewById<ImageView>(Resource.Id.placesRecord_photo).Visibility = ViewStates.Gone;
             }
             FindViewById<TextView>(Resource.Id.placesRecord_title).Text = "Create an entry about " + placeName;
-
-            audioManager = new AndroidUtils.RecordAudioManager(this, null);
 
             recordButton = FindViewById<Button>(Resource.Id.placesRecord_button);
             recordButton.Click += recordButton_Click;
@@ -96,6 +94,12 @@ namespace Droid_PeopleWithParkinsons
             }
 
             recording = !recording;
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            audioManager = new AndroidUtils.RecordAudioManager(this, null);
         }
 
         protected override void OnPause()

@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using SpeechingCommon;
 
 namespace Droid_PeopleWithParkinsons
 {
     class AudioFileManager
     {
         public static string fileExtension = ".pcm";
-        private const string audioTempPath = "/audioTemp/";
-        private const string audioPath = "/audio/";
-        private const string backgroundAudioPath = "/bgaudio/";
+        private const string audioTempPath = "audioTemp/";
+        private const string audioPath = "audio/";
+        private const string backgroundAudioPath = "bgaudio/";
 
 #if __ANDROID__
         public static string RootTempAudioDirectory
         {
             get
             {
-                string dir = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioTempPath);
+                string dir = Path.Combine(AppData.cacheDir, audioTempPath);
 
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
                 }
 
-                return string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioTempPath);
+                return dir;
             }
         }
 
@@ -32,14 +33,14 @@ namespace Droid_PeopleWithParkinsons
         {
             get
             {
-                string dir = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioPath);
+                string dir = Path.Combine(AppData.cacheDir, audioPath);
 
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
                 }
 
-                return string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Personal), audioPath);
+                return dir;
             }
         }
 
@@ -47,14 +48,14 @@ namespace Droid_PeopleWithParkinsons
         {
             get
             {
-                string dir = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Personal), backgroundAudioPath);
+                string dir = Path.Combine(AppData.cacheDir, backgroundAudioPath);
 
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
                 }
 
-                return string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.Personal), backgroundAudioPath, "bg", fileExtension);
+                return string.Concat(dir, "bg", fileExtension);
             }
         }
 #endif

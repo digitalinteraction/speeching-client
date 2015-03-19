@@ -50,7 +50,7 @@ namespace Droid_PeopleWithParkinsons
 
                 if (isRecordFragment)
                 {
-                    LoadFragment(new RecordSoundFragment(), currentBundle, "RecordSoundFragment");
+                    //LoadFragment(new RecordSoundFragment(), currentBundle, "RecordSoundFragment");
                 }
                 else
                 {

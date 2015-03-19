@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace Droid_PeopleWithParkinsons
 {
-    class RecordSoundFragment : Android.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener
+    class RecordSoundFragment : Android.Support.V4.App.Fragment, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private const int LOW_BACKGROUND_NOISE = 25;
         private const int MEDIUM_BACKGROUND_NOISE = 50;

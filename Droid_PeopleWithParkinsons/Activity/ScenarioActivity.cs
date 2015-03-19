@@ -456,7 +456,7 @@ namespace Droid_PeopleWithParkinsons
             {
                 recording = false;
                 audioManager.StopRecording();
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".3gp");
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".mp4");
                 ShowNextEvent();
             }
             else
@@ -468,7 +468,7 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 recording = true;
-                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.Tasks[currIndex].Id + ".3gp");
+                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.Tasks[currIndex].Id + ".mp4");
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }
