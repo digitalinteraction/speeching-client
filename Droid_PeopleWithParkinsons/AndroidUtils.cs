@@ -419,15 +419,15 @@ namespace Droid_PeopleWithParkinsons
         /// <summary>
         /// A list adapter for the results and responses that the user has exported
         /// </summary>
-        public class ExportedListAdapter : BaseAdapter<ResultItem>
+        public class ExportedListAdapter : BaseAdapter<IResultItem>
         {
             Activity context;
-            ResultItem[] results;
+            IResultItem[] results;
 
             /// <summary>
             /// Display details about a result in a list entry
             /// </summary>
-            public ExportedListAdapter(Activity context, int resource, ResultItem[] data)
+            public ExportedListAdapter(Activity context, int resource, IResultItem[] data)
             {
                 this.context = context;
                 this.results = data;
@@ -438,7 +438,7 @@ namespace Droid_PeopleWithParkinsons
                 return position;
             }
 
-            public override ResultItem this[int position]
+            public override IResultItem this[int position]
             {
                 get { return results[position]; }
             }
@@ -466,13 +466,13 @@ namespace Droid_PeopleWithParkinsons
 
                 PopulateView(results[position].CrowdActivityId, view);
 
-                view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].completedAt.ToString();
+                view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].CompletionDate.ToString();
 
-                if (results[position].uploadState == ResultItem.UploadState.Uploading)
+                if (results[position].UploadState == Utils.UploadStage.Uploading)
                 {
                     view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Uploading...";
                 }
-                else if (results[position].uploadState == ResultItem.UploadState.Ready)
+                else if (results[position].UploadState == Utils.UploadStage.Ready)
                 {
                     view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Ready to upload";
                 }

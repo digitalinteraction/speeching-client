@@ -49,7 +49,7 @@ namespace Droid_PeopleWithParkinsons
         private ImageView choiceImage2;
 
         private string resultsZipPath;
-        private ResultItem results;
+        private ScenarioResult results;
 
         private Dictionary<string, string> resources;
         private ProgressDialog progress;
@@ -152,7 +152,7 @@ namespace Droid_PeopleWithParkinsons
             if (scenario.Creator != null) authorName.Text = scenario.Creator.name;
 
             resultsZipPath = System.IO.Path.Combine(localResourcesDirectory, "final.zip");
-            results = new ResultItem(scenario.Id, resultsZipPath, AppData.session.currentUser.id);
+            results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.session.currentUser.id);
 
             if (savedInstanceState != null)
             {

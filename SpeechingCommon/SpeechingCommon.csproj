@@ -63,6 +63,8 @@
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
     <Compile Include="GooglePlacesResult.cs" />
+    <Compile Include="ResultStructs\LocationRecordingResult.cs" />
+    <Compile Include="ResultStructs\_ResultInterface.cs" />
     <Compile Include="_AppData.cs" />
     <Compile Include="_ServerData.cs" />
     <Compile Include="FeedbackStructs\PercentageFeedback.cs" />
@@ -71,7 +73,7 @@
     <Compile Include="JsonCreationConverter.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultItem.cs" />
+    <Compile Include="ResultStructs\ScenarioResult.cs" />
     <Compile Include="SessionData.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Utils.cs" />

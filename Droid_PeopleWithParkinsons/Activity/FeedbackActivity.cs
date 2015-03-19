@@ -25,7 +25,7 @@ namespace Droid_PeopleWithParkinsons
         private ListView drawerList;
 
         private ListView feedbackList;
-        private ResultItem[] submissions;
+        private IResultItem[] submissions;
         private IFeedbackItem[] currentFeedback;
         private ISpeechingActivityItem thisActivity;
 
@@ -79,9 +79,9 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         /// <param name="actId">The ID fo the activity to show feedback for</param>
         /// <returns></returns>
-        private async Task LoadFeedbackForActivity(ResultItem result)
+        private async Task LoadFeedbackForActivity(IResultItem result)
         {
-            currentFeedback = await ServerData.FetchFeedbackFor(result.id);
+            currentFeedback = await ServerData.FetchFeedbackFor(result.Id);
 
             thisActivity = await AppData.session.FetchActivityWithId(result.CrowdActivityId);
             string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);

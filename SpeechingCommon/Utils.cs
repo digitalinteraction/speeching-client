@@ -10,6 +10,8 @@ namespace SpeechingCommon
     /// </summary>
     public class Utils
     {
+        public enum UploadStage { Incomplete, Ready, Uploading, Uploaded };
+
         public static async Task LoadStringFromFile(string fileAddress, Action<string> callback)
         {
             callback(System.IO.File.ReadAllText(fileAddress));

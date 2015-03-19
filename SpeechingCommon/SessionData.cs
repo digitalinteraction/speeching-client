@@ -10,7 +10,7 @@ namespace SpeechingCommon
     {
         public User currentUser;
         public List<ActivityCategory> categories;
-        public List<ResultItem> resultsToUpload;
+        public List<IResultItem> resultsToUpload;
         public List<User> userCache;
         public List<ISpeechingActivityItem> activityCache;
         public bool serverFolderExists = false;
@@ -18,16 +18,12 @@ namespace SpeechingCommon
 
         public static int scenariosProcessing = 0;
 
-        // TEMP - will be pulled from the server eventually but store here for now TODO
-        public List<ResultItem> resultsOnServer;
-
         public SessionData()
         {
             currentUser = new User();
             categories = new List<ActivityCategory>();
-            resultsToUpload = new List<ResultItem>();
+            resultsToUpload = new List<IResultItem>();
             userCache = new List<User>();
-            resultsOnServer = new List<ResultItem>();
 
             placesPhotos = new Dictionary<string, string>();
         }
@@ -70,7 +66,7 @@ namespace SpeechingCommon
         /// Removes the result object from the toUpload list and deletes the files on disk (local deletion only)
         /// </summary>
         /// <param name="result">The item to delete</param>
-        public void DeleteResult(ResultItem result, bool save = true)
+        public void DeleteResult(IResultItem result, bool save = true)
         {
             resultsToUpload.Remove(result);
 
@@ -85,14 +81,14 @@ namespace SpeechingCommon
         /// <param name="scenarioId"></param>
         public void DeleteAllPendingForScenario(int scenarioId)
         {
-            List<ResultItem> toDelete = new List<ResultItem>();
+            List<IResultItem> toDelete = new List<IResultItem>();
 
-            foreach (ResultItem item in resultsToUpload)
+            foreach (IResultItem item in resultsToUpload)
             {
                 if (item.CrowdActivityId == scenarioId) toDelete.Add(item);
             }
 
-            foreach (ResultItem del in toDelete)
+            foreach (IResultItem del in toDelete)
             {
                 DeleteResult(del, false);
             }

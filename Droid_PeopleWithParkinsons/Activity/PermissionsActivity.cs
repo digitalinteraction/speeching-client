@@ -17,7 +17,7 @@ namespace Droid_PeopleWithParkinsons
     [Activity(Label = "Manage Permissions")]
     public class PermissionsActivity : Activity
     {
-        private ResultItem resultItem;
+        private IResultItem resultItem;
         private ListView allowedList;
         private ListView friendList;
         private TextView headerText;
@@ -55,8 +55,8 @@ namespace Droid_PeopleWithParkinsons
                 "Remove Permissions?","Do you really want to revoke " + thisUser.name + "'s ability to access this uploaded content?",
                 "Revoke Permission", (senderAlert, confArgs) =>
                 {
-                    resultItem.allowedUsers.Remove(thisUser.id);
-                    resultItem.PushPermissionUpdates();
+                    //resultItem.allowedUsers.Remove(thisUser.id);
+                    //resultItem.PushPermissionUpdates();
                     UpdateLayout();
                 },
                 "Cancel", (senderAlert, confArgs) => { });
@@ -68,7 +68,7 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         void makePublicBtn_Click(object sender, EventArgs e)
         {
-            bool pub = resultItem.isPublic;
+            bool pub = true;//resultItem.isPublic;
 
             string status = (pub) ? "private" : "public";
             string effect = (pub) ? "only invited users will be able to access it" : "anyone will be able to access it";
@@ -77,8 +77,8 @@ namespace Droid_PeopleWithParkinsons
                 "Make this content "+ status +"?",
                 "If you make this content " + status + ", "+ effect+". Are you sure you want to do this?",
                 "Make " + status, (senderAlert, confArgs) => {
-                    resultItem.isPublic = !resultItem.isPublic;
-                    resultItem.PushPermissionUpdates();
+                    //resultItem.isPublic = !resultItem.isPublic;
+                    //resultItem.PushPermissionUpdates();
                     UpdateLayout();
                 },
                 "Cancel", (senderAlert, confArgs) => { });
@@ -106,7 +106,7 @@ namespace Droid_PeopleWithParkinsons
 
                 if (foundUser != null)
                 {
-                    resultItem.allowedUsers.Add(foundUser.id);
+                    //resultItem.allowedUsers.Add(foundUser.id);
                     UpdateLayout();
                     alert.Dismiss();
                 }
@@ -126,24 +126,24 @@ namespace Droid_PeopleWithParkinsons
         /// </summary>
         private void UpdateLayout()
         {
-            User[] allowedUsers = ServerData.FetchUsers(resultItem.allowedUsers);
+            User[] allowedUsers; //ServerData.FetchUsers(resultItem.allowedUsers);
 
-            if(resultItem.isPublic)
+            /*if(resultItem.isPublic)
             {
                 headerText.Text = "This content is currently publicly available, meaning that anyone can access its contents.";
             }
             else
             {
                 headerText.Text = (allowedUsers.Length > 0) ? "Add or remove other users' ability to access this uploaded content." :
-                                                         "No one can currently access this content! Give some users permission to start getting feedback.";
-            }
+                                                        "No one can currently access this content! Give some users permission to start getting feedback.";
+            }*/
 
-            makePublicBtn.Text = (resultItem.isPublic) ? "Make private" : "Make public";
+            //makePublicBtn.Text = (resultItem.isPublic) ? "Make private" : "Make public";
 
             AppData.SaveCurrentData();
 
             allowedList.Adapter = null;
-            allowedList.Adapter = new FriendListFragment.UserListAdapter(this, Resource.Id.mainFriendsList, ServerData.FetchUsers(resultItem.allowedUsers));
+            //allowedList.Adapter = new FriendListFragment.UserListAdapter(this, Resource.Id.mainFriendsList, ServerData.FetchUsers(resultItem.allowedUsers));
         }
 
         /// <summary>
@@ -156,13 +156,13 @@ namespace Droid_PeopleWithParkinsons
             List<User> notAdded = new List<User>();
             List<User> allFriends = ServerData.FetchAcceptedFriends();
 
-            foreach(User user in allFriends)
+           /* foreach(User user in allFriends)
             {
                 if(!resultItem.allowedUsers.Contains(user.id))
                 {
                     notAdded.Add(user);
                 }
-            }
+            }*/
 
             // Don't show the alert dialog if there aren't any users to choose from
             if(notAdded.Count == 0)
@@ -193,11 +193,11 @@ namespace Droid_PeopleWithParkinsons
 
                     if (checkeditems.ValueAt(i))
                     {
-                        resultItem.allowedUsers.Add(AndroidUtils.Cast<User>(friendList.Adapter.GetItem(pos)).id);
+                        //resultItem.allowedUsers.Add(AndroidUtils.Cast<User>(friendList.Adapter.GetItem(pos)).id);
                     }
                 }
 
-                resultItem.PushPermissionUpdates();
+                //resultItem.PushPermissionUpdates();
 
                 UpdateLayout();
             });

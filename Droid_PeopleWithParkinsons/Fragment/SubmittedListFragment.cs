@@ -12,8 +12,8 @@ namespace Droid_PeopleWithParkinsons
     public class SubmittedListFragment : Android.Support.V4.App.Fragment
     {
         private ListView exportList;
-        private ResultItem[] results;
-        private ResultItem res;
+        private IResultItem[] results;
+        private IResultItem res;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -35,7 +35,7 @@ namespace Droid_PeopleWithParkinsons
             exportList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 // The list's header borks indexing
-                res = AppData.session.resultsOnServer[args.Position - 1]; //TEMP
+                res = results[args.Position - 1];
 
                 View alertView = Activity.LayoutInflater.Inflate(Resource.Layout.SubmittedAlert, null);
 
@@ -46,7 +46,7 @@ namespace Droid_PeopleWithParkinsons
                 permissionsBtn.Click += permissionsBtn_Click;
 
                 AlertDialog alert = new AlertDialog.Builder(Activity)
-                .SetTitle("Submission made on " + res.completedAt.ToShortDateString())
+                .SetTitle("What would you like to do with this submission?")
                 .SetView(alertView)
                 .SetCancelable(true)
                 .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
@@ -89,7 +89,7 @@ namespace Droid_PeopleWithParkinsons
         void permissionsBtn_Click(object sender, EventArgs e)
         {
             Intent intent = new Intent(Activity, typeof(PermissionsActivity));
-            intent.PutExtra("ResultId", res.id);
+            intent.PutExtra("ResultId", res.Id);
             StartActivity(intent);
         }
 

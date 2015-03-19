@@ -86,7 +86,7 @@ namespace Droid_PeopleWithParkinsons
             .SetCancelable(true)
             .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
             .SetPositiveButton("Upload", (s, a) => {
-                ResultItem toUpload = AppData.session.resultsToUpload[args.Position];
+                IResultItem toUpload = AppData.session.resultsToUpload[args.Position];
                 progressDialog.Show();
                 ServerData.PushResult(toUpload, OnUploadComplete);
             })
