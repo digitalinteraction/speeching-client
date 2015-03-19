@@ -17,7 +17,7 @@ using Android.Support.V4.Widget;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Speeching", Icon = "@drawable/Icon")]
+    [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
     public class MainActivity : FragmentActivity
     {
         private ListView drawerList;

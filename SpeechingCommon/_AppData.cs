@@ -15,11 +15,16 @@ namespace SpeechingCommon
         public static SessionData session;
         // System data
         public static string cacheDir;
-        public static string placesCache = "/places";
+        public static string exportsCache;
+        public static string placesCache;
         public static Random rand;
 
         static bool initializing = false;
 
+        /// <summary>
+        /// For use at all entry points into the application, making sure that all data will be available
+        /// </summary>
+        /// <returns></returns>
         public static async Task InitializeIfNeeded()
         {
             if (session != null) return;
@@ -46,17 +51,43 @@ namespace SpeechingCommon
         }
 
         /// <summary>
+        /// Initialise and create necessary cache folders
+        /// </summary>
+        /// <param name="rootFolder"></param>
+        public static void AssignCacheLocations(string rootFolder)
+        {
+            cacheDir = rootFolder;
+            placesCache = Path.Combine(cacheDir, "places/");
+            exportsCache = Path.Combine(cacheDir, "exports/");
+
+            if (!Directory.Exists(cacheDir))
+            {
+                Directory.CreateDirectory(cacheDir);
+            }
+
+            if (!Directory.Exists(placesCache))
+            {
+                Directory.CreateDirectory(placesCache);
+            }
+
+            if (!Directory.Exists(exportsCache))
+            {
+                Directory.CreateDirectory(exportsCache);
+            }
+        }
+
+        /// <summary>
         /// Check the size of the places cache and clean it up if necessary
         /// Get the biggest files and delete them by ascending order of last date accessed until under the limit
         /// </summary>
         private static async void CleanupPlaces()
         {
-            long size = Utils.DirSize(cacheDir + placesCache);
-            long max = 1500000;// 1.5Mb
+            long size = Utils.DirSize(placesCache);
+            long max = 1000000;// 1Mb
 
             if(size >= max)
             {
-                DirectoryInfo di = new DirectoryInfo(cacheDir + placesCache);
+                DirectoryInfo di = new DirectoryInfo(placesCache);
                 FileInfo[] allFiles = di.GetFiles();
 
                 // Sort by file size
@@ -118,12 +149,7 @@ namespace SpeechingCommon
 
             try
             {
-                if (!Directory.Exists(cacheDir))
-                {
-                    Directory.CreateDirectory(cacheDir);
-                    Directory.CreateDirectory(cacheDir + placesCache);
-                }
-                else if (File.Exists(cacheDir + "/offline.json"))
+                if (File.Exists(cacheDir + "/offline.json"))
                 {
                     var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
                     session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"), new JsonSerializerSettings

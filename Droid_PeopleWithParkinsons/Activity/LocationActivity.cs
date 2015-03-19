@@ -18,10 +18,11 @@ using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.Locations;
 using Android.Gms.Maps.Model;
+using Android.Support.V4.App;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "LocationActivity")]
+    [Activity(Label = "LocationActivity", ParentActivity = typeof(MainActivity))]
     public class LocationActivity : Activity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, GoogleMap.IOnMarkerClickListener
     {
         MapFragment mapFragment;
@@ -40,7 +41,7 @@ namespace Droid_PeopleWithParkinsons
 
             SetContentView(Resource.Layout.LocationActivity);
             mapFragment = MapFragment.NewInstance();
-            FragmentTransaction tx = FragmentManager.BeginTransaction();
+            Android.App.FragmentTransaction tx = FragmentManager.BeginTransaction();
             tx.Add(Resource.Id.map_fragment_container, mapFragment);
             tx.Commit();
 
@@ -69,6 +70,8 @@ namespace Droid_PeopleWithParkinsons
 
             nearby = null;
             placed = false;
+
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
 
             mapFragment.GetMapAsync(this);
             ReadyGoogleApi();
@@ -219,6 +222,36 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnPause();
             AppData.SaveCurrentData();
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            //As this Activity can be called from notfications, it's possible that the parent activity isn't in the back stack
+            //http://developer.android.com/training/implementing-navigation/ancestral.html
+            switch(item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    Intent upIntent = NavUtils.GetParentActivityIntent(this);
+                    Toast.MakeText(this, upIntent.Component.PackageName + " | " + upIntent.Component.ClassName, ToastLength.Short).Show();
+                    if(NavUtils.ShouldUpRecreateTask(this, upIntent))
+                    {
+                        // This activity is NOT part of this app's task, so create a new task
+                        // when navigating up, with a synthesized back stack.
+                        Android.Support.V4.App.TaskStackBuilder.Create(this)
+                            // Add all of this activity's parents to the back stack
+                            .AddNextIntentWithParentStack(upIntent)
+                            // Navigate up to the closest parent
+                            .StartActivities();
+                    }
+                    else
+                    {
+                        // This activity is part of this app's task, so simply
+                        // navigate up to the logical parent activity.
+                        NavUtils.NavigateUpTo(this, upIntent);
+                    }
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
         }
 
         public class PlacesListAdapter : BaseAdapter<GooglePlace>

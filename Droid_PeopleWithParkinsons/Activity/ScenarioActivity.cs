@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity))]
+    [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity), LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
     public class ScenarioActivity : Activity
     {
         private Scenario scenario;

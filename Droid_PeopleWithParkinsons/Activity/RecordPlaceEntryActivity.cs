@@ -13,7 +13,7 @@ using SpeechingCommon;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Make a new recording")]
+    [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity))]
     public class RecordPlaceEntryActivity : Activity
     {
         string placeId;
@@ -29,13 +29,14 @@ namespace Droid_PeopleWithParkinsons
         {
             base.OnCreate(bundle);
 
+
             placeId = Intent.GetStringExtra("PlaceID");
             placeName = Intent.GetStringExtra("PlaceName");
             imageLoc = Intent.GetStringExtra("PlaceImage");
 
             SetContentView(Resource.Layout.PlacesRecordEntry);
 
-            recordTo = System.IO.Path.Combine(AppData.cacheDir + AppData.placesCache, placeId + ".mp4");
+            recordTo = System.IO.Path.Combine(AppData.exportsCache, placeId + ".mp4");
 
             if(imageLoc != null)
             {
@@ -51,6 +52,8 @@ namespace Droid_PeopleWithParkinsons
 
             recordButton = FindViewById<Button>(Resource.Id.placesRecord_button);
             recordButton.Click += recordButton_Click;
+
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
         }
 
         void recordButton_Click(object sender, EventArgs e)

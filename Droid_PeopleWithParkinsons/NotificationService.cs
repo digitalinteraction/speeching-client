@@ -94,7 +94,11 @@ namespace Droid_PeopleWithParkinsons
                 notificationManager = (NotificationManager) this.GetSystemService(Context.NotificationService);
             }
 
-            PendingIntent contentIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(LocationActivity)), 0);
+            Android.App.TaskStackBuilder stackBuilder = Android.App.TaskStackBuilder.Create(this);
+            stackBuilder.AddParentStack(Java.Lang.Class.FromType( typeof(LocationActivity) ));
+            stackBuilder.AddNextIntent(new Intent(this, typeof(LocationActivity)));
+
+            PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .SetPriority(0)

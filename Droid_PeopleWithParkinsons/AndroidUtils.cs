@@ -37,7 +37,7 @@ namespace Droid_PeopleWithParkinsons
         /// <returns></returns>
         public static async Task<bool> InitSession(Activity context)
         {
-            AppData.cacheDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";
+            AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
 
             bool gpsSuccess = CheckForGooglePlayServices(context);
 
