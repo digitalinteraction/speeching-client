@@ -11,7 +11,7 @@ namespace SpeechingCommon
         int Id { get; set; }
         int UserId { get; set; }
         string ResourceUrl { get; set; }
-        int CrowdActivityId { get; set; }
+        int ParticipantActivityId { get; set; }
         DateTime CompletionDate { get; set; }
     }
 }

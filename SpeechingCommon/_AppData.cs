@@ -16,7 +16,8 @@ namespace SpeechingCommon
         // System data
         public static string cacheDir;
         public static string exportsCache;
-        public static string placesCache;
+        public static string placesImageCache;
+        public static string placesRecordingsCache;
         public static Random rand;
 
         static bool initializing = false;
@@ -57,7 +58,8 @@ namespace SpeechingCommon
         public static void AssignCacheLocations(string rootFolder)
         {
             cacheDir = rootFolder;
-            placesCache = Path.Combine(cacheDir, "places/");
+            placesImageCache = Path.Combine(cacheDir, "places/");
+            placesRecordingsCache = Path.Combine(placesImageCache, "tempRecs/");
             exportsCache = Path.Combine(cacheDir, "exports/");
 
             if (!Directory.Exists(cacheDir))
@@ -65,9 +67,14 @@ namespace SpeechingCommon
                 Directory.CreateDirectory(cacheDir);
             }
 
-            if (!Directory.Exists(placesCache))
+            if (!Directory.Exists(placesImageCache))
             {
-                Directory.CreateDirectory(placesCache);
+                Directory.CreateDirectory(placesImageCache);
+            }
+
+            if (!Directory.Exists(placesRecordingsCache))
+            {
+                Directory.CreateDirectory(placesRecordingsCache);
             }
 
             if (!Directory.Exists(exportsCache))
@@ -82,12 +89,12 @@ namespace SpeechingCommon
         /// </summary>
         private static async void CleanupPlaces()
         {
-            long size = Utils.DirSize(placesCache);
+            long size = Utils.DirSize(placesImageCache);
             long max = 1000000;// 1Mb
 
             if(size >= max)
             {
-                DirectoryInfo di = new DirectoryInfo(placesCache);
+                DirectoryInfo di = new DirectoryInfo(placesImageCache);
                 FileInfo[] allFiles = di.GetFiles();
 
                 // Sort by file size
@@ -209,7 +216,7 @@ namespace SpeechingCommon
         {
             for (int i = 0; i < session.resultsToUpload.Count; i++)
             {
-                if (session.resultsToUpload[i].CrowdActivityId == id) return true;
+                if (session.resultsToUpload[i].ParticipantActivityId == id) return true;
             }
 
             return false;

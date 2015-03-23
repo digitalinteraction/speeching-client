@@ -10,6 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
+using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
+using SpeechingCommon;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -19,11 +22,15 @@ namespace Droid_PeopleWithParkinsons
         string placeId;
         string placeName;
         string imageLoc;
+        long lat;
+        long lng;
 
         Button recordButton;
         AndroidUtils.RecordAudioManager audioManager;
         bool recording = false;
-        string recordTo;
+        string recFolder;
+        string recFile;
+        string resultsZipPath;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -33,10 +40,20 @@ namespace Droid_PeopleWithParkinsons
             placeId = Intent.GetStringExtra("PlaceID");
             placeName = Intent.GetStringExtra("PlaceName");
             imageLoc = Intent.GetStringExtra("PlaceImage");
+            lat = Intent.GetLongExtra("PlaceLat", (long)54.9787659);
+            lng = Intent.GetLongExtra("PlaceLng", (long)-1.6140803);
 
             SetContentView(Resource.Layout.PlacesRecordEntry);
 
-            recordTo = System.IO.Path.Combine(AppData.exportsCache, placeId + ".mp4");
+            recFolder = Path.Combine(AppData.placesRecordingsCache, placeId);
+
+            if(!Directory.Exists(recFolder))
+            {
+                Directory.CreateDirectory(recFolder);
+            }
+
+            recFile = Path.Combine(recFolder, "entry.mp4");
+            resultsZipPath = Path.Combine(AppData.exportsCache, placeId + ".zip");
 
             if(imageLoc != null)
             {
@@ -61,7 +78,7 @@ namespace Droid_PeopleWithParkinsons
             if(!recording)
             {
                 recordButton.Text = "Stop recording!";
-                audioManager.StartRecording(recordTo);
+                audioManager.StartRecording(recFile);
                 recordButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
             }
             else
@@ -74,7 +91,7 @@ namespace Droid_PeopleWithParkinsons
                     .SetTitle("Recording complete!")
                     .SetMessage("You completed a new voice entry about " + placeName + ". Would you like to try again or export this recording?")
                     .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>)null)
-                    .SetPositiveButton("Export", (s, args) => { /* TODO */ })
+                    .SetPositiveButton("Export", (s, args) => { ExportRecordings(); })
                     .Create();
 
                 alert.Show();
@@ -97,6 +114,46 @@ namespace Droid_PeopleWithParkinsons
             }
 
             recording = !recording;
+        }
+
+        /// <summary>
+        /// Exports the recording into a zip and marks it as being ready to upload
+        /// </summary>
+        private void ExportRecordings()
+        {
+            // Compress exported recordings into zip (Delete existing zip first)
+            // TODO set password? https://github.com/icsharpcode/SharpZipLib/wiki/Zip-Samples#anchorCreate  
+            File.Delete(resultsZipPath);
+
+            try
+            {
+                FastZip fastZip = new FastZip();
+                bool recurse = true;
+                fastZip.CreateZip(resultsZipPath, recFolder, recurse, "");
+
+                LocationRecordingResult results = new LocationRecordingResult();
+                results.CompletionDate = DateTime.Now;
+                results.ParticipantActivityId = 8675309;
+                results.ResourceUrl = resultsZipPath;
+                results.UploadState = SpeechingCommon.Utils.UploadStage.Ready;
+                results.UserId = AppData.session.currentUser.id;
+                results.GooglePlaceID = placeId;
+                results.GooglePlaceName = placeName;
+                results.Lat = lat;
+                results.Lng = lng;
+
+                AppData.session.resultsToUpload.Add(results);
+                AppData.SaveCurrentData();
+
+                Directory.Delete(recFolder, true);
+
+                StartActivity(typeof(UploadsActivity));
+                this.Finish();
+            }
+            catch (Exception except)
+            {
+                Console.Write(except.Message);
+            }
         }
 
         protected override void OnResume()

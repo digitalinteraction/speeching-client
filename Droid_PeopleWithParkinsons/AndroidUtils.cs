@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Android.Gms.Gcm;
 using Android.Content.PM;
 using Android.Gms.Common;
+using Android.Gms.Location;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -155,6 +156,20 @@ namespace Droid_PeopleWithParkinsons
             {
                 throw except;
             }
+        }
+
+        public static bool CheckIfServiceIsRunning(Context context, Type serviceClass)
+        {
+            ActivityManager manager = (ActivityManager)context.GetSystemService(Context.ActivityService);
+            
+            foreach(Android.App.ActivityManager.RunningServiceInfo service in manager.GetRunningServices(int.MaxValue))
+            {
+                if(serviceClass.Name.Equals(service.Service.ClassName))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -464,7 +479,14 @@ namespace Droid_PeopleWithParkinsons
                     view = context.LayoutInflater.Inflate(Resource.Layout.UploadsListItem, null);
                 }
 
-                PopulateView(results[position].CrowdActivityId, view);
+                if (results[position].GetType() == typeof(LocationRecordingResult))
+                {
+                    view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = "Log about " + ((LocationRecordingResult)results[position]).GooglePlaceName;
+                }
+                else
+                {
+                    PopulateView(results[position].ParticipantActivityId, view);
+                }
 
                 view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].CompletionDate.ToString();
 

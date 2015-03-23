@@ -93,6 +93,8 @@ namespace Droid_PeopleWithParkinsons
             intent.PutExtra("PlaceImage", imgRef);
             intent.PutExtra("PlaceName", place.name);
             intent.PutExtra("PlaceID", place.place_id);
+            intent.PutExtra("PlaceLat", place.geometry.location.lat);
+            intent.PutExtra("PlaceLng", place.geometry.location.lng);
 
             dialog.Dismiss();
 
@@ -146,7 +148,7 @@ namespace Droid_PeopleWithParkinsons
         public void OnConnected(Bundle connectionHint)
         {
             lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
-
+           
             if(lastLoc != null)
             {
                 ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 1000, OnPlacesReturned);
@@ -354,5 +356,6 @@ namespace Droid_PeopleWithParkinsons
 
             return false;
         }
+
     }
 }

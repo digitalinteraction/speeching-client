@@ -103,19 +103,18 @@ namespace SpeechingCommon
     public class TaskContent
     {
         public enum ContentType { Audio, Video, Text };
-        public ContentType type;
-        public string visual;
-        public string audio;
-        public string text;
+        public ContentType Type;
+        public string Visual;
+        public string Audio;
+        public string Text;
     }
 
     public class TaskResponse
     {
         public enum ResponseType { None, Prompted, Freeform, Choice };
-        public ResponseType type;
-        public string prompt;
-        public string choice1;
-        public string choice2;
+        public ResponseType Type;
+        public string Prompt;
+        public string[] Related;
     }
 
     public class SpeechingTask

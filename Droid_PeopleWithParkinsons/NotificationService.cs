@@ -7,8 +7,10 @@ using Android.Locations;
 using Android.OS;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
+using Android.Widget;
 using SpeechingCommon;
 using System;
+using System.Collections.Generic;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -30,14 +32,21 @@ namespace Droid_PeopleWithParkinsons
 
     [Service]
     public class GcmIntentService : IntentService, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener
+
     {
-        static Intent lastIntent;
+        Intent lastIntent;
+
+        string lastType = "";
+        string lastData = "";
         NotificationManager notificationManager;
         IGoogleApiClient apiClient;
+        GeofencingRegisterer fenceReg;
 
         public GcmIntentService() : base()
         {
-
+            Action onConnected = () => { Toast.MakeText(this, "Connected", ToastLength.Short).Show(); };
+            Action onAdded = () => { Toast.MakeText(this, "Fence added", ToastLength.Short).Show(); };
+            fenceReg = new GeofencingRegisterer(this, onConnected, onAdded);
         }
 
         protected override void OnHandleIntent(Intent intent)
@@ -46,6 +55,7 @@ namespace Droid_PeopleWithParkinsons
             Bundle extras = intent.Extras;
             GoogleCloudMessaging gcm = GoogleCloudMessaging.GetInstance(this);
             string messageType = gcm.GetMessageType(intent);
+
 
             if(!extras.IsEmpty)
             {
@@ -59,31 +69,55 @@ namespace Droid_PeopleWithParkinsons
                 }
                 else if(GoogleCloudMessaging.MessageTypeMessage.Equals(messageType))
                 {
-                    bool shouldUseLocation = extras.GetString("notifType") == "location";
+                    string notifType = extras.GetString("notifType");
 
-                    if(apiClient == null)
-                    {
-                        GoogleApiClientBuilder builder = new GoogleApiClientBuilder(this)
-                        .AddConnectionCallbacks(this)
-                        .AddOnConnectionFailedListener(this)
-                        .AddApi(LocationServices.Api);
+                    lastType = notifType;
+                    PrepClient();
 
-                        apiClient = builder.Build();
-                    }
-                    if(apiClient.IsConnected)
+                    switch (notifType)
                     {
-                        Location lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
+                        case "reminder" :
+                            RecordReminder();
+                            break;
+                        case "poiUpdate" :
 
-                        if (lastLoc != null)
-                        {
-                            ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
-                        }
+                            break;
                     }
-                    else
-                    {
-                        apiClient.Connect();
-                    }
+                   
                 }
+            }
+        }
+
+        private IGoogleApiClient PrepClient()
+        {
+            if (apiClient == null)
+            {
+                GoogleApiClientBuilder builder = new GoogleApiClientBuilder(this)
+                .AddConnectionCallbacks(this)
+                .AddOnConnectionFailedListener(this)
+                .AddApi(LocationServices.Api);
+
+                apiClient = builder.Build();
+            }
+
+            return apiClient;
+        }
+
+        private void RecordReminder()
+        {
+            if (apiClient.IsConnected)
+            {
+                Location lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
+
+                if (lastLoc != null)
+                {
+                    AddFence(lastLoc);
+                    ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
+                }
+            }
+            else
+            {
+                apiClient.Connect();
             }
         }
 
@@ -135,12 +169,37 @@ namespace Droid_PeopleWithParkinsons
 
         public void OnConnected(Bundle connectionHint)
         {
-            Location lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
-
-            if (lastLoc != null)
+            switch(lastType)
             {
-                ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
+                case "poiUpdate" :
+
+                    break;
+
+                case "reminder" :
+                    Location lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
+                    if (lastLoc != null)
+                    {
+                        AddFence(lastLoc);
+                        ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
+                    }
+                    break;
             }
+            
+        }
+
+        public void AddFence(Location loc)
+        {
+            List<IGeofence> fences = new List<IGeofence>();
+
+            fences.Add(new GeofenceBuilder()
+                .SetCircularRegion(loc.Latitude, loc.Longitude, 10)
+                .SetExpirationDuration(Geofence.NeverExpire)
+                .SetRequestId("myFence")
+                .SetLoiteringDelay(1000)
+                .SetTransitionTypes(Geofence.GeofenceTransitionEnter|Geofence.GeofenceTransitionDwell|Geofence.GeofenceTransitionExit)
+                .Build());
+
+            fenceReg.RegisterGeofences(fences);
         }
 
         public void OnConnectionSuspended(int cause)

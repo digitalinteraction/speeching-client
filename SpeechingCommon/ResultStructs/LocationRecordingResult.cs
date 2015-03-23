@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SpeechingCommon.ResultStructs
+namespace SpeechingCommon
 {
     public class LocationRecordingResult : IResultItem
     {
@@ -16,6 +16,7 @@ namespace SpeechingCommon.ResultStructs
 
         public long Lat;
         public long Lng;
+        public string GooglePlaceName;
         public string GooglePlaceID;
 
         public int Id
@@ -42,7 +43,7 @@ namespace SpeechingCommon.ResultStructs
             }
         }
 
-        public int CrowdActivityId
+        public int ParticipantActivityId
         {
             get
             {

@@ -50,7 +50,7 @@ namespace SpeechingCommon
             }
         }
 
-        public int CrowdActivityId
+        public int ParticipantActivityId
         {
             get
             {

@@ -2,6 +2,7 @@ using Android.App;
 using Android.Content;
 using Android.Gms.Common;
 using Android.Gms.Gcm;
+using Android.Gms.Location;
 using Android.OS;
 using Android.Widget;
 using SpeechingCommon;
@@ -12,7 +13,7 @@ namespace Droid_PeopleWithParkinsons
 {
     [Activity(Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : Activity
-    {    
+    {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -35,10 +36,12 @@ namespace Droid_PeopleWithParkinsons
 
                 StartActivity(typeof(MainActivity));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Err: " + e);
             }
         }
+
     }
+    
 }

@@ -324,24 +324,30 @@ namespace Droid_PeopleWithParkinsons
             inputHint.Visibility = ViewStates.Visible;
 
             // Use the alternative layout for giving the user a choice between 2 items
-            if (scenario.Tasks[currIndex].TaskResponseModel.type == TaskResponse.ResponseType.Choice)
+            if (scenario.Tasks[currIndex].TaskResponseModel.Type == TaskResponse.ResponseType.Choice)
             {
                 mainLayout.Visibility = ViewStates.Gone;
                 choiceLayout.Visibility = ViewStates.Visible;
 
-                choicePrompt.Text = scenario.Tasks[currIndex].TaskResponseModel.prompt;
+                choicePrompt.Text = scenario.Tasks[currIndex].TaskResponseModel.Prompt;
 
-                // Load the choice images
-                string choice1Key = scenario.Tasks[currIndex].TaskResponseModel.choice1;
-                if (choice1Key != null && resources.ContainsKey(choice1Key))
+                // Load the choice images // TODO allow for more choices
+                if (scenario.Tasks[currIndex].TaskResponseModel.Related != null)
                 {
-                    choiceImage1.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice1Key])));
+                    string choice1Key = scenario.Tasks[currIndex].TaskResponseModel.Related[0];
+                    if (resources.ContainsKey(choice1Key))
+                    {
+                        choiceImage1.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice1Key])));
+                    }
                 }
 
-                string choice2Key = scenario.Tasks[currIndex].TaskResponseModel.choice2;
-                if (choice2Key != null && resources.ContainsKey(choice2Key))
+                if(scenario.Tasks[currIndex].TaskResponseModel.Related != null)
                 {
-                    choiceImage2.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice2Key])));
+                    string choice2Key = scenario.Tasks[currIndex].TaskResponseModel.Related[1];
+                    if (resources.ContainsKey(choice2Key))
+                    {
+                        choiceImage2.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice2Key])));
+                    }
                 }
             }
             else
@@ -350,7 +356,7 @@ namespace Droid_PeopleWithParkinsons
                 mainLayout.Visibility = ViewStates.Visible;
                 choiceLayout.Visibility = ViewStates.Gone;
 
-                if (scenario.Tasks[currIndex].TaskResponseModel.type == TaskResponse.ResponseType.None)
+                if (scenario.Tasks[currIndex].TaskResponseModel.Type == TaskResponse.ResponseType.None)
                 {
                     inputHint.Visibility = ViewStates.Gone;
                     eventPrompt.Text = "";
@@ -359,28 +365,28 @@ namespace Droid_PeopleWithParkinsons
                 }
 
                 // Load text
-                else if (scenario.Tasks[currIndex].TaskResponseModel.type == TaskResponse.ResponseType.Freeform)
+                else if (scenario.Tasks[currIndex].TaskResponseModel.Type == TaskResponse.ResponseType.Freeform)
                 {
                     // Make freeform prompts italic
-                    string given = scenario.Tasks[currIndex].TaskResponseModel.prompt;
+                    string given = scenario.Tasks[currIndex].TaskResponseModel.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
                     eventPrompt.Text = (given != null) ? given : ""; ;
                 }
                 else
                 {
-                    eventPrompt.Text = scenario.Tasks[currIndex].TaskResponseModel.prompt;
+                    eventPrompt.Text = scenario.Tasks[currIndex].TaskResponseModel.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                 }
             }
 
-            eventTranscript.Text = scenario.Tasks[currIndex].TaskContentModel.text;
+            eventTranscript.Text = scenario.Tasks[currIndex].TaskContentModel.Text;
 
-            if(scenario.Tasks[currIndex].TaskContentModel.type == TaskContent.ContentType.Video)
+            if(scenario.Tasks[currIndex].TaskContentModel.Type == TaskContent.ContentType.Video)
             {
                 // load video instead of audio + image
                 eventVideo.Visibility = ViewStates.Visible;
                 eventImage.Visibility = ViewStates.Gone;
-                string vidKey = scenario.Tasks[currIndex].TaskContentModel.visual;
+                string vidKey = scenario.Tasks[currIndex].TaskContentModel.Visual;
                 var vidUri = Android.Net.Uri.Parse( resources[vidKey]);
                 eventVideo.SetVideoURI(vidUri);
                 eventVideo.Start();
@@ -391,16 +397,16 @@ namespace Droid_PeopleWithParkinsons
                 eventImage.Visibility = ViewStates.Visible;
 
                 // Load the image if it exists
-                string visualKey = scenario.Tasks[currIndex].TaskContentModel.visual;
+                string visualKey = scenario.Tasks[currIndex].TaskContentModel.Visual;
                 if(visualKey != null && resources.ContainsKey(visualKey))
                 {
                     eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[visualKey]) ));
                 }
 
-                if (scenario.Tasks[currIndex].TaskContentModel.type == TaskContent.ContentType.Audio)
+                if (scenario.Tasks[currIndex].TaskContentModel.Type == TaskContent.ContentType.Audio)
                 {
                     // Load audio
-                    string audioKey = scenario.Tasks[currIndex].TaskContentModel.audio;
+                    string audioKey = scenario.Tasks[currIndex].TaskContentModel.Audio;
                     if (audioKey != null && resources.ContainsKey(audioKey))
                     {
                         if (mediaPlayer == null)
@@ -427,11 +433,11 @@ namespace Droid_PeopleWithParkinsons
         {
             if(sender == choiceImage1)
             {
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice1);
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.Related[0]);
             }
             else if(sender == choiceImage2)
             {
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.choice2);
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponseModel.Related[1]);
             }
             ShowNextEvent();
         }
@@ -447,7 +453,7 @@ namespace Droid_PeopleWithParkinsons
                 return;
             }
 
-            if (scenario.Tasks[currIndex].TaskResponseModel.type == TaskResponse.ResponseType.None)
+            if (scenario.Tasks[currIndex].TaskResponseModel.Type == TaskResponse.ResponseType.None)
             {
                 // No need to record
                 ShowNextEvent();

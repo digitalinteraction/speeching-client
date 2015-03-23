@@ -85,7 +85,7 @@ namespace SpeechingCommon
 
             foreach (IResultItem item in resultsToUpload)
             {
-                if (item.CrowdActivityId == scenarioId) toDelete.Add(item);
+                if (item.ParticipantActivityId == scenarioId) toDelete.Add(item);
             }
 
             foreach (IResultItem del in toDelete)
