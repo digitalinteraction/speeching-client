@@ -53,6 +53,10 @@
     <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\BootLegging\mobile-app\Core\packages\Newtonsoft.Json.6.0.2\lib\portable-net40+sl5+wp80+win8+monotouch+monoandroid\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PagerSlidingTabStrip">
       <HintPath>..\packages\PagerSlidingTabStrip.Net.1.2.40604.0921\lib\MonoAndroid2.2\PagerSlidingTabStrip.dll</HintPath>
     </Reference>
@@ -107,7 +111,7 @@
     <Compile Include="Fragment\UserProfileFragment.cs" />
     <Compile Include="Geofences\GeofencingReceiver.cs" />
     <Compile Include="Geofences\GeofencingRegisterer.cs" />
-    <Compile Include="NotificationService.cs" />
+    <Compile Include="GCMService.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="DownloadService.cs" />

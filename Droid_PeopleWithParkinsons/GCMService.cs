@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Widget;
+using Newtonsoft.Json;
 using SpeechingCommon;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,9 @@ namespace Droid_PeopleWithParkinsons
 
     [Service]
     public class GcmIntentService : IntentService, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener
-
     {
         Intent lastIntent;
+        List<IGeofence> fences;
 
         string lastType = "";
         string lastData = "";
@@ -70,17 +71,16 @@ namespace Droid_PeopleWithParkinsons
                 else if(GoogleCloudMessaging.MessageTypeMessage.Equals(messageType))
                 {
                     string notifType = extras.GetString("notifType");
-
                     lastType = notifType;
                     PrepClient();
 
                     switch (notifType)
                     {
                         case "reminder" :
-                            RecordReminder();
+                            ShowReminder();
                             break;
-                        case "poiUpdate" :
-
+                        case "fences" :
+                            BuildFences(extras.GetString("fences"));
                             break;
                     }
                    
@@ -103,7 +103,14 @@ namespace Droid_PeopleWithParkinsons
             return apiClient;
         }
 
-        private void RecordReminder()
+        private void BuildFences(string fencesJson)
+        {
+            PlaceGeofence[] fenceData = JsonConvert.DeserializeObject<PlaceGeofence[]>(fencesJson);
+
+            fenceReg.RegisterGeofences(fenceData);
+        }
+
+        private void ShowReminder()
         {
             if (apiClient.IsConnected)
             {
@@ -111,7 +118,6 @@ namespace Droid_PeopleWithParkinsons
 
                 if (lastLoc != null)
                 {
-                    AddFence(lastLoc);
                     ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
                 }
             }
@@ -142,35 +148,15 @@ namespace Droid_PeopleWithParkinsons
         {
             switch(lastType)
             {
-                case "poiUpdate" :
-
-                    break;
-
                 case "reminder" :
                     Location lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
                     if (lastLoc != null)
                     {
-                        AddFence(lastLoc);
-                        //ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
+                        ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
                     }
                     break;
             }
             
-        }
-
-        public void AddFence(Location loc)
-        {
-            List<IGeofence> fences = new List<IGeofence>();
-
-            fences.Add(new GeofenceBuilder()
-                .SetCircularRegion(loc.Latitude, loc.Longitude, 50)
-                .SetExpirationDuration(Geofence.NeverExpire)
-                .SetRequestId("myFence")
-                .SetLoiteringDelay(0)
-                .SetTransitionTypes(Geofence.GeofenceTransitionEnter|Geofence.GeofenceTransitionExit)
-                .Build());
-
-            fenceReg.RegisterGeofences(fences);
         }
 
         public void OnConnectionSuspended(int cause)

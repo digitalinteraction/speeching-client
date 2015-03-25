@@ -3,6 +3,9 @@ using Android.Content;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.OS;
+using Android.Widget;
+using Newtonsoft.Json;
+using SpeechingCommon;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +13,7 @@ namespace Droid_PeopleWithParkinsons
 {
     public class GeofencingRegisterer : Java.Lang.Object, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback
     {
-        private enum FencingStage { Connecting, Adding, Ready };
+        private enum FencingStage { Connecting, Removing, Adding, Ready };
         private FencingStage currentStage;
 
         private Context context;
@@ -29,17 +32,50 @@ namespace Droid_PeopleWithParkinsons
             this.CallbackOnFencesAdded = FencesAddedCallback;
         }
 
-        public void RegisterGeofences(List<IGeofence> geofences)
+        public void RegisterGeofences(PlaceGeofence[] fenceData)
         {
-            fencesToAdd = geofences;
+            if(pendingIntent != null)
+            {
+                Toast.MakeText(context, "Removing old fences", ToastLength.Short).Show();
+                currentStage = FencingStage.Removing;
+            }
 
-            this.intent = new Intent(context, typeof(GeofencingReceiver));
+            if (fencesToAdd == null)
+            {
+                fencesToAdd = new List<IGeofence>();
+            }
 
-            googleApiClient = new GoogleApiClientBuilder(context)
-                .AddApi(LocationServices.Api)
-                .AddConnectionCallbacks(this)
-                .AddOnConnectionFailedListener(this)
-                .Build();
+            ISharedPreferences prefs = context.GetSharedPreferences("FENCES", FileCreationMode.MultiProcess);
+            ISharedPreferencesEditor editor = prefs.Edit();
+
+            editor.Clear();
+            editor.Apply();
+
+            foreach (PlaceGeofence fence in fenceData)
+            {
+                fencesToAdd.Add(new GeofenceBuilder()
+                    .SetCircularRegion(fence.lat, fence.lng, fence.radius)
+                    .SetExpirationDuration(Geofence.NeverExpire)
+                    .SetRequestId(fence.placeId)
+                    .SetLoiteringDelay(0)
+                    .SetTransitionTypes(Geofence.GeofenceTransitionEnter | Geofence.GeofenceTransitionExit)
+                    .Build());
+
+                editor.PutString(fence.placeId, JsonConvert.SerializeObject(fence));
+            }
+
+            editor.Apply();
+
+            if(googleApiClient == null)
+            {
+                intent = new Intent(context, typeof(GeofencingReceiver));
+                googleApiClient = new GoogleApiClientBuilder(context)
+                    .AddApi(LocationServices.Api)
+                    .AddConnectionCallbacks(this)
+                    .AddOnConnectionFailedListener(this)
+                    .Build();
+            }
+            
             googleApiClient.Connect();
         }
 
@@ -47,6 +83,18 @@ namespace Droid_PeopleWithParkinsons
         {
             CallbackOnConnected();
 
+            if(currentStage == FencingStage.Removing)
+            {
+                LocationServices.GeofencingApi.RemoveGeofences(googleApiClient, pendingIntent);
+            }
+            else
+            {
+                AddFences();
+            }
+        }
+
+        private void AddFences()
+        {
             pendingIntent = CreatePendingIntent();
 
             GeofencingRequest fenceReq = new GeofencingRequest.Builder().AddGeofences(fencesToAdd).Build();
@@ -84,6 +132,9 @@ namespace Droid_PeopleWithParkinsons
             {
                 case FencingStage.Adding:
                     CallbackOnFencesAdded();
+                    break;
+                case FencingStage.Removing:
+                    AddFences();
                     break;
             }
         }

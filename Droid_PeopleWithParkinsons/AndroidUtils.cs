@@ -113,7 +113,7 @@ namespace Droid_PeopleWithParkinsons
                         .SetTitle("Fatal Error")
                         .SetMessage("Speeching was unable to connect to Google Play Services - your device may not be supported.")
                         .SetCancelable(false)
-                        .SetPositiveButton("Close Application", (s, a) => {  })
+                        .SetPositiveButton("Close Application", (s, a) => { })
                         .Show();
                 }
                 return false;

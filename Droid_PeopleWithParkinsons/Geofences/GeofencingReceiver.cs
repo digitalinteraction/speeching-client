@@ -2,6 +2,8 @@ using Android.App;
 using Android.Content;
 using Android.Gms.Location;
 using Android.Widget;
+using Newtonsoft.Json;
+using SpeechingCommon;
 using System;
 
 namespace Droid_PeopleWithParkinsons
@@ -22,7 +24,7 @@ namespace Droid_PeopleWithParkinsons
     [IntentFilter(new String[] { "com.speeching.droid_peoplewithparkinsons.GeofencingService" })]
     public class GeofencingService : IntentService
     {
-        int count = 0;
+        ISharedPreferences prefs;
 
         public GeofencingService()
             : base("com.speeching.droid_peoplewithparkinsons.GeofencingService")
@@ -42,43 +44,56 @@ namespace Droid_PeopleWithParkinsons
                 {
                     int transition = thisEvent.GeofenceTransition;
 
-                    count++;
-
-                    AndroidUtils.SendNotification("Intent type " + transition, count.ToString() + " intents received", typeof(LocationActivity), this);
-
-                    if(transition == Geofence.GeofenceTransitionEnter || transition == Geofence.GeofenceTransitionDwell || transition == Geofence.GeofenceTransitionExit)
+                    if(transition == Geofence.GeofenceTransitionEnter || transition == Geofence.GeofenceTransitionExit)
                     {
-                        string[] geofenceIds = new string[thisEvent.TriggeringGeofences.Count];
+                        PlaceGeofence fence = GetFenceObj(thisEvent.TriggeringGeofences[0].RequestId);
 
-                        for(int i = 0; i < geofenceIds.Length; i++)
+                        if (fence != null)
                         {
-                            geofenceIds[i] = thisEvent.TriggeringGeofences[i].RequestId;
-                        }
-
-                        if(transition == Geofence.GeofenceTransitionEnter || transition == Geofence.GeofenceTransitionDwell)
-                        {
-                            OnEnteredGeofences(geofenceIds);
-                        }
-                        else if(transition == Geofence.GeofenceTransitionExit)
-                        {
-                            OnExitedGeofences(geofenceIds);
+                            if (transition == Geofence.GeofenceTransitionEnter)
+                            {
+                                OnEnteredGeofences(fence);
+                            }
+                            else
+                            {
+                                OnExitedGeofences(fence);
+                            }
                         }
                     }
                 }
             }
         }
 
-        protected void OnEnteredGeofences(string[] geofenceIds)
+        private PlaceGeofence GetFenceObj(string placeId)
         {
-            AndroidUtils.SendNotification("Entered geofence!", "You have entered the geofence. Grats!", typeof(LocationActivity), this);
+            if(prefs == null)
+            {
+                prefs = GetSharedPreferences("FENCES", FileCreationMode.MultiProcess);
+            }
+
+            string json = prefs.GetString(placeId, "");
+
+            if(!string.IsNullOrEmpty(json))
+            {
+                return JsonConvert.DeserializeObject<PlaceGeofence>(json);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        protected void OnExitedGeofences(string[] geofenceIds)
+        private void OnEnteredGeofences(PlaceGeofence fence)
         {
-            AndroidUtils.SendNotification("Left geofence!", "You have exited the geofence. Grats!", typeof(LocationActivity), this);
+            AndroidUtils.SendNotification("Record about " + fence.name + "!", "It looks like you're near " + fence.name + "! Why not practice your speech by making a voice diary about it?", typeof(LocationActivity), this);
         }
 
-        protected void OnError(int errorCode)
+        private void OnExitedGeofences(PlaceGeofence fence)
+        {
+            AndroidUtils.SendNotification("Record about " + fence.name + "!", "It looks like you're leaving " + fence.name + "! Why not practice your speech by making a voice diary about your visit?", typeof(LocationActivity), this);
+        }
+
+        private void OnError(int errorCode)
         {
             AndroidUtils.SendNotification("Geofence error!", "You broke the system! Grats! Err: " + errorCode, typeof(LocationActivity), this);
         }
