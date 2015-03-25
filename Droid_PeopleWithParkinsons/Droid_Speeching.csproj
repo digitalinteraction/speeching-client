@@ -256,6 +256,7 @@
     <AndroidResource Include="Resources\layout-large\PlacesRecordEntry.axml" />
     <AndroidResource Include="Resources\layout-large-land\PlacesRecordEntry.axml" />
     <AndroidResource Include="Resources\layout-normal-land\PlacesRecordEntry.axml" />
+    <AndroidResource Include="Resources\layout-large\UploadsActivity.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/uploads_warning"
         android:background="#0088aa"
-        android:textSize="20sp" />
+        android:textSize="20dp" />
     <TextView
         android:text="Your Uploads"
         android:layout_width="fill_parent"
@@ -23,7 +23,7 @@
         android:padding="8dp"
         android:layout_height="wrap_content"
         android:id="@+id/uploads_title"
-        android:textSize="24sp" />
+        android:textSize="35dp" />
     <TextView
         android:text="Upload your results to the cloud service!"
         android:layout_width="fill_parent"
@@ -31,7 +31,7 @@
         android:layout_marginLeft="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/uploads_message"
-        android:textSize="18sp" />
+        android:textSize="20dp" />
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -45,7 +45,7 @@
         android:padding="5dp"
         android:layout_gravity="center_horizontal|bottom"
         android:id="@+id/uploads_start"
-        android:textSize="18sp"
+        android:textSize="20dp"
         android:textOff="Start Uploading"
         android:textOn="Stop Uploading" />
 </LinearLayout>
