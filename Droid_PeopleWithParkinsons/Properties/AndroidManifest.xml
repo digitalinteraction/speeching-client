@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.Speeching" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.speeching" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="12" android:targetSdkVersion="21" />
 	<application android:label="Speeching" android:icon="@drawable/Icon">
 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBXoVf1iS7ELJXzp-TL8aty9rHqZc2ssVM" />
@@ -14,18 +14,20 @@
       </intent-filter>
     </receiver>
     <service android:name="droid_peoplewithparkinsons.GcmIntentService" />
-    <service android:name="com.Speeching.droid_peoplewithparkinsons.GeofencingReceiver" android:exported="true"/>
+
+    <receiver android:name="droid_peoplewithparkinsons.GeofencingReceiver" android:exported="true"/>
+    <service android:name="droid_peoplewithparkinsons.GeofencingService" android:exported="true"/>
 	</application>
   
 	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
 	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-  <permission android:name="com.Speeching.gcm.permission.C2D_MESSAGE"
+  <permission android:name="com.speeching.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-  <uses-permission android:name="com.Speeching.gcm.permission.C2D_MESSAGE" />
+  <uses-permission android:name="com.speeching.gcm.permission.C2D_MESSAGE" />
   
-	<uses-permission android:name="com.Speeching.permission.MAPS_RECEIVE" />
-	<uses-permission android:name="com.Speeching.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.speeching.permission.MAPS_RECEIVE" />
+	<uses-permission android:name="com.speeching.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />

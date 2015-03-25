@@ -33,6 +33,8 @@ namespace Droid_PeopleWithParkinsons
         {
             fencesToAdd = geofences;
 
+            this.intent = new Intent(context, typeof(GeofencingReceiver));
+
             googleApiClient = new GoogleApiClientBuilder(context)
                 .AddApi(LocationServices.Api)
                 .AddConnectionCallbacks(this)
@@ -46,8 +48,6 @@ namespace Droid_PeopleWithParkinsons
             CallbackOnConnected();
 
             pendingIntent = CreatePendingIntent();
-
-            context.StartService(intent);
 
             GeofencingRequest fenceReq = new GeofencingRequest.Builder().AddGeofences(fencesToAdd).Build();
 
@@ -74,8 +74,7 @@ namespace Droid_PeopleWithParkinsons
             }
             else
             {
-                intent = new Intent(context, typeof(GeofencingReceiver));
-                return PendingIntent.GetService(context, 0, intent, PendingIntentFlags.UpdateCurrent);
+                return PendingIntent.GetBroadcast(context, 0, intent, PendingIntentFlags.UpdateCurrent);
             }
         }
 

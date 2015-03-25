@@ -31,6 +31,7 @@ namespace Droid_PeopleWithParkinsons
         public static int PLAY_SERVICES_RESOLUTION_REQUEST = 8675309;
         public static GoogleCloudMessaging gcm;
         public static string GooglePlayRegId;
+        public static NotificationManager notificationManager;
 
         /// <summary>
         /// Set up Android specific variables and get the session loaded/created
@@ -56,6 +57,42 @@ namespace Droid_PeopleWithParkinsons
 
             return true;
         }
+
+        /// <summary>
+        /// Create a notification 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <param name="context"></param>
+        public static void SendNotification(string title, string message, Type activityTarget, Context context)
+        {
+            if (notificationManager == null)
+            {
+                notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
+            }
+
+            Android.App.TaskStackBuilder stackBuilder = Android.App.TaskStackBuilder.Create(context);
+            stackBuilder.AddParentStack(Java.Lang.Class.FromType(activityTarget));
+            stackBuilder.AddNextIntent(new Intent(context, activityTarget));
+
+            PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .SetPriority(0)
+                .SetLights(300, 1000, 1000)
+                .SetVisibility(1)
+                .SetLocalOnly(false)
+                .SetAutoCancel(true)
+                .SetSmallIcon(Resource.Drawable.Icon)
+                .SetContentTitle(title)
+                .SetContentText(message)
+                .SetStyle(new NotificationCompat.BigTextStyle().BigText(message));
+
+            builder.SetContentIntent(contentIntent);
+
+            notificationManager.Notify(8675309, builder.Build());
+        }
+
 
         /// <summary>
         /// Attempt a connection to Google Play Services to make sure this application is able to recieve push messages

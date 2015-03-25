@@ -105,7 +105,6 @@
     <Compile Include="Fragment\TaskListFragment.cs" />
     <Compile Include="Fragment\SubmittedListFragment.cs" />
     <Compile Include="Fragment\UserProfileFragment.cs" />
-    <Compile Include="Geofences\GeofenceTransitionService.cs" />
     <Compile Include="Geofences\GeofencingReceiver.cs" />
     <Compile Include="Geofences\GeofencingRegisterer.cs" />
     <Compile Include="NotificationService.cs" />

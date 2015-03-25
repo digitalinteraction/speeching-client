@@ -38,7 +38,7 @@ namespace Droid_PeopleWithParkinsons
 
         string lastType = "";
         string lastData = "";
-        NotificationManager notificationManager;
+ 
         IGoogleApiClient apiClient;
         GeofencingRegisterer fenceReg;
 
@@ -61,11 +61,11 @@ namespace Droid_PeopleWithParkinsons
             {
                 if(GoogleCloudMessaging.MessageTypeSendError.Equals(messageType))
                 {
-                    SendNotification("Error while sending message: " + extras.ToString(), "Speeching Error");
+                    AndroidUtils.SendNotification("Speeching Error", "Error while sending message: " + extras.ToString(), typeof(MainActivity), this);
                 }
                 else if(GoogleCloudMessaging.MessageTypeDeleted.Equals(messageType))
                 {
-                    SendNotification("Deleted messages on server: " + extras.ToString(), "Speeching Messages");
+                    AndroidUtils.SendNotification("Speeching Messages", "Deleted messages on the server", typeof(MainActivity), this);
                 }
                 else if(GoogleCloudMessaging.MessageTypeMessage.Equals(messageType))
                 {
@@ -121,35 +121,6 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
-        private void SendNotification(string message, string title)
-        {
-            if (notificationManager == null)
-            {
-                notificationManager = (NotificationManager) this.GetSystemService(Context.NotificationService);
-            }
-
-            Android.App.TaskStackBuilder stackBuilder = Android.App.TaskStackBuilder.Create(this);
-            stackBuilder.AddParentStack(Java.Lang.Class.FromType( typeof(LocationActivity) ));
-            stackBuilder.AddNextIntent(new Intent(this, typeof(LocationActivity)));
-
-            PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .SetPriority(0)
-                .SetLights(300, 1000, 1000)
-                .SetVisibility(1)
-                .SetLocalOnly(false)
-                .SetAutoCancel(true)
-                .SetSmallIcon(Resource.Drawable.Icon)
-                .SetContentTitle(title)
-                .SetContentText(message)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(message));
-
-            builder.SetContentIntent(contentIntent);
-
-            notificationManager.Notify(8675309, builder.Build());
-        }
-
         public void OnPlacesReturned(GooglePlace[] places)
         {
             if(places.Length > 0)
@@ -161,7 +132,7 @@ namespace Droid_PeopleWithParkinsons
 
                 message += "! Why not practice your speech by making a voice entry about a nearby location?";
 
-                SendNotification(message, title);
+                AndroidUtils.SendNotification(title, message, typeof(LocationActivity), this);
 
                 GcmBroadcastReceiver.CompleteWakefulIntent(lastIntent);
             }
@@ -180,7 +151,7 @@ namespace Droid_PeopleWithParkinsons
                     if (lastLoc != null)
                     {
                         AddFence(lastLoc);
-                        ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
+                        //ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 500, OnPlacesReturned);
                     }
                     break;
             }
@@ -192,11 +163,11 @@ namespace Droid_PeopleWithParkinsons
             List<IGeofence> fences = new List<IGeofence>();
 
             fences.Add(new GeofenceBuilder()
-                .SetCircularRegion(loc.Latitude, loc.Longitude, 10)
+                .SetCircularRegion(loc.Latitude, loc.Longitude, 50)
                 .SetExpirationDuration(Geofence.NeverExpire)
                 .SetRequestId("myFence")
-                .SetLoiteringDelay(1000)
-                .SetTransitionTypes(Geofence.GeofenceTransitionEnter|Geofence.GeofenceTransitionDwell|Geofence.GeofenceTransitionExit)
+                .SetLoiteringDelay(0)
+                .SetTransitionTypes(Geofence.GeofenceTransitionEnter|Geofence.GeofenceTransitionExit)
                 .Build());
 
             fenceReg.RegisterGeofences(fences);
