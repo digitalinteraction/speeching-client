@@ -1,28 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Gms.Maps;
-using System.Threading.Tasks;
-using System.Net.Http;
-using SpeechingCommon;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
-using Android.Locations;
+using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
+using Android.Locations;
+using Android.OS;
 using Android.Support.V4.App;
+using Android.Views;
+using Android.Widget;
+using SpeechingCommon;
+using System;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "LocationActivity", ParentActivity = typeof(MainActivity))]
+    [Activity(Label = "Places near you", ParentActivity = typeof(MainActivity))]
     public class LocationActivity : Activity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, GoogleMap.IOnMarkerClickListener
     {
         MapFragment mapFragment;
@@ -234,7 +228,6 @@ namespace Droid_PeopleWithParkinsons
             {
                 case Android.Resource.Id.Home:
                     Intent upIntent = NavUtils.GetParentActivityIntent(this);
-                    Toast.MakeText(this, upIntent.Component.PackageName + " | " + upIntent.Component.ClassName, ToastLength.Short).Show();
                     if(NavUtils.ShouldUpRecreateTask(this, upIntent))
                     {
                         // This activity is NOT part of this app's task, so create a new task

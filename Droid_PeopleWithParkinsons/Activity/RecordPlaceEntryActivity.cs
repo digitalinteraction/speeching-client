@@ -16,7 +16,7 @@ using SpeechingCommon;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity))]
+    [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity) )]
     public class RecordPlaceEntryActivity : Activity
     {
         string placeId;
