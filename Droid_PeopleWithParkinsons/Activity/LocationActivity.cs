@@ -151,7 +151,7 @@ namespace Droid_PeopleWithParkinsons
            
             if(lastLoc != null)
             {
-                ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 1000, OnPlacesReturned);
+                ServerData.FetchPlaces(lastLoc.Latitude.ToString(), lastLoc.Longitude.ToString(), 600, OnPlacesReturned);
             }
         }
 

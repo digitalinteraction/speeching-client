@@ -19,6 +19,6 @@ namespace SpeechingCommon
         public double lat;
         public double lng;
         public string placeId;
-        public string imageURL;
+        public string imageRef;
     }
 }

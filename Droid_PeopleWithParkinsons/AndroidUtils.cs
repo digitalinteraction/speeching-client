@@ -58,13 +58,28 @@ namespace Droid_PeopleWithParkinsons
             return true;
         }
 
+        private static NotificationCompat.Builder GetNotifBuilder(Context context, string title, string message, int priority)
+        {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .SetPriority(0)
+                .SetLights(300, 1000, 1000)
+                .SetVisibility(1)
+                .SetLocalOnly(false)
+                .SetAutoCancel(true)
+                .SetSmallIcon(Resource.Drawable.Icon)
+                .SetContentTitle(title)
+                .SetContentText(message)
+                .SetStyle(new NotificationCompat.BigTextStyle().BigText(message));
+            return builder;
+        }
+
         /// <summary>
         /// Create a notification 
         /// </summary>
         /// <param name="title"></param>
         /// <param name="message"></param>
         /// <param name="context"></param>
-        public static void SendNotification(string title, string message, Type activityTarget, Context context)
+        public static void SendNotification(string title, string message, Type activityTarget, Context context, int priority = 0)
         {
             if (notificationManager == null)
             {
@@ -77,22 +92,32 @@ namespace Droid_PeopleWithParkinsons
 
             PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .SetPriority(0)
-                .SetLights(300, 1000, 1000)
-                .SetVisibility(1)
-                .SetLocalOnly(false)
-                .SetAutoCancel(true)
-                .SetSmallIcon(Resource.Drawable.Icon)
-                .SetContentTitle(title)
-                .SetContentText(message)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(message));
+            NotificationCompat.Builder builder = GetNotifBuilder(context, title, message, priority);
 
             builder.SetContentIntent(contentIntent);
 
             notificationManager.Notify(8675309, builder.Build());
         }
 
+        public static void SendNotification(string title, string message, Type activityTarget, Intent intent, Context context, int priority = 0)
+        {
+            if (notificationManager == null)
+            {
+                notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
+            }
+
+            Android.App.TaskStackBuilder stackBuilder = Android.App.TaskStackBuilder.Create(context);
+            stackBuilder.AddParentStack(Java.Lang.Class.FromType(activityTarget));
+            stackBuilder.AddNextIntent(intent);
+
+            PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
+
+            NotificationCompat.Builder builder = GetNotifBuilder(context, title, message, priority);
+
+            builder.SetContentIntent(contentIntent);
+
+            notificationManager.Notify(8675309, builder.Build());
+        }
 
         /// <summary>
         /// Attempt a connection to Google Play Services to make sure this application is able to recieve push messages

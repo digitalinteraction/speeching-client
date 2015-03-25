@@ -17,7 +17,7 @@ namespace Droid_PeopleWithParkinsons
         private FencingStage currentStage;
 
         private Context context;
-        private IGoogleApiClient googleApiClient;
+        private static IGoogleApiClient googleApiClient;
         private List<IGeofence> fencesToAdd;
         private Intent intent;
         private PendingIntent pendingIntent;
@@ -58,7 +58,7 @@ namespace Droid_PeopleWithParkinsons
                     .SetExpirationDuration(Geofence.NeverExpire)
                     .SetRequestId(fence.placeId)
                     .SetLoiteringDelay(0)
-                    .SetTransitionTypes(Geofence.GeofenceTransitionEnter | Geofence.GeofenceTransitionExit)
+                    .SetTransitionTypes(Geofence.GeofenceTransitionEnter | Geofence.GeofenceTransitionDwell | Geofence.GeofenceTransitionExit)
                     .Build());
 
                 editor.PutString(fence.placeId, JsonConvert.SerializeObject(fence));
