@@ -113,28 +113,15 @@
     <Compile Include="Geofences\GeofencingReceiver.cs" />
     <Compile Include="Geofences\GeofencingRegisterer.cs" />
     <Compile Include="GCMService.cs" />
-    <Compile Include="Shared\AudioFileManager.cs" />
-    <Compile Include="Fragment\RecordCompletedFragment.cs" />
-    <Compile Include="Shared\IAudioRecorder.cs" />
     <Compile Include="Activity\MainActivity.cs" />
-    <Compile Include="Shared\PlaceholderStrings.cs" />
-    <Compile Include="Activity\RecordSoundRunActivity.cs" />
-    <Compile Include="Shared\SentenceDownloader.cs" />
-    <Compile Include="Shared\SentenceManager.cs" />
-    <Compile Include="Shared\SentenceModel.cs" />
-    <Compile Include="Shared\Reachability.cs" />
+    <Compile Include="IAudioRecorder.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Fragment\RecordSoundFragment.cs" />
-    <Compile Include="Speeching_Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\RecordSound.axml" />
-    <AndroidResource Include="Resources\layout\RecordSoundRun.axml" />
-    <AndroidResource Include="Resources\layout\RecordCompleted.axml" />
     <AndroidResource Include="Resources\drawable\recordButtonRed.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

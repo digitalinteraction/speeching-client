@@ -30,7 +30,7 @@ namespace Droid_PeopleWithParkinsons
             mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, ServerData.FetchUsers(AppData.session.currentUser.friends));
             mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
-                this.Activity.StartActivity(typeof(RecordSoundRunActivity));
+                
             };
 
             addFriendBtn = view.FindViewById<Button>(Resource.Id.addFriendButton);

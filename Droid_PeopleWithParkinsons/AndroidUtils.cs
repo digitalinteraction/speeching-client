@@ -358,7 +358,7 @@ namespace Droid_PeopleWithParkinsons
             public void StartBackgroundCheck()
             {
                 backgroundAudioRecorder = new AudioRecorder();
-                backgroundAudioRecorder.PrepareAudioRecorder(AudioFileManager.RootBackgroundAudioPath, false);
+                backgroundAudioRecorder.PrepareAudioRecorder(AppData.cacheDir + "bgnoise.3gpp", false);
                 bgRunning = true;
                 bgShouldToggle = true;
 
@@ -492,7 +492,7 @@ namespace Droid_PeopleWithParkinsons
                     audioRecorder.Release();
                     audioRecorder.Dispose();
                     audioRecorder = null;
-                    if (recording) AudioFileManager.DeleteFile(outputPath);
+                    //if (recording) AudioFileManager.DeleteFile(outputPath);
                 }
 
                 if(backgroundAudioRecorder != null)
@@ -504,7 +504,7 @@ namespace Droid_PeopleWithParkinsons
                 // Luke's TODO
                 // Deletes background noise audio. Probably a better way to do this
                 // Probably shouldn't be saving it on disk in the first place.
-                AudioFileManager.DeleteFile(AudioFileManager.RootBackgroundAudioPath);
+                //AudioFileManager.DeleteFile(AudioFileManager.RootBackgroundAudioPath);
             }
         }
 
