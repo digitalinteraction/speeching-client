@@ -56,6 +56,7 @@ namespace Droid_PeopleWithParkinsons
         private string localResourcesDirectory;
         private string localTempDirectory;
         private string localZipPath;
+        private ISharedPreferences prefs;
 
         private int currIndex = -1;
         private AndroidUtils.RecordAudioManager audioManager;
@@ -116,10 +117,13 @@ namespace Droid_PeopleWithParkinsons
             localTempDirectory = localResourcesDirectory + "/temp";
 
             // If the scenario folder doesn't exist we need to download the additional files
-            if (!Directory.Exists(localResourcesDirectory))
+            if (!GetPrefs().GetBoolean("DOWNLOADED", false))
             {
-                Directory.CreateDirectory(localResourcesDirectory);
-                Directory.CreateDirectory(localTempDirectory);
+                if (!Directory.Exists(localResourcesDirectory))
+                {
+                    Directory.CreateDirectory(localResourcesDirectory);
+                    Directory.CreateDirectory(localTempDirectory);
+                }
 
                 localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
                 try
@@ -176,6 +180,16 @@ namespace Droid_PeopleWithParkinsons
             }
         }
 
+        private ISharedPreferences GetPrefs()
+        {
+            if (prefs == null)
+            {
+                prefs = GetSharedPreferences("SCENARIO_" + scenario.Id, FileCreationMode.MultiProcess);
+            }
+
+            return prefs;
+        }
+
         // For the home button in top left
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
@@ -199,15 +213,18 @@ namespace Droid_PeopleWithParkinsons
 
             resources = new Dictionary<string, string>();
 
-            // Download the scenario's resource zip
-            WebClient request = new WebClient();
-            await request.DownloadFileTaskAsync(
-                new Uri(scenario.Resource),
-                localZipPath
-                );
-            request.Dispose();
-            request = null;
-
+            if(!File.Exists(localZipPath))
+            {
+                // Download the scenario's resource zip
+                WebClient request = new WebClient();
+                await request.DownloadFileTaskAsync(
+                    new Uri(scenario.Resource),
+                    localZipPath
+                    );
+                request.Dispose();
+                request = null;
+            }
+        
             RunOnUiThread(() => progress.SetMessage("Unpacking data at " + localZipPath));
 
             ZipFile zip = null; 
@@ -248,6 +265,12 @@ namespace Droid_PeopleWithParkinsons
             {
                 icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
             }
+
+            File.Delete(localZipPath);
+
+            ISharedPreferencesEditor editor = GetPrefs().Edit();
+            editor.PutBoolean("DOWNLOADED", true);
+            editor.Apply();
 
             RunOnUiThread(() => progress.Hide());
         }
