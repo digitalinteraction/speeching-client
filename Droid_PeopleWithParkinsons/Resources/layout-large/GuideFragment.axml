@@ -13,8 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
+        android:layout_centerVertical="true"
         android:id="@+id/guide_left"
         android:alpha="0.8">
         <LinearLayout
@@ -42,8 +41,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
+        android:layout_centerVertical="true"
         android:id="@+id/guide_right"
         android:alpha="0.8">
         <LinearLayout
@@ -70,7 +68,7 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
-        android:layout_height="110dp"
+        android:layout_height="140dp"
         android:background="@color/white"
         android:alpha="0.85">
         <TextView
@@ -80,8 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:textSize="18sp"
-            android:layout_margin="8dp"
+            android:textSize="24sp"
+            android:layout_margin="12dp"
             android:textColor="@color/darkBlue" />
     </LinearLayout>
 </RelativeLayout>

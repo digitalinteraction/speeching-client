@@ -243,6 +243,7 @@
     <AndroidResource Include="Resources\layout-large-land\PlacesRecordEntry.axml" />
     <AndroidResource Include="Resources\layout-normal-land\PlacesRecordEntry.axml" />
     <AndroidResource Include="Resources\layout-large\UploadsActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\GuideFragment.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
