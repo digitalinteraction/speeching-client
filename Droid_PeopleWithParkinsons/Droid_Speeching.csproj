@@ -244,6 +244,7 @@
     <AndroidResource Include="Resources\layout-normal-land\PlacesRecordEntry.axml" />
     <AndroidResource Include="Resources\layout-large\UploadsActivity.axml" />
     <AndroidResource Include="Resources\layout-large\GuideFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\UploadsListItem.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -294,6 +295,10 @@
     <AndroidResource Include="Resources\drawable\tabs_pattern.png" />
     <AndroidResource Include="Resources\drawable\TutPlaceholder.jpg" />
     <AndroidResource Include="Resources\drawable\recordButtonBlue.xml" />
+    <AndroidResource Include="Resources\drawable\notifIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notifIcon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

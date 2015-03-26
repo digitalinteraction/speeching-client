@@ -18,13 +18,33 @@
         android:layout_height="wrap_content"
         android:id="@+id/submitted_message"
         android:textSize="18sp" />
-    <Button
-        android:id="@+id/viewSubmittedBtn"
-        android:text="View feedback for your submissions!"
-        android:textSize="18sp"
-        android:padding="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/createLocLogBtn"
+            android:text="Create a new location log!"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="3dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginBottom="6dp" />
+        <Button
+            android:id="@+id/viewSubmittedBtn"
+            android:text="View feedback for your submissions!"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="6dp" />
+    </LinearLayout>
 </LinearLayout>

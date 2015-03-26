@@ -38,18 +38,28 @@ namespace Droid_PeopleWithParkinsons
 
         private async Task FetchFeedbackDataInit()
         {
-
             SetContentView(Resource.Layout.FeedbackActivity);
 
             submissions = await ServerData.FetchSubmittedList();
 
-            //TODO
-            string[] fakeOptions = new string[] { "these are", "some fake", "options to fill", "up sidebar space" };
+            PrepareDrawer();
+
+            feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
+            feedbackList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
+            {
+                Toast.MakeText(this, ((PercentageFeedback)currentFeedback[args.Position]).Percentage.ToString(), ToastLength.Short).Show();
+            };
+            LoadFeedbackForActivity(submissions[0]);
+        }
+
+        private async Task PrepareDrawer()
+        {
+            string[] drawerContentList = new string[submissions.Length];
 
             // Set up drawer
             drawer = FindViewById<DrawerLayout>(Resource.Id.feedback_drawerLayout);
             drawerList = FindViewById<ListView>(Resource.Id.feedback_itemsList);
-            drawerList.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, fakeOptions);
+            drawerList.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, drawerContentList);
             drawerList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
                 Toast.MakeText(this, "Option selected!", ToastLength.Short).Show();
@@ -66,12 +76,13 @@ namespace Droid_PeopleWithParkinsons
                 ActionBar.SetDisplayHomeAsUpEnabled(true);
             }
 
-            feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
-            feedbackList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
+            // Fetch the data after making the drawer
+            for(int i = 0; i < drawerContentList.Length; i++)
             {
-                Toast.MakeText(this, ((PercentageFeedback)currentFeedback[args.Position]).Percentage.ToString(), ToastLength.Short).Show();
-            };
-            LoadFeedbackForActivity(submissions[0]);
+                ISpeechingActivityItem act = await AppData.session.FetchActivityWithId(submissions[i].Id);
+                drawerContentList[i] = act.Title + ", completed on " + submissions[i].CompletionDate.ToShortDateString();
+                ((BaseAdapter)drawerList.Adapter).NotifyDataSetChanged();
+            }
         }
 
         /// <summary>
@@ -86,7 +97,9 @@ namespace Droid_PeopleWithParkinsons
             thisActivity = await AppData.session.FetchActivityWithId(result.ParticipantActivityId);
             string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);
 
-            FindViewById<ImageView>(Resource.Id.tasklist_childIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));
+            FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));
+            FindViewById<TextView>(Resource.Id.feedback_title).Text = thisActivity.Title;
+            FindViewById<TextView>(Resource.Id.feedback_completionDate).Text = "Completed on " + result.CompletionDate.ToString();
 
             if(feedbackList.Adapter == null)
             {
@@ -127,6 +140,7 @@ namespace Droid_PeopleWithParkinsons
     public class FeedbackAdapter : BaseAdapter<IFeedbackItem>
     {
         private Activity context;
+        private List<int> seen;
         public IFeedbackItem[] feedbackItems;
         private Dictionary<Type, int> viewTypes;
 
@@ -141,6 +155,7 @@ namespace Droid_PeopleWithParkinsons
             viewTypes = new Dictionary<Type, int>();
             viewTypes.Add(typeof(PercentageFeedback), 0);
             viewTypes.Add(typeof(StarRatingFeedback), 1);
+            seen = new List<int>();
         }
 
         public override long GetItemId(int position)
@@ -179,7 +194,17 @@ namespace Droid_PeopleWithParkinsons
                 {
                      convertView = context.LayoutInflater.Inflate(Resource.Layout.FeedbackPercentItem, null);
                 }
-                AnimatePercentage(((PercentageFeedback)feedbackItems[position]).Percentage, 1500, convertView.FindViewById<RadialProgressView>(Resource.Id.feedback_progressView));
+
+                // Keep track of which items have been seen so that we don't animate them multiple times!
+                if (!seen.Contains(feedbackItems[position].Id))
+                {
+                    AnimatePercentage(((PercentageFeedback)feedbackItems[position]).Percentage, 1500, convertView.FindViewById<RadialProgressView>(Resource.Id.feedback_progressView));
+                    seen.Add(feedbackItems[position].Id);
+                }
+                else
+                {
+                    convertView.FindViewById<RadialProgressView>(Resource.Id.feedback_progressView).Value = ((PercentageFeedback)feedbackItems[position]).Percentage;
+                }
             }
 
             if (thisItem.GetType() == typeof(StarRatingFeedback))

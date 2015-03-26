@@ -120,8 +120,8 @@ namespace SpeechingCommon
     public class SpeechingTask
     {
         public int Id;
-        public TaskContent TaskContentModel;
-        public TaskResponse TaskResponseModel;
+        public TaskContent TaskContent;
+        public TaskResponse TaskResponse;
     }
 
 }

@@ -7,6 +7,7 @@ namespace SpeechingCommon
     /// </summary>
     public class StarRatingFeedback : IFeedbackItem
     {
+        private int id;
         private string activityId;
         private string title;
         private string caption;
@@ -46,6 +47,18 @@ namespace SpeechingCommon
             set
             {
                 caption = value;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
             }
         }
     }

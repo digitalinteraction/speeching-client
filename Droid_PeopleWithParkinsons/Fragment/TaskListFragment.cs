@@ -16,6 +16,7 @@ namespace Droid_PeopleWithParkinsons
         private SwipeRefreshLayout refresher;
         private ExpandableListView mainList;
         private Button viewFeedbackBtn;
+        private Button locationLogButton;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -54,6 +55,9 @@ namespace Droid_PeopleWithParkinsons
 
             viewFeedbackBtn = header.FindViewById<Button>(Resource.Id.viewSubmittedBtn);
             viewFeedbackBtn.Click += viewFeedbackBtn_Click;
+
+            locationLogButton = header.FindViewById<Button>(Resource.Id.createLocLogBtn);
+            locationLogButton.Click += locationLogButton_Click;
             return view;
         }
 
@@ -93,9 +97,14 @@ namespace Droid_PeopleWithParkinsons
 
         void viewFeedbackBtn_Click(object sender, System.EventArgs e)
         {
-            this.Activity.StartActivity(typeof(LocationActivity));//FeedbackActivity));
+            this.Activity.StartActivity(typeof(FeedbackActivity));
         }
-    
+
+        void locationLogButton_Click(object sender, System.EventArgs e)
+        {
+            this.Activity.StartActivity(typeof(LocationActivity));
+        }
+
         /// <summary>
         /// An expandable list adapter which displays the available categories and the activities under them
         /// </summary>

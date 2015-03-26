@@ -6,8 +6,8 @@
     <ImageView
         android:src="@drawable/Icon"
         android:id="@+id/uploadsList_icon"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:padding="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
@@ -17,7 +17,7 @@
         android:layout_toLeftOf="@id/uploadsList_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textColor="#999999"
         android:padding="15dp" />
     <TextView
@@ -27,7 +27,7 @@
         android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textColor="#999999"
         android:padding="15dp" />
     <TextView
@@ -36,7 +36,7 @@
         android:layout_alignParentLeft="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:layout_below="@id/uploadsList_scenarioTitle"
         android:textColor="#999999"
         android:padding="15dp" />

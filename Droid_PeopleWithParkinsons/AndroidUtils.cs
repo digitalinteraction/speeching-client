@@ -97,7 +97,7 @@ namespace Droid_PeopleWithParkinsons
             PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
 
             NotificationCompat.Builder builder = GetNotifBuilder(context, title, message, priority);
-
+            builder.SetSmallIcon(Resource.Drawable.notifIcon);
             builder.SetContentIntent(contentIntent);
 
             notificationManager.Notify(8675309, builder.Build());
@@ -117,7 +117,7 @@ namespace Droid_PeopleWithParkinsons
             PendingIntent contentIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
 
             NotificationCompat.Builder builder = GetNotifBuilder(context, title, message, priority);
-
+            builder.SetSmallIcon(Resource.Drawable.notifIcon);
             builder.SetContentIntent(contentIntent);
 
             notificationManager.Notify(8675309, builder.Build());
@@ -131,6 +131,7 @@ namespace Droid_PeopleWithParkinsons
             }
 
             NotificationCompat.Builder builder = GetNotifBuilder(context, title, message, 0);
+            builder.SetSmallIcon(Resource.Drawable.notifIcon);
             notificationManager.Notify(8675309, builder.Build());
         }
 
@@ -570,6 +571,10 @@ namespace Droid_PeopleWithParkinsons
                 if (results[position].UploadState == Utils.UploadStage.Uploading)
                 {
                     view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Uploading...";
+                }
+                else if(results[position].UploadState == Utils.UploadStage.OnStorage)
+                {
+                    view.FindViewById<TextView>(Resource.Id.uploadsList_uploadStatus).Text = "Error! Please try again.";
                 }
                 else if (results[position].UploadState == Utils.UploadStage.Ready)
                 {
