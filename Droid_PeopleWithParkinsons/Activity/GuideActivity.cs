@@ -84,7 +84,7 @@ namespace Droid_PeopleWithParkinsons
             SetContentView(Resource.Layout.GuideActivity);
             ActionBar.Hide();
 
-            adapter = new GuideAdapter(SupportFragmentManager, guide.Pages, resources);
+            adapter = new GuideAdapter(SupportFragmentManager, guide.Guides, resources);
             pager = FindViewById<ViewPager>(Resource.Id.guide_pager);
             pager.Adapter = adapter;
             pager.SetPageTransformer(true, new DepthPageTransformer());
@@ -164,8 +164,8 @@ namespace Droid_PeopleWithParkinsons
             {
                 Android.Support.V4.App.Fragment fragment = new GuideFragment();
                 Bundle args = new Bundle();
-                args.PutString("content", slides[position].text);
-                args.PutString("image", resources[slides[position].visualMediaLoc]);
+                args.PutString("content", slides[position].Text);
+                args.PutString("image", resources[slides[position].MediaLocation]);
                 args.PutBoolean("first", position == 0);
                 args.PutBoolean("last", position == slides.Length - 1);
                 fragment.Arguments = args;

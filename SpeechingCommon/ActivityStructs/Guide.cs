@@ -16,8 +16,8 @@ namespace SpeechingCommon
     {
         public struct Page
         {
-            public string visualMediaLoc;
-            public string text;
+            public string MediaLocation;
+            public string Text;
         };
 
         private int id;
@@ -26,7 +26,7 @@ namespace SpeechingCommon
         private string resources;
         private string icon;
 
-        public Page[] Pages;
+        public Page[] Guides;
 
         public int Id
         {

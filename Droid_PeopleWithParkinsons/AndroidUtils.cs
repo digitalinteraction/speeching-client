@@ -37,20 +37,24 @@ namespace Droid_PeopleWithParkinsons
         /// Set up Android specific variables and get the session loaded/created
         /// </summary>
         /// <returns></returns>
-        public static async Task<bool> InitSession(Activity context)
+        public static async Task<bool> InitSession(Activity context = null)
         {
             AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
 
-            bool gpsSuccess = CheckForGooglePlayServices(context);
-
-            if (!gpsSuccess) return false;
-
-            AndroidUtils.gcm = GoogleCloudMessaging.GetInstance(context);
-            AndroidUtils.GooglePlayRegId = AndroidUtils.GetGoogleRegId(context);
-
-            if (string.IsNullOrEmpty(AndroidUtils.GooglePlayRegId))
+            // Only allow this to be null if in background!
+            if(context != null)
             {
-                AndroidUtils.RegisterGCM(context);
+                bool gpsSuccess = CheckForGooglePlayServices(context);
+
+                if (!gpsSuccess) return false;
+
+                AndroidUtils.gcm = GoogleCloudMessaging.GetInstance(context);
+                AndroidUtils.GooglePlayRegId = AndroidUtils.GetGoogleRegId(context);
+
+                if (string.IsNullOrEmpty(AndroidUtils.GooglePlayRegId))
+                {
+                    AndroidUtils.RegisterGCM(context);
+                }
             }
 
             await AppData.InitializeIfNeeded();
@@ -116,6 +120,17 @@ namespace Droid_PeopleWithParkinsons
 
             builder.SetContentIntent(contentIntent);
 
+            notificationManager.Notify(8675309, builder.Build());
+        }
+
+        public static void SendNotification(string title, string message, Context context)
+        {
+            if (notificationManager == null)
+            {
+                notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
+            }
+
+            NotificationCompat.Builder builder = GetNotifBuilder(context, title, message, 0);
             notificationManager.Notify(8675309, builder.Build());
         }
 
@@ -431,7 +446,7 @@ namespace Droid_PeopleWithParkinsons
                 audioRecorder.SetAudioSource(AudioSource.Mic);
                 audioRecorder.SetOutputFormat(OutputFormat.Mpeg4);
                 audioRecorder.SetAudioEncoder(AudioEncoder.Aac);
-                audioRecorder.SetAudioEncodingBitRate(96000);
+                audioRecorder.SetAudioEncodingBitRate(50000);
                 audioRecorder.SetAudioSamplingRate(44100);
                 audioRecorder.SetOutputFile(outputPath);
                 audioRecorder.Prepare();

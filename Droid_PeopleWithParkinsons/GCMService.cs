@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using SpeechingCommon;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -74,13 +75,20 @@ namespace Droid_PeopleWithParkinsons
                     lastType = notifType;
                     PrepClient();
 
+                    // Choose what to do depending on the message type
                     switch (notifType)
                     {
-                        case "reminder" :
+                        case "notification" :
+                            AndroidUtils.SendNotification(extras.GetString("title"), extras.GetString("message"), typeof(SplashActivity), this);
+                            break;
+                        case "locationReminder" :
                             ShowReminder();
                             break;
-                        case "fences" :
+                        case "newFences" :
                             BuildFences(extras.GetString("fences"));
+                            break;
+                        case "newActivities" :
+                            FetchNewContent();
                             break;
                     }
                    
@@ -101,6 +109,14 @@ namespace Droid_PeopleWithParkinsons
             }
 
             return apiClient;
+        }
+
+        private async Task FetchNewContent()
+        {
+            await AndroidUtils.InitSession();
+            await ServerData.FetchCategories();
+
+            AndroidUtils.SendNotification("New content available!", "You have new Speeching activities available - take a look!", typeof(SplashActivity), this);
         }
 
         private void BuildFences(string fencesJson)
@@ -132,9 +148,9 @@ namespace Droid_PeopleWithParkinsons
             if(places.Length > 0)
             {
                 string title = "Make a new voice recording!";
-                string message = "It looks like you're near " + places[0].name;
+                string message = "You're near places like " + places[0].name;
 
-                if (places.Length > 1) message += " and other places, such as " + places[1].name;
+                if (places.Length > 1) message += " and " + places[1].name;
 
                 message += "! Why not practice your speech by making a voice entry about a nearby location?";
 

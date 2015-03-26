@@ -103,6 +103,7 @@
     <Compile Include="Activity\SplashActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
     <Compile Include="AndroidUtils.cs" />
+    <Compile Include="AudioRecorder.cs" />
     <Compile Include="AutoResizeTextView.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\GuideFragment.cs" />
@@ -113,8 +114,6 @@
     <Compile Include="Geofences\GeofencingRegisterer.cs" />
     <Compile Include="GCMService.cs" />
     <Compile Include="Shared\AudioFileManager.cs" />
-    <Compile Include="AudioRecorder.cs" />
-    <Compile Include="DownloadService.cs" />
     <Compile Include="Fragment\RecordCompletedFragment.cs" />
     <Compile Include="Shared\IAudioRecorder.cs" />
     <Compile Include="Activity\MainActivity.cs" />

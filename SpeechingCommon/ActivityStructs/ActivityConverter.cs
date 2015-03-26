@@ -21,7 +21,7 @@ namespace SpeechingCommon
             {
                 return new Scenario();
             }
-            else if (FieldExists("Pages", jObject))
+            else if (FieldExists("Guides", jObject))
             {
                 return new Guide();
             }
@@ -33,7 +33,7 @@ namespace SpeechingCommon
 
         private bool FieldExists(string fieldName, JObject jObject)
         {
-            return jObject[fieldName] != null;
+            return jObject[fieldName] != null && jObject[fieldName].Any();
         }
     }
 }
