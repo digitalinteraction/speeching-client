@@ -62,6 +62,7 @@
     <Compile Include="ActivityStructs\Guide.cs" />
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
+    <Compile Include="FeedbackStructs\CommentFeedback.cs" />
     <Compile Include="GooglePlacesResult.cs" />
     <Compile Include="PlaceGeofence.cs" />
     <Compile Include="ResultStructs\LocationRecordingResult.cs" />

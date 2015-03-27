@@ -14,6 +14,7 @@ using Android.Support.V4.App;
 using SpeechingCommon;
 using RadialProgress;
 using System.Threading.Tasks;
+using Android.Support.V4.Graphics.Drawable;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -176,6 +177,7 @@ namespace Droid_PeopleWithParkinsons
             viewTypes = new Dictionary<Type, int>();
             viewTypes.Add(typeof(PercentageFeedback), 0);
             viewTypes.Add(typeof(StarRatingFeedback), 1);
+            viewTypes.Add(typeof(CommentFeedback), 2);
             seen = new List<int>();
         }
 
@@ -233,14 +235,22 @@ namespace Droid_PeopleWithParkinsons
                     convertView.FindViewById<RadialProgressView>(Resource.Id.feedback_progressView).Value = ((PercentageFeedback)feedbackItems[position]).Percentage;
                 }
             }
-
-            if (thisItem.GetType() == typeof(StarRatingFeedback))
+            else if (thisItem.GetType() == typeof(StarRatingFeedback))
             {
                 if (convertView == null)
                 {
                     convertView = context.LayoutInflater.Inflate(Resource.Layout.FeedbackRatingItem, null);
                 }
                 convertView.FindViewById<RatingBar>(Resource.Id.feedback_ratingBar).Rating = ((StarRatingFeedback)thisItem).Rating;
+            }
+            else if(thisItem.GetType() == typeof(CommentFeedback))
+            {
+                if (convertView == null)
+                {
+                    convertView = context.LayoutInflater.Inflate(Resource.Layout.FeedbackCommentItem, null);
+                }
+                LoadUserAvatar(((CommentFeedback)thisItem).Commenter, convertView.FindViewById<ImageView>(Resource.Id.feedback_commentAvatar));
+                convertView.FindViewById<TextView>(Resource.Id.feedback_comment_Username).Text = ((CommentFeedback)thisItem).Commenter.name;
             }
 
             // If this list is going to be really big, it might be worth setting up a view holder? Don't think it will be
@@ -257,7 +267,7 @@ namespace Droid_PeopleWithParkinsons
         /// <param name="millis">The total time for the animation</param>
         /// <param name="progressView">The view to affect</param>
         /// <returns>Awaitable</returns>
-        public async Task AnimatePercentage(float toVal, float millis, RadialProgressView progressView)
+        private async Task AnimatePercentage(float toVal, float millis, RadialProgressView progressView)
         {
             int waitTime = (int)(millis / toVal);
             float current = 0;
@@ -267,6 +277,20 @@ namespace Droid_PeopleWithParkinsons
                 progressView.Value = current;
                 await Task.Delay(waitTime);
             }
+        }
+
+        /// <summary>
+        /// Load the given user's avatar into the ImageView
+        /// </summary>
+        private async Task LoadUserAvatar(User user, ImageView view)
+        {
+            string imageLoc = await Utils.FetchLocalCopy(user.avatar, typeof(User));
+
+            RoundedBitmapDrawable img = RoundedBitmapDrawableFactory.Create(view.Resources, imageLoc);
+            img.SetAntiAlias(true);
+            img.CornerRadius = 120;
+            view.SetImageDrawable(img);
+            //view.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
         }
     }
     

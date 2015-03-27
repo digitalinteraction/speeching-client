@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_margin="15dp">
+        <TextView
+            android:text="Comment Subject"
+            android:id="@+id/feedback_itemTitle"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_gravity="left"
+            android:textStyle="bold|italic"
+            android:textSize="17sp" />
+        <TextView
+            android:text="This is the body of the comment. Ideally it would be fairly helpful."
+            android:id="@+id/feedback_itemCaption"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_gravity="left"
+            android:textSize="16sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="10dp">
+        <ImageView
+            android:src="@drawable/circle"
+            android:id="@+id/feedback_commentAvatar"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="top|center_horizontal" />
+        <TextView
+            android:text="A_Username"
+            android:id="@+id/feedback_comment_Username"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

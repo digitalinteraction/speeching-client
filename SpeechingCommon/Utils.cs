@@ -46,10 +46,19 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="remoteUrl"></param>
         /// <returns></returns>
-        public static async Task<string> FetchLocalCopy(string remoteUrl)
+        public static async Task<string> FetchLocalCopy(string remoteUrl, Type ownerType = null)
         {
-            string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(remoteUrl);
-
+            string localIconPath;
+            
+            if(ownerType == typeof(User))
+            {
+                localIconPath = AppData.avatarsCache + "/" + Path.GetFileName(remoteUrl);
+            }
+            else
+            {
+                localIconPath = AppData.cacheDir + "/" + Path.GetFileName(remoteUrl);
+            }
+            
             try
             {
                 // Download the file if it isn't already stored locally

@@ -16,6 +16,7 @@ namespace SpeechingCommon
         // System data
         public static string cacheDir;
         public static string exportsCache;
+        public static string avatarsCache;
         public static string placesImageCache;
         public static string placesRecordingsCache;
         public static Random rand;
@@ -59,12 +60,18 @@ namespace SpeechingCommon
         {
             cacheDir = rootFolder;
             placesImageCache = Path.Combine(cacheDir, "places/");
+            avatarsCache = Path.Combine(cacheDir, "avatars/");
             placesRecordingsCache = Path.Combine(placesImageCache, "tempRecs/");
             exportsCache = Path.Combine(cacheDir, "exports/");
 
             if (!Directory.Exists(cacheDir))
             {
                 Directory.CreateDirectory(cacheDir);
+            }
+
+            if (!Directory.Exists(avatarsCache))
+            {
+                Directory.CreateDirectory(avatarsCache);
             }
 
             if (!Directory.Exists(placesImageCache))

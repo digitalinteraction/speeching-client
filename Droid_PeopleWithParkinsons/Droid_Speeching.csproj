@@ -117,6 +117,7 @@
     <Compile Include="IAudioRecorder.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoundImageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -248,6 +249,9 @@
     <AndroidResource Include="Resources\layout-large\FeedbackActivity.axml" />
     <AndroidResource Include="Resources\layout-land\FeedbackActivity.axml" />
     <AndroidResource Include="Resources\layout-large-land\FeedbackActivity.axml" />
+    <AndroidResource Include="Resources\layout\FeedbackCommentItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
