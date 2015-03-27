@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Label = "Your Feedback")]
+    [Activity(Label = "Your Feedback", ParentActivity = typeof(MainActivity))]
     public class FeedbackActivity : Activity
     {
         private DrawerLayout drawer;
@@ -28,12 +28,22 @@ namespace Droid_PeopleWithParkinsons
         private IResultItem[] submissions;
         private IFeedbackItem[] currentFeedback;
         private ISpeechingActivityItem thisActivity;
+        private int selectedIndex;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
+            // Restore the user's last selection if it exists
+            selectedIndex = (bundle == null)? 0 : bundle.GetInt("SelectedIndex", 0);
+
             FetchFeedbackDataInit();
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutInt("SelectedIndex", selectedIndex);
         }
 
         private async Task FetchFeedbackDataInit()
@@ -47,22 +57,24 @@ namespace Droid_PeopleWithParkinsons
             feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
             feedbackList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
-                Toast.MakeText(this, ((PercentageFeedback)currentFeedback[args.Position]).Percentage.ToString(), ToastLength.Short).Show();
             };
-            LoadFeedbackForActivity(submissions[0]);
+            LoadFeedbackForActivity(submissions[selectedIndex]);
+           
         }
 
         private async Task PrepareDrawer()
         {
-            string[] drawerContentList = new string[submissions.Length];
+            ArrayAdapter adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1);
 
-            // Set up drawer
+                // Set up drawer
             drawer = FindViewById<DrawerLayout>(Resource.Id.feedback_drawerLayout);
             drawerList = FindViewById<ListView>(Resource.Id.feedback_itemsList);
-            drawerList.Adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, drawerContentList);
+            drawerList.Adapter = adapter;
             drawerList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
             {
-                Toast.MakeText(this, "Option selected!", ToastLength.Short).Show();
+                LoadFeedbackForActivity(submissions[args.Position]);
+                selectedIndex = args.Position;
+                if(drawer != null) drawer.CloseDrawers();
             };
 
             if (drawer != null)
@@ -77,11 +89,10 @@ namespace Droid_PeopleWithParkinsons
             }
 
             // Fetch the data after making the drawer
-            for(int i = 0; i < drawerContentList.Length; i++)
+            for(int i = 0; i < submissions.Length; i++)
             {
-                ISpeechingActivityItem act = await AppData.session.FetchActivityWithId(submissions[i].Id);
-                drawerContentList[i] = act.Title + ", completed on " + submissions[i].CompletionDate.ToShortDateString();
-                ((BaseAdapter)drawerList.Adapter).NotifyDataSetChanged();
+                ISpeechingActivityItem act = await AppData.session.FetchActivityWithId(submissions[i].ParticipantActivityId);
+                adapter.Add(act.Title + "\nCompleted on " + submissions[i].CompletionDate.ToShortDateString());
             }
         }
 
@@ -92,6 +103,11 @@ namespace Droid_PeopleWithParkinsons
         /// <returns></returns>
         private async Task LoadFeedbackForActivity(IResultItem result)
         {
+            ProgressDialog prog = new ProgressDialog(this);
+            prog.SetTitle("Fetching Feedback");
+            prog.SetMessage("Please wait...");
+            prog.Show();
+
             currentFeedback = await ServerData.FetchFeedbackFor(result.Id);
 
             thisActivity = await AppData.session.FetchActivityWithId(result.ParticipantActivityId);
@@ -99,7 +115,7 @@ namespace Droid_PeopleWithParkinsons
 
             FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));
             FindViewById<TextView>(Resource.Id.feedback_title).Text = thisActivity.Title;
-            FindViewById<TextView>(Resource.Id.feedback_completionDate).Text = "Completed on " + result.CompletionDate.ToString();
+            FindViewById<TextView>(Resource.Id.feedback_completionDate).Text = "Completed on " + result.CompletionDate.ToShortDateString();
 
             if(feedbackList.Adapter == null)
             {
@@ -107,9 +123,14 @@ namespace Droid_PeopleWithParkinsons
             }
             else
             {
-                ((FeedbackAdapter)feedbackList.Adapter).feedbackItems = currentFeedback;
-                RunOnUiThread(() => ((FeedbackAdapter)feedbackList.Adapter).NotifyDataSetChanged());
+                RunOnUiThread(() => {
+                    ((FeedbackAdapter)feedbackList.Adapter).NotifyDataSetChanged();
+                    ((FeedbackAdapter)feedbackList.Adapter).feedbackItems = currentFeedback;
+                    feedbackList.SetSelection(0);
+                });
             }
+
+            prog.Hide();
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -176,6 +197,12 @@ namespace Droid_PeopleWithParkinsons
         public override int ViewTypeCount
         {
             get { return viewTypes.Count; }
+        }
+
+        public override void NotifyDataSetChanged()
+        {
+            base.NotifyDataSetChanged();
+            seen.Clear();
         }
 
         // Helps decide which layout to use, based on object type

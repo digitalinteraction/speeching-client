@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/feedback_drawerLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<!-- CONTENT -->
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        android:background="#111">
+        <ListView
+            android:id="@+id/feedback_itemsList"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -17,7 +35,7 @@
                 android:src="@drawable/Icon"
                 android:id="@+id/feedback_icon"
                 android:layout_width="0dp"
-                android:layout_height="75dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:layout_margin="10dp" />
@@ -41,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:layout_marginRight="20dp" />
                 <TextView
                     android:text="Completed on 11/11/11"
@@ -69,22 +87,4 @@
                 android:id="@+id/feedback_feedbackList" />
         </LinearLayout>
     </LinearLayout>
-<!-- SIDEBAR -->
-    <LinearLayout
-        android:id="@+id/left_drawer"
-        android:layout_height="match_parent"
-        android:layout_width="260dp"
-        android:orientation="vertical"
-        android:layout_gravity="start"
-        android:background="#111">
-        <ListView
-            android:id="@+id/feedback_itemsList"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
-    </LinearLayout>
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>

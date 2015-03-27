@@ -245,6 +245,9 @@
     <AndroidResource Include="Resources\layout-large\UploadsActivity.axml" />
     <AndroidResource Include="Resources\layout-large\GuideFragment.axml" />
     <AndroidResource Include="Resources\layout-large\UploadsListItem.axml" />
+    <AndroidResource Include="Resources\layout-large\FeedbackActivity.axml" />
+    <AndroidResource Include="Resources\layout-land\FeedbackActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\FeedbackActivity.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

@@ -17,10 +17,10 @@
                 android:src="@drawable/Icon"
                 android:id="@+id/feedback_icon"
                 android:layout_width="0dp"
-                android:layout_height="75dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
-                android:layout_margin="10dp" />
+                android:layout_margin="20dp" />
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="0dp"
@@ -32,8 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
-                    android:textSize="14sp"
-                    android:layout_marginTop="5dp" />
+                    android:textSize="18sp"
+                    android:layout_marginTop="20dp" />
                 <TextView
                     android:text="Some sort of activity"
                     android:id="@+id/feedback_title"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
-                    android:textSize="22sp"
+                    android:textSize="30sp"
                     android:layout_marginRight="20dp" />
                 <TextView
                     android:text="Completed on 11/11/11"
@@ -50,13 +50,13 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:padding="10dp"
+            android:layout_margin="20dp"
             android:background="@color/darkBlue" />
         <LinearLayout
             android:orientation="horizontal"
