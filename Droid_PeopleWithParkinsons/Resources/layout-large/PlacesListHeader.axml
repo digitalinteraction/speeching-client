@@ -10,7 +10,8 @@
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:id="@+id/placesList_title"
-        android:textSize="35sp" />
+        android:textSize="35sp"
+        android:textColor="@color/appTitle" />
     <TextView
         android:text="Here are the points of interest we found near you."
         android:layout_width="wrap_content"

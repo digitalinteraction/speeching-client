@@ -76,7 +76,7 @@
         android:layout_width="260dp"
         android:orientation="vertical"
         android:layout_gravity="start"
-        android:background="#111">
+        android:background="@color/appDark">
         <ListView
             android:id="@+id/feedback_itemsList"
             android:layout_width="240dp"

@@ -5,16 +5,25 @@
     android:background="@drawable/listCell"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp">
-    <ImageView
-        android:src="@drawable/Icon"
-        android:id="@+id/tasklist_parentIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="18dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+    <RelativeLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true">
+        <ImageView
+            android:src="@drawable/whiteCircle"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+        <ImageView
+            android:src="@drawable/Icon"
+            android:id="@+id/tasklist_parentIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
     <TextView
         android:id="@+id/tasklist_parentTitle"
         android:text="Task Name"
@@ -23,12 +32,12 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_centerVertical="true"
-        android:textColor="#999999"
+        android:textColor="@color/white"
         android:layout_marginLeft="18dp"
         android:paddingBottom="5dp" />
     <TextView
         android:id="@+id/tasklist_parentStatus"
-        android:text="Recommended!"
+        android:text="Updated!"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,5 +45,5 @@
         android:textStyle="bold|italic"
         android:layout_marginLeft="18dp"
         android:paddingBottom="5dp"
-        android:textColor="#999999" />
+        android:textColor="@color/white" />
 </RelativeLayout>

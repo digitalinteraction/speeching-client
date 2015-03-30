@@ -10,7 +10,8 @@
         android:padding="8dp"
         android:layout_height="wrap_content"
         android:id="@+id/permissions_title"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:textColor="@color/appTitle" />
     <TextView
         android:text="Choose who is able to access this uploaded content."
         android:layout_width="fill_parent"

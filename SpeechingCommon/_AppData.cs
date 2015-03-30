@@ -71,6 +71,10 @@ namespace SpeechingCommon
 
                     success = await ServerData.FetchCategories();
                 }
+                else
+                {
+                    success = true;
+                }
 
                 CleanupPlaces();
             }

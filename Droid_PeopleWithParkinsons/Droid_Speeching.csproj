@@ -185,7 +185,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\rounded_layout.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MainTaskListChild.axml">
       <SubType>AndroidResource</SubType>
@@ -309,6 +309,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\notifIcon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
     <AndroidResource Include="Resources\drawable\splashIcon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\iconupload128.png" />
+    <AndroidResource Include="Resources\drawable\whiteCircle.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

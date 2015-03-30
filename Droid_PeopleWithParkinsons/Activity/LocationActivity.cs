@@ -8,6 +8,7 @@ using Android.Gms.Maps.Model;
 using Android.Locations;
 using Android.OS;
 using Android.Support.V4.App;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Places near you", ParentActivity = typeof(MainActivity))]
-    public class LocationActivity : Activity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, GoogleMap.IOnMarkerClickListener
+    public class LocationActivity : ActionBarActivity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, GoogleMap.IOnMarkerClickListener
     {
         MapFragment mapFragment;
         GoogleMap map;
@@ -31,6 +32,7 @@ namespace Droid_PeopleWithParkinsons
 
         protected override void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.ActionBar);
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.LocationActivity);
@@ -65,7 +67,7 @@ namespace Droid_PeopleWithParkinsons
             nearby = null;
             placed = false;
 
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             mapFragment.GetMapAsync(this);
             ReadyGoogleApi();

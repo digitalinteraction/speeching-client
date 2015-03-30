@@ -14,7 +14,7 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:id="@+id/uploads_warning"
-        android:background="#0088aa"
+        android:background="@color/appDark"
         android:textSize="20sp" />
     <TextView
         android:text="Your Uploads"

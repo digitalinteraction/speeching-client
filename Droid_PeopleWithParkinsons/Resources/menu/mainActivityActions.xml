@@ -1,17 +1,17 @@
-﻿<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+﻿<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:speeching="http://schemas.android.com/apk/res-auto">
   <!-- Search, should appear as action button -->
   <item android:id="@+id/action_uploads"
         android:icon="@drawable/iconupload128"
         android:title="View Uploads"
-        android:showAsAction="ifRoom"/>
+        speeching:showAsAction="ifRoom"/>
   <!-- Settings, should always be in the overflow -->
   <item android:id="@+id/action_settings"
         android:title="Settings"
-        android:showAsAction="never"/>
+        speeching:showAsAction="never"/>
   <item android:id="@+id/action_logOut"
         android:title="Sign Out"
-        android:showAsAction="never"/>
+        speeching:showAsAction="never"/>
   <item android:id="@+id/action_about"
         android:title="About Speeching"
-        android:showAsAction="never"/>
+        speeching:showAsAction="never"/>
 </menu>

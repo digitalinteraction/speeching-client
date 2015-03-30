@@ -1,6 +1,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
@@ -9,7 +10,7 @@ using System;
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Uploads", ParentActivity = typeof(MainActivity))]
-    public class UploadsActivity : Activity
+    public class UploadsActivity : ActionBarActivity
     {
         private ToggleButton uploadAllButton;
         private ListView uploadsList;
@@ -17,6 +18,7 @@ namespace Droid_PeopleWithParkinsons
 
         protected override void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.ActionBar);
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.UploadsActivity);

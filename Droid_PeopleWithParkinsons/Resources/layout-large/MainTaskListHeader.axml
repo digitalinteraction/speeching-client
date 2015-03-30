@@ -8,9 +8,10 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_height="wrap_content"
-        android:textSize="35sp" />
+        android:textSize="32sp"
+        android:textColor="@color/appTitle" />
     <TextView
-        android:text="Hone your skills in preparation for your next assessment with these practice activites! Tap a category to see all of the activities available for it."
+        android:text="Use these practice activities to hone your skills! Tap a category to see all of the activities available for it."
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"

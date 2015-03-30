@@ -15,14 +15,15 @@ using SpeechingCommon;
 using RadialProgress;
 using System.Threading.Tasks;
 using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V7.App;
 
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Your Feedback", ParentActivity = typeof(MainActivity))]
-    public class FeedbackActivity : Activity
+    public class FeedbackActivity : ActionBarActivity
     {
         private DrawerLayout drawer;
-        private ActionBarDrawerToggle drawerToggle;
+        private Android.Support.V4.App.ActionBarDrawerToggle drawerToggle;
         private ListView drawerList;
 
         private ListView feedbackList;
@@ -33,6 +34,7 @@ namespace Droid_PeopleWithParkinsons
 
         protected override void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.ActionBar);
             base.OnCreate(bundle);
 
             // Restore the user's last selection if it exists
@@ -81,12 +83,12 @@ namespace Droid_PeopleWithParkinsons
             if (drawer != null)
             {
                 // this won't be present on some layouts as the drawer might be a list which is always visible
-                drawerToggle = new ActionBarDrawerToggle(this, drawer, Resource.Drawable.ic_drawer, Resource.String.drawer_open, Resource.String.drawer_close);
+                drawerToggle = new Android.Support.V4.App.ActionBarDrawerToggle(this, drawer, Resource.Drawable.ic_drawer, Resource.String.drawer_open, Resource.String.drawer_close);
                 drawer.SetDrawerListener(drawerToggle);
 
-                ActionBar.Show();
-                ActionBar.SetHomeButtonEnabled(true);
-                ActionBar.SetDisplayHomeAsUpEnabled(true);
+                SupportActionBar.Show();
+                SupportActionBar.SetHomeButtonEnabled(true);
+                SupportActionBar.SetDisplayHomeAsUpEnabled(true);
             }
 
             // Fetch the data after making the drawer

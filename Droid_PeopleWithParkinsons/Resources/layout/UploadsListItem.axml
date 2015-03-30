@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textColor="#999999"
+        android:textColor="@color/white"
         android:padding="15dp" />
     <TextView
         android:id="@+id/uploadsList_scenarioTitle"
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textColor="#999999"
+        android:textColor="@color/white"
         android:padding="15dp" />
     <TextView
         android:id="@+id/uploadsList_completedAt"
@@ -38,6 +38,6 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:layout_below="@id/uploadsList_scenarioTitle"
-        android:textColor="#999999"
+        android:textColor="@color/white"
         android:padding="15dp" />
 </RelativeLayout>

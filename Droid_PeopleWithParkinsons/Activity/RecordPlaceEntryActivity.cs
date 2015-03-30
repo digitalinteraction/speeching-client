@@ -13,11 +13,12 @@ using SpeechingCommon;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using SpeechingCommon;
+using Android.Support.V7.App;
 
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity) )]
-    public class RecordPlaceEntryActivity : Activity
+    public class RecordPlaceEntryActivity : ActionBarActivity
     {
         string placeId;
         string placeName;
@@ -34,6 +35,7 @@ namespace Droid_PeopleWithParkinsons
 
         protected override void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.ActionBar);
             base.OnCreate(bundle);
 
 
@@ -70,7 +72,7 @@ namespace Droid_PeopleWithParkinsons
             recordButton = FindViewById<Button>(Resource.Id.placesRecord_button);
             recordButton.Click += recordButton_Click;
 
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
         }
 
         void recordButton_Click(object sender, EventArgs e)

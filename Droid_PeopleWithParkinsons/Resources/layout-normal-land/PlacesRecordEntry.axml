@@ -25,7 +25,7 @@
             android:textSize="18sp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#999999"
+            android:textColor="@color/appTitle"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
@@ -38,7 +38,6 @@
             android:textSize="15sp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#999999"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
@@ -51,7 +50,6 @@
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#999999"
             android:padding="3dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />

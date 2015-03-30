@@ -25,7 +25,7 @@
             android:textSize="28sp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#999999"
+            android:textColor="@color/appTitle"
             android:padding="15dp" />
         <TextView
             android:text="Why not try talking about..."
@@ -36,7 +36,6 @@
             android:textSize="22sp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#999999"
             android:padding="15dp" />
         <TextView
             android:text="•What it looks like\n•The last time you went there\n•The things about it that you like and dislike\n"
@@ -47,7 +46,6 @@
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#999999"
             android:padding="15dp" />
         <RelativeLayout
             android:layout_width="fill_parent"

@@ -5,5 +5,10 @@
     <item name="android:windowNoTitle">true</item>
   </style>
 
-
+  <style name="Theme.Speechingred" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <item name="colorPrimary">@color/appMain</item>
+    <item name="colorPrimaryDark">@color/appDark</item>
+    <item name="colorAccent">@color/appMain</item>
+  </style>
+  
 </resources>

@@ -13,6 +13,7 @@
   <color name="white">#ffffff</color>
   <color name="transparent">#00000000</color>
   
-  <color name="appMain">#FF4830</color>
+  <color name="appMain">#F23E27</color>
   <color name="appDark">#A0210E</color>
+  <color name="appTitle">#000000 </color>
 </resources>

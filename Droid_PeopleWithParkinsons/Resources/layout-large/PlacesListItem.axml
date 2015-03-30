@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/listCell">
+    android:background="@drawable/listCell"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
     <TextView
         android:id="@+id/placesList_name"
         android:text="this is a longer than average location name"
@@ -12,7 +14,7 @@
         android:layout_weight="1"
         android:textSize="22sp"
         android:layout_gravity="center_vertical"
-        android:textColor="#999999"
+        android:textColor="@color/white"
         android:paddingLeft="15dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp" />

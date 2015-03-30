@@ -12,7 +12,7 @@
         max_value="100"
         progress_type="big"
         hide_label="false"
-        progress_color="#0099CC" />
+        progress_color="#F23E27" />
     <TextView
         android:text="The Title"
         android:id="@+id/feedback_itemTitle"

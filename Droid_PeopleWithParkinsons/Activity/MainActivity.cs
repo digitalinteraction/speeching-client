@@ -8,17 +8,18 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Android.Support.V4.Widget;
+using Android.Support.V7.App;
+using Android.Support.V4.View;
+using Android.Support.V4.App;
 
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
-    public class MainActivity : FragmentActivity
+    public class MainActivity : ActionBarActivity //FragmentActivity
     {
         private ListView drawerList;
         private ViewPager pager;
@@ -27,6 +28,8 @@ namespace Droid_PeopleWithParkinsons
         
         protected override void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.ActionBar);
+
             base.OnCreate(bundle);
 
             // Register for tabs
@@ -41,7 +44,7 @@ namespace Droid_PeopleWithParkinsons
             pager.PageMargin = pageMargin;
             InitAdapter();
 
-            ActionBar.Show();
+            this.SupportActionBar.Show();
         }
 
         private void InitAdapter()
@@ -76,7 +79,7 @@ namespace Droid_PeopleWithParkinsons
         // Save the selected tab
         protected override void OnSaveInstanceState(Bundle outState)
         {
-            outState.PutInt("selected_tab", this.ActionBar.SelectedNavigationIndex);
+            outState.PutInt("selected_tab", this.SupportActionBar.SelectedNavigationIndex);
             base.OnSaveInstanceState(outState);
         }
 

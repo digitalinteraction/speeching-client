@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:textSize="35sp"
+            android:textColor="@color/appTitle"
             android:layout_below="@id/scenarioIcon"
             android:paddingLeft="15dp"
             android:paddingRight="15dp" />

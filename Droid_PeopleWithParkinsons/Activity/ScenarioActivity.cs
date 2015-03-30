@@ -4,6 +4,7 @@ using Android.Graphics;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.App;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using ICSharpCode.SharpZipLib.Core;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 namespace Droid_PeopleWithParkinsons
 {
     [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity), LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
-    public class ScenarioActivity : Activity
+    public class ScenarioActivity : ActionBarActivity
     {
         private Scenario scenario;
 
@@ -64,6 +65,7 @@ namespace Droid_PeopleWithParkinsons
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            RequestWindowFeature(WindowFeatures.ActionBar);
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.ScenarioActivity);
@@ -109,7 +111,7 @@ namespace Droid_PeopleWithParkinsons
             // Load the scenario with the id that was given inside the current intent
             scenario = (Scenario)await AppData.session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
 
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
+            this.SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             string scenarioFormatted = scenario.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
