@@ -4,6 +4,7 @@ using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
 using System;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -27,16 +28,28 @@ namespace Droid_PeopleWithParkinsons
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainFriendsListHeader, null);
             mainList = view.FindViewById<ListView>(Resource.Id.mainFriendsList);
             mainList.AddHeaderView(header, null, false);
-            mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, ServerData.FetchUsers(AppData.session.currentUser.friends));
-            mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
-            {
-                
-            };
 
             addFriendBtn = view.FindViewById<Button>(Resource.Id.addFriendButton);
             addFriendBtn.Click += addFriendBtn_Click;
 
+            FetchData(view);
+
             return view;
+        }
+
+        private async Task FetchData(View view)
+        {
+            User[] listData = await ServerData.FetchUsers(AppData.session.currentUser.friends);
+
+            if(listData != null)
+            {
+                mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, listData);
+            }
+            
+            mainList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
+            {
+
+            };
         }
 
         void addFriendBtn_Click(object sender, System.EventArgs e)
@@ -57,7 +70,7 @@ namespace Droid_PeopleWithParkinsons
                 {
                     // Redraw the list
                     mainList.Adapter = null;
-                    mainList.Adapter = new UserListAdapter(Activity, Resource.Id.mainFriendsList, ServerData.FetchUsers(AppData.session.currentUser.friends));
+                    FetchData(View);
                 }
                 else
                 {

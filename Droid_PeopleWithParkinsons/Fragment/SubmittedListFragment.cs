@@ -83,7 +83,8 @@ namespace Droid_PeopleWithParkinsons
         {
             results = await ServerData.FetchSubmittedList();
 
-            exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.submitted_list, results);
+            if(results != null)
+                exportList.Adapter = new AndroidUtils.ExportedListAdapter(Activity, Resource.Id.submitted_list, results);
         }
 
         void permissionsBtn_Click(object sender, EventArgs e)

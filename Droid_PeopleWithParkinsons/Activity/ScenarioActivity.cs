@@ -184,7 +184,7 @@ namespace Droid_PeopleWithParkinsons
         {
             if (prefs == null)
             {
-                prefs = GetSharedPreferences("SCENARIO_" + scenario.Id, FileCreationMode.MultiProcess);
+                prefs = GetSharedPreferences("ACT_" + scenario.Id, FileCreationMode.MultiProcess);
             }
 
             return prefs;

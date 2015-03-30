@@ -20,6 +20,7 @@ using Android.Gms.Gcm;
 using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Gms.Location;
+using Android.Net;
 
 namespace Droid_PeopleWithParkinsons
 {
@@ -41,13 +42,16 @@ namespace Droid_PeopleWithParkinsons
         {
             AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
 
-            // Only allow this to be null if in background!
-            if(context != null)
+            AppData.checkForConnection = () =>
             {
-                bool gpsSuccess = CheckForGooglePlayServices(context);
+                ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
+                NetworkInfo activeNetworkInfo = connectivityManager.ActiveNetworkInfo;
 
-                if (!gpsSuccess) return false;
+                return activeNetworkInfo != null && activeNetworkInfo.IsConnected;
+            };
 
+            AppData.onConnectionSuccess = () =>
+            {
                 AndroidUtils.gcm = GoogleCloudMessaging.GetInstance(context);
                 AndroidUtils.GooglePlayRegId = AndroidUtils.GetGoogleRegId(context);
 
@@ -55,11 +59,40 @@ namespace Droid_PeopleWithParkinsons
                 {
                     AndroidUtils.RegisterGCM(context);
                 }
+            };
+
+            // Only allow this to be null if in background!
+            if(context != null)
+            {
+                bool gpsSuccess = CheckForGooglePlayServices(context);
+
+                if (gpsSuccess)
+                {
+                    if (!AppData.CheckNetwork())
+                    {
+                        context.RunOnUiThread(()=> Toast.MakeText(context, "Unable to connect to server - online features unavailable", ToastLength.Long).Show());
+                    }
+                }
+                
             }
 
-            await AppData.InitializeIfNeeded();
+            return await AppData.InitializeIfNeeded(); ;
+        }
 
-            return true;
+        /// <summary>
+        /// Show a simple "you are offline" message
+        /// </summary>
+        /// <param name="context"></param>
+        public static void OfflineAlert(Context context, string message = null)
+        {
+            if (message == null) message = "This feature requires access to the Internet. Please check your connection and try again.";
+
+            AlertDialog alert = new AlertDialog.Builder(context)
+                .SetTitle("You are offline!")
+                .SetMessage(message)
+                .SetPositiveButton("Ok", (s, a) => { })
+                .Create();
+            alert.Show();
         }
 
         private static NotificationCompat.Builder GetNotifBuilder(Context context, string title, string message, int priority)

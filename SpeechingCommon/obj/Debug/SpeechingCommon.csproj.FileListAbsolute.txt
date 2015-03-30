@@ -4,14 +4,14 @@ C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\Speechi
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\SpeechingCommon.SpeechingCommon.apk
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\SpeechingCommon.SpeechingCommon-Signed.apk
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.dll
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\SharpZipLib.dll
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.xml
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.csprojResolveAssemblyReference.cache
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.dll
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.pdb
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\android\bin\SpeechingCommon.SpeechingCommon.apk
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\res\values\strings.xml
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\R.cs.flag
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\uploadflags.txt
-C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.csprojResolveAssemblyReference.cache
-C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.dll
-C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.xml

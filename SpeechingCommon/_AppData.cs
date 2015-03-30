@@ -21,15 +21,39 @@ namespace SpeechingCommon
         public static string placesRecordingsCache;
         public static Random rand;
 
+        public static Func<bool> checkForConnection;
+        public static Action onConnectionSuccess;
+        public static bool connectionInitialized = false;
+
         static bool initializing = false;
+
+        /// <summary>
+        /// Checks that the app is connected to the network, performing first time inits if necessary
+        /// </summary>
+        /// <returns>Connection successful?</returns>
+        public static bool CheckNetwork()
+        {
+            if(checkForConnection())
+            {
+                if(!connectionInitialized)
+                {
+                    connectionInitialized = true;
+                    onConnectionSuccess();
+                }
+                return true;
+            }
+
+            connectionInitialized = false;
+            return false;
+        }
 
         /// <summary>
         /// For use at all entry points into the application, making sure that all data will be available
         /// </summary>
         /// <returns></returns>
-        public static async Task InitializeIfNeeded()
+        public static async Task<bool> InitializeIfNeeded()
         {
-            if (session != null) return;
+            if (session != null) return true;
 
             while(initializing)
             {
@@ -37,19 +61,22 @@ namespace SpeechingCommon
             }
             initializing = true;
 
+            bool success = false;
+
             if(session == null)
             {
                 if(!TryLoadExistingData())
                 {
-
                     AppData.session.currentUser.id = 7041992;
 
-                    await ServerData.FetchCategories();
+                    success = await ServerData.FetchCategories();
                 }
 
                 CleanupPlaces();
             }
             initializing = false;
+
+            return success;
         }
 
         /// <summary>

@@ -153,16 +153,16 @@ namespace Droid_PeopleWithParkinsons
         /// <param name="e"></param>
         void addFriendBtn_Click(object sender, EventArgs e)
         {
-            List<User> notAdded = new List<User>();
+            /*List<User> notAdded = new List<User>();
             List<User> allFriends = ServerData.FetchAcceptedFriends();
 
-           /* foreach(User user in allFriends)
+            foreach(User user in allFriends)
             {
                 if(!resultItem.allowedUsers.Contains(user.id))
                 {
                     notAdded.Add(user);
                 }
-            }*/
+            }
 
             // Don't show the alert dialog if there aren't any users to choose from
             if(notAdded.Count == 0)
@@ -202,7 +202,7 @@ namespace Droid_PeopleWithParkinsons
                 UpdateLayout();
             });
 
-            alert.Show();
+            alert.Show();*/
         }
 
         public class FriendsCheckListAdapter : BaseAdapter<User>

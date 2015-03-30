@@ -40,6 +40,13 @@ namespace Droid_PeopleWithParkinsons
             refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
             refresher.Refresh += async delegate
             {
+                if (!AppData.CheckNetwork())
+                {
+                    AndroidUtils.OfflineAlert(Activity);
+                    refresher.Refreshing = false;
+                    return;
+                }
+
                 await ServerData.FetchCategories();
                 refresher.Refreshing = false;
 
@@ -79,6 +86,12 @@ namespace Droid_PeopleWithParkinsons
             int itemId = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition].Id;
             intent.PutExtra("ActivityId", itemId);
 
+            if (!AppData.CheckNetwork() && !GetActivityPrefs(itemId).GetBoolean("DOWNLOADED", false))
+            {
+                AndroidUtils.OfflineAlert(Activity, "This activity has not been downloaded yet and requires an Internet connection to prepare!");
+                return;
+            }
+
             if (AppData.CheckForActivityResultData(itemId))
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(Activity)
@@ -97,12 +110,23 @@ namespace Droid_PeopleWithParkinsons
 
         void viewFeedbackBtn_Click(object sender, System.EventArgs e)
         {
-            this.Activity.StartActivity(typeof(FeedbackActivity));
+            if (AppData.CheckNetwork())
+                this.Activity.StartActivity(typeof(FeedbackActivity));
+            else
+                AndroidUtils.OfflineAlert(Activity);
         }
 
         void locationLogButton_Click(object sender, System.EventArgs e)
         {
-            this.Activity.StartActivity(typeof(LocationActivity));
+            if (AppData.CheckNetwork())
+                this.Activity.StartActivity(typeof(LocationActivity));
+            else
+                AndroidUtils.OfflineAlert(Activity);
+        }
+
+        private ISharedPreferences GetActivityPrefs(int id)
+        {
+            return Activity.GetSharedPreferences("ACT_" + id, FileCreationMode.MultiProcess);
         }
 
         /// <summary>

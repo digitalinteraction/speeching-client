@@ -8,16 +8,21 @@ using Android.Widget;
 using SpeechingCommon;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Droid_PeopleWithParkinsons
 {
-    [Activity(Theme = "@style/Theme.Splash", MainLauncher = true, NoHistory = true)]
+    [Activity( MainLauncher = true, NoHistory = true, Theme = "@style/Theme.Splash")]
     public class SplashActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            CreateData();
+
+            SetContentView(Resource.Layout.Splash);
+
+            ThreadPool.QueueUserWorkItem(o => CreateData());
         }
 
         protected override void OnResume()
@@ -25,16 +30,27 @@ namespace Droid_PeopleWithParkinsons
             base.OnResume();
         }
 
-        /// <summary>
-        /// Existing data wasn't found/failed to load so get details from the server
-        /// </summary>
-        private async void CreateData()
+        private async Task CreateData()
         {
             try
             {
-                await AndroidUtils.InitSession(this);
+                bool successfulLoad = await AndroidUtils.InitSession(this);
 
-                StartActivity(typeof(MainActivity));
+                if(successfulLoad)
+                    StartActivity(typeof(MainActivity));
+                else
+                {
+                    RunOnUiThread(() => 
+                        {
+                            AlertDialog alert = new AlertDialog.Builder(this)
+                                .SetTitle("Internet connection required!")
+                                .SetMessage("We were unable to load offline data and failed to connect to the service. Please try again later.")
+                                .SetCancelable(false)
+                                .SetPositiveButton("Ok", (p1, p2) => { Finish(); })
+                                .Create();
+                            alert.Show();  
+                        });
+                }
             }
             catch (Exception e)
             {

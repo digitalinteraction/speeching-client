@@ -29,11 +29,22 @@ namespace Droid_PeopleWithParkinsons
         ProgressDialog progress;
         string localZipPath;
         string localResourcesDirectory;
+        ISharedPreferences prefs;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             InitialiseData();
+        }
+
+        private ISharedPreferences GetPrefs()
+        {
+            if (prefs == null)
+            {
+                prefs = GetSharedPreferences("ACT_" + guide.Id, FileCreationMode.MultiProcess);
+            }
+
+            return prefs;
         }
 
         /// <summary>
@@ -55,9 +66,12 @@ namespace Droid_PeopleWithParkinsons
             }
 
             // If the scenario folder doesn't exist we need to download the additional files
-            if (!Directory.Exists(localResourcesDirectory))
+            if (!GetPrefs().GetBoolean("DOWNLOADED", false))
             {
-                Directory.CreateDirectory(localResourcesDirectory);
+                if (!Directory.Exists(localResourcesDirectory))
+                {
+                    Directory.CreateDirectory(localResourcesDirectory);
+                }
 
                 localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
                 PrepareData();
@@ -127,10 +141,6 @@ namespace Droid_PeopleWithParkinsons
                 }
 
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error! " + e.Message);
-            }
             finally
             {
                 if (zip != null)
@@ -139,6 +149,11 @@ namespace Droid_PeopleWithParkinsons
                     zip.Close();
                 }
             }
+
+            ISharedPreferencesEditor editor = GetPrefs().Edit();
+            editor.PutBoolean("DOWNLOADED", true);
+            editor.Apply();
+
             RunOnUiThread(() => progress.Hide());
             DisplayContent();
         }

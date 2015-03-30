@@ -1,6 +1,9 @@
 ﻿<resources>
   <style name="Theme.Splash" parent="android:Theme">
-    <item name="android:windowBackground">@drawable/splash</item>
+    <item name="android:windowBackground">@color/appMain</item>
+    <item name="android:colorBackground">@color/appMain</item>
     <item name="android:windowNoTitle">true</item>
   </style>
+
+
 </resources>
