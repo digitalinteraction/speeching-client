@@ -78,6 +78,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:visibility="visible"
+            android:background="@color/appDark"
             android:elevation="7dp" />
         <ImageView
             android:src="@drawable/Icon"
@@ -92,6 +93,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:visibility="gone"
+            android:background="@color/appDark"
             android:elevation="7dp" />
         <RelativeLayout
             android:layout_marginTop="10dp"
