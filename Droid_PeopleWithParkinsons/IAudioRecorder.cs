@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     interface IAudioRecorder
     {

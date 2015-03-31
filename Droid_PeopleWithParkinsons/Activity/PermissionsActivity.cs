@@ -12,7 +12,7 @@ using Android.Widget;
 using SpeechingCommon;
 using Android.Util;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Manage Permissions")]
     public class PermissionsActivity : Activity

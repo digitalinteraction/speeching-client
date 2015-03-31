@@ -11,7 +11,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     public class UserProfileFragment : Android.Support.V4.App.Fragment
     {

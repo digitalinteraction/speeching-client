@@ -6,7 +6,7 @@ using Android.Widget;
 using Android.Util;
 using Android.Graphics;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
 
     // Used under the "beerware license": https://github.com/danclarke/AutoResizeTextView

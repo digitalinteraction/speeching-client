@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Droid_PeopleWithParkinsons.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("DroidSpeeching.Resource", IsApplication=true)]
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
 	
 	
@@ -26,36 +26,36 @@ namespace Droid_PeopleWithParkinsons
 		
 		public static void UpdateIdValues()
 		{
-			global::PagerSlidingTabStrip.Resource.Attribute.dividerColor = global::Droid_PeopleWithParkinsons.Resource.Attribute.dividerColor;
-			global::PagerSlidingTabStrip.Resource.Attribute.indicatorColor = global::Droid_PeopleWithParkinsons.Resource.Attribute.indicatorColor;
-			global::PagerSlidingTabStrip.Resource.Attribute.indicatorHeight = global::Droid_PeopleWithParkinsons.Resource.Attribute.indicatorHeight;
-			global::PagerSlidingTabStrip.Resource.Attribute.scrollOffset = global::Droid_PeopleWithParkinsons.Resource.Attribute.scrollOffset;
-			global::PagerSlidingTabStrip.Resource.Attribute.shouldExpand = global::Droid_PeopleWithParkinsons.Resource.Attribute.shouldExpand;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabBackground = global::Droid_PeopleWithParkinsons.Resource.Attribute.tabBackground;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabDividerPadding = global::Droid_PeopleWithParkinsons.Resource.Attribute.tabDividerPadding;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabPaddingLeftRight = global::Droid_PeopleWithParkinsons.Resource.Attribute.tabPaddingLeftRight;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabTextAllCaps = global::Droid_PeopleWithParkinsons.Resource.Attribute.tabTextAllCaps;
-			global::PagerSlidingTabStrip.Resource.Attribute.underlineColor = global::Droid_PeopleWithParkinsons.Resource.Attribute.underlineColor;
-			global::PagerSlidingTabStrip.Resource.Attribute.underlineHeight = global::Droid_PeopleWithParkinsons.Resource.Attribute.underlineHeight;
-			global::PagerSlidingTabStrip.Resource.Color.background_tab_pressed = global::Droid_PeopleWithParkinsons.Resource.Color.background_tab_pressed;
-			global::PagerSlidingTabStrip.Resource.Drawable.pagerslidingtabstrip_background_tab = global::Droid_PeopleWithParkinsons.Resource.Drawable.pagerslidingtabstrip_background_tab;
-			global::PagerSlidingTabStrip.Resource.Layout.pagerslidingtabstrip_texttab = global::Droid_PeopleWithParkinsons.Resource.Layout.pagerslidingtabstrip_texttab;
-			global::PagerSlidingTabStrip.Resource.String.ApplicationName = global::Droid_PeopleWithParkinsons.Resource.String.ApplicationName;
-			global::PagerSlidingTabStrip.Resource.String.Hello = global::Droid_PeopleWithParkinsons.Resource.String.Hello;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_dividerColor = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_dividerColor;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_indicatorColor = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_indicatorColor;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_indicatorHeight = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_indicatorHeight;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_scrollOffset = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_scrollOffset;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_shouldExpand = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_shouldExpand;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabBackground = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_tabBackground;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabDividerPadding = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_tabDividerPadding;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabPaddingLeftRight = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_tabPaddingLeftRight;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineColor = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_underlineColor;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineHeight = global::Droid_PeopleWithParkinsons.Resource.Styleable.PagerSlidingTabStrip_underlineHeight;
-			global::SpeechingCommon.Resource.String.ApplicationName = global::Droid_PeopleWithParkinsons.Resource.String.ApplicationName;
-			global::SpeechingCommon.Resource.String.Hello = global::Droid_PeopleWithParkinsons.Resource.String.Hello;
+			global::PagerSlidingTabStrip.Resource.Attribute.dividerColor = global::DroidSpeeching.Resource.Attribute.dividerColor;
+			global::PagerSlidingTabStrip.Resource.Attribute.indicatorColor = global::DroidSpeeching.Resource.Attribute.indicatorColor;
+			global::PagerSlidingTabStrip.Resource.Attribute.indicatorHeight = global::DroidSpeeching.Resource.Attribute.indicatorHeight;
+			global::PagerSlidingTabStrip.Resource.Attribute.scrollOffset = global::DroidSpeeching.Resource.Attribute.scrollOffset;
+			global::PagerSlidingTabStrip.Resource.Attribute.shouldExpand = global::DroidSpeeching.Resource.Attribute.shouldExpand;
+			global::PagerSlidingTabStrip.Resource.Attribute.tabBackground = global::DroidSpeeching.Resource.Attribute.tabBackground;
+			global::PagerSlidingTabStrip.Resource.Attribute.tabDividerPadding = global::DroidSpeeching.Resource.Attribute.tabDividerPadding;
+			global::PagerSlidingTabStrip.Resource.Attribute.tabPaddingLeftRight = global::DroidSpeeching.Resource.Attribute.tabPaddingLeftRight;
+			global::PagerSlidingTabStrip.Resource.Attribute.tabTextAllCaps = global::DroidSpeeching.Resource.Attribute.tabTextAllCaps;
+			global::PagerSlidingTabStrip.Resource.Attribute.underlineColor = global::DroidSpeeching.Resource.Attribute.underlineColor;
+			global::PagerSlidingTabStrip.Resource.Attribute.underlineHeight = global::DroidSpeeching.Resource.Attribute.underlineHeight;
+			global::PagerSlidingTabStrip.Resource.Color.background_tab_pressed = global::DroidSpeeching.Resource.Color.background_tab_pressed;
+			global::PagerSlidingTabStrip.Resource.Drawable.pagerslidingtabstrip_background_tab = global::DroidSpeeching.Resource.Drawable.pagerslidingtabstrip_background_tab;
+			global::PagerSlidingTabStrip.Resource.Layout.pagerslidingtabstrip_texttab = global::DroidSpeeching.Resource.Layout.pagerslidingtabstrip_texttab;
+			global::PagerSlidingTabStrip.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
+			global::PagerSlidingTabStrip.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_dividerColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_dividerColor;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_indicatorColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_indicatorColor;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_indicatorHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_indicatorHeight;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_scrollOffset = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_scrollOffset;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_shouldExpand = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_shouldExpand;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabBackground = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabBackground;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabDividerPadding = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabDividerPadding;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabPaddingLeftRight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabPaddingLeftRight;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_underlineColor;
+			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_underlineHeight;
+			global::SpeechingCommon.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
+			global::SpeechingCommon.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
 		}
 		
 		public partial class Animation

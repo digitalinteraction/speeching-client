@@ -8,7 +8,6 @@ C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSha
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\SharpZipLib.dll
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\bin\Debug\RestSharp.Portable.xml
-C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.csprojResolveAssemblyReference.cache
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.dll
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.pdb
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\android\bin\SpeechingCommon.SpeechingCommon.apk

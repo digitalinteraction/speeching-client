@@ -6,7 +6,7 @@ using SpeechingCommon;
 using System;
 using System.Threading.Tasks;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     public class FriendListFragment : Android.Support.V4.App.Fragment
     {

@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     class GeofencingReceiver : BroadcastReceiver
     {

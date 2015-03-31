@@ -15,7 +15,7 @@ using SpeechingCommon;
 using System;
 using System.Threading.Tasks;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Places near you", ParentActivity = typeof(MainActivity))]
     public class LocationActivity : ActionBarActivity, Android.Gms.Maps.IOnMapReadyCallback, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, GoogleMap.IOnMarkerClickListener

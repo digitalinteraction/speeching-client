@@ -13,7 +13,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     /// <summary>
     /// Acts as a slideshow, creating fragments for each page/slide of information which can be swiped between

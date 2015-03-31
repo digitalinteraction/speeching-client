@@ -2,7 +2,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     /// <summary>
     /// A simple fragment which acts as a page in a guide activity. 

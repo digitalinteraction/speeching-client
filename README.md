@@ -4,6 +4,7 @@ Speeching Client
 **Speeching is a service which helps those with speech impediments practice speaking at their own pace, receiving feedback from therapists or a cloud of users.**
 
 This repository contains the mobile client, written in C# using Xamarin.
+The application is reliant on the serverside implementation being online in order to pull content.
 
 *Currently only Android is supported, however all network related code should be able to be referenced by implementations on other Xamarin supported platforms*
 

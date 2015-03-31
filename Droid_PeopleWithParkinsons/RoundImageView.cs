@@ -12,7 +12,7 @@ using Android.Widget;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     public class RoundImageView : ImageView
     {

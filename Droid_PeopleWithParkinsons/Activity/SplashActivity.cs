@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity( MainLauncher = true, NoHistory = true, Theme = "@style/Theme.Splash")]
     public class SplashActivity : Activity

@@ -7,7 +7,7 @@ using System.Threading;
 using Android.Media;
 using Android.Media.Audiofx;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     class AudioRecorder : IAudioRecorder, IDisposable
     {

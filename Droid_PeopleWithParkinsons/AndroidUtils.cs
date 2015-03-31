@@ -22,7 +22,7 @@ using Android.Gms.Common;
 using Android.Gms.Location;
 using Android.Net;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     public static class AndroidUtils
     {

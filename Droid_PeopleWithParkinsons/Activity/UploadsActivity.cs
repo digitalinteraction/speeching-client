@@ -7,7 +7,7 @@ using Android.Widget;
 using SpeechingCommon;
 using System;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Uploads", ParentActivity = typeof(MainActivity))]
     public class UploadsActivity : ActionBarActivity

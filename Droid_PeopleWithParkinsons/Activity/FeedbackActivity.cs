@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V7.App;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Your Feedback", ParentActivity = typeof(MainActivity))]
     public class FeedbackActivity : ActionBarActivity

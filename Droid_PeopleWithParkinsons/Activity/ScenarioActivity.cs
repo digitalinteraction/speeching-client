@@ -16,7 +16,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity), LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
     public class ScenarioActivity : ActionBarActivity

@@ -6,7 +6,7 @@ using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     /// <summary>
     /// A fragment which lists the currently available tasks in a grid layout

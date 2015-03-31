@@ -16,7 +16,7 @@ using Android.Support.V7.App;
 using Android.Support.V4.View;
 using Android.Support.V4.App;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
     public class MainActivity : ActionBarActivity //FragmentActivity

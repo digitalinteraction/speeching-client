@@ -1,5 +1,3 @@
-using Android.Content;
-using Android.Widget;
 using Newtonsoft.Json;
 using System;
 using System.Linq;

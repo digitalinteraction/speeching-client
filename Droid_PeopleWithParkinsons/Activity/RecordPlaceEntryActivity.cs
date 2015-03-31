@@ -15,7 +15,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using SpeechingCommon;
 using Android.Support.V7.App;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity) )]
     public class RecordPlaceEntryActivity : ActionBarActivity

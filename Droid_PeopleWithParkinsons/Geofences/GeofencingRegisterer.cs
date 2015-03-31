@@ -9,7 +9,7 @@ using SpeechingCommon;
 using System;
 using System.Collections.Generic;
 
-namespace Droid_PeopleWithParkinsons
+namespace DroidSpeeching
 {
     public class GeofencingRegisterer : Java.Lang.Object, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback
     {
