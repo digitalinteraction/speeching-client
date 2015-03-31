@@ -9,6 +9,7 @@
         android:id="@+id/mainActivitiesList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:childDivider="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0dp" />
 </android.support.v4.widget.SwipeRefreshLayout>

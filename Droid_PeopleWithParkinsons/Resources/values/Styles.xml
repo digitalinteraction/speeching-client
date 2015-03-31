@@ -1,14 +1,17 @@
 ﻿<resources>
-  <style name="Theme.Splash" parent="android:Theme">
+  <style name="Theme.Splash" parent="@style/Theme.AppCompat.Light.DarkActionBar">
     <item name="android:windowBackground">@color/appMain</item>
     <item name="android:colorBackground">@color/appMain</item>
     <item name="android:windowNoTitle">true</item>
+    <item name="android:navigationBarColor">@color/appMain</item>
+    <item name="colorPrimaryDark">@color/appMain</item>
   </style>
 
   <style name="Theme.Speechingred" parent="@style/Theme.AppCompat.Light.DarkActionBar">
     <item name="colorPrimary">@color/appMain</item>
     <item name="colorPrimaryDark">@color/appDark</item>
     <item name="colorAccent">@color/appMain</item>
+    <item name="colorButtonNormal">@color/appHighlight</item>
   </style>
   
 </resources>

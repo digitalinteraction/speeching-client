@@ -290,12 +290,17 @@ namespace Droid_PeopleWithParkinsons
                 view.FindViewById<TextView>(Resource.Id.placesList_name).Text = places[position].name;
 
                 ImageView photoView = view.FindViewById<ImageView>(Resource.Id.placesList_photo);
-                photoView.Visibility = ViewStates.Invisible;
+                photoView.Visibility = ViewStates.Invisible; // Hide while loading in case this view already contains another image
 
                 if (places[position].photos != null && places[position].photos.Length > 0)
                 {
                     // A photo is available to show!
                     LoadImage(photoView, places[position]);
+                }
+                else
+                {
+                    photoView.SetImageResource(Resource.Drawable.Icon);
+                    photoView.Visibility = ViewStates.Visible;
                 }
 
                 return view;

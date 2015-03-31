@@ -51,7 +51,8 @@
             android:textColor="#fff"
             android:layout_below="@id/scenarioAuthor"
             android:layout_centerHorizontal="true"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:elevation="7dp" />
     </RelativeLayout>
 <!-- EVENT LAYOUT  -->
     <LinearLayout
@@ -104,7 +105,7 @@
                 android:layout_height="2dp"
                 android:layout_margin="5dp"
                 android:layout_centerHorizontal="true"
-                android:background="@color/darkBlue"
+                android:background="@color/appMain"
                 android:paddingBottom="12dp" />
         <!-- Standard layout with big red button -->
             <RelativeLayout
@@ -147,7 +148,8 @@
                     android:layout_centerHorizontal="true"
                     android:textSize="22sp"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="10dp"
+                    android:elevation="4dp" />
             </RelativeLayout>
         <!-- Alternative layout for presenting a choice to the user -->
             <LinearLayout

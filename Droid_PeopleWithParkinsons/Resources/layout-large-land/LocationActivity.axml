@@ -21,6 +21,11 @@
             android:layout_height="match_parent"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:divider="@android:color/transparent"
+            android:scrollbars="none"
+            android:paddingBottom="8dp"
+            android:clipToPadding="false"
+            android:dividerHeight="8dp"
             android:visibility="gone" />
     </LinearLayout>
     <FrameLayout

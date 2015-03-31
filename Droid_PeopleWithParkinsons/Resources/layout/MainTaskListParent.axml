@@ -6,23 +6,26 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp">
     <RelativeLayout
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
-        <ImageView
-            android:src="@drawable/whiteCircle"
+        <View
+            android:background="@drawable/whiteCircle"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:padding="4dp"
+            android:elevation="4dp" />
         <ImageView
             android:src="@drawable/Icon"
             android:id="@+id/tasklist_parentIcon"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:elevation="4dp" />
     </RelativeLayout>
     <TextView
         android:id="@+id/tasklist_parentTitle"

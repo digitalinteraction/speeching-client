@@ -13,7 +13,9 @@
   <color name="white">#ffffff</color>
   <color name="transparent">#00000000</color>
   
-  <color name="appMain">#F23E27</color>
-  <color name="appDark">#A0210E</color>
-  <color name="appTitle">#000000 </color>
+  <color name="appMain">#DE331D</color>
+  <color name="appDark">#871908</color>
+  <color name="appDarkest">#400B03</color>
+  <color name="appHighlight">#EB7060</color>
+  <color name="appTitle">#BA4232</color>
 </resources>

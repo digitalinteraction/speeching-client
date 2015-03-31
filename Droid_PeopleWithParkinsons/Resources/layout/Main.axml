@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dip"
         app:shouldExpand="true"
-        android:background="@drawable/background_tabs" />
+        app:indicatorColor="@color/appHighlight"
+        android:background="@color/appDark"
+        android:textColor="@color/white" />
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"

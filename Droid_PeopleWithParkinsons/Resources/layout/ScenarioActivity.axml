@@ -55,7 +55,8 @@
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
             android:layout_alignParentBottom="true"
-            android:layout_margin="40dp" />
+            android:layout_margin="40dp"
+            android:elevation="4dp" />
     </RelativeLayout>
 <!-- EVENT LAYOUT  -->
     <LinearLayout
@@ -75,7 +76,8 @@
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:elevation="7dp" />
         <ImageView
             android:src="@drawable/Icon"
             android:id="@+id/scenarioImage"
@@ -88,7 +90,8 @@
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:elevation="7dp" />
         <RelativeLayout
             android:layout_marginTop="10dp"
             android:orientation="vertical"
@@ -112,7 +115,7 @@
                 android:id="@+id/scenarioBreaker"
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
-                android:background="@color/darkBlue"
+                android:background="@color/appMain"
                 android:paddingBottom="12dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp" />
@@ -156,7 +159,8 @@
                     android:layout_centerHorizontal="true"
                     android:textSize="15sp"
                     android:layout_alignParentBottom="true"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="10dp"
+                    android:elevation="4dp" />
             </RelativeLayout>
         <!-- Alternative layout for presenting a choice to the user -->
             <LinearLayout
