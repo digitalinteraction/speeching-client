@@ -5,8 +5,10 @@ using Android.Gms.Common.Apis;
 using Android.Gms.Location;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
+using Android.Graphics;
 using Android.Locations;
 using Android.OS;
+using Android.Provider;
 using Android.Support.V4.App;
 using Android.Support.V7.App;
 using Android.Views;
@@ -300,7 +302,6 @@ namespace DroidSpeeching
                 else
                 {
                     photoView.SetImageResource(Resource.Drawable.Icon);
-                    photoView.Elevation = 0;
                     photoView.Visibility = ViewStates.Visible;
                 }
 
@@ -313,9 +314,14 @@ namespace DroidSpeeching
 
                 if(!string.IsNullOrEmpty(imageLoc))
                 {
-                    image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+                    Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
+                                context.ContentResolver,
+                                Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+
+                    RoundedDrawable circular = new RoundedDrawable(thisBitmap);
+                    image.SetImageDrawable(circular);
+
                     image.Visibility = ViewStates.Visible;
-                    image.Elevation = 4;
                 }
             }
         }

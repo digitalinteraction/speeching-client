@@ -11,7 +11,8 @@
         android:layout_weight="2"
         android:orientation="vertical"
         android:layout_gravity="start"
-        android:background="@color/appDark">
+        android:background="@color/appDarkest"
+        android:elevation="7dp">
         <ListView
             android:id="@+id/feedback_itemsList"
             android:layout_width="fill_parent"
@@ -30,15 +31,28 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/Icon"
-                android:id="@+id/feedback_icon"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:scaleType="fitCenter"
-                android:layout_margin="10dp" />
+            android:layout_height="wrap_content"
+            android:background="@color/appDark"
+            android:elevation="7dp">
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp">
+                <View
+                    android:background="@drawable/whiteCircle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:padding="4dp"
+                    android:elevation="4dp" />
+                <ImageView
+                    android:src="@drawable/Icon"
+                    android:id="@+id/feedback_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitCenter"
+                    android:elevation="4dp" />
+            </RelativeLayout>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="0dp"
@@ -51,7 +65,8 @@
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
                     android:textSize="14sp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white" />
                 <TextView
                     android:text="Some sort of activity"
                     android:id="@+id/feedback_title"
@@ -60,7 +75,8 @@
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
                     android:textSize="18sp"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white" />
                 <TextView
                     android:text="Completed on 11/11/11"
                     android:id="@+id/feedback_completionDate"
@@ -68,14 +84,15 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
             android:padding="10dp"
-            android:background="@color/darkBlue" />
+            android:background="@color/appMain" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"

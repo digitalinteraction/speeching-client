@@ -33,7 +33,7 @@
             android:divider="@android:color/transparent"
             android:paddingBottom="8dp"
             android:clipToPadding="false"
-            android:dividerHeight="10dp"
+            android:dividerHeight="12dp"
             android:scrollbars="none"
             android:visibility="gone" />
     </LinearLayout>

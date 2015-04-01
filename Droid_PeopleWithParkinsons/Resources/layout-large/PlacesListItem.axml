@@ -25,6 +25,5 @@
         android:layout_margin="10dp"
         android:layout_gravity="center_vertical|right"
         android:scaleType="centerCrop"
-        android:background="@color/appMain"
-        android:elevation="4dp" />
+        android:background="@color/appMain" />
 </LinearLayout>

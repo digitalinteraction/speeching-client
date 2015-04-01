@@ -12,7 +12,9 @@
         android:layout_marginBottom="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:background="@color/appDark"
+        android:elevation="10dp" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -30,6 +32,7 @@
             android:textColor="@color/appTitle"
             android:padding="15dp" />
         <TextView
+            android:id="@+id/placesRecord_subHeader"
             android:text="Why not try talking about..."
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
@@ -40,6 +43,7 @@
             android:layout_centerVertical="true"
             android:padding="15dp" />
         <TextView
+            android:id="@+id/placesRecord_hint"
             android:text="•What it looks like\n•The last time you went there\n•The things about it that you like and dislike\n"
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"

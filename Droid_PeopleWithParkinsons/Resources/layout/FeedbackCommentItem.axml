@@ -32,9 +32,8 @@
         android:layout_weight="1"
         android:layout_margin="10dp">
         <ImageView
-            android:src="@drawable/circle"
             android:id="@+id/feedback_commentAvatar"
-            android:layout_width="fill_parent"
+            android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_gravity="top|center_horizontal" />

@@ -69,6 +69,11 @@
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:padding="10dp"
+            android:background="@color/appMain" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -87,7 +92,7 @@
         android:layout_width="260dp"
         android:orientation="vertical"
         android:layout_gravity="start"
-        android:background="@color/appDarkest">
+        android:background="@color/appDark">
         <ListView
             android:id="@+id/feedback_itemsList"
             android:layout_width="240dp"

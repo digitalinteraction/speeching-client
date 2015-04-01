@@ -14,11 +14,15 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using SpeechingCommon;
 using Android.Support.V7.App;
+using Android.Graphics;
+using Android.Support.V7.Graphics;
+using Android.Graphics.Drawables;
+using Android.Provider;
 
 namespace DroidSpeeching
 {
     [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity) )]
-    public class RecordPlaceEntryActivity : ActionBarActivity
+    public class RecordPlaceEntryActivity : ActionBarActivity, Palette.IPaletteAsyncListener
     {
         string placeId;
         string placeName;
@@ -26,6 +30,7 @@ namespace DroidSpeeching
         long lat;
         long lng;
 
+        TextView titleText;
         Button recordButton;
         AndroidUtils.RecordAudioManager audioManager;
         bool recording = false;
@@ -38,7 +43,6 @@ namespace DroidSpeeching
             RequestWindowFeature(WindowFeatures.ActionBar);
             base.OnCreate(bundle);
 
-
             placeId = Intent.GetStringExtra("PlaceID");
             placeName = Intent.GetStringExtra("PlaceName");
             imageLoc = Intent.GetStringExtra("PlaceImage");
@@ -47,27 +51,35 @@ namespace DroidSpeeching
 
             SetContentView(Resource.Layout.PlacesRecordEntry);
 
-            recFolder = Path.Combine(AppData.placesRecordingsCache, placeId);
+            recFolder = System.IO.Path.Combine(AppData.placesRecordingsCache, placeId);
 
             if(!Directory.Exists(recFolder))
             {
                 Directory.CreateDirectory(recFolder);
             }
 
-            recFile = Path.Combine(recFolder, "entry.mp4");
-            resultsZipPath = Path.Combine(AppData.exportsCache, placeId + ".zip");
+            recFile = System.IO.Path.Combine(recFolder, "entry.mp4");
+            resultsZipPath = System.IO.Path.Combine(AppData.exportsCache, placeId + ".zip");
 
             if(imageLoc != null)
             {
                 // Load the location's photo if there is one (already downloaded)
-                FindViewById<ImageView>(Resource.Id.placesRecord_photo).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+                Android.Net.Uri imageUri = Android.Net.Uri.FromFile(new Java.IO.File(imageLoc));
+                Bitmap bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, imageUri);
+
+                ImageView headerImage = FindViewById<ImageView>(Resource.Id.placesRecord_photo);
+                headerImage.SetImageBitmap(bitmap);
+                
+                Palette.GenerateAsync(bitmap, this);
             }
             else
             {
                 // TODO do something which is less disappointing, because the image does look pretty nice
                 FindViewById<ImageView>(Resource.Id.placesRecord_photo).Visibility = ViewStates.Gone;
             }
-            FindViewById<TextView>(Resource.Id.placesRecord_title).Text = "Create an entry about " + placeName;
+
+            titleText = FindViewById<TextView>(Resource.Id.placesRecord_title);
+            titleText.Text = "Create an entry about " + placeName;
 
             recordButton = FindViewById<Button>(Resource.Id.placesRecord_button);
             recordButton.Click += recordButton_Click;
@@ -172,6 +184,16 @@ namespace DroidSpeeching
                 audioManager.CleanUp();
                 audioManager = null;
             }
+        }
+
+        public void OnGenerated(Palette palette)
+        {
+            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appDark));
+
+            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+            SupportActionBar.SetDisplayShowTitleEnabled(true);
+            Window.SetStatusBarColor(vibrantDark);
         }
     }
 }

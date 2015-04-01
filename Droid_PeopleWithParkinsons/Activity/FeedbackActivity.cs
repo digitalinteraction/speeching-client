@@ -16,6 +16,9 @@ using RadialProgress;
 using System.Threading.Tasks;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V7.App;
+using Android.Provider;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 
 namespace DroidSpeeching
 {
@@ -358,16 +361,20 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Load the given user's avatar into the ImageView
+        /// Load the given user's avatar into the ImageView as a circular drawable
         /// </summary>
         private async Task LoadUserAvatar(User user, ImageView view)
         {
             string imageLoc = await Utils.FetchLocalCopy(user.avatar, typeof(User));
 
-            RoundedBitmapDrawable img = RoundedBitmapDrawableFactory.Create(view.Resources, imageLoc);
-            img.SetAntiAlias(true);
-            img.CornerRadius = 120;
-            view.SetImageDrawable(img);
+            if (string.IsNullOrEmpty(imageLoc)) return;
+
+            Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
+                        context.ContentResolver,
+                        Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+
+            RoundedDrawable avatar = new RoundedDrawable(thisBitmap);
+            view.SetImageDrawable(avatar);
         }
     }
     

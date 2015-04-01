@@ -30,6 +30,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
         <TextView
+            android:id="@+id/placesRecord_subHeader"
             android:text="Why not try talking about..."
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
@@ -42,6 +43,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp" />
         <TextView
+            android:id="@+id/placesRecord_hint"
             android:text="•What it looks like\n•The last time you went there\n•The things about it that you like and dislike\n"
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"

@@ -23,7 +23,7 @@
             android:paddingRight="10dp"
             android:divider="@android:color/transparent"
             android:scrollbars="none"
-            android:paddingBottom="8dp"
+            android:paddingBottom="10dp"
             android:clipToPadding="false"
             android:dividerHeight="8dp"
             android:visibility="gone" />
