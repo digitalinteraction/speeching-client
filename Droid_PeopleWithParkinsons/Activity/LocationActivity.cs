@@ -300,6 +300,7 @@ namespace DroidSpeeching
                 else
                 {
                     photoView.SetImageResource(Resource.Drawable.Icon);
+                    photoView.Elevation = 0;
                     photoView.Visibility = ViewStates.Visible;
                 }
 
@@ -308,12 +309,13 @@ namespace DroidSpeeching
 
             private async Task LoadImage(ImageView image, GooglePlace place)
             {
-                string imageLoc = await ServerData.FetchPlacePhoto(place, 110, 110);
+                string imageLoc = await ServerData.FetchPlacePhoto(place, 140, 140);
 
                 if(!string.IsNullOrEmpty(imageLoc))
                 {
                     image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
                     image.Visibility = ViewStates.Visible;
+                    image.Elevation = 4;
                 }
             }
         }

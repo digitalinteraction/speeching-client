@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/listCell"
-    android:elevation="3dp">
+    android:elevation="4dp">
     <TextView
         android:id="@+id/placesList_name"
         android:text="this is a longer than average location name"
@@ -20,9 +20,11 @@
     <ImageView
         android:src="@drawable/Icon"
         android:id="@+id/placesList_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_margin="10dp"
         android:layout_gravity="center_vertical|right"
-        android:scaleType="fitCenter" />
+        android:scaleType="centerCrop"
+        android:background="@color/appMain"
+        android:elevation="4dp" />
 </LinearLayout>

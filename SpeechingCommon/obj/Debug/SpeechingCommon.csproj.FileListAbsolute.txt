@@ -14,3 +14,4 @@ C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\android
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\res\values\strings.xml
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\R.cs.flag
 C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\uploadflags.txt
+C:\Users\Tom\Documents\Dev\Speeching\speeching\SpeechingCommon\obj\Debug\SpeechingCommon.csprojResolveAssemblyReference.cache

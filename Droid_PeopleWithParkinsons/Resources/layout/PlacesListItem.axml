@@ -20,8 +20,11 @@
     <ImageView
         android:src="@drawable/Icon"
         android:id="@+id/placesList_photo"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:padding="10dp"
-        android:layout_gravity="center_vertical|right" />
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_vertical|right"
+        android:background="@color/appMain"
+        android:elevation="3dp" />
 </LinearLayout>

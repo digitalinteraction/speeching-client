@@ -74,6 +74,7 @@ namespace DroidSpeeching
                 }
 
                 localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
+
                 PrepareData();
             }
             else
@@ -96,7 +97,6 @@ namespace DroidSpeeching
         private void DisplayContent()
         {
             SetContentView(Resource.Layout.GuideActivity);
-            ActionBar.Hide();
 
             adapter = new GuideAdapter(SupportFragmentManager, guide.Guides, resources);
             pager = FindViewById<ViewPager>(Resource.Id.guide_pager);
