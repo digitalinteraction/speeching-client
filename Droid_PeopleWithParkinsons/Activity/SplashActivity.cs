@@ -17,13 +17,13 @@ using System.Threading.Tasks;
 
 namespace DroidSpeeching
 {
-    [Activity(MainLauncher = true, NoHistory = true, Theme = "@style/Theme.Splash")]
+    [Activity(MainLauncher = true, Theme = "@style/Theme.Splash")]
     public class SplashActivity : Activity, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback, Android.Views.View.IOnClickListener
     {
         IGoogleApiClient apiClient;
         bool intentInProgress = false;
         bool signInClicked = false;
-        int RC_SIGN_IN = 0;
+        int RC_SIGN_IN = 8675309;
         ConnectionResult connectionResult;
 
         TextView loadingText;
@@ -40,15 +40,19 @@ namespace DroidSpeeching
 
             loadingText = FindViewById<TextView>(Resource.Id.splash_loading);
 
-            GoogleApiClientBuilder builder = new GoogleApiClientBuilder(this)
+            apiClient = new GoogleApiClientBuilder(this)
             .AddConnectionCallbacks(this)
             .AddOnConnectionFailedListener(this)
             .AddApi(PlusClass.Api)
-            .AddScope(PlusClass.ScopePlusLogin);
-
-            apiClient = builder.Build();
+            .AddScope(PlusClass.ScopePlusLogin).Build();
 
             ThreadPool.QueueUserWorkItem(o => AttemptLoad());
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            apiClient.Connect();
         }
 
         public void OnClick(View view)
@@ -56,12 +60,13 @@ namespace DroidSpeeching
             if (view.Id == Resource.Id.splash_signIn && !apiClient.IsConnecting)
             {
                 signInClicked = true;
-                apiClient.Connect();
+                ResolveSignInError();
             }
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            Toast.MakeText(this, "HOWDY!", ToastLength.Short).Show();
             if (requestCode == RC_SIGN_IN)
             {
                 if (resultCode != Result.Ok)
@@ -85,13 +90,12 @@ namespace DroidSpeeching
 
         private void ResolveSignInError()
         {
-            if (connectionResult.HasResolution)
+            if (connectionResult != null && connectionResult.HasResolution)
             {
                 try
                 {
                     intentInProgress = true;
-                    StartIntentSenderForResult(connectionResult.Resolution.IntentSender,
-                        RC_SIGN_IN, null, 0, 0, 0);
+                    connectionResult.StartResolutionForResult(this, RC_SIGN_IN);
                 }
                 catch (Exception e)
                 {
