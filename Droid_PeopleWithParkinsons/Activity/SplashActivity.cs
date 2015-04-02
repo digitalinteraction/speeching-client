@@ -26,13 +26,19 @@ namespace DroidSpeeching
         int RC_SIGN_IN = 0;
         ConnectionResult connectionResult;
 
+        TextView loadingText;
+        SignInButton signInBtn;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Splash);
 
-            FindViewById(Resource.Id.sign_in_button).SetOnClickListener(this);
+            signInBtn = FindViewById<SignInButton>(Resource.Id.splash_signIn);
+            signInBtn.SetOnClickListener(this);
+
+            loadingText = FindViewById<TextView>(Resource.Id.splash_loading);
 
             GoogleApiClientBuilder builder = new GoogleApiClientBuilder(this)
             .AddConnectionCallbacks(this)
@@ -42,12 +48,12 @@ namespace DroidSpeeching
 
             apiClient = builder.Build();
 
-            //ThreadPool.QueueUserWorkItem(o => CreateData());
+            ThreadPool.QueueUserWorkItem(o => AttemptLoad());
         }
 
         public void OnClick(View view)
         {
-            if(view.Id == Resource.Id.sign_in_button && !apiClient.IsConnecting)
+            if(view.Id == Resource.Id.splash_signIn && !apiClient.IsConnecting)
             {
                 signInClicked = true;
                 apiClient.Connect();
@@ -97,53 +103,80 @@ namespace DroidSpeeching
             }
         }
 
-        private async Task CreateData()
+        private async Task AttemptLoad()
         {
-            try
-            {
-                bool successfulLoad = await AndroidUtils.InitSession(this);
+            bool successfulLoad = await AndroidUtils.InitSession(this);
 
-                if(successfulLoad)
-                    StartActivity(typeof(MainActivity));
+            if(successfulLoad)
+            {
+                if (AppData.session.categories == null || AppData.session.categories.Count == 0)
+                {
+                    // Loaded the user fine, but we need to pull from the server
+                    ReadyMainMenu();
+                }
                 else
                 {
-                    RunOnUiThread(() => 
-                        {
-                            AlertDialog alert = new AlertDialog.Builder(this)
-                                .SetTitle("Internet connection required!")
-                                .SetMessage("We were unable to load offline data and failed to connect to the service. Please try again later.")
-                                .SetCancelable(false)
-                                .SetPositiveButton("Ok", (p1, p2) => { Finish(); })
-                                .Create();
-                            alert.Show();  
-                        });
+                    StartActivity(typeof(MainActivity));
                 }
-            }
-            catch (Exception e)
+            }   
+            else
             {
-                Console.WriteLine("Err: " + e);
+                // Unable to load previous session! Allow the user to log in
+                RunOnUiThread(() => 
+                    {
+                        signInBtn.Visibility = ViewStates.Visible;
+                        loadingText.Visibility = ViewStates.Gone;
+                    });
             }
         }
 
 
         public void OnConnected(Bundle connectionHint)
         {
-            //Huzzah!
-            signInClicked = false;
-
             IPerson currentPerson = PlusClass.PeopleApi.GetCurrentPerson(apiClient);
 
             if(currentPerson != null)
             {
-                string name = currentPerson.DisplayName;
-                IPersonImage photo = currentPerson.Image;
-                string plusProfile = currentPerson.Url;
-                string email = PlusClass.AccountApi.GetAccountName(apiClient);
+                User thisUser = new User();
+                thisUser.name = currentPerson.DisplayName;
+                thisUser.nickname = (currentPerson.HasNickname) ? currentPerson.Nickname : thisUser.name;
+                thisUser.id = currentPerson.Id;
+                thisUser.avatar = (currentPerson.Image != null) ? currentPerson.Image.Url : null;
+                thisUser.email = PlusClass.AccountApi.GetAccountName(apiClient);
 
-                Toast.MakeText(this, "Yay data", ToastLength.Short).Show();
+                AppData.AssignCurrentUser(thisUser);
+                ReadyMainMenu();
             }
+        }
 
+        public async Task ReadyMainMenu()
+        {
+            ProgressDialog dialog = new ProgressDialog(this);
+            dialog.SetTitle("Welcome, " + AppData.session.currentUser.nickname + "!");
+            dialog.SetMessage("Downloading data. Please wait...");
+            dialog.SetCancelable(false);
+            dialog.Show();
 
+            bool success = await ServerData.FetchCategories();
+
+            dialog.Hide();
+
+            signInClicked = false;
+
+            if(success)
+            {
+                StartActivity(typeof(MainActivity));
+            }
+            else
+            {
+                AlertDialog alert = new AlertDialog.Builder(this)
+                    .SetTitle("Connection error")
+                    .SetMessage("We were unable to reach the server - please try again later.")
+                    .SetPositiveButton("Ok", (arg1, arg2) => { })
+                    .Create();
+                alert.Show();
+            }
+            
         }
 
         public void OnConnectionSuspended(int cause)

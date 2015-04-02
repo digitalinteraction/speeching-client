@@ -37,7 +37,7 @@ namespace DroidSpeeching
         /// <summary>
         /// Set up Android specific variables and get the session loaded/created
         /// </summary>
-        /// <returns></returns>
+        /// <returns>If a previous session was actively loaded</returns>
         public static async Task<bool> InitSession(Activity context = null)
         {
             AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
@@ -66,12 +66,10 @@ namespace DroidSpeeching
             {
                 bool gpsSuccess = CheckForGooglePlayServices(context);
 
-                if (gpsSuccess)
+                if (!gpsSuccess)
                 {
-                    if (!AppData.CheckNetwork())
-                    {
-                        context.RunOnUiThread(()=> Toast.MakeText(context, "Unable to connect to server - online features unavailable", ToastLength.Long).Show());
-                    }
+                   context.RunOnUiThread(()=> Toast.MakeText(context, "Error: Couldn't connect to Google Play Services", ToastLength.Long).Show());
+                   return false;
                 }
                 
             }

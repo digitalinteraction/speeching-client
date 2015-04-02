@@ -9,7 +9,7 @@ namespace SpeechingCommon
     {
         Utils.UploadStage UploadState { get; set; }
         int Id { get; set; }
-        int UserId { get; set; }
+        string UserId { get; set; }
         string ResourceUrl { get; set; }
         int ParticipantActivityId { get; set; }
         DateTime CompletionDate { get; set; }

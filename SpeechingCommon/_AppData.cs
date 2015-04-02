@@ -51,32 +51,14 @@ namespace SpeechingCommon
         /// <returns></returns>
         public static async Task<bool> InitializeIfNeeded()
         {
-            if (session != null) return true;
+            bool success = session != null;
 
-            while(initializing)
+            if(!success)
             {
-                Task.Delay(100);
-            }
-            initializing = true;
-
-            bool success = false;
-
-            if(session == null)
-            {
-                if(!TryLoadExistingData())
-                {
-                    AppData.session.currentUser.id = 7041992;
-
-                    success = await ServerData.FetchCategories();
-                }
-                else
-                {
-                    success = true;
-                }
+                success = TryLoadExistingData();
 
                 CleanupPlaces();
             }
-            initializing = false;
 
             return success;
         }
@@ -210,9 +192,19 @@ namespace SpeechingCommon
             }
 
             session = new SessionData();
-            ServerData.storageRemoteDir = "uploads/" + session.currentUser.id + "/";
-
             return false;
+        }
+
+        /// <summary>
+        /// Makes the current user the owner of this session
+        /// </summary>
+        public static void AssignCurrentUser(User thisUser)
+        {
+            if (session == null) session = new SessionData();
+            session.currentUser = thisUser;
+            ServerData.storageRemoteDir = "uploads/" + thisUser.id + "/";
+
+            SaveCurrentData();
         }
 
         /// <summary>

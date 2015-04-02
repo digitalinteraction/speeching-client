@@ -8,7 +8,7 @@ namespace SpeechingCommon
     public class LocationRecordingResult : IResultItem
     {
         private int id;
-        private int userId;
+        private string userId;
         private string resource;
         private int activityId;
         private Utils.UploadStage state;
@@ -56,7 +56,7 @@ namespace SpeechingCommon
         }
 
 
-        public int UserId
+        public string UserId
         {
             get
             {
