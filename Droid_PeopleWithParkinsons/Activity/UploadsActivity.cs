@@ -16,6 +16,9 @@ namespace DroidSpeeching
         private ToggleButton uploadAllButton;
         private ListView uploadsList;
         private ProgressDialog progressDialog;
+        private CancellationTokenSource cancelTokenSource;
+
+        private bool uploadingAll = false;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -34,6 +37,7 @@ namespace DroidSpeeching
 
         private void MultiUploadComplete(bool isFinal)
         {
+            uploadingAll = false;
             RefreshList();
             if(isFinal)
             {
@@ -47,7 +51,16 @@ namespace DroidSpeeching
 
         private void uploadAllButton_Click(object sender, EventArgs e)
         {
-            ServerData.PushAllResults(RefreshList, MultiUploadComplete);
+            if(!uploadingAll)
+            {
+                uploadingAll = true;
+                cancelTokenSource = new CancellationTokenSource();
+                ServerData.PushAllResults(RefreshList, MultiUploadComplete, cancelTokenSource.Token);
+            }
+            else if(cancelTokenSource != null)
+            {
+                cancelTokenSource.Cancel();
+            }
         }
 
         /// <summary>
@@ -80,6 +93,7 @@ namespace DroidSpeeching
             {
                 progressDialog = new ProgressDialog(this);
                 progressDialog.SetMessage("Uploading your content. Please wait.");
+                progressDialog.SetButton("Cancel Upload", (arg1, arg2) => { if (cancelTokenSource != null) cancelTokenSource.Cancel(); });
                 progressDialog.Indeterminate = true;
             }
 
@@ -91,7 +105,8 @@ namespace DroidSpeeching
             .SetPositiveButton("Upload", (s, a) => {
                 IResultItem toUpload = AppData.session.resultsToUpload[args.Position];
                 progressDialog.Show();
-                ThreadPool.QueueUserWorkItem(o => ServerData.PushResult(toUpload, RefreshList, OnUploadComplete));
+                cancelTokenSource = new CancellationTokenSource();
+                ThreadPool.QueueUserWorkItem(o => ServerData.PushResult(toUpload, RefreshList, OnUploadComplete, cancelTokenSource.Token));
             })
             .SetNeutralButton("Cancel", (s, a) => { })
             .Create();
