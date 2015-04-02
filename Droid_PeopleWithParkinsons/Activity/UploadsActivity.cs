@@ -68,8 +68,13 @@ namespace DroidSpeeching
         /// </summary>
         private void RefreshList()
         {
-            uploadsList.Adapter = null;
-            uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+            this.RunOnUiThread(() => {
+
+                uploadsList.Adapter = null;
+                uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+            
+            });
+           
         }
 
         private void OnUploadComplete(bool success)
