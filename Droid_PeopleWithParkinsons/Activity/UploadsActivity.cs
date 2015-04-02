@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
 using System;
+using System.Threading;
 
 namespace DroidSpeeching
 {
@@ -24,7 +25,7 @@ namespace DroidSpeeching
             SetContentView(Resource.Layout.UploadsActivity);
 
             uploadsList = FindViewById<ListView>(Resource.Id.uploads_list);
-            uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+            uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
             uploadsList.ItemClick += OnItemTap;
 
             uploadAllButton = FindViewById<ToggleButton>(Resource.Id.uploads_start);
@@ -46,7 +47,7 @@ namespace DroidSpeeching
 
         private void uploadAllButton_Click(object sender, EventArgs e)
         {
-            ServerData.PushAllResults(MultiUploadComplete);
+            ServerData.PushAllResults(RefreshList, MultiUploadComplete);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace DroidSpeeching
         private void RefreshList()
         {
             uploadsList.Adapter = null;
-            uploadsList.Adapter = new AndroidUtils.ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
+            uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
         }
 
         private void OnUploadComplete(bool success)
@@ -90,7 +91,7 @@ namespace DroidSpeeching
             .SetPositiveButton("Upload", (s, a) => {
                 IResultItem toUpload = AppData.session.resultsToUpload[args.Position];
                 progressDialog.Show();
-                ServerData.PushResult(toUpload, OnUploadComplete);
+                ThreadPool.QueueUserWorkItem(o => ServerData.PushResult(toUpload, RefreshList, OnUploadComplete));
             })
             .SetNeutralButton("Cancel", (s, a) => { })
             .Create();
@@ -115,5 +116,5 @@ namespace DroidSpeeching
                 confirm.Show();
             };     
         }
-    }
+    }  
 }

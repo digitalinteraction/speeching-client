@@ -1534,37 +1534,40 @@ namespace DroidSpeeching
 			public const int powered_by_google_light = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int recordButtonBlue = 2130837599;
+			public const int progress = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int recordButtonRed = 2130837600;
+			public const int recordButtonBlue = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int round_button = 2130837601;
+			public const int recordButtonRed = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int round_button_alt = 2130837602;
+			public const int round_button = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int rounded_layout = 2130837603;
+			public const int round_button_alt = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int shadowed = 2130837604;
+			public const int rounded_layout = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int splash = 2130837605;
+			public const int shadowed = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int splashIcon = 2130837606;
+			public const int splash = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int tabs_pattern = 2130837607;
+			public const int splashIcon = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int TutPlaceholder = 2130837608;
+			public const int tabs_pattern = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int whiteCircle = 2130837609;
+			public const int TutPlaceholder = 2130837609;
+			
+			// aapt resource value: 0x7f02006a
+			public const int whiteCircle = 2130837610;
 			
 			static Drawable()
 			{
@@ -1597,8 +1600,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f09009f
 			public const int TextToSpeak = 2131296415;
 			
-			// aapt resource value: 0x7f0900c7
-			public const int action_about = 2131296455;
+			// aapt resource value: 0x7f0900c9
+			public const int action_about = 2131296457;
 			
 			// aapt resource value: 0x7f090045
 			public const int action_bar = 2131296325;
@@ -1624,8 +1627,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090046
 			public const int action_context_bar = 2131296326;
 			
-			// aapt resource value: 0x7f0900c6
-			public const int action_logOut = 2131296454;
+			// aapt resource value: 0x7f0900c8
+			public const int action_logOut = 2131296456;
 			
 			// aapt resource value: 0x7f090002
 			public const int action_menu_divider = 2131296258;
@@ -1642,11 +1645,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090034
 			public const int action_mode_close_button = 2131296308;
 			
-			// aapt resource value: 0x7f0900c5
-			public const int action_settings = 2131296453;
+			// aapt resource value: 0x7f0900c7
+			public const int action_settings = 2131296455;
 			
-			// aapt resource value: 0x7f0900c4
-			public const int action_uploads = 2131296452;
+			// aapt resource value: 0x7f0900c6
+			public const int action_uploads = 2131296454;
 			
 			// aapt resource value: 0x7f090035
 			public const int activity_chooser_view_content = 2131296309;
@@ -1792,8 +1795,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090067
 			public const int guide_right = 2131296359;
 			
-			// aapt resource value: 0x7f0900c8
-			public const int help = 2131296456;
+			// aapt resource value: 0x7f0900ca
+			public const int help = 2131296458;
 			
 			// aapt resource value: 0x7f090023
 			public const int holo_dark = 2131296291;
@@ -2140,17 +2143,23 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090008
 			public const int up = 2131296264;
 			
-			// aapt resource value: 0x7f0900c3
-			public const int uploadsList_completedAt = 2131296451;
-			
-			// aapt resource value: 0x7f0900c0
-			public const int uploadsList_icon = 2131296448;
+			// aapt resource value: 0x7f0900c5
+			public const int uploadsList_completedAt = 2131296453;
 			
 			// aapt resource value: 0x7f0900c2
-			public const int uploadsList_scenarioTitle = 2131296450;
+			public const int uploadsList_icon = 2131296450;
 			
 			// aapt resource value: 0x7f0900c1
-			public const int uploadsList_uploadStatus = 2131296449;
+			public const int uploadsList_progress = 2131296449;
+			
+			// aapt resource value: 0x7f0900c4
+			public const int uploadsList_scenarioTitle = 2131296452;
+			
+			// aapt resource value: 0x7f0900c3
+			public const int uploadsList_uploadStatus = 2131296451;
+			
+			// aapt resource value: 0x7f0900c0
+			public const int uploadsList_visuals = 2131296448;
 			
 			// aapt resource value: 0x7f0900be
 			public const int uploads_list = 2131296446;

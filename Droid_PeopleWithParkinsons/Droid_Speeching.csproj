@@ -106,6 +106,7 @@
     <Compile Include="AndroidUtils.cs" />
     <Compile Include="AudioRecorder.cs" />
     <Compile Include="AutoResizeTextView.cs" />
+    <Compile Include="ExportedListAdapter.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\GuideFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
@@ -316,6 +317,7 @@
     <AndroidResource Include="Resources\drawable\splashIcon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\iconupload128.png" />
     <AndroidResource Include="Resources\drawable\whiteCircle.xml" />
+    <AndroidResource Include="Resources\drawable\progress.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

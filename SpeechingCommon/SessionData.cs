@@ -70,7 +70,8 @@ namespace SpeechingCommon
         {
             resultsToUpload.Remove(result);
 
-            File.Delete(result.ResourceUrl);
+            if(File.Exists(result.ResourceUrl))
+                File.Delete(result.ResourceUrl);
 
             if (save) AppData.SaveCurrentData();
         }
