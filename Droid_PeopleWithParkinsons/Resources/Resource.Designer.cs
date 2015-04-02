@@ -1597,8 +1597,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f09009f
 			public const int TextToSpeak = 2131296415;
 			
-			// aapt resource value: 0x7f0900c5
-			public const int action_about = 2131296453;
+			// aapt resource value: 0x7f0900c6
+			public const int action_about = 2131296454;
 			
 			// aapt resource value: 0x7f090045
 			public const int action_bar = 2131296325;
@@ -1624,8 +1624,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090046
 			public const int action_context_bar = 2131296326;
 			
-			// aapt resource value: 0x7f0900c4
-			public const int action_logOut = 2131296452;
+			// aapt resource value: 0x7f0900c5
+			public const int action_logOut = 2131296453;
 			
 			// aapt resource value: 0x7f090002
 			public const int action_menu_divider = 2131296258;
@@ -1642,11 +1642,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090034
 			public const int action_mode_close_button = 2131296308;
 			
-			// aapt resource value: 0x7f0900c3
-			public const int action_settings = 2131296451;
+			// aapt resource value: 0x7f0900c4
+			public const int action_settings = 2131296452;
 			
-			// aapt resource value: 0x7f0900c2
-			public const int action_uploads = 2131296450;
+			// aapt resource value: 0x7f0900c3
+			public const int action_uploads = 2131296451;
 			
 			// aapt resource value: 0x7f090035
 			public const int activity_chooser_view_content = 2131296309;
@@ -1792,8 +1792,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090067
 			public const int guide_right = 2131296359;
 			
-			// aapt resource value: 0x7f0900c6
-			public const int help = 2131296454;
+			// aapt resource value: 0x7f0900c7
+			public const int help = 2131296455;
 			
 			// aapt resource value: 0x7f090023
 			public const int holo_dark = 2131296291;
@@ -2077,6 +2077,9 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090011
 			public const int showTitle = 2131296273;
 			
+			// aapt resource value: 0x7f0900b5
+			public const int sign_in_button = 2131296437;
+			
 			// aapt resource value: 0x7f090007
 			public const int split_action_bar = 2131296263;
 			
@@ -2086,17 +2089,17 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090050
 			public const int submit_area = 2131296336;
 			
-			// aapt resource value: 0x7f0900b5
-			public const int submittedAlert_Message = 2131296437;
-			
 			// aapt resource value: 0x7f0900b6
-			public const int submittedAlert_feedbackBtn = 2131296438;
+			public const int submittedAlert_Message = 2131296438;
 			
 			// aapt resource value: 0x7f0900b7
-			public const int submittedAlert_permission = 2131296439;
+			public const int submittedAlert_feedbackBtn = 2131296439;
 			
 			// aapt resource value: 0x7f0900b8
-			public const int submitted_list = 2131296440;
+			public const int submittedAlert_permission = 2131296440;
+			
+			// aapt resource value: 0x7f0900b9
+			public const int submitted_list = 2131296441;
 			
 			// aapt resource value: 0x7f09007b
 			public const int submitted_message = 2131296379;
@@ -2134,32 +2137,32 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f090008
 			public const int up = 2131296264;
 			
-			// aapt resource value: 0x7f0900c1
-			public const int uploadsList_completedAt = 2131296449;
-			
-			// aapt resource value: 0x7f0900be
-			public const int uploadsList_icon = 2131296446;
-			
-			// aapt resource value: 0x7f0900c0
-			public const int uploadsList_scenarioTitle = 2131296448;
+			// aapt resource value: 0x7f0900c2
+			public const int uploadsList_completedAt = 2131296450;
 			
 			// aapt resource value: 0x7f0900bf
-			public const int uploadsList_uploadStatus = 2131296447;
+			public const int uploadsList_icon = 2131296447;
 			
-			// aapt resource value: 0x7f0900bc
-			public const int uploads_list = 2131296444;
+			// aapt resource value: 0x7f0900c1
+			public const int uploadsList_scenarioTitle = 2131296449;
 			
-			// aapt resource value: 0x7f0900bb
-			public const int uploads_message = 2131296443;
+			// aapt resource value: 0x7f0900c0
+			public const int uploadsList_uploadStatus = 2131296448;
 			
 			// aapt resource value: 0x7f0900bd
-			public const int uploads_start = 2131296445;
+			public const int uploads_list = 2131296445;
+			
+			// aapt resource value: 0x7f0900bc
+			public const int uploads_message = 2131296444;
+			
+			// aapt resource value: 0x7f0900be
+			public const int uploads_start = 2131296446;
+			
+			// aapt resource value: 0x7f0900bb
+			public const int uploads_title = 2131296443;
 			
 			// aapt resource value: 0x7f0900ba
-			public const int uploads_title = 2131296442;
-			
-			// aapt resource value: 0x7f0900b9
-			public const int uploads_warning = 2131296441;
+			public const int uploads_warning = 2131296442;
 			
 			// aapt resource value: 0x7f090012
 			public const int useLogo = 2131296274;
