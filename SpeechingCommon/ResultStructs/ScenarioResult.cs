@@ -11,19 +11,20 @@ namespace SpeechingCommon
         public Dictionary<int, string> ParticipantTaskIdResults;
 
         private int id;
-        private int userId;
+        private string userId;
         private string resource;
         private int activityId;
         private Utils.UploadStage state;
         private DateTime completedAt;
 
-        public ScenarioResult(int activityId, string dataLoc, int userId)
+        public ScenarioResult(int activityId, string dataLoc, string userId)
         {
             this.id = AppData.rand.Next(0, 100000); // TEMP
             this.activityId = activityId;
             this.resource = dataLoc;
             this.state = Utils.UploadStage.Ready;
             this.ParticipantTaskIdResults = new Dictionary<int, string>();
+            this.userId = userId;
         }
 
         public int Id
@@ -74,7 +75,7 @@ namespace SpeechingCommon
             }
         }
 
-        public int UserId
+        public string UserId
         {
             get
             {
