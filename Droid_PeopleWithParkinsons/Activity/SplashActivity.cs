@@ -28,6 +28,7 @@ namespace DroidSpeeching
 
         TextView loadingText;
         SignInButton signInBtn;
+        bool needLogin = false;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -120,11 +121,18 @@ namespace DroidSpeeching
                 }
                 else
                 {
+                    string name = AppData.session.currentUser.nickname;
+
+                    RunOnUiThread(() => Toast.MakeText(this, "Welcome back, " + name + "!", ToastLength.Long).Show());
+
                     StartActivity(typeof(MainActivity));
+                    Finish();
                 }
             }
             else
             {
+                needLogin = true;
+
                 // Unable to load previous session! Allow the user to log in
                 RunOnUiThread(() =>
                 {
@@ -137,6 +145,8 @@ namespace DroidSpeeching
 
         public void OnConnected(Bundle connectionHint)
         {
+            if (!needLogin) return;
+
             IPerson currentPerson = PlusClass.PeopleApi.GetCurrentPerson(apiClient);
 
             if (currentPerson != null)
@@ -170,6 +180,7 @@ namespace DroidSpeeching
             if (success)
             {
                 StartActivity(typeof(MainActivity));
+                this.Finish();
             }
             else
             {
