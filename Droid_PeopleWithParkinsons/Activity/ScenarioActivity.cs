@@ -558,6 +558,8 @@ namespace DroidSpeeching
                 string filter = @"-final\.zip$"; // Don't include yourself, you daft thing
                 fastZip.CreateZip(resultsZipPath, localTempDirectory, recurse, filter);
 
+                results.CompletionDate = DateTime.Now;
+
                 AppData.session.resultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
