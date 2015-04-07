@@ -21,6 +21,7 @@ using Android.Content.PM;
 using Android.Gms.Common;
 using Android.Gms.Location;
 using Android.Net;
+using Android.Preferences;
 
 namespace DroidSpeeching
 {
@@ -60,6 +61,8 @@ namespace DroidSpeeching
                     AndroidUtils.RegisterGCM(context);
                 }
             };
+
+            PreferenceManager.SetDefaultValues(context, Resource.Xml.user_settings, false);
 
             // Only allow this to be null if in background!
             if(context != null)

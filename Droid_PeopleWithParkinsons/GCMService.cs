@@ -5,6 +5,7 @@ using Android.Gms.Gcm;
 using Android.Gms.Location;
 using Android.Locations;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Widget;
@@ -40,6 +41,7 @@ namespace DroidSpeeching
 
         string lastType = "";
         string lastData = "";
+        ISharedPreferences userPrefs;
  
         IGoogleApiClient apiClient;
         GeofencingRegisterer fenceReg;
@@ -61,6 +63,8 @@ namespace DroidSpeeching
 
             if(!extras.IsEmpty)
             {
+                userPrefs = PreferenceManager.GetDefaultSharedPreferences(this);
+
                 if(GoogleCloudMessaging.MessageTypeSendError.Equals(messageType))
                 {
                     AndroidUtils.SendNotification("Speeching Error", "Error while sending message: " + extras.ToString(), typeof(MainActivity), this);
@@ -79,13 +83,25 @@ namespace DroidSpeeching
                     switch (notifType)
                     {
                         case "notification" :
-                            AndroidUtils.SendNotification(extras.GetString("title"), extras.GetString("message"), typeof(SplashActivity), this);
+                            if (userPrefs.GetBoolean("prefNotifMessage", true))
+                            {
+                                // The user wants to receive notifications
+                                AndroidUtils.SendNotification(extras.GetString("title"), extras.GetString("message"), typeof(SplashActivity), this);
+                            }
                             break;
                         case "locationReminder" :
-                            ShowReminder();
+                            if (userPrefs.GetBoolean("prefNotifMessage", true))
+                            {
+                                // The user wants to receive notifications
+                                ShowReminder();
+                            }
                             break;
                         case "newFences" :
-                            BuildFences(extras.GetString("fences"));
+                            if (userPrefs.GetBoolean("prefNotifGeofence", true))
+                            {
+                                // The user wants to have geofences enabled
+                                BuildFences(extras.GetString("fences"));
+                            }
                             break;
                         case "newActivities" :
                             FetchNewContent();
@@ -116,7 +132,10 @@ namespace DroidSpeeching
             await AndroidUtils.InitSession();
             await ServerData.FetchCategories();
 
-            AndroidUtils.SendNotification("New content available!", "You have new Speeching activities available - take a look!", typeof(SplashActivity), this);
+            if (userPrefs.GetBoolean("prefNotifNewContent", true))
+            {
+                AndroidUtils.SendNotification("New content available!", "You have new Speeching activities available - take a look!", typeof(SplashActivity), this);
+            }
         }
 
         private void BuildFences(string fencesJson)
@@ -164,7 +183,7 @@ namespace DroidSpeeching
         {
             switch(lastType)
             {
-                case "reminder" :
+                case "locationReminder":
                     Location lastLoc = LocationServices.FusedLocationApi.GetLastLocation(apiClient);
                     if (lastLoc != null)
                     {

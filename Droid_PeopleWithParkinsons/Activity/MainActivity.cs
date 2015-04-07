@@ -73,6 +73,10 @@ namespace DroidSpeeching
             {
                 StartActivity(typeof(UploadsActivity));
             }
+            else if(item.ItemId == Resource.Id.action_settings)
+            {
+                StartActivity(typeof(SettingsActivity));
+            }
             return base.OnOptionsItemSelected(item);
         }
 

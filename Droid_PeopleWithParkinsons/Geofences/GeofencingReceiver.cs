@@ -2,6 +2,7 @@ using Android.App;
 using Android.Content;
 using Android.Gms.Common.Apis;
 using Android.Gms.Location;
+using Android.Preferences;
 using Android.Widget;
 using Newtonsoft.Json;
 using SpeechingCommon;
@@ -55,6 +56,15 @@ namespace DroidSpeeching
 
                         if (fence != null)
                         {
+                            ISharedPreferences userPrefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                            if (!userPrefs.GetBoolean("prefNotifGeofence", true))
+                            {
+                                // The user doesn't want to be notified
+                                // Delete this fence to save battery and return without notifying
+                                RemoveFence(fence);
+                                return;
+                            }
+
                             if (transition == Geofence.GeofenceTransitionEnter || transition == Geofence.GeofenceTransitionDwell)
                             {
                                 OnEnteredGeofences(fence);

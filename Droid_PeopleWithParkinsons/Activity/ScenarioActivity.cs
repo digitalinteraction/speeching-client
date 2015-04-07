@@ -133,7 +133,7 @@ namespace DroidSpeeching
                     Directory.CreateDirectory(localTempDirectory);
                 }
 
-                localZipPath = System.IO.Path.Combine(localResourcesDirectory, scenarioFormatted + ".zip");
+                localZipPath = System.IO.Path.Combine(AppData.exportsCache, scenarioFormatted + ".zip");
                 try
                 {
                     PrepareData();

@@ -95,12 +95,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\SettingsActivity.cs" />
     <Compile Include="Activity\FeedbackActivity.cs" />
     <Compile Include="Activity\GuideActivity.cs" />
     <Compile Include="Activity\LocationActivity.cs" />
     <Compile Include="Activity\PermissionsActivity.cs" />
     <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
+    <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\SplashActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
     <Compile Include="AndroidUtils.cs" />
@@ -322,6 +324,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\iconupload128.png" />
     <AndroidResource Include="Resources\drawable\whiteCircle.xml" />
     <AndroidResource Include="Resources\drawable\progress.xml" />
+    <AndroidResource Include="Resources\xml\user_settings.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

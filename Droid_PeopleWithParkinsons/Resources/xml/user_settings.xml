@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <PreferenceCategory android:title="Notifications">
+    <CheckBoxPreference android:defaultValue="true" android:key="prefNotifNewContent" android:summary="Notify me when new content is available from the server." android:title="New content notifications">
+    </CheckBoxPreference>
+
+    <CheckBoxPreference android:defaultValue="true" android:key="prefNotifMessage" android:summary="Allow other notifications to be sent from the Speeching service." android:title="Service notifications">
+    </CheckBoxPreference>
+
+    <CheckBoxPreference android:defaultValue="true" android:key="prefNotifGeofence" android:summary="Notify me to create a recording when I'm near a location of interest." android:title="Geofence notifications">
+    </CheckBoxPreference>
+  </PreferenceCategory>
+
+</PreferenceScreen>
