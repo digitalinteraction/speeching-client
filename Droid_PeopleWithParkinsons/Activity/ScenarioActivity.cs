@@ -1,10 +1,13 @@
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
 using Android.OS;
+using Android.Provider;
 using Android.Support.V4.App;
 using Android.Support.V7.App;
+using Android.Support.V7.Graphics;
 using Android.Views;
 using Android.Widget;
 using ICSharpCode.SharpZipLib.Core;
@@ -19,7 +22,7 @@ using System.Threading.Tasks;
 namespace DroidSpeeching
 {
     [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity), LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
-    public class ScenarioActivity : ActionBarActivity
+    public class ScenarioActivity : ActionBarActivity, Palette.IPaletteAsyncListener
     {
         private Scenario scenario;
 
@@ -42,6 +45,7 @@ namespace DroidSpeeching
         private RelativeLayout mainLayout;
         private TextView eventPrompt;
         private Button mainButton;
+        private View breakerView;
 
         // Event choice layout
         private LinearLayout choiceLayout;
@@ -75,6 +79,8 @@ namespace DroidSpeeching
             choiceImage1.Click += ChoiceImageClicked;
             choiceImage2 = FindViewById<ImageView>(Resource.Id.scenarioChoice2);
             choiceImage2.Click += ChoiceImageClicked;
+
+            breakerView = FindViewById(Resource.Id.scenarioBreaker);
 
             eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
             eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
@@ -395,12 +401,14 @@ namespace DroidSpeeching
                     // Make freeform prompts italic
                     string given = scenario.Tasks[currIndex].TaskResponse.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
-                    eventPrompt.Text = (given != null) ? given : ""; ;
+                    eventPrompt.Text = (given != null) ? given : "";
+                    inputHint.Text = "Your response:";
                 }
                 else
                 {
                     eventPrompt.Text = scenario.Tasks[currIndex].TaskResponse.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
+                    inputHint.Text = "Please say this:";
                 }
             }
 
@@ -409,6 +417,7 @@ namespace DroidSpeeching
             if(scenario.Tasks[currIndex].TaskContent.Type == TaskContent.ContentType.Video)
             {
                 // load video instead of audio + image
+                SetDefaultWindowColours();
                 eventVideo.Visibility = ViewStates.Visible;
                 eventImage.Visibility = ViewStates.Gone;
                 string vidKey = scenario.Tasks[currIndex].TaskContent.Visual;
@@ -425,7 +434,16 @@ namespace DroidSpeeching
                 string visualKey = scenario.Tasks[currIndex].TaskContent.Visual;
                 if(visualKey != null && resources.ContainsKey(visualKey))
                 {
-                    eventImage.SetImageURI(Android.Net.Uri.FromFile( new Java.IO.File( resources[visualKey]) ));
+                    Android.Net.Uri imageUri = Android.Net.Uri.FromFile(new Java.IO.File(resources[visualKey]));
+                    Bitmap bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, imageUri);
+
+                    eventImage.SetImageBitmap(bitmap);
+
+                    Palette.GenerateAsync(bitmap, this);
+                }
+                else
+                {
+                    SetDefaultWindowColours();
                 }
 
                 if (scenario.Tasks[currIndex].TaskContent.Type == TaskContent.ContentType.Audio)
@@ -591,6 +609,35 @@ namespace DroidSpeeching
                 confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
                 confirm.Show();
             };      
+        }
+
+        /// <summary>
+        /// Change the actionbar/window colour to reflect the colours in the main image
+        /// </summary>
+        /// <param name="palette"></param>
+        public void OnGenerated(Palette palette)
+        {
+            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appMain));
+
+            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+            SupportActionBar.SetDisplayShowTitleEnabled(true);
+            breakerView.SetBackgroundColor(vibrantDark);
+            Window.SetStatusBarColor(vibrantDark);
+        }
+
+        /// <summary>
+        /// Restore the default app colours to this activity
+        /// </summary>
+        private void SetDefaultWindowColours()
+        {
+            Color appMainCol = new Color(Resource.Color.appMain);
+
+            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(appMainCol));
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+            SupportActionBar.SetDisplayShowTitleEnabled(true);
+            breakerView.SetBackgroundColor(appMainCol);
+            Window.SetStatusBarColor(new Color(Resource.Color.appDark));
         }
     }
 }

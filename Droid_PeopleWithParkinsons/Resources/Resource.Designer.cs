@@ -2164,17 +2164,17 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0900c1
 			public const int uploadsList_visuals = 2131296449;
 			
-			// aapt resource value: 0x7f0900bf
-			public const int uploads_list = 2131296447;
-			
-			// aapt resource value: 0x7f0900be
-			public const int uploads_message = 2131296446;
+			// aapt resource value: 0x7f0900bd
+			public const int uploads_list = 2131296445;
 			
 			// aapt resource value: 0x7f0900c0
-			public const int uploads_start = 2131296448;
+			public const int uploads_message = 2131296448;
 			
-			// aapt resource value: 0x7f0900bd
-			public const int uploads_title = 2131296445;
+			// aapt resource value: 0x7f0900be
+			public const int uploads_start = 2131296446;
+			
+			// aapt resource value: 0x7f0900bf
+			public const int uploads_title = 2131296447;
 			
 			// aapt resource value: 0x7f0900bc
 			public const int uploads_warning = 2131296444;
@@ -2392,7 +2392,10 @@ namespace DroidSpeeching
 			public const int UploadsActivity = 2130903094;
 			
 			// aapt resource value: 0x7f030037
-			public const int UploadsListItem = 2130903095;
+			public const int UploadsListHead = 2130903095;
+			
+			// aapt resource value: 0x7f030038
+			public const int UploadsListItem = 2130903096;
 			
 			static Layout()
 			{

@@ -14,36 +14,22 @@
         android:background="@color/appDark"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:elevation="3dp" />
+        android:elevation="5dp" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:paddingBottom="12dp">
-        <TextView
-            android:text="Your Uploads"
-            android:layout_width="fill_parent"
-            android:layout_marginTop="12dp"
-            android:padding="8dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/uploads_title"
-            android:textSize="24sp" />
-        <TextView
-            android:text="Upload your results to the cloud service!"
-            android:layout_width="fill_parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/uploads_message"
-            android:textSize="18sp" />
+        android:paddingBottom="9dp">
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:scrollbars="none"
             android:id="@+id/uploads_list"
-            android:layout_marginTop="10dp" />
+            android:dividerHeight="10.0dp"
+            android:divider="@android:color/transparent" />
         <ToggleButton
             android:layout_width="fill_parent"
             android:layout_height="55dp"

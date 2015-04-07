@@ -27,7 +27,9 @@ namespace DroidSpeeching
 
             SetContentView(Resource.Layout.UploadsActivity);
 
+            View header = LayoutInflater.Inflate(Resource.Layout.UploadsListHead, null);
             uploadsList = FindViewById<ListView>(Resource.Id.uploads_list);
+            uploadsList.AddHeaderView(header, null, false);
             uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.session.resultsToUpload.ToArray());
             uploadsList.ItemClick += OnItemTap;
 
@@ -108,7 +110,7 @@ namespace DroidSpeeching
             .SetCancelable(true)
             .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
             .SetPositiveButton("Upload", (s, a) => {
-                IResultItem toUpload = AppData.session.resultsToUpload[args.Position];
+                IResultItem toUpload = AppData.session.resultsToUpload[args.Position + 1];
                 progressDialog.Show();
                 cancelTokenSource = new CancellationTokenSource();
                 ThreadPool.QueueUserWorkItem(o => ServerData.PushResult(toUpload, RefreshList, OnUploadComplete, cancelTokenSource.Token));
@@ -127,7 +129,7 @@ namespace DroidSpeeching
                 confirm.SetMessage("The recorded data will be irrecoverably lost.");
                 confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>
                 {
-                    AppData.session.DeleteResult(AppData.session.resultsToUpload[args.Position]);
+                    AppData.session.DeleteResult(AppData.session.resultsToUpload[args.Position + 1]);
                     RefreshList();
 
                     alert.Dismiss();

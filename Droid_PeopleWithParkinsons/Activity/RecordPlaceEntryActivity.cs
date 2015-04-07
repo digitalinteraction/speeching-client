@@ -188,12 +188,13 @@ namespace DroidSpeeching
 
         public void OnGenerated(Palette palette)
         {
-            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appDark));
+            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appMain));
+            Color dullDark = new Color(palette.GetDarkMutedColor(Resource.Color.appDark));
 
             SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
             SupportActionBar.SetDisplayShowTitleEnabled(false);
             SupportActionBar.SetDisplayShowTitleEnabled(true);
-            Window.SetStatusBarColor(vibrantDark);
+            Window.SetStatusBarColor(dullDark);
         }
     }
 }
