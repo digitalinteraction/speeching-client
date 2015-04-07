@@ -3,6 +3,10 @@ Droid_PeopleWithParkinsons/obj
 *.user
 *.userprefs
 *.apk
+*.dll
 Droid_PeopleWithParkinsons/Bin/Debug
 Droid_PeopleWithParkinsons/Bin/Release
+SpeechingCommon/Bin/Debug
+SpeechingCommon/Obj/Debug
+SpeechingCommon/Bin/Release
 SpeechingCommon/ConfidentialData.cs
