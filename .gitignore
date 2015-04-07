@@ -5,4 +5,4 @@ Droid_PeopleWithParkinsons/obj
 *.apk
 Droid_PeopleWithParkinsons/Bin/Debug
 Droid_PeopleWithParkinsons/Bin/Release
-*.ConfidentialData.cs
+SpeechingCommon/ConfidentialData.cs
