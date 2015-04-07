@@ -31,6 +31,9 @@ namespace DroidSpeeching
 
         private ListView feedbackList;
         private List<FeedbackData> feedbackData;
+        private TextView teaseText;
+        private TextView activityTitle;
+        private TextView completionDate;
 
         private IResultItem[] submissions;
         private IFeedbackItem[] currentFeedback;
@@ -45,6 +48,15 @@ namespace DroidSpeeching
             // Restore the user's last selection if it exists
             selectedIndex = (bundle == null)? 0 : bundle.GetInt("SelectedIndex", 0);
 
+            SetContentView(Resource.Layout.FeedbackActivity);
+
+            teaseText = FindViewById<TextView>(Resource.Id.feedback_tease);
+            teaseText.Visibility = ViewStates.Invisible;
+            activityTitle = FindViewById<TextView>(Resource.Id.feedback_title);
+            activityTitle.Text = "Loading...";
+            completionDate = FindViewById<TextView>(Resource.Id.feedback_completionDate);
+            completionDate.Text = "";
+
             FetchFeedbackDataInit();
         }
 
@@ -56,9 +68,22 @@ namespace DroidSpeeching
 
         private async Task FetchFeedbackDataInit()
         {
-            SetContentView(Resource.Layout.FeedbackActivity);
-
             submissions = await ServerData.FetchSubmittedList();
+
+            if(submissions == null || submissions.Length == 0)
+            {
+                AlertDialog alert = new AlertDialog.Builder(this)
+                    .SetTitle("No feedback to display")
+                    .SetMessage("You haven't submitted any results yet! Come back here once you have completed some activities and uploaded your results to the server!")
+                    .SetCancelable(false)
+                    .SetPositiveButton("Ok", (arg1, arg2) => { this.Finish(); })
+                    .Create();
+                alert.Show();
+
+                return;
+            }
+
+            teaseText.Visibility = ViewStates.Visible;
 
             feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
             feedbackList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
@@ -139,8 +164,8 @@ namespace DroidSpeeching
             string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);
 
             FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));
-            FindViewById<TextView>(Resource.Id.feedback_title).Text = thisActivity.Title;
-            FindViewById<TextView>(Resource.Id.feedback_completionDate).Text = "Completed on " + data.submission.CompletionDate.ToShortDateString();
+            activityTitle.Text = thisActivity.Title;
+            completionDate.Text = "Completed on " + data.submission.CompletionDate.ToShortDateString();
 
             if (feedbackList.Adapter == null)
             {
