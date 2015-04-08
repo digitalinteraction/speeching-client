@@ -86,7 +86,7 @@ namespace DroidSpeeching
                             if (userPrefs.GetBoolean("prefNotifMessage", true))
                             {
                                 // The user wants to receive notifications
-                                AndroidUtils.SendNotification(extras.GetString("title"), extras.GetString("message"), typeof(SplashActivity), this);
+                                AndroidUtils.SendNotification(extras.GetString("title"), extras.GetString("message"), typeof(LoginActivity), this);
                             }
                             break;
                         case "locationReminder" :
@@ -134,7 +134,7 @@ namespace DroidSpeeching
 
             if (userPrefs.GetBoolean("prefNotifNewContent", true))
             {
-                AndroidUtils.SendNotification("New content available!", "You have new Speeching activities available - take a look!", typeof(SplashActivity), this);
+                AndroidUtils.SendNotification("New content available!", "You have new Speeching activities available - take a look!", typeof(LoginActivity), this);
             }
         }
 

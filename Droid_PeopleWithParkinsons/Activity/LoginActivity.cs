@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace DroidSpeeching
 {
     [Activity(MainLauncher = true, Theme = "@style/Theme.Splash")]
-    public class SplashActivity : Activity, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback, Android.Views.View.IOnClickListener
+    public class LoginActivity : Activity, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener, IResultCallback, Android.Views.View.IOnClickListener
     {
         IGoogleApiClient apiClient;
         bool intentInProgress = false;
@@ -30,6 +30,7 @@ namespace DroidSpeeching
         SignInButton signInBtn;
         bool needLogin = false;
         bool signOut = false;
+        bool revokeAccess = false; 
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -49,6 +50,7 @@ namespace DroidSpeeching
             .AddScope(PlusClass.ScopePlusLogin).Build();
 
             signOut = Intent.GetBooleanExtra("signOut", false);
+            revokeAccess = Intent.GetBooleanExtra("revokeGoogle", false); 
 
             ThreadPool.QueueUserWorkItem(o => AttemptLoad());
         }
@@ -149,7 +151,21 @@ namespace DroidSpeeching
         {
             if (!needLogin) return;
 
-            if(signOut)
+            if (revokeAccess) 
+            { 
+                revokeAccess = false; 
+                signOut = false;
+
+                ThreadPool.QueueUserWorkItem(o =>
+                    {
+                        PlusClass.AccountApi.ClearDefaultAccount(apiClient);
+                        PlusClass.AccountApi.RevokeAccessAndDisconnect(apiClient).SetResultCallback(this);
+                    });
+                
+                return;
+            } 
+
+            if (signOut)
             {
                 signOut = false;
                 PlusClass.AccountApi.ClearDefaultAccount(apiClient);
@@ -191,7 +207,7 @@ namespace DroidSpeeching
             bool success = await ServerData.FetchCategories();
 
             this.RunOnUiThread(() => { dialog.Hide(); });
-            
+
 
             signInClicked = false;
 
@@ -231,15 +247,8 @@ namespace DroidSpeeching
 
         public void OnResult(Java.Lang.Object result)
         {
-            try
-            {
-                IPeopleLoadPeopleResult thisRes = result.Cast<IPeopleLoadPeopleResult>();
-                string todo;
-            }
-            catch (Exception ex)
-            {
-                return;
-            }
+            apiClient.Disconnect();
+            apiClient.Connect();
         }
     }
 

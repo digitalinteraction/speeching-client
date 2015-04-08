@@ -90,7 +90,7 @@ namespace DroidSpeeching
                         AppData.session = null;
                         AppData.SaveCurrentData();
 
-                        Intent intent = new Intent(this, typeof(SplashActivity));
+                        Intent intent = new Intent(this, typeof(LoginActivity));
                         intent.PutExtra("signOut", true);
                         StartActivity(intent);
                         

@@ -12,4 +12,9 @@
     </CheckBoxPreference>
   </PreferenceCategory>
 
+  <PreferenceCategory android:title="Account Data">
+    <Preference android:title="Revoke Google account access"
+                android:key="revokeGooglePermissions"
+                android:summary="Revoke Speeching's access to your basic Google profile details. This will result in some data loss to your account."/>
+  </PreferenceCategory>
 </PreferenceScreen>
