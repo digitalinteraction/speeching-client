@@ -212,7 +212,6 @@ namespace SpeechingCommon
         /// </summary>
         public static async void SaveCurrentData()
         {
-            if (session == null || cacheDir == null) return; // Nothing to save
             var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
             string dataString = JsonConvert.SerializeObject(session, Formatting.Indented, new JsonSerializerSettings
             {

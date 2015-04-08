@@ -15,6 +15,7 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V4.View;
 using Android.Support.V4.App;
+using SpeechingCommon;
 
 namespace DroidSpeeching
 {
@@ -72,10 +73,34 @@ namespace DroidSpeeching
             if(item.ItemId == Resource.Id.action_uploads)
             {
                 StartActivity(typeof(UploadsActivity));
+                return true;
             }
-            else if(item.ItemId == Resource.Id.action_settings)
+            if(item.ItemId == Resource.Id.action_settings)
             {
                 StartActivity(typeof(SettingsActivity));
+                return true;
+            }
+            if(item.ItemId == Resource.Id.action_logOut)
+            {
+                AlertDialog alert = new AlertDialog.Builder(this)
+                    .SetTitle("Sign out?")
+                    .SetMessage("This will erase your current session data!")
+                    .SetPositiveButton("Confirm", (arg1, arg2) => {
+
+                        AppData.session = null;
+                        AppData.SaveCurrentData();
+
+                        Intent intent = new Intent(this, typeof(SplashActivity));
+                        intent.PutExtra("signOut", true);
+                        StartActivity(intent);
+                        
+                        Finish();
+                    })
+                    .SetNegativeButton("Cancel", (arg1, arg2) => { })
+                    .SetCancelable(true)
+                    .Create();
+                alert.Show();
+                return true;
             }
             return base.OnOptionsItemSelected(item);
         }

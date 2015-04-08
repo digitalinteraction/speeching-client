@@ -103,12 +103,11 @@
     <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Fragment\SettingsFragment.cs" />
-    <Compile Include="Activity\SplashActivity.cs" />
+    <Compile Include="Activity\LoginActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
-    <Compile Include="AndroidUtils.cs" />
-    <Compile Include="AudioRecorder.cs" />
-    <Compile Include="AutoResizeTextView.cs" />
-    <Compile Include="ExportedListAdapter.cs" />
+    <Compile Include="MiscClasses\AndroidUtils.cs" />
+    <Compile Include="MiscClasses\AudioRecorder.cs" />
+    <Compile Include="MiscClasses\ExportedListAdapter.cs" />
     <Compile Include="Fragment\FriendListFragment.cs" />
     <Compile Include="Fragment\GuideFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
@@ -116,12 +115,14 @@
     <Compile Include="Fragment\UserProfileFragment.cs" />
     <Compile Include="Geofences\GeofencingReceiver.cs" />
     <Compile Include="Geofences\GeofencingRegisterer.cs" />
-    <Compile Include="GCMService.cs" />
+    <Compile Include="MiscClasses\FeedbackSubmissionButton.cs" />
+    <Compile Include="MiscClasses\FeedbackTypesAdapter.cs" />
+    <Compile Include="MiscClasses\GCMService.cs" />
     <Compile Include="Activity\MainActivity.cs" />
-    <Compile Include="IAudioRecorder.cs" />
+    <Compile Include="MiscClasses\IAudioRecorder.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoundedDrawable.cs" />
+    <Compile Include="MiscClasses\RoundedDrawable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -266,6 +267,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large\UploadsListHead.axml" />
+    <AndroidResource Include="Resources\layout\FeedbackViewRecordingsItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ViewSubmissionActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

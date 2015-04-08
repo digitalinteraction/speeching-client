@@ -29,6 +29,7 @@ namespace DroidSpeeching
         TextView loadingText;
         SignInButton signInBtn;
         bool needLogin = false;
+        bool signOut = false;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -46,6 +47,8 @@ namespace DroidSpeeching
             .AddOnConnectionFailedListener(this)
             .AddApi(PlusClass.Api)
             .AddScope(PlusClass.ScopePlusLogin).Build();
+
+            signOut = Intent.GetBooleanExtra("signOut", false);
 
             ThreadPool.QueueUserWorkItem(o => AttemptLoad());
         }
@@ -67,7 +70,6 @@ namespace DroidSpeeching
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            Toast.MakeText(this, "HOWDY!", ToastLength.Short).Show();
             if (requestCode == RC_SIGN_IN)
             {
                 if (resultCode != Result.Ok)
@@ -112,9 +114,9 @@ namespace DroidSpeeching
         {
             bool successfulLoad = await AndroidUtils.InitSession(this);
 
-            if (successfulLoad)
+            if (successfulLoad && !signOut)
             {
-                if (AppData.session.categories == null || AppData.session.categories.Count == 0)
+                if (AppData.session == null || AppData.session.categories == null || AppData.session.categories.Count == 0)
                 {
                     // Loaded the user fine, but we need to pull from the server
                     ReadyMainMenu();
@@ -147,6 +149,15 @@ namespace DroidSpeeching
         {
             if (!needLogin) return;
 
+            if(signOut)
+            {
+                signOut = false;
+                PlusClass.AccountApi.ClearDefaultAccount(apiClient);
+                apiClient.Disconnect();
+                apiClient.Connect();
+                return;
+            }
+
             IPerson currentPerson = PlusClass.PeopleApi.GetCurrentPerson(apiClient);
 
             if (currentPerson != null)
@@ -160,20 +171,27 @@ namespace DroidSpeeching
 
                 AppData.AssignCurrentUser(thisUser);
                 ReadyMainMenu();
+                needLogin = false;
             }
         }
 
         public async Task ReadyMainMenu()
         {
-            ProgressDialog dialog = new ProgressDialog(this);
-            dialog.SetTitle("Welcome, " + AppData.session.currentUser.nickname + "!");
-            dialog.SetMessage("Downloading data. Please wait...");
-            dialog.SetCancelable(false);
-            dialog.Show();
+            ProgressDialog dialog = null;
+
+            this.RunOnUiThread(() =>
+            {
+                dialog = new ProgressDialog(this);
+                dialog.SetTitle("Welcome, " + AppData.session.currentUser.nickname + "!");
+                dialog.SetMessage("Downloading data. Please wait...");
+                dialog.SetCancelable(false);
+                dialog.Show();
+            });
 
             bool success = await ServerData.FetchCategories();
 
-            dialog.Hide();
+            this.RunOnUiThread(() => { dialog.Hide(); });
+            
 
             signInClicked = false;
 
@@ -191,7 +209,6 @@ namespace DroidSpeeching
                     .Create();
                 alert.Show();
             }
-
         }
 
         public void OnConnectionSuspended(int cause)

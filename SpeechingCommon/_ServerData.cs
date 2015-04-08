@@ -767,7 +767,7 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="resultId"></param>
         /// <returns></returns>
-        public static async Task<IFeedbackItem[]> FetchFeedbackFor(int resultId)
+        public static async Task<List<IFeedbackItem>> FetchFeedbackFor(int resultId)
         {
             if (!AppData.CheckNetwork()) return null;
 
@@ -777,9 +777,9 @@ namespace SpeechingCommon
             //return await GetRequest<IFeedbackItem[]>("GetFeedback", data);
 
             // TEMP
-            IFeedbackItem[] arr = new IFeedbackItem[12];
+            List<IFeedbackItem> arr = new List<IFeedbackItem>();
 
-            for(int i = 0; i < arr.Length; i++)
+            for(int i = 0; i < 12; i++)
             {
                 int thisRand = AppData.rand.Next(0, 150);
                 if(thisRand < 60)
@@ -790,7 +790,7 @@ namespace SpeechingCommon
                     fb.Percentage = AppData.rand.Next(0, 100);
                     fb.Caption = (int)fb.Percentage + "% of users thought you stammered over the word \"sausage\"";
                     fb.ActivityId = "sossie";
-                    arr[i] = fb;
+                    arr.Add(fb);
                 }
                 else if(thisRand < 90)
                 {
@@ -800,7 +800,7 @@ namespace SpeechingCommon
                     fb.Caption = "This is your rating for something you did. Hopefully it's meaningful!";
                     fb.ActivityId = "sossie";
                     fb.Rating = (float)AppData.rand.Next(0, 10) / 2;
-                    arr[i] = fb;
+                    arr.Add(fb);
                 }
                 else
                 {
@@ -812,7 +812,7 @@ namespace SpeechingCommon
                     fb.Commenter = new User();
                     fb.Commenter.name = "Tom Hanks";
                     fb.Commenter.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
-                    arr[i] = fb;
+                    arr.Add(fb);
                 }
             }
 
