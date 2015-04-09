@@ -160,7 +160,7 @@ namespace DroidSpeeching
 
             if (feedbackList.Adapter == null)
             {
-                feedbackList.Adapter = new FeedbackTypesAdapter(this, Resource.Id.mainFriendsList, data.feedback);
+                feedbackList.Adapter = new FeedbackTypesAdapter(this, data.feedback);
             }
             else
             {

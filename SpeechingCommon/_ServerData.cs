@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -792,7 +793,7 @@ namespace SpeechingCommon
                     fb.ActivityId = "sossie";
                     arr.Add(fb);
                 }
-                else if(thisRand < 90)
+                else if(thisRand < 80)
                 {
                     StarRatingFeedback fb = new StarRatingFeedback();
                     fb.Id = AppData.rand.Next(1000000);
@@ -802,7 +803,7 @@ namespace SpeechingCommon
                     fb.Rating = (float)AppData.rand.Next(0, 10) / 2;
                     arr.Add(fb);
                 }
-                else
+                else if(thisRand < 110)
                 {
                     CommentFeedback fb = new CommentFeedback();
                     fb.Id = AppData.rand.Next(1000000);
@@ -812,6 +813,26 @@ namespace SpeechingCommon
                     fb.Commenter = new User();
                     fb.Commenter.name = "Tom Hanks";
                     fb.Commenter.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
+                    arr.Add(fb);
+                }
+                else
+                {
+                    GraphFeedback fb = new GraphFeedback();
+                    fb.Id = AppData.rand.Next(1000000);
+                    fb.Title = "Your progress";
+                    fb.Caption = "This is a graph showing some data!";
+                    fb.ActivityId = "sossie";
+                    fb.BottomAxisLength = 12;
+                    fb.BottomAxisLabel = "Month";
+                    fb.LeftAxisLength = 100;
+                    fb.LeftAxisLabel = "Score";
+                    fb.DataPoints = new Point[12];
+
+                    for (int j = 0; j < fb.DataPoints.Length; j++)
+                    {
+                        fb.DataPoints[j] = new Point(j + 1, AppData.rand.Next(100));
+                    }
+
                     arr.Add(fb);
                 }
             }

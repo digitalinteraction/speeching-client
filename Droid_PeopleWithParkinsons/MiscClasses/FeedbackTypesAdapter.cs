@@ -21,7 +21,7 @@ namespace DroidSpeeching
         /// <summary>
         /// Lists feedback in multiple layout and object types
         /// </summary>
-        public FeedbackTypesAdapter(Activity context, int resource, List<IFeedbackItem> data)
+        public FeedbackTypesAdapter(Activity context, List<IFeedbackItem> data)
         {
             this.context = context;
             this.feedbackItems = data;

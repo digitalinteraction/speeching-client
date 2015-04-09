@@ -18,4 +18,5 @@
   <color name="appDarkest">#400B03</color>
   <color name="appHighlight">#EB7060</color>
   <color name="appTitle">#BA4232</color>
+  <color name="appDull">#BD3F2F</color>
 </resources>

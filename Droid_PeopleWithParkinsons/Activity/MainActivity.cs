@@ -139,7 +139,7 @@ namespace DroidSpeeching
                     case 0:
                         return new TaskListFragment();
                     case 1:
-                        return new FriendListFragment();
+                        return new ResultsFragment();
                     case 2:
                         return new SubmittedListFragment();
                     default:

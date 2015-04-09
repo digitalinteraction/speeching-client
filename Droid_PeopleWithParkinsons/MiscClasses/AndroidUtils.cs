@@ -251,7 +251,7 @@ namespace DroidSpeeching
 
                 ThreadPool.QueueUserWorkItem(o =>
                     {
-                        GooglePlayRegId = gcm.Register(ConfidentialData.GoogleProjectNum);
+                        //GooglePlayRegId = gcm.Register(ConfidentialData.GoogleProjectNum);
 
                         // TODO send registration ID to server
 

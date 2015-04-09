@@ -43,6 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\packages\OxyPlot.Core.2014.1.546\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp.Portable">
       <HintPath>..\packages\FubarCoder.RestSharp.Portable.2.4.0\lib\MonoAndroid10\RestSharp.Portable.dll</HintPath>
     </Reference>
@@ -64,6 +67,7 @@
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
     <Compile Include="ConfidentialData.cs" />
     <Compile Include="FeedbackStructs\CommentFeedback.cs" />
+    <Compile Include="FeedbackStructs\GraphFeedback.cs" />
     <Compile Include="GooglePlacesResult.cs" />
     <Compile Include="PlaceGeofence.cs" />
     <Compile Include="ResultStructs\LocationRecordingResult.cs" />

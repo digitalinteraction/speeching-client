@@ -11,6 +11,7 @@
         android:layout_height="fill_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:scrollbars="none"
         android:childDivider="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0dp" />

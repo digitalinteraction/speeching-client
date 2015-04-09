@@ -9,6 +9,8 @@
         android:id="@+id/mainActivitiesList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:groupIndicator="@android:color/transparent"
+        android:scrollbars="none"
         android:childDivider="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0dp" />
