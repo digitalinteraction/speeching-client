@@ -2,6 +2,7 @@ using Android.App;
 using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
@@ -17,7 +18,7 @@ namespace DroidSpeeching
         private Android.Support.V4.App.ActionBarDrawerToggle drawerToggle;
         private ListView drawerList;
 
-        private ListView feedbackList;
+        private RecyclerView feedbackList;
         private List<FeedbackData> feedbackData;
         private TextView teaseText;
         private TextView activityTitle;
@@ -73,10 +74,11 @@ namespace DroidSpeeching
 
             teaseText.Visibility = ViewStates.Visible;
 
-            feedbackList = FindViewById<ListView>(Resource.Id.feedback_feedbackList);
-            feedbackList.ItemClick += delegate(object sender, AdapterView.ItemClickEventArgs args)
-            {
-            };
+            feedbackList = FindViewById<RecyclerView>(Resource.Id.feedback_feedbackList);
+            feedbackList.HasFixedSize = true;
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.Orientation = LinearLayoutManager.Vertical;
+            feedbackList.SetLayoutManager(llm);
 
             PrepareDrawer();
         }
@@ -149,7 +151,7 @@ namespace DroidSpeeching
             }
 
             // Add button to front of list
-            data.feedback.Insert(0, new FeedbackSubmissionButton());
+            //data.feedback.Insert(0, new FeedbackSubmissionButton());
 
             thisActivity = data.activity;
             string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);
@@ -158,17 +160,18 @@ namespace DroidSpeeching
             activityTitle.Text = thisActivity.Title;
             completionDate.Text = "Completed on " + data.submission.CompletionDate.ToShortDateString();
 
-            if (feedbackList.Adapter == null)
+            if (feedbackList.GetAdapter() == null)
             {
-                feedbackList.Adapter = new FeedbackTypesAdapter(this, data.feedback);
+                ResultsCardAdapter adapter = new ResultsCardAdapter(data.feedback, this);
+                feedbackList.SetAdapter(adapter);
             }
             else
             {
                 RunOnUiThread(() =>
                 {
-                    ((FeedbackTypesAdapter)feedbackList.Adapter).NotifyDataSetChanged();
-                    ((FeedbackTypesAdapter)feedbackList.Adapter).feedbackItems = data.feedback;
-                    feedbackList.SetSelection(0);
+                    ((ResultsCardAdapter)feedbackList.GetAdapter()).data = data.feedback;
+                    ((ResultsCardAdapter)feedbackList.GetAdapter()).NotifyDataSetChanged();
+                    feedbackList.ScrollToPosition(0);
                 });
             }
 

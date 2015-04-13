@@ -125,7 +125,7 @@ namespace DroidSpeeching
             localTempDirectory = localResourcesDirectory + "/temp";
 
             // If the scenario folder doesn't exist we need to download the additional files
-            if (!GetPrefs().GetBoolean("DOWNLOADED", false))
+            if (!GetPrefs().GetBoolean("DOWNLOADED", false) || !Directory.Exists(localResourcesDirectory))
             {
                 if (!Directory.Exists(localResourcesDirectory))
                 {

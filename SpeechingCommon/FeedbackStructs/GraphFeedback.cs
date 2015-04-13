@@ -1,10 +1,17 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 namespace SpeechingCommon
 {
+    public class TimeGraphPoint
+    {
+        public double YVal;
+        public DateTime XVal;
+    }
+
     /// <summary>
     /// Feedback which contains a percentage statistic
     /// </summary>
@@ -19,7 +26,7 @@ namespace SpeechingCommon
         public int BottomAxisLength;
         public string LeftAxisLabel;
         public int LeftAxisLength;
-        public Point[] DataPoints;
+        public TimeGraphPoint[] DataPoints;
 
         private PlotModel plotModel;
         
@@ -32,7 +39,7 @@ namespace SpeechingCommon
         {
             PlotModel model = new PlotModel();
 
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Key = BottomAxisLabel, Maximum = BottomAxisLength});
+            model.Axes.Add(new DateTimeAxis { IntervalType = DateTimeIntervalType.Days, StringFormat = "dd MMM"});
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Key = LeftAxisLabel, Maximum = LeftAxisLength });
 
             LineSeries series = new LineSeries
@@ -46,9 +53,11 @@ namespace SpeechingCommon
 
             };
 
-            foreach (Point point in DataPoints)
+            DateTime now = DateTime.Now;
+
+            for (int i = 0; i < DataPoints.Length; i++)
             {
-                series.Points.Add(new DataPoint(point.X, point.Y));
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DataPoints[i].XVal), DataPoints[i].YVal));
             }
 
             model.Series.Add(series);

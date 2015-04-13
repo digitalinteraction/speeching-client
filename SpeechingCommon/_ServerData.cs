@@ -479,7 +479,7 @@ namespace SpeechingCommon
                 AppData.SaveCurrentData();
 
                 success = true;
-                await PushResultToDatabase(toUpload);
+                success = await PushResultToDatabase(toUpload);
                 if(success)
                 {
                     // The web service knows about the file!
@@ -823,14 +823,15 @@ namespace SpeechingCommon
                     fb.Caption = "This is a graph showing some data!";
                     fb.ActivityId = "sossie";
                     fb.BottomAxisLength = 12;
-                    fb.BottomAxisLabel = "Month";
                     fb.LeftAxisLength = 100;
-                    fb.LeftAxisLabel = "Score";
-                    fb.DataPoints = new Point[12];
+                    fb.DataPoints = new TimeGraphPoint[12];
 
                     for (int j = 0; j < fb.DataPoints.Length; j++)
                     {
-                        fb.DataPoints[j] = new Point(j + 1, AppData.rand.Next(100));
+                        fb.DataPoints[j] = new TimeGraphPoint { 
+                            XVal = DateTime.Now.AddDays(-j),
+                            YVal = (Double)AppData.rand.Next(100)
+                        };
                     }
 
                     arr.Add(fb);

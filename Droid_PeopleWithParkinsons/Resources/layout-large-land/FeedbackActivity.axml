@@ -4,7 +4,6 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-<!-- SIDEBAR -->
     <LinearLayout
         android:id="@+id/left_drawer"
         android:layout_height="match_parent"
@@ -16,19 +15,19 @@
         android:elevation="7dp">
         <ListView
             android:id="@+id/feedback_itemsList"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:divider="@android:color/transparent"
             android:dividerHeight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_weight="5"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -36,8 +35,8 @@
             android:background="@color/appDark"
             android:elevation="7dp">
             <RelativeLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_margin="10dp">
                 <View
                     android:background="@drawable/whiteCircle"
@@ -48,8 +47,8 @@
                 <ImageView
                     android:src="@drawable/Icon"
                     android:id="@+id/feedback_icon"
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerInParent="true"
                     android:scaleType="fitCenter"
                     android:elevation="4dp" />
@@ -66,8 +65,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
-                    android:textSize="18sp"
-                    android:layout_marginTop="20dp"
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
                     android:textColor="@color/white" />
                 <TextView
                     android:text="Some sort of activity"
@@ -76,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     android:orientation="vertical"
-                    android:textSize="30sp"
+                    android:textSize="18sp"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white" />
                 <TextView
@@ -86,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:orientation="vertical"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
@@ -100,10 +99,12 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-            <ListView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/feedback_feedbackList" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/feedback_feedbackList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

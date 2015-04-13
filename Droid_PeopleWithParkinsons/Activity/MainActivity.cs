@@ -126,7 +126,7 @@ namespace DroidSpeeching
                 Array.Copy(Titles, _titles, Titles.Length);
             }
 
-            protected internal static readonly string[] Titles = { "Practice", "Friends", "Submitted" };
+            protected internal static readonly string[] Titles = { "Practice", "Progress", "Submitted" };
 
             protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
 
