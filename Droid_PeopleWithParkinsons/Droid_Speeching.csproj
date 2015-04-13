@@ -129,7 +129,6 @@
     <Compile Include="Geofences\GeofencingReceiver.cs" />
     <Compile Include="Geofences\GeofencingRegisterer.cs" />
     <Compile Include="MiscClasses\FeedbackSubmissionButton.cs" />
-    <Compile Include="MiscClasses\FeedbackTypesAdapter.cs" />
     <Compile Include="MiscClasses\GCMService.cs" />
     <Compile Include="Activity\MainActivity.cs" />
     <Compile Include="MiscClasses\IAudioRecorder.cs" />
@@ -224,13 +223,7 @@
     <AndroidResource Include="Resources\layout\GuideActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\FeedbackPercentItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\FeedbackActivity.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\FeedbackRatingItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\LocationActivity.axml">
@@ -259,9 +252,6 @@
     <AndroidResource Include="Resources\layout-large\FeedbackActivity.axml" />
     <AndroidResource Include="Resources\layout-land\FeedbackActivity.axml" />
     <AndroidResource Include="Resources\layout-large-land\FeedbackActivity.axml" />
-    <AndroidResource Include="Resources\layout\FeedbackCommentItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\Splash.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -272,9 +262,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large\UploadsListHead.axml" />
-    <AndroidResource Include="Resources\layout\FeedbackViewRecordingsItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ViewSubmissionActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
