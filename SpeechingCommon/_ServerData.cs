@@ -1,3 +1,4 @@
+using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SpeechingCommon
 {
@@ -148,7 +150,7 @@ namespace SpeechingCommon
             {
                 Uri baseAddress = new Uri(serviceUrl);
                 client.BaseAddress = baseAddress;
-
+                
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(request);
@@ -840,6 +842,63 @@ namespace SpeechingCommon
 
             return arr;
         }
+
+        /// <summary>
+        /// Pull today's featured article from Wikipedia
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<string> FetchWikiText()
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=parse&prop=text&page=Wikipedia:Today%27s_featured_article/April_13,_2015&format=json");
+
+                string pageText = null;
+                using (HttpWebResponse resp = (HttpWebResponse)(await request.GetResponseAsync()))
+                {
+                    using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                    {
+                        pageText = await reader.ReadToEndAsync();
+                    }
+                }
+
+                WikipediaResult res = JsonConvert.DeserializeObject<WikipediaResult>(pageText);
+
+                HtmlDocument htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(res.parse.text.HTML);
+                HtmlNode node = htmlDoc.DocumentNode.FirstChild;
+                pageText = HttpUtility.HtmlDecode (node.InnerText);
+
+                //Remove the (Full article...) text
+                int index = pageText.IndexOf("(Full article...)");
+                if (index > 0) pageText = pageText.Substring(0, index);
+
+                return pageText;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
+    }
+
+    public struct WikipediaResult
+    {
+        public ParsedWikiRes parse;
+    }
+
+    public struct ParsedWikiRes
+    {
+        public string title;
+        public ParsedWikiHTML text;
+    }
+
+    public struct ParsedWikiHTML
+    {
+        // I am angry at whoever though an asterix was a good variable name
+        [JsonProperty("*")] 
+        public string HTML;
     }
 
     public class ResultPackage
