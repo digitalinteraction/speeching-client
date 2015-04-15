@@ -54,6 +54,11 @@ namespace SpeechingCommon
             {
                 localIconPath = AppData.avatarsCache + "/" + Path.GetFileName(remoteUrl);
             }
+            else if(ownerType == typeof(WikipediaResult))
+            {
+                localIconPath = AppData.cacheDir + "/wikiImage.jpg";
+                if(File.Exists(localIconPath)) File.Delete(localIconPath);
+            }
             else
             {
                 localIconPath = AppData.cacheDir + "/" + Path.GetFileName(remoteUrl);

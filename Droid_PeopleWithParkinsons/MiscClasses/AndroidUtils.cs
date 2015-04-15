@@ -77,8 +77,6 @@ namespace DroidSpeeching
                 
             }
 
-            ServerData.FetchWikiText(); //TODO
-
             return await AppData.InitializeIfNeeded(); ;
         }
 

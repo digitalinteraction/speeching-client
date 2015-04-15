@@ -16,7 +16,7 @@ namespace DroidSpeeching
         private SwipeRefreshLayout refresher;
         private ExpandableListView mainList;
         private Button viewFeedbackBtn;
-        private Button locationLogButton;
+        private Button practiceBtn;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -63,8 +63,8 @@ namespace DroidSpeeching
             viewFeedbackBtn = header.FindViewById<Button>(Resource.Id.viewSubmittedBtn);
             viewFeedbackBtn.Click += viewFeedbackBtn_Click;
 
-            locationLogButton = header.FindViewById<Button>(Resource.Id.createLocLogBtn);
-            locationLogButton.Click += locationLogButton_Click;
+            practiceBtn = header.FindViewById<Button>(Resource.Id.practiceAreaBtn);
+            practiceBtn.Click += practiceButton_Click;
             return view;
         }
 
@@ -116,10 +116,10 @@ namespace DroidSpeeching
                 AndroidUtils.OfflineAlert(Activity);
         }
 
-        void locationLogButton_Click(object sender, System.EventArgs e)
+        void practiceButton_Click(object sender, System.EventArgs e)
         {
             if (AppData.CheckNetwork())
-                this.Activity.StartActivity(typeof(LocationActivity));
+                this.Activity.StartActivity(typeof(WikiPaceActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);
         }

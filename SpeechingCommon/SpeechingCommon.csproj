@@ -76,6 +76,7 @@
     <Compile Include="PlaceGeofence.cs" />
     <Compile Include="ResultStructs\LocationRecordingResult.cs" />
     <Compile Include="ResultStructs\_ResultInterface.cs" />
+    <Compile Include="WikipediaStructs.cs" />
     <Compile Include="_AppData.cs" />
     <Compile Include="_ServerData.cs" />
     <Compile Include="FeedbackStructs\PercentageFeedback.cs" />

@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
-        android:text="Practice Activities"
+        android:text="Your Activities"
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_height="wrap_content"
@@ -22,8 +22,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/createLocLogBtn"
-            android:text="Create a new location log!"
+            android:id="@+id/practiceAreaBtn"
+            android:text="Practice area"
             android:textSize="20sp"
             android:padding="18dp"
             android:layout_width="0dp"

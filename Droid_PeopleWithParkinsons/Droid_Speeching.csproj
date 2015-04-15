@@ -115,6 +115,7 @@
     <Compile Include="Activity\PermissionsActivity.cs" />
     <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
+    <Compile Include="Activity\WikiPaceActivity.cs" />
     <Compile Include="Fragment\ResultsFragment.cs" />
     <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\LoginActivity.cs" />
@@ -279,6 +280,10 @@
     <AndroidResource Include="Resources\layout\ResultsCardPerson.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\WikiPace.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-large\WikiPace.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -338,6 +343,7 @@
     <AndroidResource Include="Resources\drawable\whiteCircle.xml" />
     <AndroidResource Include="Resources\drawable\progress.xml" />
     <AndroidResource Include="Resources\xml\user_settings.xml" />
+    <AndroidResource Include="Resources\raw\Click1.wav" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

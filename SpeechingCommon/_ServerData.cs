@@ -847,11 +847,13 @@ namespace SpeechingCommon
         /// Pull today's featured article from Wikipedia
         /// </summary>
         /// <returns></returns>
-        public static async Task<string> FetchWikiText()
+        public static async Task<WikipediaResult> FetchWikiData()
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=parse&prop=text&page=Wikipedia:Today%27s_featured_article/April_13,_2015&format=json");
+                string dateString = DateTime.Now.ToString("MMMM_dd,_yyyy");
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=parse&&prop=text|images&page=Wikipedia:Today%27s_featured_article/" + dateString + "&format=json");
 
                 string pageText = null;
                 using (HttpWebResponse resp = (HttpWebResponse)(await request.GetResponseAsync()))
@@ -864,16 +866,46 @@ namespace SpeechingCommon
 
                 WikipediaResult res = JsonConvert.DeserializeObject<WikipediaResult>(pageText);
 
-                HtmlDocument htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(res.parse.text.HTML);
-                HtmlNode node = htmlDoc.DocumentNode.FirstChild;
-                pageText = HttpUtility.HtmlDecode (node.InnerText);
+                if(res.parse.images != null && res.parse.images.Length > 0)
+                {
+                    // There's an image available from this page! Unfortunately we have to request the actual URL of the file separately
+                    HttpWebRequest imgReq = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=query&titles=Image:"+ res.parse.images[0] +"&prop=imageinfo&iiprop=url&format=json");
+                    string imgText = null;
+                    using (HttpWebResponse resp = (HttpWebResponse)(await imgReq.GetResponseAsync()))
+                    {
+                        using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                        {
+                            imgText = await reader.ReadToEndAsync();
+                        }
+                    }
+                    WikipediaResult imgRes = JsonConvert.DeserializeObject<WikipediaResult>(imgText);
 
-                //Remove the (Full article...) text
+                    // Store the image location in the main wiki result obj
+                    res.imageURL = await Utils.FetchLocalCopy(imgRes.query.pages.info.imageInfo[0].url, typeof(WikipediaResult));
+                }
+
+                HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.LoadHtml(res.parse.text.HTML);
+
+                pageText = "";
+
+                // Scrape the HTML for all content text
+                foreach(HtmlNode node in htmlDoc.DocumentNode.ChildNodes)
+                {
+                    if(node.Name == "p")
+                    {
+                        pageText += HttpUtility.HtmlDecode(node.InnerText) + "\n";
+                    }
+                }
+
+                //Remove the (Full article...) text and all following it
                 int index = pageText.IndexOf("(Full article...)");
                 if (index > 0) pageText = pageText.Substring(0, index);
 
-                return pageText;
+                res.parse = null;
+                res.content = pageText;
+
+                return res;
             }
             catch(Exception ex)
             {
@@ -881,24 +913,6 @@ namespace SpeechingCommon
             }
             
         }
-    }
-
-    public struct WikipediaResult
-    {
-        public ParsedWikiRes parse;
-    }
-
-    public struct ParsedWikiRes
-    {
-        public string title;
-        public ParsedWikiHTML text;
-    }
-
-    public struct ParsedWikiHTML
-    {
-        // I am angry at whoever though an asterix was a good variable name
-        [JsonProperty("*")] 
-        public string HTML;
     }
 
     public class ResultPackage

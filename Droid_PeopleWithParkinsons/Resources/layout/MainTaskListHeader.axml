@@ -4,12 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <TextView
-        android:text="Practice Activities"
+        android:text="Your Activities"
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitted_title"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:textColor="@color/appTitle" />
     <TextView
         android:text="Hone your skills in preparation for your next assessment with these practice activites! Tap a category to see all of the activities available for it."
         android:layout_width="fill_parent"
@@ -23,8 +24,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/createLocLogBtn"
-            android:text="Create a new location log!"
+            android:id="@+id/practiceAreaBtn"
+            android:text="Practice area"
             android:textSize="16sp"
             android:padding="12dp"
             android:layout_width="0dp"
