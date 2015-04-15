@@ -22,6 +22,7 @@ using Android.Gms.Common;
 using Android.Gms.Location;
 using Android.Net;
 using Android.Preferences;
+using Newtonsoft.Json;
 
 namespace DroidSpeeching
 {
@@ -282,6 +283,36 @@ namespace DroidSpeeching
                 }
             }
             return false;
+        }
+
+        public static async Task<WikipediaResult> GetTodaysWiki(Context context)
+        {
+            TimeSpan midnightTime = DateTime.Today - new DateTime(1970, 1, 1);;
+
+            WikipediaResult toReturn;
+
+            int daysSinceEpoch = (int)midnightTime.TotalDays;
+
+            ISharedPreferences prefs = context.GetSharedPreferences("WikiData", FileCreationMode.MultiProcess);
+            int storedDay = prefs.GetInt("DayNum", -1);
+            string wikiJson = prefs.GetString("JsonData", null);
+
+            if(storedDay != daysSinceEpoch || wikiJson == null)
+            {
+                // We have either the wrong data or no data stored
+                toReturn = await ServerData.FetchWikiData();
+
+                // Store so that we don't need to download again today
+                ISharedPreferencesEditor editor = prefs.Edit();
+                editor.PutInt("DayNum", daysSinceEpoch);
+                editor.PutString("JsonData", JsonConvert.SerializeObject(toReturn));
+                editor.Commit();
+
+                return toReturn;
+            }
+
+            // Today's featured article has already been cached!
+            return JsonConvert.DeserializeObject<WikipediaResult>(wikiJson);
         }
 
         /// <summary>

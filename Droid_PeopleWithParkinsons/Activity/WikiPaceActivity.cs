@@ -182,7 +182,7 @@ namespace DroidSpeeching
             dialog.SetMessage("Downloading today's content!");
             dialog.Show();
 
-            wiki = await ServerData.FetchWikiData();
+            wiki = await AndroidUtils.GetTodaysWiki(this);
 
             string[] sentences = wiki.content.Split(new string[] { ". " }, StringSplitOptions.RemoveEmptyEntries);
 
