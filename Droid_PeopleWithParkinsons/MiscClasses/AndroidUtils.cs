@@ -389,7 +389,7 @@ namespace DroidSpeeching
         /// <summary>
         /// Helper class for recording audio
         /// </summary>
-        public class RecordAudioManager
+        public class RecordAudioManager : Java.Lang.Object, MediaRecorder.IOnInfoListener
         {
             public static int LOW_BACKGROUND_NOISE = 25;
             public static int MEDIUM_BACKGROUND_NOISE = 50;
@@ -408,17 +408,19 @@ namespace DroidSpeeching
             private bool bgShouldToggle = false;
             private bool recording = false;
             private Activity context;
+            private Action onMaxDuration;
 
             /// <summary>
             /// Class to help record and export audio
             /// </summary>
             /// <param name="context">The current activity</param>
-            /// <param name="outputPath">Path to save this recording</param>
+            /// <param name="onMaxDurtion">Action performed when the max duration of the recording has been reached</param>
             /// <param name="backgroundNoise">TextView to display background noise level information</param>
-            public RecordAudioManager(Activity context, TextView backgroundNoise = null)
+            public RecordAudioManager(Activity context, Action onMaxDurtion = null, TextView backgroundNoise = null)
             {
                 this.context = context;
                 this.backgroundNoiseDisplay = backgroundNoise;
+                this.onMaxDuration = onMaxDuration;
             }
             
             public void StartBackgroundCheck()
@@ -504,7 +506,7 @@ namespace DroidSpeeching
             /// Starts the audio recording
             /// </summary>
             /// <param name="outputPath">The path to output the resulting recording to</param>
-            public void StartRecording(string outputPath)
+            public void StartRecording(string outputPath, int maxSeconds = -1)
             {
                 this.outputPath = outputPath;
 
@@ -515,6 +517,13 @@ namespace DroidSpeeching
                 audioRecorder.SetAudioEncodingBitRate(50000);
                 audioRecorder.SetAudioSamplingRate(44100);
                 audioRecorder.SetOutputFile(outputPath);
+
+                if (maxSeconds > 0)
+                {
+                    audioRecorder.SetMaxDuration(maxSeconds * 1000);
+                    audioRecorder.SetOnInfoListener(this);
+                }
+
                 audioRecorder.Prepare();
 
                 if(backgroundAudioRecorder != null)
@@ -588,6 +597,16 @@ namespace DroidSpeeching
                 // Probably shouldn't be saving it on disk in the first place.
                 //AudioFileManager.DeleteFile(AudioFileManager.RootBackgroundAudioPath);
             }
+
+            public void OnInfo(MediaRecorder mr, MediaRecorderInfo what, int extra)
+            {
+                if((what == MediaRecorderInfo.MaxDurationReached || what == MediaRecorderInfo.MaxFilesizeReached) && onMaxDuration != null)
+                {
+                    StopRecording();
+                    onMaxDuration();
+                }
+            }
+
         }
     }
 }

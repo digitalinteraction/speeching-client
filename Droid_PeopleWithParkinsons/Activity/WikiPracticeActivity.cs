@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Threading;
 using Android.Views.Animations;
+using Android.Graphics;
 
 namespace DroidSpeeching
 {
@@ -46,9 +47,10 @@ namespace DroidSpeeching
 
         LinearLayout loud_controlsLayout;
         TextView loud_volText;
+        TextView loud_targetText;
         Button loud_targetButton;
         int loud_currentVol;
-        int loud_targetVol;
+        int loud_targetVol = 45;
 
         AndroidUtils.RecordAudioManager audioManager;
         bool reading = false;
@@ -78,6 +80,7 @@ namespace DroidSpeeching
 
             // Loudness layout
             loud_volText = FindViewById<TextView>(Resource.Id.wiki_volume);
+            loud_targetText = FindViewById<TextView>(Resource.Id.wiki_Targetvolume);
             loud_targetButton = FindViewById<Button>(Resource.Id.wiki_measureVolBtn);
             loud_controlsLayout = FindViewById<LinearLayout>(Resource.Id.wiki_volControls);
             modeLayouts.Add(PracticeMode.Loudness, loud_controlsLayout);
@@ -95,9 +98,39 @@ namespace DroidSpeeching
             if(reading)
             {
                 reading = false;
-                metron_controlsLayout.Visibility = ViewStates.Gone;
+                audioManager.StopRecording();
+                modeLayouts[currentMode].Visibility = ViewStates.Gone;
                 startBtn.Text = "Start!";
             }
+
+            audioManager.CleanUp();
+            audioManager = null;
+        }
+
+        // Called by manager if it can't record anymore
+        private void OnRecordingFull()
+        {
+            reading = false;
+            StopAction(false);
+
+            Toast.MakeText(this, "Recording full!", ToastLength.Long).Show();
+        }
+
+        private void StopAction(bool stopRec = true)
+        {
+            modeLayouts[currentMode].Visibility = ViewStates.Gone;
+            startBtn.Text = "Start!";
+            
+            if(stopRec)
+                audioManager.StopRecording();
+        }
+
+        private void StartAction()
+        {
+            modeLayouts[currentMode].Visibility = ViewStates.Visible;
+            startBtn.Text = "Stop!";
+            audioManager.StartRecording(AppData.practiceRecording, 300);
+            StartModeFunc();
         }
 
         void startBtn_Click(object sender, EventArgs e)
@@ -106,23 +139,18 @@ namespace DroidSpeeching
 
             if(reading)
             {
-                modeLayouts[currentMode].Visibility = ViewStates.Visible;
-                startBtn.Text = "Stop!";
-                audioManager.StartRecording(AppData.practiceRecording);
-                StartModeFunc();
+                StartAction();
             }
             else
             {
-                modeLayouts[currentMode].Visibility = ViewStates.Gone;
-                startBtn.Text = "Start!";
-                audioManager.StopRecording();
+                StopAction();
             }
         }
 
         private void SetupRecorder()
         {
             if (audioManager != null) return;
-            audioManager = new AndroidUtils.RecordAudioManager(this, null);
+            audioManager = new AndroidUtils.RecordAudioManager(this, OnRecordingFull);
         }
 
         /// <summary>
@@ -202,6 +230,7 @@ namespace DroidSpeeching
                     metron_audioBuffer = new short[metron_buffSize];
                     break;
                 case PracticeMode.Loudness :
+                    loud_targetText.Text = loud_targetVol.ToString();
                     break;
             }
         }
@@ -229,6 +258,7 @@ namespace DroidSpeeching
                 for (int i = 0; i < vals.Length; i++ )
                 {
                     Thread.Sleep(75);
+                    if (audioManager == null) return;
                     vals[i] = audioManager.GetAmplitude();
                 }
 
@@ -240,7 +270,18 @@ namespace DroidSpeeching
 
                 loud_currentVol = (int)(total / vals.Length);
 
-                RunOnUiThread(() => { loud_volText.Text = loud_currentVol.ToString(); });
+                RunOnUiThread(() => { 
+                    loud_volText.Text = loud_currentVol.ToString(); 
+
+                    if(loud_currentVol >= loud_targetVol)
+                    {
+                        loud_volText.SetTextColor(Color.Green);
+                    }
+                    else
+                    {
+                        loud_volText.SetTextColor(Color.Red);
+                    }
+                });
             }
         }
         #endregion
