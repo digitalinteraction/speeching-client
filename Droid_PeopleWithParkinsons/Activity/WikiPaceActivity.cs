@@ -180,6 +180,7 @@ namespace DroidSpeeching
             ProgressDialog dialog = new ProgressDialog(this);
             dialog.SetTitle("Please Wait...");
             dialog.SetMessage("Downloading today's content!");
+            dialog.SetCancelable(false);
             dialog.Show();
 
             wiki = await AndroidUtils.GetTodaysWiki(this);
@@ -202,6 +203,13 @@ namespace DroidSpeeching
             }
 
             wikiText.Text = finalText;
+
+            // If it's longer than expected, reduce the text size!
+            if(finalText.Length > 520 && 
+                ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <= Android.Content.Res.ScreenLayout.SizeNormal))
+            {
+                wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 15);
+            }
             
             if(wiki.imageURL != null)
             {

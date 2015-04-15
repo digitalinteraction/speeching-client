@@ -8,7 +8,7 @@
         android:id="@+id/wiki_image"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5"
+        android:layout_weight="2"
         android:scaleType="centerCrop"
         android:paddingBottom="25dp"
         android:orientation="vertical"
@@ -23,12 +23,11 @@
         android:layout_height="0dp"
         android:layout_weight="7"
         android:padding="10dp"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:text="Loading..." />
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="150dp"
         android:orientation="vertical"
         android:padding="6dp">
         <LinearLayout
@@ -52,7 +51,8 @@
                 android:layout_weight="1"
                 android:text="50 BPM"
                 android:textSize="20sp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/appTitle" />
             <Button
                 android:id="@+id/wiki_downBtn"
                 android:layout_width="0dp"

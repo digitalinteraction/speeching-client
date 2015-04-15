@@ -27,8 +27,7 @@
         android:text="Loading..." />
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="250dp"
         android:orientation="vertical"
         android:padding="10dp">
         <LinearLayout
@@ -51,7 +50,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:text="50 BPM"
-                android:textSize="20sp"
+                android:textSize="28sp"
+                android:textColor="@color/appTitle"
                 android:gravity="center" />
             <Button
                 android:id="@+id/wiki_downBtn"
