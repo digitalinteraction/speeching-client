@@ -1657,8 +1657,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0b0096
 			public const int TextToSpeak = 2131427478;
 			
-			// aapt resource value: 0x7f0b00ce
-			public const int action_about = 2131427534;
+			// aapt resource value: 0x7f0b00d1
+			public const int action_about = 2131427537;
 			
 			// aapt resource value: 0x7f0b0045
 			public const int action_bar = 2131427397;
@@ -1684,8 +1684,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0b0046
 			public const int action_context_bar = 2131427398;
 			
-			// aapt resource value: 0x7f0b00cd
-			public const int action_logOut = 2131427533;
+			// aapt resource value: 0x7f0b00d0
+			public const int action_logOut = 2131427536;
 			
 			// aapt resource value: 0x7f0b0002
 			public const int action_menu_divider = 2131427330;
@@ -1702,11 +1702,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0b0034
 			public const int action_mode_close_button = 2131427380;
 			
-			// aapt resource value: 0x7f0b00cc
-			public const int action_settings = 2131427532;
+			// aapt resource value: 0x7f0b00cf
+			public const int action_settings = 2131427535;
 			
-			// aapt resource value: 0x7f0b00cb
-			public const int action_uploads = 2131427531;
+			// aapt resource value: 0x7f0b00ce
+			public const int action_uploads = 2131427534;
 			
 			// aapt resource value: 0x7f0b0035
 			public const int activity_chooser_view_content = 2131427381;
@@ -1834,8 +1834,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0b0062
 			public const int guide_right = 2131427426;
 			
-			// aapt resource value: 0x7f0b00cf
-			public const int help = 2131427535;
+			// aapt resource value: 0x7f0b00d2
+			public const int help = 2131427538;
 			
 			// aapt resource value: 0x7f0b0023
 			public const int holo_dark = 2131427363;
@@ -2245,6 +2245,9 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0b00c4
 			public const int wiki_image = 2131427524;
 			
+			// aapt resource value: 0x7f0b00cd
+			public const int wiki_measureVolBtn = 2131427533;
+			
 			// aapt resource value: 0x7f0b00c6
 			public const int wiki_speedControls = 2131427526;
 			
@@ -2256,6 +2259,12 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f0b00c7
 			public const int wiki_upBtn = 2131427527;
+			
+			// aapt resource value: 0x7f0b00cb
+			public const int wiki_volControls = 2131427531;
+			
+			// aapt resource value: 0x7f0b00cc
+			public const int wiki_volume = 2131427532;
 			
 			// aapt resource value: 0x7f0b001a
 			public const int withText = 2131427354;
@@ -2473,7 +2482,7 @@ namespace DroidSpeeching
 			public const int ViewSubmissionActivity = 2130903098;
 			
 			// aapt resource value: 0x7f03003b
-			public const int WikiPace = 2130903099;
+			public const int WikiPracticeActivity = 2130903099;
 			
 			static Layout()
 			{

@@ -528,6 +528,22 @@ namespace DroidSpeeching
                 audioRecorder.Start();
             }
 
+            public double GetAmplitude()
+            {
+                if (audioRecorder != null)
+                {
+                    double pressure = audioRecorder.MaxAmplitude;
+                    if (pressure == 0) return 0;
+
+                    return (20 * Math.Log10(pressure / 2700.0) + 40); // Fluffed :/
+                }  
+                else
+                {
+                    return 0;
+                }
+                    
+            }
+
            /// <summary>
             /// Stops the recording, exporting the file.
            /// </summary>

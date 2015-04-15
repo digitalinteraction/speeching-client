@@ -115,7 +115,7 @@
     <Compile Include="Activity\PermissionsActivity.cs" />
     <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
-    <Compile Include="Activity\WikiPaceActivity.cs" />
+    <Compile Include="Activity\WikiPracticeActivity.cs" />
     <Compile Include="Fragment\ResultsFragment.cs" />
     <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\LoginActivity.cs" />
@@ -280,10 +280,10 @@
     <AndroidResource Include="Resources\layout\ResultsCardPerson.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\WikiPace.axml">
+    <AndroidResource Include="Resources\layout\WikiPracticeActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout-large\WikiPace.axml" />
+    <AndroidResource Include="Resources\layout-large\WikiPracticeActivity.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

@@ -8,7 +8,7 @@
         android:id="@+id/wiki_image"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="5.5"
         android:scaleType="centerCrop"
         android:paddingBottom="25dp"
         android:orientation="vertical"
@@ -22,14 +22,14 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:padding="10dp"
-        android:textSize="17sp"
+        android:padding="15dp"
+        android:textSize="22sp"
         android:text="Loading..." />
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
+        android:layout_height="250dp"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:padding="10dp">
         <LinearLayout
             android:id="@+id/wiki_speedControls"
             android:layout_width="fill_parent"
@@ -50,9 +50,9 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:text="50 BPM"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:textColor="@color/appTitle" />
+                android:textSize="28sp"
+                android:textColor="@color/appTitle"
+                android:gravity="center" />
             <Button
                 android:id="@+id/wiki_downBtn"
                 android:layout_width="0dp"
@@ -74,7 +74,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="2"
                 android:text="50 BPM"
-                android:textSize="20sp"
+                android:textSize="28sp"
                 android:gravity="center"
                 android:textColor="@color/appTitle" />
             <Button
@@ -90,7 +90,7 @@
             android:text="Start!"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

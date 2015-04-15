@@ -17,6 +17,7 @@ namespace SpeechingCommon
         public static string avatarsCache;
         public static string placesImageCache;
         public static string placesRecordingsCache;
+        public static string practiceRecording;
         public static Random rand;
 
         public static Func<bool> checkForConnection;
@@ -74,6 +75,7 @@ namespace SpeechingCommon
             avatarsCache = Path.Combine(cacheDir, "avatars/");
             placesRecordingsCache = Path.Combine(placesImageCache, "tempRecs/");
             exportsCache = Path.Combine(cacheDir, "exports/");
+            practiceRecording = Path.Combine(cacheDir, "practice.mp4");
 
             if (!Directory.Exists(cacheDir))
             {

@@ -119,7 +119,7 @@ namespace DroidSpeeching
         void practiceButton_Click(object sender, System.EventArgs e)
         {
             if (AppData.CheckNetwork())
-                this.Activity.StartActivity(typeof(WikiPaceActivity));
+                this.Activity.StartActivity(typeof(WikiPracticeActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);
         }
