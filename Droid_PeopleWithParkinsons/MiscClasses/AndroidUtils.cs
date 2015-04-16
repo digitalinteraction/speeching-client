@@ -510,11 +510,17 @@ namespace DroidSpeeching
             {
                 this.outputPath = outputPath;
 
+                //Delete the file if it already exists
+                if(File.Exists(outputPath))
+                {
+                    File.Delete(outputPath);
+                }
+
                 audioRecorder = new MediaRecorder();
                 audioRecorder.SetAudioSource(AudioSource.Mic);
                 audioRecorder.SetOutputFormat(OutputFormat.Mpeg4);
                 audioRecorder.SetAudioEncoder(AudioEncoder.Aac);
-                audioRecorder.SetAudioEncodingBitRate(50000);
+                audioRecorder.SetAudioEncodingBitRate(32000);
                 audioRecorder.SetAudioSamplingRate(44100);
                 audioRecorder.SetOutputFile(outputPath);
 

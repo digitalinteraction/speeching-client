@@ -87,7 +87,7 @@ namespace DroidSpeeching
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
         }
 
-        void recordButton_Click(object sender, EventArgs e)
+        private void recordButton_Click(object sender, EventArgs e)
         {
             if(!recording)
             {

@@ -22,7 +22,6 @@ namespace DroidSpeeching
     [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
     public class MainActivity : ActionBarActivity //FragmentActivity
     {
-        private ListView drawerList;
         private ViewPager pager;
         private PagerSlidingTabStrip.PagerSlidingTabStrip _tabs;
         private MyPagerAdapter _adapter;

@@ -69,6 +69,7 @@
     <Compile Include="ActivityStructs\Guide.cs" />
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
+    <Compile Include="BiDictionary.cs" />
     <Compile Include="ConfidentialData.cs" />
     <Compile Include="FeedbackStructs\CommentFeedback.cs" />
     <Compile Include="FeedbackStructs\GraphFeedback.cs" />

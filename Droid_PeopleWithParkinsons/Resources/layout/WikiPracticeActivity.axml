@@ -78,7 +78,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="Current vol:"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:gravity="center" />
                 <TextView
                     android:id="@+id/wiki_volume"
@@ -86,7 +86,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="\?"
-                    android:textSize="33sp"
+                    android:textSize="22sp"
                     android:gravity="center"
                     android:textColor="@color/appTitle" />
             </LinearLayout>
@@ -100,7 +100,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="Target vol:"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:gravity="center" />
                 <TextView
                     android:id="@+id/wiki_Targetvolume"
@@ -108,16 +108,16 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="45"
-                    android:textSize="33sp"
+                    android:textSize="22sp"
                     android:gravity="center" />
             </LinearLayout>
             <Button
                 android:id="@+id/wiki_measureVolBtn"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1.5"
+                android:layout_weight="1.2"
                 android:text="Set new target"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
         </LinearLayout>
         <Button
             android:id="@+id/wiki_startBtn"

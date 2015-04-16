@@ -1579,52 +1579,55 @@ namespace DroidSpeeching
 			public const int listCellChild = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int notifIcon = 2130837595;
+			public const int mode = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int pagerslidingtabstrip_background_tab = 2130837596;
+			public const int notifIcon = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int powered_by_google_dark = 2130837597;
+			public const int pagerslidingtabstrip_background_tab = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int powered_by_google_light = 2130837598;
+			public const int powered_by_google_dark = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int progress = 2130837599;
+			public const int powered_by_google_light = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int recordButtonBlue = 2130837600;
+			public const int progress = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int recordButtonRed = 2130837601;
+			public const int recordButtonBlue = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int round_button = 2130837602;
+			public const int recordButtonRed = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int round_button_alt = 2130837603;
+			public const int round_button = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int rounded_layout = 2130837604;
+			public const int round_button_alt = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int shadowed = 2130837605;
+			public const int rounded_layout = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int splash = 2130837606;
+			public const int shadowed = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int splashIcon = 2130837607;
+			public const int splash = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int tabs_pattern = 2130837608;
+			public const int splashIcon = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int TutPlaceholder = 2130837609;
+			public const int tabs_pattern = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int whiteCircle = 2130837610;
+			public const int TutPlaceholder = 2130837610;
+			
+			// aapt resource value: 0x7f02006b
+			public const int whiteCircle = 2130837611;
 			
 			static Drawable()
 			{
@@ -1701,6 +1704,9 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f0b0034
 			public const int action_mode_close_button = 2131427380;
+			
+			// aapt resource value: 0x7f0b00d3
+			public const int action_practiceMode = 2131427539;
 			
 			// aapt resource value: 0x7f0b00d0
 			public const int action_settings = 2131427536;
@@ -1834,8 +1840,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0b0062
 			public const int guide_right = 2131427426;
 			
-			// aapt resource value: 0x7f0b00d3
-			public const int help = 2131427539;
+			// aapt resource value: 0x7f0b00d4
+			public const int help = 2131427540;
 			
 			// aapt resource value: 0x7f0b0023
 			public const int holo_dark = 2131427363;
@@ -2504,7 +2510,10 @@ namespace DroidSpeeching
 			public const int mainActivityActions = 2131623936;
 			
 			// aapt resource value: 0x7f0e0001
-			public const int RecordMenu = 2131623937;
+			public const int practiceActivityActions = 2131623937;
+			
+			// aapt resource value: 0x7f0e0002
+			public const int RecordMenu = 2131623938;
 			
 			static Menu()
 			{
@@ -3102,6 +3111,9 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f090073
 			public const int RtlOverlay_Widget_AppCompat_SearchView_MagIcon = 2131296371;
+			
+			// aapt resource value: 0x7f0900f5
+			public const int Speeching_ActionButton = 2131296501;
 			
 			// aapt resource value: 0x7f090074
 			public const int TextAppearance_AppCompat = 2131296372;

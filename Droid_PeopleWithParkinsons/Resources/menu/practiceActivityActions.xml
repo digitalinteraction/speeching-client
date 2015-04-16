@@ -1,0 +1,6 @@
+﻿<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:speeching="http://schemas.android.com/apk/res-auto">
+  <item android:id="@+id/action_practiceMode"
+        android:title="Change Mode"
+        android:icon="@drawable/mode"
+        speeching:showAsAction="always|withText"/>
+</menu>

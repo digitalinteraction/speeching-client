@@ -344,6 +344,9 @@
     <AndroidResource Include="Resources\drawable\progress.xml" />
     <AndroidResource Include="Resources\xml\user_settings.xml" />
     <AndroidResource Include="Resources\raw\Click1.wav" />
+    <AndroidResource Include="Resources\menu\practiceActivityActions.xml" />
+    <AndroidResource Include="Resources\drawable\mode.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mode.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">
