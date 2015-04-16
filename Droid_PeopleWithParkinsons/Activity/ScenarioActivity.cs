@@ -573,7 +573,7 @@ namespace DroidSpeeching
                 }
                     
                 StartActivity(typeof(UploadsActivity));
-                this.Finish();
+                this.FinishAfterTransition();
             }
             catch(Exception except)
             {

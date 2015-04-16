@@ -86,6 +86,10 @@ namespace DroidSpeeching
             int itemId = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition].Id;
             intent.PutExtra("ActivityId", itemId);
 
+            (sender as View).TransitionName = "activityIcon";
+
+            ActivityOptions options = ActivityOptions.MakeSceneTransitionAnimation(Activity, (View)sender, "activityIcon");
+
             if (!AppData.CheckNetwork() && !GetActivityPrefs(itemId).GetBoolean("DOWNLOADED", false))
             {
                 AndroidUtils.OfflineAlert(Activity, "This activity has not been downloaded yet and requires an Internet connection to prepare!");
@@ -104,7 +108,7 @@ namespace DroidSpeeching
             }
             else
             {
-                StartActivity(intent);
+                Activity.StartActivity(intent, options.ToBundle());
             }
         }
 

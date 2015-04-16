@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:textSize="28sp"
-            android:textColor="@color/appTitle" />
+            android:textColor="@color/appTitle"
+            android:transitionName="activityIcon" />
         <TextView
             android:text="Created by Dan Richardson"
             android:layout_width="match_parent"

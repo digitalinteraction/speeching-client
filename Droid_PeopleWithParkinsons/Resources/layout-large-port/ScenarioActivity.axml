@@ -19,7 +19,8 @@
             android:layout_height="150dp"
             android:scaleType="fitCenter"
             android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            android:transitionName="activityIcon" />
         <TextView
             android:text="Getting the bus to the train station"
             android:layout_width="match_parent"

@@ -347,6 +347,7 @@
     <AndroidResource Include="Resources\menu\practiceActivityActions.xml" />
     <AndroidResource Include="Resources\drawable\mode.png" />
     <AndroidResource Include="Resources\drawable-hdpi\mode.png" />
+    <AndroidResource Include="Resources\transition\change_image_transform.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">
