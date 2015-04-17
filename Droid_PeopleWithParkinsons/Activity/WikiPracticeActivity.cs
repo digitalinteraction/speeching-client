@@ -149,7 +149,7 @@ namespace DroidSpeeching
             Toast.MakeText(this, "Recording full!", ToastLength.Long).Show();
         }
 
-        private void StopAction(bool stopRec = true)
+        private void StopAction(bool stopRec = true, bool popup = false)
         {
             RunOnUiThread(() =>
             {
@@ -159,6 +159,36 @@ namespace DroidSpeeching
 
             if(stopRec)
                 audioManager.StopRecording();
+
+            if(popup)
+            {
+                Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.practiceRecording));
+
+                AlertDialog alert = new AlertDialog.Builder(this)
+                    .SetTitle("Session complete!")
+                    .SetMessage("Would you like to listen to your speech?")
+                    .SetPositiveButton("Listen", (EventHandler<DialogClickEventArgs>)null)
+                    .SetNeutralButton("Share this recording", (EventHandler<DialogClickEventArgs>)null)
+                    .SetNegativeButton("Close", (arg1, arg2) => { })
+                    .Create();
+                alert.Show();
+
+                alert.GetButton((int)DialogButtonType.Positive).Click += (object sender, EventArgs e)=> {
+                    Intent intent = new Intent();
+                    intent.SetAction(Intent.ActionView);
+                    intent.SetDataAndType(passedUri, "audio/*");
+                    StartActivity(intent);
+                };
+
+                alert.GetButton((int)DialogButtonType.Neutral).Click += (object sender, EventArgs e) =>
+                {
+                    Intent intent = new Intent();
+                    intent.SetAction(Intent.ActionSend);
+                    intent.SetType("audio/*");
+                    intent.PutExtra(Intent.ExtraStream, passedUri);
+                    StartActivity(intent);
+                };
+            }
         }
 
         private void StartAction()
@@ -182,7 +212,7 @@ namespace DroidSpeeching
             }
             else
             {
-                StopAction();
+                StopAction(true, true);
             }
         }
 
@@ -228,7 +258,7 @@ namespace DroidSpeeching
             if (finalText.Length > 520 &&
                 ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <= Android.Content.Res.ScreenLayout.SizeNormal))
             {
-                wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 15);
+                wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
             }
 
             if (wiki.imageURL != null)
