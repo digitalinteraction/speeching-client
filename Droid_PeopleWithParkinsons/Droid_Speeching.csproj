@@ -108,6 +108,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\AssessmentActivity.cs" />
     <Compile Include="Activity\SettingsActivity.cs" />
     <Compile Include="Activity\FeedbackActivity.cs" />
     <Compile Include="Activity\GuideActivity.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Activity\WikiPracticeActivity.cs" />
+    <Compile Include="Fragment\QuickFireFragment.cs" />
     <Compile Include="Fragment\ResultsFragment.cs" />
     <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\LoginActivity.cs" />
@@ -284,6 +286,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large\WikiPracticeActivity.axml" />
+    <AndroidResource Include="Resources\layout\QuickfireFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AssessmentActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

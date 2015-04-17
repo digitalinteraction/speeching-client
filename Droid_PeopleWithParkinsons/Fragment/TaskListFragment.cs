@@ -111,7 +111,7 @@ namespace DroidSpeeching
         void viewFeedbackBtn_Click(object sender, System.EventArgs e)
         {
             if (AppData.CheckNetwork())
-                this.Activity.StartActivity(typeof(FeedbackActivity));
+                this.Activity.StartActivity(typeof(AssessmentActivity)); //FeedbackActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);
         }
