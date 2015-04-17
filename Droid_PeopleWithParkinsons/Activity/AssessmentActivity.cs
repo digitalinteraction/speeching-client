@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Support.V7.App;
+using SpeechingCommon;
 
 namespace DroidSpeeching
 {
@@ -17,7 +18,9 @@ namespace DroidSpeeching
     public class AssessmentActivity : ActionBarActivity
     {
         Button recButton;
-        QuickFireFragment fragment;
+
+        int taskIndex = 0;
+        AssessmentTask[] tasks;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -32,20 +35,39 @@ namespace DroidSpeeching
             recButton = FindViewById<Button>(Resource.Id.assessment_startBtn);
             recButton.Click += recButton_Click;
 
-            fragment = new QuickFireFragment(new string[]{ "first", "second", "third", "last" });
+            FindViewById<ImageView>(Resource.Id.assessment_info).Click += AssessmentActivity_Click;
 
-            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, fragment).Commit();
+            tasks = new AssessmentTask[2];
+
+            tasks[0] = new QuickFireFragment(new string[]{ "first", "second", "third", "last" });
+            tasks[1] = new AssessmentImgDescFragment(AppData.cacheDir + "/wikiImage.jpg");
+
+            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
+        }
+
+        void AssessmentActivity_Click(object sender, EventArgs e)
+        {
+            AlertDialog alert = new AlertDialog.Builder(this)
+                .SetTitle("Instructions for " + tasks[taskIndex].GetTitle())
+                .SetMessage(tasks[taskIndex].GetInstructions())
+                .SetPositiveButton("Got it", (args1, args2) => { })
+                .Create();
+            alert.Show();
         }
 
         void recButton_Click(object sender, EventArgs e)
         {
-            if(!fragment.finished)
+            if (!tasks[taskIndex].IsFinished())
             {
-                fragment.ShowNextWord();
+                tasks[taskIndex].NextAction();
             }
             else
             {
-                FragmentManager.BeginTransaction().Remove(fragment).Commit();
+                FragmentManager.BeginTransaction().Remove(tasks[taskIndex]).Commit();
+                taskIndex++;
+
+                if(taskIndex < tasks.Length)
+                FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
             }
         }
     }

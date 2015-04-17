@@ -3,11 +3,12 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <TextView
-        android:id="@+id/quickfire_text"
+    <ImageView
+        android:src="@drawable/Icon"
+        android:id="@+id/describe_image"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:textSize="28sp"
-        android:gravity="center"
-        android:text="Say this!" />
+        android:scaleType="centerCrop"
+        android:background="@color/appDark"
+        android:elevation="7dp" />
 </LinearLayout>

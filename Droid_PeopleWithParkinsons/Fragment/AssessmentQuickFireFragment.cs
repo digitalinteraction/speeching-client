@@ -13,10 +13,12 @@ using Android.Widget;
 
 namespace DroidSpeeching
 {
-    public class QuickFireFragment : Fragment
+    public class QuickFireFragment : AssessmentTask
     {
-        public bool finished = false;
+        private bool finished = false;
 
+        private string title = "Quickfire Speaking";
+        private string desc = "Press the record button and say the shown word as clearly as you can, then press stop.";
         private int index = 0;
         private string[] words;
         private TextView quickFireText;
@@ -44,9 +46,9 @@ namespace DroidSpeeching
             Toast.MakeText(Activity, "Destroy!", ToastLength.Short).Show();
         }
 
-        public void ShowNextWord()
+        public override void NextAction()
         {
-            if(index < words.Length)
+            if (index < words.Length)
             {
                 quickFireText.Text = words[index];
                 index++;
@@ -55,5 +57,19 @@ namespace DroidSpeeching
             }
         }
 
+        public override bool IsFinished()
+        {
+            return finished;
+        }
+
+        public override string GetInstructions()
+        {
+            return desc;
+        }
+
+        public override string GetTitle()
+        {
+            return title;
+        }
     }
 }

@@ -117,12 +117,14 @@
     <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
     <Compile Include="Activity\ScenarioActivity.cs" />
     <Compile Include="Activity\WikiPracticeActivity.cs" />
-    <Compile Include="Fragment\QuickFireFragment.cs" />
+    <Compile Include="Fragment\AssessmentImgDescFragment.cs" />
+    <Compile Include="Fragment\AssessmentQuickFireFragment.cs" />
     <Compile Include="Fragment\ResultsFragment.cs" />
     <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\LoginActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
     <Compile Include="MiscClasses\AndroidUtils.cs" />
+    <Compile Include="MiscClasses\AssessmentTask.cs" />
     <Compile Include="MiscClasses\AudioRecorder.cs" />
     <Compile Include="MiscClasses\ExportedListAdapter.cs" />
     <Compile Include="Fragment\GuideFragment.cs" />
@@ -292,6 +294,9 @@
     <AndroidResource Include="Resources\layout\AssessmentActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\ImageDescFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -355,6 +360,7 @@
     <AndroidResource Include="Resources\menu\practiceActivityActions.xml" />
     <AndroidResource Include="Resources\drawable\mode.png" />
     <AndroidResource Include="Resources\drawable-hdpi\mode.png" />
+    <AndroidResource Include="Resources\drawable\info.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">
