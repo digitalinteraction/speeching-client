@@ -16,6 +16,8 @@ namespace SpeechingCommon
 
     public class QueryWikiRes
     {
+        // This is dynamically typed with objects named after their page IDs, so can't just be a static array
+        // See: http://stackoverflow.com/questions/8738031/deserializing-json-using-json-net-with-dynamic-data
         public IDictionary<string, QueryWikiInfo> pages {get; set;}
     }
 
@@ -42,7 +44,6 @@ namespace SpeechingCommon
 
     public struct ParsedWikiHTML
     {
-        // I am angry at whoever though an asterix was a good variable name
         [JsonProperty("*")]
         public string HTML;
     }

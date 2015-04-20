@@ -22,6 +22,8 @@ namespace DroidSpeeching
 
         private string imageLoc;
         private ImageView imageView;
+        private TextView instructionView;
+        private int instructionIndex = 0;
 
         public AssessmentImgDescFragment(string imageLoc, string[] instructions)
         {
@@ -40,6 +42,17 @@ namespace DroidSpeeching
 
             imageView = view.FindViewById<ImageView>(Resource.Id.describe_image);
             imageView.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+
+            instructionView = view.FindViewById<TextView>(Resource.Id.describe_text);
+
+            if(instructions == null || instructions.Length == 0)
+            {
+                instructionView.Text = "Please describe the image.";
+            }
+            else
+            {
+                instructionView.Text = instructions[0];
+            }
         }
 
         public override bool IsFinished()
@@ -59,7 +72,13 @@ namespace DroidSpeeching
 
         public override void NextAction()
         {
-            finished = true;
+            if (instructionIndex < instructions.Length)
+            {
+                instructionView.Text = instructions[instructionIndex];
+                instructionIndex++;
+
+                if (instructionIndex == instructions.Length) finished = true;
+            }
         }
     }
 }

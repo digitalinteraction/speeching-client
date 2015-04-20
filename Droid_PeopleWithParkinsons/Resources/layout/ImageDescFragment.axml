@@ -7,8 +7,18 @@
         android:src="@drawable/Icon"
         android:id="@+id/describe_image"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scaleType="centerCrop"
         android:background="@color/appDark"
         android:elevation="7dp" />
+    <TextView
+        android:id="@+id/describe_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:padding="14dp"
+        android:text="Describe the image!" />
 </LinearLayout>
