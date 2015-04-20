@@ -40,7 +40,7 @@ namespace DroidSpeeching
             tasks = new AssessmentTask[2];
 
             tasks[0] = new QuickFireFragment(new string[]{ "first", "second", "third", "last" });
-            tasks[1] = new AssessmentImgDescFragment(AppData.cacheDir + "/wikiImage.jpg");
+            tasks[1] = new AssessmentImgDescFragment(AppData.cacheDir + "/wikiImage.jpg", new string[]{"What does the image show?", "Describe the colours of the image", "Describe an object within the image"});
 
             FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
         }

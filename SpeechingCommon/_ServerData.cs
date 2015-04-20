@@ -869,7 +869,7 @@ namespace SpeechingCommon
                 if(res.parse.images != null && res.parse.images.Length > 0)
                 {
                     // There's an image available from this page! Unfortunately we have to request the actual URL of the file separately
-                    HttpWebRequest imgReq = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=query&titles=Image:"+ res.parse.images[0] +"&prop=imageinfo&iiprop=url&format=json");
+                    HttpWebRequest imgReq = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=query&continue=&titles=Image:"+ res.parse.images[0] +"&prop=imageinfo&iiprop=url&format=json");
                     string imgText = null;
                     using (HttpWebResponse resp = (HttpWebResponse)(await imgReq.GetResponseAsync()))
                     {
@@ -878,10 +878,19 @@ namespace SpeechingCommon
                             imgText = await reader.ReadToEndAsync();
                         }
                     }
+
+                    dynamic json = JsonConvert.DeserializeObject<dynamic>(imgText);
+
                     WikipediaResult imgRes = JsonConvert.DeserializeObject<WikipediaResult>(imgText);
 
                     // Store the image location in the main wiki result obj
-                    res.imageURL = await Utils.FetchLocalCopy(imgRes.query.pages.info.imageInfo[0].url, typeof(WikipediaResult));
+
+                    foreach (KeyValuePair<string, QueryWikiInfo> info in imgRes.query.pages)
+                    {
+                        res.imageURL = await Utils.FetchLocalCopy(info.Value.imageInfo[0].url, typeof(WikipediaResult));
+                        break;
+                    }
+                    
                 }
 
                 HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();

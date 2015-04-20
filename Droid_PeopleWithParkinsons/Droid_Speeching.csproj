@@ -49,6 +49,7 @@
     <Reference Include="GooglePlayServicesLib">
       <HintPath>..\Components\googleplayservices-22.0.0.0\lib\android\GooglePlayServicesLib.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />

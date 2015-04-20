@@ -16,13 +16,7 @@ namespace SpeechingCommon
 
     public class QueryWikiRes
     {
-        public QueryWikiData pages;
-    }
-
-    public struct QueryWikiData
-    {
-        [JsonProperty("-1")]
-        public QueryWikiInfo info;
+        public IDictionary<string, QueryWikiInfo> pages {get; set;}
     }
 
     public struct QueryWikiInfo

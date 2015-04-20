@@ -18,13 +18,15 @@ namespace DroidSpeeching
         private bool finished = false;
         private string title = "Image Description";
         private string desc = "Describe the image as clearly as you can.";
+        private string[] instructions;
 
         private string imageLoc;
         private ImageView imageView;
 
-        public AssessmentImgDescFragment(string imageLoc)
+        public AssessmentImgDescFragment(string imageLoc, string[] instructions)
         {
             this.imageLoc = imageLoc;
+            this.instructions = instructions;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
