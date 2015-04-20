@@ -1,36 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
+using SpeechingCommon;
 
 namespace DroidSpeeching
 {
-    public class QuickFireFragment : AssessmentTask
+    public class QuickFireFragment : AssessmentFragment
     {
+        private QuickFireTask data;
+        private TextView quickFireText;
+        private int index = 0;
         private bool finished = false;
 
-        private string title = "Quickfire Speaking";
-        private string desc = "Press the record button and say the shown word as clearly as you can, then press stop.";
-        private int index = 0;
-        private string[] words;
-        private TextView quickFireText;
-
-        public QuickFireFragment()
+        public QuickFireFragment(QuickFireTask data)
         {
-
-        }
-
-        public QuickFireFragment(string[] toShow)
-        {
-            words = toShow;
+            this.data = data;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -40,11 +24,11 @@ namespace DroidSpeeching
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            if(words != null)
+            if(data.Prompts != null)
             {
                 quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
-                quickFireText.Text = words[index];
-                if (index + 1 == words.Length) finished = true;
+                quickFireText.Text = data.Prompts[index];
+                if (index + 1 == data.Prompts.Length) finished = true;
             }
             
             base.OnViewCreated(view, savedInstanceState);
@@ -53,11 +37,11 @@ namespace DroidSpeeching
         public override void NextAction()
         {
             index++;
-            if (index < words.Length)
+            if (index < data.Prompts.Length)
             {
-                quickFireText.Text = "\"" + words[index] + "\"";
+                quickFireText.Text = "\"" + data.Prompts[index] + "\"";
                 
-                if (index + 1 == words.Length) finished = true;
+                if (index + 1 == data.Prompts.Length) finished = true;
             }
         }
 
@@ -68,18 +52,17 @@ namespace DroidSpeeching
 
         public override string GetInstructions()
         {
-            return desc;
+            return data.Instructions;
         }
 
         public override string GetTitle()
         {
-            return title;
+            return data.Title;
         }
 
         public override string GetRecordingId()
         {
-            // TODO
-            return "19920407_" + index;
+            return data.Id.ToString() + index;
         }
     }
 }

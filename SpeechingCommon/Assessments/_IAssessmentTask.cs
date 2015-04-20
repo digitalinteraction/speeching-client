@@ -5,12 +5,10 @@ using System.Text;
 
 namespace SpeechingCommon
 {
-    interface IAssessmentTask
+    public interface IAssessmentTask
     {
-        string Id { get; set; }
-        bool IsFinished { get; set; }
+        int Id { get; set; }
         string Title { get; set; }
         string Instructions { get; set; }
-        void NextAction();
     }
 }

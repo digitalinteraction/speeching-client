@@ -6,12 +6,12 @@ using System.Text;
 
 namespace DroidSpeeching
 {
-    public abstract class AssessmentTask : Fragment
+    public abstract class AssessmentFragment : Fragment
     {
         public abstract string GetRecordingId();
         public abstract bool IsFinished();
+        public abstract void NextAction();
         public abstract string GetTitle();
         public abstract string GetInstructions();
-        public abstract void NextAction();
     }
 }

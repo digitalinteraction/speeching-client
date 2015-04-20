@@ -32,7 +32,10 @@ namespace DroidSpeeching
         bool recording = false;
         int taskIndex = 0;
         string localTempDirectory;
-        AssessmentTask[] tasks;
+        IAssessmentTask[] tasks;
+
+        AssessmentFragment currentFragment;
+
         AndroidUtils.RecordAudioManager audioManager;
 
         protected override void OnCreate(Bundle bundle)
@@ -70,11 +73,27 @@ namespace DroidSpeeching
 
             FindViewById<TextView>(Resource.Id.assessment_preamble).Text = "Doing this short assessment will help us determine which parts of your speech might need some practice!";
 
-            tasks = new AssessmentTask[2];
+            tasks = new IAssessmentTask[2];
 
-            tasks[0] = new QuickFireFragment(new string[]{  });
-            tasks[1] = new AssessmentImgDescFragment(AppData.cacheDir + "/wikiImage.jpg", 
-                new string[]{});
+            QuickFireTask quick = new QuickFireTask(){
+                Id = 8675309, 
+                Instructions = "Press the 'Record' button and say the shown word as clearly as you can, then press stop.", 
+                Title = "Quickfire Speaking",
+                Prompts = new string[]{"first", "second", "third", "last"}
+            };
+
+            tasks[0] = quick;
+
+            ImageDescTask imgDesc = new ImageDescTask()
+            {
+                Id = 19920407,
+                Instructions = "Press the 'Record' button and follow the instruction in the image's caption.",
+                Title = "Describe the Image",
+                Prompts = new string[] { "What does the image show?", "Describe the colours of the image", "Describe an object within the image" },
+                Image = AppData.cacheDir + "/wikiImage.jpg"
+            };
+
+            tasks[1] = imgDesc;
         }
 
         protected override void OnPause()
@@ -82,7 +101,7 @@ namespace DroidSpeeching
             base.OnPause();
             if(currentStage == AssessmentStage.Running)
             {
-                FragmentManager.BeginTransaction().Remove(tasks[taskIndex]);
+                FragmentManager.BeginTransaction().Remove(currentFragment);
             }
             tasks = null;
 
@@ -107,8 +126,8 @@ namespace DroidSpeeching
 
         private void helpButton_Click(object sender, EventArgs e)
         {
-            string title = (currentStage == AssessmentStage.Running) ? tasks[taskIndex].GetTitle() : "Information";
-            string message = (currentStage == AssessmentStage.Running) ? tasks[taskIndex].GetInstructions() :
+            string title = (currentStage == AssessmentStage.Running) ? currentFragment.GetTitle() : "Information";
+            string message = (currentStage == AssessmentStage.Running) ? currentFragment.GetInstructions() :
                 "If you need help during the assessment, this will show information about how to complete the current task!";
 
             AlertDialog alert = new AlertDialog.Builder(this)
@@ -123,9 +142,11 @@ namespace DroidSpeeching
         {
             preambleContainer.Visibility = ViewStates.Gone;
 
-            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[0]).Commit();
+            currentFragment = GetNewFragment();
+
+            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment).Commit();
             fragmentContainer.Visibility = ViewStates.Visible;
-            assessmentType.Text = tasks[0].GetTitle();
+            assessmentType.Text = currentFragment.GetTitle();
 
             recButton.Text = "Record";
 
@@ -143,7 +164,7 @@ namespace DroidSpeeching
         {
             recording = true;
             string fileAdd = System.IO.Path.Combine(localTempDirectory,
-                    tasks[taskIndex].GetRecordingId() + ".mp4");
+                    currentFragment.GetRecordingId() + ".mp4");
             audioManager.StartRecording(fileAdd);
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
             recButton.Text = "Stop Recording";
@@ -155,6 +176,25 @@ namespace DroidSpeeching
             recording = false;
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
             recButton.Text = "Record";
+        }
+
+        private AssessmentFragment GetNewFragment()
+        {
+            Type thisType = tasks[taskIndex].GetType();
+            
+            if(thisType == typeof(QuickFireTask))
+            {
+                return new QuickFireFragment(tasks[taskIndex] as QuickFireTask);
+            }
+            else if(thisType == typeof(ImageDescTask))
+            {
+                return new ImageDescFragment(tasks[taskIndex] as ImageDescTask);
+            }
+            else
+            {
+                return null;
+            }
+                
         }
 
         void recButton_Click(object sender, EventArgs e)
@@ -170,13 +210,13 @@ namespace DroidSpeeching
                 // Stop recording and move onto next task/finish
                 StopRecording();
 
-                if (!tasks[taskIndex].IsFinished())
+                if (!currentFragment.IsFinished())
                 {
-                    tasks[taskIndex].NextAction();
+                    currentFragment.NextAction();
                 }
                 else
                 {
-                    FragmentManager.BeginTransaction().Remove(tasks[taskIndex]).Commit();
+                    FragmentManager.BeginTransaction().Remove(currentFragment).Commit();
                     taskIndex++;
 
                     if (taskIndex < tasks.Length)
@@ -184,10 +224,15 @@ namespace DroidSpeeching
                         loadingContainer.Visibility = ViewStates.Visible;
                         fragmentContainer.Visibility = ViewStates.Gone;
 
-                        FragmentManager.BeginTransaction().Remove(tasks[taskIndex - 1]);
-                        FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
+                        currentFragment = null;
+                        currentFragment = GetNewFragment();
 
-                        assessmentType.Text = tasks[taskIndex].GetTitle();
+                        if(currentFragment != null)
+                        {
+                            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment).Commit();
+                        }
+
+                        assessmentType.Text = currentFragment.GetTitle();
 
                         loadingContainer.Visibility = ViewStates.Gone;
                         fragmentContainer.Visibility = ViewStates.Visible;

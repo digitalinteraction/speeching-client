@@ -1,34 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
+using SpeechingCommon;
 
 namespace DroidSpeeching
 {
-    public class AssessmentImgDescFragment : AssessmentTask
+    public class ImageDescFragment : AssessmentFragment
     {
+        private ImageDescTask data;
         private bool finished = false;
-        private string title = "Image Description";
-        private string desc = "Describe the image as clearly as you can.";
-        private string[] instructions;
-
-        private string imageLoc;
         private ImageView imageView;
         private TextView instructionView;
         private int instructionIndex = 0;
 
-        public AssessmentImgDescFragment(string imageLoc, string[] instructions)
+        public ImageDescFragment(ImageDescTask data)
         {
-            this.imageLoc = imageLoc;
-            this.instructions = instructions;
+            this.data = data;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -41,18 +28,18 @@ namespace DroidSpeeching
             base.OnViewCreated(view, savedInstanceState);
 
             imageView = view.FindViewById<ImageView>(Resource.Id.describe_image);
-            imageView.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+            imageView.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(data.Image)));
 
             instructionView = view.FindViewById<TextView>(Resource.Id.describe_text);
 
-            if((instructions == null || instructions.Length == 0) && !finished)
+            if((data.Prompts == null || data.Prompts.Length == 0) && !finished)
             {
                 instructionView.Text = "Please describe the image.";
             }
             else
             {
-                instructionView.Text = instructions[instructionIndex];
-                if (instructionIndex + 1 == instructions.Length) finished = true;
+                instructionView.Text = data.Prompts[instructionIndex];
+                if (instructionIndex + 1 == data.Prompts.Length) finished = true;
             }
         }
 
@@ -63,29 +50,29 @@ namespace DroidSpeeching
 
         public override string GetTitle()
         {
-            return title;
+            return data.Title;
         }
 
         public override string GetInstructions()
         {
-            return desc;
+            return data.Instructions;
         }
 
         public override void NextAction()
         {
             instructionIndex++;
-            if (instructionIndex < instructions.Length)
+            if (instructionIndex < data.Prompts.Length)
             {
-                instructionView.Text = instructions[instructionIndex];
+                instructionView.Text = data.Prompts[instructionIndex];
 
-                if (instructionIndex + 1 == instructions.Length) finished = true;
+                if (instructionIndex + 1 == data.Prompts.Length) finished = true;
             }
         }
 
         public override string GetRecordingId()
         {
             // TODO
-            return "8675309_" + instructionIndex;
+            return data.Id.ToString() + instructionIndex;
         }
     }
 }
