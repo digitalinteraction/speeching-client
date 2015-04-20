@@ -70,6 +70,7 @@
     <Compile Include="ActivityStructs\Scenario.cs" />
     <Compile Include="ActivityStructs\_ActivityInterface.cs" />
     <Compile Include="Assessments\Assessment.cs" />
+    <Compile Include="Assessments\AssessmentConverter.cs" />
     <Compile Include="Assessments\ImageDescTask.cs" />
     <Compile Include="Assessments\QuickFireTask.cs" />
     <Compile Include="Assessments\_IAssessmentTask.cs" />

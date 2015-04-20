@@ -18,7 +18,7 @@ namespace DroidSpeeching
     [Activity(Label = "Assessment Activity", ParentActivity = typeof(MainActivity))]
     public class AssessmentActivity : ActionBarActivity
     {
-        private enum AssessmentStage { Preamble, Running, Finished }
+        private enum AssessmentStage { Preparing, Preamble, Running, Finished }
 
         AssessmentStage currentStage = AssessmentStage.Preamble;
 
@@ -51,6 +51,7 @@ namespace DroidSpeeching
             recButton = FindViewById<Button>(Resource.Id.assessment_startBtn);
             recButton.Text = "Begin";
             recButton.Click += recButton_Click;
+            recButton.Visibility = ViewStates.Gone;
 
             assessmentType = FindViewById<TextView>(Resource.Id.assessment_type);
             assessmentType.Text = "";
@@ -60,7 +61,7 @@ namespace DroidSpeeching
             if(!Directory.Exists(localTempDirectory)) Directory.CreateDirectory(localTempDirectory);
 
             preambleContainer = FindViewById<LinearLayout>(Resource.Id.preamble_container);
-            preambleContainer.Visibility = ViewStates.Visible;
+            preambleContainer.Visibility = ViewStates.Gone;
             loadingContainer = FindViewById<LinearLayout>(Resource.Id.assessment_loading);
             loadingContainer.Visibility = ViewStates.Gone;
             fragmentContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
@@ -68,32 +69,41 @@ namespace DroidSpeeching
 
             helpButton = FindViewById<ImageView>(Resource.Id.assessment_info);
             helpButton.Click += helpButton_Click;
+            helpButton.Visibility = ViewStates.Gone;
 
-            //TODO read from JSON
+            LoadData();
+        }
 
-            FindViewById<TextView>(Resource.Id.assessment_preamble).Text = "Doing this short assessment will help us determine which parts of your speech might need some practice!";
+        private async void LoadData()
+        {
+            ProgressDialog dialog = null;
 
-            tasks = new IAssessmentTask[2];
+            currentStage = AssessmentStage.Preparing;
 
-            QuickFireTask quick = new QuickFireTask(){
-                Id = 8675309, 
-                Instructions = "Press the 'Record' button and say the shown word as clearly as you can, then press stop.", 
-                Title = "Quickfire Speaking",
-                Prompts = new string[]{"first", "second", "third", "last"}
-            };
-
-            tasks[0] = quick;
-
-            ImageDescTask imgDesc = new ImageDescTask()
+            RunOnUiThread(() =>
             {
-                Id = 19920407,
-                Instructions = "Press the 'Record' button and follow the instruction in the image's caption.",
-                Title = "Describe the Image",
-                Prompts = new string[] { "What does the image show?", "Describe the colours of the image", "Describe an object within the image" },
-                Image = AppData.cacheDir + "/wikiImage.jpg"
-            };
+                dialog = new ProgressDialog(this);
+                dialog.SetTitle("Downloading...");
+                dialog.SetMessage("Please wait while we prepare your assessment.");
+                dialog.SetCancelable(false);
+                dialog.Show();
+            });
 
-            tasks[1] = imgDesc;
+            Assessment assess = await ServerData.FetchAssessment();
+
+            FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assess.description;
+
+            tasks = assess.tasks;
+
+            RunOnUiThread(() =>
+            {
+                dialog.Hide();
+            });
+
+            currentStage = AssessmentStage.Preamble;
+            preambleContainer.Visibility = ViewStates.Visible;
+            recButton.Visibility = ViewStates.Visible;
+            helpButton.Visibility = ViewStates.Visible;
         }
 
         protected override void OnPause()
@@ -197,8 +207,10 @@ namespace DroidSpeeching
                 
         }
 
-        void recButton_Click(object sender, EventArgs e)
+        private void recButton_Click(object sender, EventArgs e)
         {
+            if (currentStage == AssessmentStage.Preparing) return;
+
             if(currentStage == AssessmentStage.Preamble)
             {
                 StartAssessment();

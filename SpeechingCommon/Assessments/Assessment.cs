@@ -7,6 +7,7 @@ namespace SpeechingCommon
 {
     public class Assessment
     {
+        public int id;
         public string title;
         public string description;
         public DateTime dateSet;

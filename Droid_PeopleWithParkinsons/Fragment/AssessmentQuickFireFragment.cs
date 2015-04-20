@@ -27,7 +27,7 @@ namespace DroidSpeeching
             if(data.Prompts != null)
             {
                 quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
-                quickFireText.Text = data.Prompts[index];
+                quickFireText.Text = "\"" + data.Prompts[index] + "\"";
                 if (index + 1 == data.Prompts.Length) finished = true;
             }
             
