@@ -8,6 +8,7 @@ namespace DroidSpeeching
 {
     public abstract class AssessmentTask : Fragment
     {
+        public abstract string GetRecordingId();
         public abstract bool IsFinished();
         public abstract string GetTitle();
         public abstract string GetInstructions();

@@ -45,13 +45,14 @@ namespace DroidSpeeching
 
             instructionView = view.FindViewById<TextView>(Resource.Id.describe_text);
 
-            if(instructions == null || instructions.Length == 0)
+            if((instructions == null || instructions.Length == 0) && !finished)
             {
                 instructionView.Text = "Please describe the image.";
             }
             else
             {
-                instructionView.Text = instructions[0];
+                instructionView.Text = instructions[instructionIndex];
+                if (instructionIndex + 1 == instructions.Length) finished = true;
             }
         }
 
@@ -72,13 +73,19 @@ namespace DroidSpeeching
 
         public override void NextAction()
         {
+            instructionIndex++;
             if (instructionIndex < instructions.Length)
             {
                 instructionView.Text = instructions[instructionIndex];
-                instructionIndex++;
 
-                if (instructionIndex == instructions.Length) finished = true;
+                if (instructionIndex + 1 == instructions.Length) finished = true;
             }
+        }
+
+        public override string GetRecordingId()
+        {
+            // TODO
+            return "8675309_" + instructionIndex;
         }
     }
 }

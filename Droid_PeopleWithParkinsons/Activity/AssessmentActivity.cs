@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Support.V7.App;
 using SpeechingCommon;
+using System.IO;
 
 namespace DroidSpeeching
 {
@@ -27,8 +28,12 @@ namespace DroidSpeeching
         LinearLayout preambleContainer;
         FrameLayout fragmentContainer;
 
+        bool recording = false;
         int taskIndex = 0;
+        string localTempDirectory;
         AssessmentTask[] tasks;
+        AndroidUtils.RecordAudioManager audioManager;
+
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -47,6 +52,10 @@ namespace DroidSpeeching
             assessmentType = FindViewById<TextView>(Resource.Id.assessment_type);
             assessmentType.Text = "";
 
+            localTempDirectory = AppData.cacheDir + "/assessment";
+
+            if(!Directory.Exists(localTempDirectory)) Directory.CreateDirectory(localTempDirectory);
+
             preambleContainer = FindViewById<LinearLayout>(Resource.Id.preamble_container);
             preambleContainer.Visibility = ViewStates.Visible;
             fragmentContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
@@ -64,6 +73,28 @@ namespace DroidSpeeching
             tasks[0] = new QuickFireFragment(new string[]{ "first", "second", "third", "last" });
             tasks[1] = new AssessmentImgDescFragment(AppData.cacheDir + "/wikiImage.jpg", 
                 new string[]{"What does the image show?", "Describe the colours of the image", "Describe an object within the image"});
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            if(audioManager != null)
+            {
+                if(recording)
+                {
+                    StopRecording();
+                }
+                audioManager.CleanUp();
+                audioManager = null;
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            audioManager = new AndroidUtils.RecordAudioManager(this, null);
+            recording = false;
+            recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
         }
 
         private void helpButton_Click(object sender, EventArgs e)
@@ -100,6 +131,24 @@ namespace DroidSpeeching
             currentStage = AssessmentStage.Finished;
         }
 
+        private void StartRecording()
+        {
+            recording = true;
+            string fileAdd = System.IO.Path.Combine(localTempDirectory,
+                    tasks[taskIndex].GetRecordingId() + ".mp4");
+            audioManager.StartRecording(fileAdd);
+            recButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
+            recButton.Text = "Stop Recording";
+        }
+
+        private void StopRecording()
+        {
+            audioManager.StopRecording();
+            recording = false;
+            recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
+            recButton.Text = "Record";
+        }
+
         void recButton_Click(object sender, EventArgs e)
         {
             if(currentStage == AssessmentStage.Preamble)
@@ -108,25 +157,36 @@ namespace DroidSpeeching
                 return;
             }
 
-            if (!tasks[taskIndex].IsFinished())
+            if(recording)
             {
-                tasks[taskIndex].NextAction();
-            }
-            else
-            {
-                FragmentManager.BeginTransaction().Remove(tasks[taskIndex]).Commit();
-                taskIndex++;
+                // Stop recording and move onto next task/finish
+                StopRecording();
 
-                if(taskIndex < tasks.Length)
+                if (!tasks[taskIndex].IsFinished())
                 {
-                    FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
-                    assessmentType.Text = tasks[taskIndex].GetTitle();
+                    tasks[taskIndex].NextAction();
                 }
                 else
                 {
-                    FinishAssessment();
+                    FragmentManager.BeginTransaction().Remove(tasks[taskIndex]).Commit();
+                    taskIndex++;
+
+                    if (taskIndex < tasks.Length)
+                    {
+                        FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
+                        assessmentType.Text = tasks[taskIndex].GetTitle();
+                    }
+                    else
+                    {
+                        FinishAssessment();
+                    }
                 }
             }
+            else
+            {
+                StartRecording();
+            }
+            
         }
     }
 }

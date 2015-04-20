@@ -36,24 +36,20 @@ namespace DroidSpeeching
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
+            quickFireText.Text = words[index];
+            if (index + 1 == words.Length) finished = true;
 
             base.OnViewCreated(view, savedInstanceState);
         }
 
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            Toast.MakeText(Activity, "Destroy!", ToastLength.Short).Show();
-        }
-
         public override void NextAction()
         {
+            index++;
             if (index < words.Length)
             {
                 quickFireText.Text = words[index];
-                index++;
-
-                if (index == words.Length) finished = true;
+                
+                if (index + 1 == words.Length) finished = true;
             }
         }
 
@@ -70,6 +66,12 @@ namespace DroidSpeeching
         public override string GetTitle()
         {
             return title;
+        }
+
+        public override string GetRecordingId()
+        {
+            // TODO
+            return "19920407_" + index;
         }
     }
 }
