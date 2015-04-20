@@ -26,6 +26,7 @@ namespace DroidSpeeching
         ImageView helpButton;
         TextView assessmentType;
         LinearLayout preambleContainer;
+        LinearLayout loadingContainer;
         FrameLayout fragmentContainer;
 
         bool recording = false;
@@ -33,7 +34,6 @@ namespace DroidSpeeching
         string localTempDirectory;
         AssessmentTask[] tasks;
         AndroidUtils.RecordAudioManager audioManager;
-
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -58,6 +58,8 @@ namespace DroidSpeeching
 
             preambleContainer = FindViewById<LinearLayout>(Resource.Id.preamble_container);
             preambleContainer.Visibility = ViewStates.Visible;
+            loadingContainer = FindViewById<LinearLayout>(Resource.Id.assessment_loading);
+            loadingContainer.Visibility = ViewStates.Gone;
             fragmentContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
             fragmentContainer.Visibility = ViewStates.Gone;
 
@@ -70,14 +72,20 @@ namespace DroidSpeeching
 
             tasks = new AssessmentTask[2];
 
-            tasks[0] = new QuickFireFragment(new string[]{ "first", "second", "third", "last" });
+            tasks[0] = new QuickFireFragment(new string[]{  });
             tasks[1] = new AssessmentImgDescFragment(AppData.cacheDir + "/wikiImage.jpg", 
-                new string[]{"What does the image show?", "Describe the colours of the image", "Describe an object within the image"});
+                new string[]{});
         }
 
         protected override void OnPause()
         {
             base.OnPause();
+            if(currentStage == AssessmentStage.Running)
+            {
+                FragmentManager.BeginTransaction().Remove(tasks[taskIndex]);
+            }
+            tasks = null;
+
             if(audioManager != null)
             {
                 if(recording)
@@ -173,8 +181,16 @@ namespace DroidSpeeching
 
                     if (taskIndex < tasks.Length)
                     {
+                        loadingContainer.Visibility = ViewStates.Visible;
+                        fragmentContainer.Visibility = ViewStates.Gone;
+
+                        FragmentManager.BeginTransaction().Remove(tasks[taskIndex - 1]);
                         FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, tasks[taskIndex]).Commit();
+
                         assessmentType.Text = tasks[taskIndex].GetTitle();
+
+                        loadingContainer.Visibility = ViewStates.Gone;
+                        fragmentContainer.Visibility = ViewStates.Visible;
                     }
                     else
                     {

@@ -23,6 +23,11 @@ namespace DroidSpeeching
         private string[] words;
         private TextView quickFireText;
 
+        public QuickFireFragment()
+        {
+
+        }
+
         public QuickFireFragment(string[] toShow)
         {
             words = toShow;
@@ -35,10 +40,13 @@ namespace DroidSpeeching
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
-            quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
-            quickFireText.Text = words[index];
-            if (index + 1 == words.Length) finished = true;
-
+            if(words != null)
+            {
+                quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
+                quickFireText.Text = words[index];
+                if (index + 1 == words.Length) finished = true;
+            }
+            
             base.OnViewCreated(view, savedInstanceState);
         }
 
@@ -47,7 +55,7 @@ namespace DroidSpeeching
             index++;
             if (index < words.Length)
             {
-                quickFireText.Text = words[index];
+                quickFireText.Text = "\"" + words[index] + "\"";
                 
                 if (index + 1 == words.Length) finished = true;
             }

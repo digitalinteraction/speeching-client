@@ -36,13 +36,29 @@
         android:layout_weight="1"
         android:visibility="gone" />
     <LinearLayout
-        android:id="@+id/preamble_container"
+        android:id="@+id/assessment_loading"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_margin="14dp"
         android:visibility="visible">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:visibility="visible"
+            android:layout_marginTop="15dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/preamble_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="14dp"
+        android:visibility="gone">
         <TextView
             android:id="@+id/assessment_preamble"
             android:layout_width="match_parent"
