@@ -33,6 +33,7 @@ namespace DroidSpeeching
         int taskIndex = 0;
         string localTempDirectory;
         IAssessmentTask[] tasks;
+        ISharedPreferences prefs;
 
         AssessmentFragment currentFragment;
 
@@ -134,7 +135,7 @@ namespace DroidSpeeching
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
         }
 
-        private void helpButton_Click(object sender, EventArgs e)
+        private void ShowInfo()
         {
             string title = (currentStage == AssessmentStage.Running) ? currentFragment.GetTitle() : "Information";
             string message = (currentStage == AssessmentStage.Running) ? currentFragment.GetInstructions() :
@@ -145,22 +146,30 @@ namespace DroidSpeeching
                 .SetMessage(message)
                 .SetPositiveButton("Got it", (args1, args2) => { })
                 .Create();
-            alert.Show();
+
+            RunOnUiThread(() =>
+            {
+                alert.Show();
+            }); 
+        }
+
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            ShowInfo();
         }
 
         private void StartAssessment()
         {
             preambleContainer.Visibility = ViewStates.Gone;
+            currentStage = AssessmentStage.Running;
 
-            currentFragment = GetNewFragment();
+            SetNewFragment();
 
             FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment).Commit();
             fragmentContainer.Visibility = ViewStates.Visible;
             assessmentType.Text = currentFragment.GetTitle();
 
             recButton.Text = "Record";
-
-            currentStage = AssessmentStage.Running;
         }
 
         private void FinishAssessment()
@@ -188,23 +197,41 @@ namespace DroidSpeeching
             recButton.Text = "Record";
         }
 
-        private AssessmentFragment GetNewFragment()
+        private void SetNewFragment()
         {
             Type thisType = tasks[taskIndex].GetType();
-            
+
             if(thisType == typeof(QuickFireTask))
             {
-                return new QuickFireFragment(tasks[taskIndex] as QuickFireTask);
+                currentFragment = new QuickFireFragment(tasks[taskIndex] as QuickFireTask);
             }
             else if(thisType == typeof(ImageDescTask))
             {
-                return new ImageDescFragment(tasks[taskIndex] as ImageDescTask);
+                currentFragment = new ImageDescFragment(tasks[taskIndex] as ImageDescTask);
             }
             else
             {
-                return null;
+                currentFragment = null;
+                return;
             }
-                
+
+            if (!GetPrefs().GetBoolean(thisType.ToString(), false))
+            {
+                ShowInfo();
+                ISharedPreferencesEditor editor = GetPrefs().Edit();
+                editor.PutBoolean(thisType.ToString(), true);
+                editor.Apply();
+            }
+        }
+
+        private ISharedPreferences GetPrefs()
+        {
+            if (prefs == null)
+            {
+                prefs = GetSharedPreferences("ASSESSMENTS", FileCreationMode.MultiProcess);
+            }
+
+            return prefs;
         }
 
         private void recButton_Click(object sender, EventArgs e)
@@ -237,7 +264,7 @@ namespace DroidSpeeching
                         fragmentContainer.Visibility = ViewStates.Gone;
 
                         currentFragment = null;
-                        currentFragment = GetNewFragment();
+                        SetNewFragment();
 
                         if(currentFragment != null)
                         {

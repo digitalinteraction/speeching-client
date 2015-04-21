@@ -11,7 +11,7 @@
 		},
 		{
 			"Id"	: 363473321,
-			"Title" : "Describe the Image",
+			"Title" : "Image Description",
 			"Instructions" : "Press the 'Record' button and follow the instruction in the image's caption",
 			"Prompts" : ["What does the image show?", "Describe the colours of the image", "Describe an object within the image"],
 			"Image" : "http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg"
