@@ -1,4 +1,5 @@
 using Android.App;
+using SpeechingCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,19 @@ namespace DroidSpeeching
 {
     public abstract class AssessmentFragment : Fragment
     {
+        public Stack<Action> runOnceCreated;
+        public bool finishedCreating = false;
+
+        public AssessmentFragment()
+        {
+            runOnceCreated = new Stack<Action>();
+        }
+
         public abstract string GetRecordingId();
         public abstract bool IsFinished();
         public abstract void NextAction();
+        public abstract int GetCurrentStage();
+        public abstract void GoToStage(int stage);
         public abstract string GetTitle();
         public abstract string GetInstructions();
     }

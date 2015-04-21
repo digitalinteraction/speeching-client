@@ -72,10 +72,10 @@ namespace DroidSpeeching
             helpButton.Click += helpButton_Click;
             helpButton.Visibility = ViewStates.Gone;
 
-            LoadData();
+            LoadData(bundle);
         }
 
-        private async void LoadData()
+        private async void LoadData(Bundle bundle)
         {
             ProgressDialog dialog = null;
 
@@ -96,15 +96,41 @@ namespace DroidSpeeching
 
             tasks = assess.tasks;
 
+            int previous = -1;
+            
+            if(bundle != null)
+            {
+                previous = bundle.GetInt("ASSESSMENT_PROGRESS", -1);
+            }
+
+            if(previous >= 0 && previous < tasks.Length)
+            {
+                taskIndex = previous;
+                StartAssessment(bundle.GetInt("TASK_PROGRESS", -1));
+            }
+            else
+            {
+                currentStage = AssessmentStage.Preamble;
+                preambleContainer.Visibility = ViewStates.Visible;
+                recButton.Visibility = ViewStates.Visible;
+                helpButton.Visibility = ViewStates.Visible;
+            }
+
             RunOnUiThread(() =>
             {
                 dialog.Hide();
             });
+        }
 
-            currentStage = AssessmentStage.Preamble;
-            preambleContainer.Visibility = ViewStates.Visible;
-            recButton.Visibility = ViewStates.Visible;
-            helpButton.Visibility = ViewStates.Visible;
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            if(currentStage == AssessmentStage.Running)
+            {
+                outState.PutInt("ASSESSMENT_PROGRESS", taskIndex);
+                outState.PutInt("TASK_PROGRESS", currentFragment.GetCurrentStage());
+            }
+            
+            base.OnSaveInstanceState(outState);
         }
 
         protected override void OnPause()
@@ -158,16 +184,43 @@ namespace DroidSpeeching
             ShowInfo();
         }
 
-        private void StartAssessment()
+        private void StartAssessment(int startPosition = -1)
         {
             preambleContainer.Visibility = ViewStates.Gone;
+            recButton.Visibility = ViewStates.Visible;
+            helpButton.Visibility = ViewStates.Visible;
+
             currentStage = AssessmentStage.Running;
 
-            SetNewFragment();
-
-            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment).Commit();
+            if (startPosition >= 0)
+            {
+                currentFragment = FragmentManager.FindFragmentByTag<AssessmentFragment>("ASSESSMENT_TASK");
+                currentFragment.GoToStage(startPosition);
+            }
+            else
+            {
+                SetNewFragment();
+                FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment, "ASSESSMENT_TASK").Commit();
+            }
+            
             fragmentContainer.Visibility = ViewStates.Visible;
-            assessmentType.Text = currentFragment.GetTitle();
+
+            // If the device was rotated, the fragment might already exist and the data will be ready
+            if(currentFragment.finishedCreating)
+            {
+                assessmentType.Text = currentFragment.GetTitle();
+            }
+            // Otherwise, the fragment's data is currently waiting to be unbundled and so actions should be queued
+            else
+            {
+                currentFragment.runOnceCreated.Push(delegate
+                {
+                    RunOnUiThread(() =>
+                    {
+                        assessmentType.Text = currentFragment.GetTitle();
+                    });
+                });
+            }
 
             recButton.Text = "Record";
         }
@@ -203,11 +256,11 @@ namespace DroidSpeeching
 
             if(thisType == typeof(QuickFireTask))
             {
-                currentFragment = new QuickFireFragment(tasks[taskIndex] as QuickFireTask);
+                currentFragment = QuickFireFragment.NewInstance(tasks[taskIndex]);
             }
             else if(thisType == typeof(ImageDescTask))
             {
-                currentFragment = new ImageDescFragment(tasks[taskIndex] as ImageDescTask);
+                currentFragment = ImageDescFragment.NewInstance(tasks[taskIndex]);
             }
             else
             {
@@ -217,7 +270,7 @@ namespace DroidSpeeching
 
             if (!GetPrefs().GetBoolean(thisType.ToString(), false))
             {
-                ShowInfo();
+                currentFragment.runOnceCreated.Push(delegate { ShowInfo(); });
                 ISharedPreferencesEditor editor = GetPrefs().Edit();
                 editor.PutBoolean(thisType.ToString(), true);
                 editor.Apply();
@@ -255,7 +308,6 @@ namespace DroidSpeeching
                 }
                 else
                 {
-                    FragmentManager.BeginTransaction().Remove(currentFragment).Commit();
                     taskIndex++;
 
                     if (taskIndex < tasks.Length)
@@ -268,10 +320,16 @@ namespace DroidSpeeching
 
                         if(currentFragment != null)
                         {
-                            FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment).Commit();
+                            FragmentManager.BeginTransaction().Replace(Resource.Id.fragment_container, currentFragment, "ASSESSMENT_TASK").Commit();
                         }
 
-                        assessmentType.Text = currentFragment.GetTitle();
+                        currentFragment.runOnceCreated.Push(delegate
+                        {
+                            RunOnUiThread(() =>
+                            {
+                                assessmentType.Text = currentFragment.GetTitle();
+                            });
+                        });
 
                         loadingContainer.Visibility = ViewStates.Gone;
                         fragmentContainer.Visibility = ViewStates.Visible;

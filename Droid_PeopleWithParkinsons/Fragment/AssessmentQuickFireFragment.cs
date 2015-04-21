@@ -12,9 +12,30 @@ namespace DroidSpeeching
         private int index = 0;
         private bool finished = false;
 
-        public QuickFireFragment(QuickFireTask data)
+        public static QuickFireFragment NewInstance(IAssessmentTask passed)
         {
-            this.data = data;
+            QuickFireFragment fragment = new QuickFireFragment();
+            QuickFireTask task = passed as QuickFireTask;
+
+            Bundle args = new Bundle();
+            args.PutInt("ID", task.Id);
+            args.PutString("TITLE", task.Title);
+            args.PutString("INSTRUCTIONS", task.Instructions);
+            args.PutStringArray("PROMPTS", task.Prompts);
+            fragment.Arguments = args;
+
+            return fragment;
+        }
+
+        public override void OnCreate(Bundle bundle)
+        {
+            base.OnCreate(bundle);
+
+            data = new QuickFireTask();
+            data.Id = Arguments.GetInt("ID");
+            data.Title = Arguments.GetString("TITLE");
+            data.Instructions = Arguments.GetString("INSTRUCTIONS");
+            data.Prompts = Arguments.GetStringArray("PROMPTS");
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -22,16 +43,21 @@ namespace DroidSpeeching
             return inflater.Inflate(Resource.Layout.QuickfireFragment, container, false);
         }
 
-        public override void OnViewCreated(View view, Bundle savedInstanceState)
+        public override void OnViewCreated(View view, Bundle bundle)
         {
-            if(data.Prompts != null)
+            quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
+
+            quickFireText.Text = "\"" + data.Prompts[index] + "\"";
+            if (index + 1 == data.Prompts.Length) finished = true;
+
+            while (runOnceCreated.Count > 0)
             {
-                quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
-                quickFireText.Text = "\"" + data.Prompts[index] + "\"";
-                if (index + 1 == data.Prompts.Length) finished = true;
+                runOnceCreated.Pop().Invoke();
             }
-            
-            base.OnViewCreated(view, savedInstanceState);
+
+            finishedCreating = true;
+
+            base.OnViewCreated(view, bundle);
         }
 
         public override void NextAction()
@@ -63,6 +89,17 @@ namespace DroidSpeeching
         public override string GetRecordingId()
         {
             return data.Id.ToString() + index;
+        }
+
+        public override int GetCurrentStage()
+        {
+            return index;
+        }
+
+        public override void GoToStage(int stage)
+        {
+            index = stage - 1;
+            NextAction();
         }
     }
 }

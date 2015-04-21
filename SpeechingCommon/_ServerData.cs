@@ -925,7 +925,7 @@ namespace SpeechingCommon
 
         public static async Task<Assessment> FetchAssessment()
         {
-            await Task.Delay(3000);
+            await Task.Delay(1000);
 
             string jsonString = "{\r\n\t\"id\" : 8675309,\r\n\t\"title\"\t: \"Your First Assessment!\",\r\n\t\"description\" : \"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\r\n\t\"tasks\" : [\r\n\t\t{\r\n\t\t\t\"Id\"\t: 12513612,\r\n\t\t\t\"Title\" : \"Quickfire Speaking\",\r\n\t\t\t\"Instructions\" : \"Press the record button and say the shown word as clearly as you can, then press stop.\",\r\n\t\t\t\"Prompts\" : [\"first\", \"second\", \"third\", \"last\"]\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Id\"\t: 363473321,\r\n\t\t\t\"Title\" : \"Image Description\",\r\n\t\t\t\"Instructions\" : \"Press the 'Record' button and follow the instruction in the image's caption\",\r\n\t\t\t\"Prompts\" : [\"What does the image show?\", \"Describe the colours of the image\", \"Describe an object within the image\"],\r\n\t\t\t\"Image\" : \"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"\r\n\t\t}\r\n\t]\r\n}";
             try
