@@ -186,7 +186,8 @@ namespace DroidSpeeching
 
         private void StartAssessment(int startPosition = -1)
         {
-            preambleContainer.Visibility = ViewStates.Gone;
+            preambleContainer.Visibility = 
+                (Resources.Configuration.Orientation == Android.Content.Res.Orientation.Landscape)? ViewStates.Invisible : ViewStates.Gone;
             recButton.Visibility = ViewStates.Visible;
             helpButton.Visibility = ViewStates.Visible;
 
