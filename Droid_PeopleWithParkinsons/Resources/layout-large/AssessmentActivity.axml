@@ -10,9 +10,9 @@
             android:id="@+id/assessment_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:text="Quickfire!" />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,9 +23,9 @@
             <ImageView
                 android:id="@+id/assessment_info"
                 android:src="@drawable/info"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="8dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
                 android:gravity="right|center_vertical" />
         </LinearLayout>
     </RelativeLayout>
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="12dp"
+        android:layout_margin="14dp"
         android:visibility="visible">
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -57,21 +57,22 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="5dp"
+        android:layout_margin="14dp"
         android:visibility="gone">
         <TextView
             android:id="@+id/assessment_preamble"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:textSize="17sp"
+            android:layout_weight="5"
+            android:textSize="25sp"
             android:gravity="center"
             android:text="This assessment is designed to particular elements of your speech." />
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:textSize="15sp"
-            android:padding="8dp"
+            android:padding="10dp"
             android:gravity="center"
             android:text="For help, tap the information icon in the top right.\nPress begin to start!" />
     </LinearLayout>
@@ -80,17 +81,17 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/assessment_startBtn"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:background="@drawable/recordButtonBlue"
             android:gravity="center_vertical|center_horizontal"
             android:layout_gravity="center_horizontal|bottom"
             android:text="Start Recording"
             android:textColor="#fff"
             android:layout_centerHorizontal="true"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:layout_alignParentBottom="true"
-            android:layout_margin="20dp"
+            android:layout_margin="40dp"
             android:elevation="4dp" />
     </FrameLayout>
 </LinearLayout>

@@ -299,6 +299,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-land\AssessmentActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\AssessmentActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\ImageDescFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-land\AssessmentActivity.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

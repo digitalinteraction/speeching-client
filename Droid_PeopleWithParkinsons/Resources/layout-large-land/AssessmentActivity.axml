@@ -21,9 +21,9 @@
                 android:id="@+id/assessment_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_centerVertical="true"
-                android:layout_margin="12dp"
+                android:textSize="22sp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
                 android:text="Quickfire!" />
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -34,9 +34,9 @@
                 <ImageView
                     android:id="@+id/assessment_info"
                     android:src="@drawable/info"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="8dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="10dp"
                     android:gravity="right|center_vertical" />
             </LinearLayout>
         </RelativeLayout>
@@ -86,17 +86,17 @@
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/assessment_startBtn"
-                android:layout_width="170dp"
-                android:layout_height="170dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:background="@drawable/recordButtonBlue"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_horizontal|bottom"
                 android:text="Start Recording"
                 android:textColor="#fff"
                 android:layout_centerHorizontal="true"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="20dp"
+                android:layout_margin="40dp"
                 android:elevation="4dp" />
         </FrameLayout>
     </LinearLayout>

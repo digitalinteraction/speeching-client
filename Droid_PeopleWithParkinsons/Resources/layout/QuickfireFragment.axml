@@ -7,7 +7,7 @@
         android:id="@+id/quickfire_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:textSize="35sp"
+        android:textSize="42sp"
         android:gravity="center"
         android:text="Say this!" />
 </LinearLayout>
