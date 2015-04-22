@@ -13,6 +13,7 @@ namespace SpeechingCommon
         protected DateTime date;
         protected bool dismissable;
         protected int importance;
+        protected FeedItemInteraction interaction;
 
         public string Title
         {
@@ -83,6 +84,19 @@ namespace SpeechingCommon
             set
             {
                 id = value;
+            }
+        }
+
+
+        public FeedItemInteraction Interaction
+        {
+            get
+            {
+                return interaction;
+            }
+            set
+            {
+                interaction = value;
             }
         }
     }

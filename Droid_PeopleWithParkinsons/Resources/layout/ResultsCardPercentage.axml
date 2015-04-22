@@ -37,6 +37,14 @@
                 android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp" />
+            <Button
+                android:id="@+id/resultCard_interaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:visibility="gone" />
             <radialprogress.RadialProgressView
                 android:id="@+id/resultCard_percent"
                 android:layout_width="120dp"

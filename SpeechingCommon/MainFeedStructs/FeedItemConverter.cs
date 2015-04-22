@@ -14,6 +14,10 @@ namespace SpeechingCommon
             {
                 return new FeedItemImage();
             }
+            if(FieldExists("UserAccount", jObject))
+            {
+                return new FeedItemUser();
+            }
             else
             {
                 return new FeedItemBase();

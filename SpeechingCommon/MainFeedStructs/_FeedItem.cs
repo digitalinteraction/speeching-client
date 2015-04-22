@@ -13,5 +13,6 @@ namespace SpeechingCommon
         DateTime Date { get; set; }
         bool Dismissable { get; set; }
         int Importance { get; set; }
+        FeedItemInteraction Interaction { get; set; }
     }
 }

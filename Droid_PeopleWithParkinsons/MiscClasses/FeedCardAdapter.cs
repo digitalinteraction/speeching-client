@@ -105,8 +105,28 @@ namespace DroidSpeeching
             }
             else if (viewHolder.GetType() == typeof(ResultViewPersonHolder))
             {
-                (viewHolder as ResultViewPersonHolder).LoadUserAvatar(((FeedItemUser)data[position]).Account, context);
+                (viewHolder as ResultViewPersonHolder).LoadUserAvatar(((FeedItemUser)data[position]).UserAccount, context);
             }
+
+            if (data[position].Interaction == null)
+            {
+                (viewHolder as CardBaseViewHolder).interact.Visibility = ViewStates.Gone;
+                return;
+            }
+
+            (viewHolder as CardBaseViewHolder).interact.Visibility = ViewStates.Visible;
+            (viewHolder as CardBaseViewHolder).interact.Text = data[position].Interaction.label;
+
+            if (data[position].Interaction.type == FeedItemInteraction.InteractionType.URL)
+            {
+                (viewHolder as CardBaseViewHolder).interact.Click += delegate
+                {
+                    Intent i = new Intent(Intent.ActionView,
+                        Android.Net.Uri.Parse(data[position].Interaction.value));
+                    context.StartActivity(i);
+                };
+            }
+
         }
     }
 
@@ -114,12 +134,14 @@ namespace DroidSpeeching
     {
         public TextView title;
         public TextView description;
+        public Button interact;
 
         public CardBaseViewHolder(View v)
             : base(v)
         {
             title = v.FindViewById<TextView>(Resource.Id.resultCard_title);
             description = v.FindViewById<TextView>(Resource.Id.resultCard_caption);
+            interact = v.FindViewById<Button>(Resource.Id.resultCard_interaction);
         }
     }
 

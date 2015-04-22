@@ -7,6 +7,6 @@ namespace SpeechingCommon
 {
     public class FeedItemUser : FeedItemBase
     {
-        public User Account;
+        public User UserAccount;
     }
 }

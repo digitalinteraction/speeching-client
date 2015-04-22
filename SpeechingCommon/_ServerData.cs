@@ -809,9 +809,9 @@ namespace SpeechingCommon
                     fb.Id = AppData.rand.Next(1000000);
                     fb.Title = "A comment on a recording";
                     fb.Description = "I really liked this recording - you should try to do it more like this in the future. Excellent work!";
-                    fb.Account = new User();
-                    fb.Account.name = "Tom Hanks";
-                    fb.Account.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
+                    fb.UserAccount = new User();
+                    fb.UserAccount.name = "Tom Hanks";
+                    fb.UserAccount.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
                     arr.Add(fb);
                 }
                 else
@@ -948,8 +948,8 @@ namespace SpeechingCommon
         {
             await Task.Delay(1500);
 
-            string jsonString = "[\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A Message From The Service\",\r\n\t\t\"Description\" \t: \"This is a simple message, which will be indicative of one which will be sent from the server. This is the simplest form that an item in the feed can take.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A Simple Message With An Image Accompaniment\",\r\n\t\t\"Description\" \t: \"This is a simple message, which will be indicative of one which will be sent from the server. It has an extra field to allow for an image to be passed.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5,\r\n\t\t\"Image\"\t\t\t: \"http://i.telegraph.co.uk/multimedia/archive/01830/speech_1830638c.jpg\"\r\n\t}\r\n]\r\n";
-            
+            string jsonString = "[\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A New Assessment Is Available!\",\r\n\t\t\"Description\" \t: \"There's a new assessment available for you to complete!\\nCompleting this short assessment will help you to keep track of your progress.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"Featured Article: 'Stuttering is in the genes not the head, say scientists'\",\r\n\t\t\"Description\" \t: \"Stuttering is not to do with nervousness or a traumatic childhood as portrayed in the award winning film The King\u2019s Speech but has its root cause in a genetic disorder, new research suggests.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 4,\r\n\t\t\"Image\"\t\t\t: \"http://i.telegraph.co.uk/multimedia/archive/01830/speech_1830638c.jpg\",\r\n\t\t\"Interaction\"\t: {\r\n\t\t\t\"type\"\t: \"URL\",\r\n\t\t\t\"value\"\t: \"http://www.telegraph.co.uk/news/science/science-news/8336493/Stuttering-is-in-the-genes-not-the-head-say-scientists.html\",\r\n\t\t\t\"label\"\t: \"Read More\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"Feedback From Your Last Assessment\",\r\n\t\t\"Description\" \t: \"\\\"Your control over your rate of speech has really improved since last month's assessment! It was much easier to understand what you were saying. Keep it up! :D\\\"\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 8,\r\n\t\t\"UserAccount\"\t: {\r\n\t\t\t\"id\"\t: 768705735,\r\n\t\t\t\"name\"\t: \"Tom Hanks\",\r\n\t\t\t\"avatar\": \"http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg\"\r\n\t\t}\r\n\t}\r\n]\r\n";
+
             return JsonConvert.DeserializeObject<List<IFeedItem>>(jsonString, new FeedItemConverter());
         }
     }

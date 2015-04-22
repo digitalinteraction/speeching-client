@@ -91,5 +91,18 @@ namespace DroidSpeeching
                 throw new NotImplementedException();
             }
         }
+
+
+        public FeedItemInteraction Interaction
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
