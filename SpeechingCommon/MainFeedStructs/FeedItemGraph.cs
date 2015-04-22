@@ -13,15 +13,10 @@ namespace SpeechingCommon
     }
 
     /// <summary>
-    /// Feedback which contains a percentage statistic
+    /// Feed item which contains a percentage statistic
     /// </summary>
-    public class GraphFeedback : IFeedbackItem
+    public class FeedItemGraph : FeedItemBase
     {
-        private int id;
-        private string activityId;
-        private string title;
-        private string caption;
-
         public string BottomAxisLabel;
         public int BottomAxisLength;
         public string LeftAxisLabel;
@@ -64,54 +59,6 @@ namespace SpeechingCommon
 
             plotModel = model;
             return model;
-        }
-
-        public string ActivityId
-        {
-            get
-            {
-                return activityId;
-            }
-            set
-            {
-                activityId = value;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                title = value;
-            }
-        }
-
-        public string Caption
-        {
-            get
-            {
-                return caption;
-            }
-            set
-            {
-                caption = value;
-            }
-        }
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace DroidSpeeching
         private TextView completionDate;
 
         private IResultItem[] submissions;
-        private IFeedbackItem[] currentFeedback;
+        private IFeedItem[] currentFeedback;
         private ISpeechingActivityItem thisActivity;
         private int selectedIndex;
 
@@ -162,15 +162,15 @@ namespace DroidSpeeching
 
             if (feedbackList.GetAdapter() == null)
             {
-                ResultsCardAdapter adapter = new ResultsCardAdapter(data.feedback, this);
-                feedbackList.SetAdapter(adapter);
+                //FeedCardAdapter adapter = new FeedCardAdapter(data.feedback, this);
+                //feedbackList.SetAdapter(adapter);
             }
             else
             {
                 RunOnUiThread(() =>
                 {
-                    ((ResultsCardAdapter)feedbackList.GetAdapter()).data = data.feedback;
-                    ((ResultsCardAdapter)feedbackList.GetAdapter()).NotifyDataSetChanged();
+                    //((FeedCardAdapter)feedbackList.GetAdapter()).data = data.feedback;
+                    ((FeedCardAdapter)feedbackList.GetAdapter()).NotifyDataSetChanged();
                     feedbackList.ScrollToPosition(0);
                 });
             }
@@ -209,7 +209,7 @@ namespace DroidSpeeching
     {
         public ISpeechingActivityItem activity;
         public IResultItem submission;
-        public List<IFeedbackItem> feedback;
+        public List<IFeedItem> feedback;
     }
 
     public class FeedbackAdapter : BaseAdapter<FeedbackData>

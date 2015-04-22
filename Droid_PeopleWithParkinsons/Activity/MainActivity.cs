@@ -136,7 +136,7 @@ namespace DroidSpeeching
                 switch (position)
                 {
                     case 0:
-                        return new TaskListFragment();
+                        return new FeedFragment();//TaskListFragment();
                     case 1:
                         return new ResultsFragment();
                     case 2:

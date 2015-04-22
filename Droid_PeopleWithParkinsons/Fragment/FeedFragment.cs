@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace DroidSpeeching
 {
-    public class ResultsFragment : Android.Support.V4.App.Fragment
+    public class FeedFragment : Android.Support.V4.App.Fragment
     {
-        RecyclerView recList;
+        RecyclerView feedList;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -21,13 +21,13 @@ namespace DroidSpeeching
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            recList = view.FindViewById<RecyclerView>(Resource.Id.mainResults_recyclerView);
+            feedList = view.FindViewById<RecyclerView>(Resource.Id.mainResults_recyclerView);
 
-            recList.HasFixedSize = true;
+            feedList.HasFixedSize = true;
 
             LinearLayoutManager llm = new LinearLayoutManager(Activity);
             llm.Orientation = LinearLayoutManager.Vertical;
-            recList.SetLayoutManager(llm);
+            feedList.SetLayoutManager(llm);
         }
 
         public override void OnResume()
@@ -38,14 +38,10 @@ namespace DroidSpeeching
 
         private async void InsertData()
         {
-            List<IResultItem> uploads = AppData.session.resultsToUpload;
+            List<IFeedItem> items = await ServerData.FetchMainFeed();
 
-            if (uploads == null || uploads.Count == 0) return;
-
-            List<IFeedItem> feedback = await ServerData.FetchFeedbackFor(uploads[0].Id);
-
-            FeedCardAdapter adapter = new FeedCardAdapter(feedback, Activity);
-            recList.SetAdapter(adapter);
+            FeedCardAdapter adapter = new FeedCardAdapter(items, Activity);
+            feedList.SetAdapter(adapter);
         }
     }
 }

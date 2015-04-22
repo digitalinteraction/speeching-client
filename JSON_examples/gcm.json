@@ -1,0 +1,37 @@
+"notifType" : "reminder", //"fences"
+"fences" : [
+{
+    "name" : "St. James' Park",
+    "radius" : 75,
+    "lat" : 54.975556,
+    "lng" : -1.621667,
+    "placeId" : "ChIJe9gg3DR3fkgRiHtT-gQUkS4",
+    "imageRef" : "CnRnAAAAryg3bnVvtf8XmBLdsGIxK-dWoAeWzDQ77HPhWpO4FZX6veE6ilKBnv2m7qKv_3NS6RJmMXNIzWYYI19pJeBkKZG8qMxkXXLc7zxxM1PzB7ZBx1-xci0V3P5hSER_tgjkn-B4bgPmsZTnF7cZSPqkTRIQUNb8VnhXQueM_D95nuZ3ExoUfbN9wN9SQCK6YJRNI5cq0b03I5U"
+},
+{
+    "name" : "Tyneside Cinema",
+    "radius" : 75,
+    "lat" : 54.973918,
+    "lng" : -1.611804,
+    "placeId" : "ChIJfyjC6slwfkgRXOwOEjZ17Bw",
+    "imageRef" : "CnRqAAAAbWh2UFuimwAiyE_JYs0GuyLqTjpUfeHoOdGaIpopZNGu5X74rNTHORw6iuglgeHyny2Fu31b-KjgGiMuDEKHPWBuU0gqKv8L_8bDlPQyGGwx711Tat2R1Mu4D0I9yD392Y9tmbeOER21ejUFhZuHcRIQYYPM9OKh60NN7DSqiLkDUhoUQ66crgGNTn_nOX0Vqaqf-MxqfIs"
+},
+{
+    "name" : "Northumbria University",
+    "radius" : 75,
+    "lat" : 54.97749,
+    "lng" : -1.606671,
+    "placeId" : "ChIJ9-nFEuFwfkgRB849kgzGp3k",
+    "imageRef" : null
+},
+{
+    "name" : "Newcastle University",
+    "radius" : 75,
+    "lat" : 54.979187,
+    "lng" : -1.614661,
+    "placeId" : "ChIJg2Eu1c1wfkgRfccMhQHrRcE",
+    "imageRef" : "CnRnAAAA2hmXA-ABCdqJDlzyasULYj9xTMskFED4Z8CpPqlS2sxqKbM_hnjUEI2dnlQMRoD2tc9hUemCz5rBlZVywjYLSjvGdc-2FGV62Wm5mATCT0kAozSJkXsmW_MOAObnokMtGX3919mwi0NaoKuqwROpTRIQ33AxyfDSs_srud-eQE7PmhoU3yZOwJbta813YGNMQqqd4SUYtTY"
+}
+]
+
+"[\r\n{\r\n    \"name\" : \"St. James\' Park\",\r\n    \"radius\" : 75,\r\n    \"lat\" : 54.975556,\r\n    \"lng\" : -1.621667,\r\n    \"placeId\" : \"ChIJe9gg3DR3fkgRiHtT-gQUkS4\",\r\n    \"imageRef\" : \"CnRnAAAAryg3bnVvtf8XmBLdsGIxK-dWoAeWzDQ77HPhWpO4FZX6veE6ilKBnv2m7qKv_3NS6RJmMXNIzWYYI19pJeBkKZG8qMxkXXLc7zxxM1PzB7ZBx1-xci0V3P5hSER_tgjkn-B4bgPmsZTnF7cZSPqkTRIQUNb8VnhXQueM_D95nuZ3ExoUfbN9wN9SQCK6YJRNI5cq0b03I5U\"\r\n},\r\n{\r\n    \"name\" : \"Tyneside Cinema\",\r\n    \"radius\" : 75,\r\n    \"lat\" : 54.973918,\r\n    \"lng\" : -1.611804,\r\n    \"placeId\" : \"ChIJfyjC6slwfkgRXOwOEjZ17Bw\",\r\n    \"imageRef\" : \"CnRqAAAAbWh2UFuimwAiyE_JYs0GuyLqTjpUfeHoOdGaIpopZNGu5X74rNTHORw6iuglgeHyny2Fu31b-KjgGiMuDEKHPWBuU0gqKv8L_8bDlPQyGGwx711Tat2R1Mu4D0I9yD392Y9tmbeOER21ejUFhZuHcRIQYYPM9OKh60NN7DSqiLkDUhoUQ66crgGNTn_nOX0Vqaqf-MxqfIs\"\r\n},\r\n{\r\n    \"name\" : \"Northumbria University\",\r\n    \"radius\" : 75,\r\n    \"lat\" : 54.97749,\r\n    \"lng\" : -1.606671,\r\n    \"placeId\" : \"ChIJ9-nFEuFwfkgRB849kgzGp3k\",\r\n    \"imageRef\" : null\r\n},\r\n{\r\n    \"name\" : \"Newcastle University\",\r\n    \"radius\" : 75,\r\n    \"lat\" : 54.979187,\r\n    \"lng\" : -1.614661,\r\n    \"placeId\" : \"ChIJg2Eu1c1wfkgRfccMhQHrRcE\",\r\n    \"imageRef\" : \"CnRnAAAA2hmXA-ABCdqJDlzyasULYj9xTMskFED4Z8CpPqlS2sxqKbM_hnjUEI2dnlQMRoD2tc9hUemCz5rBlZVywjYLSjvGdc-2FGV62Wm5mATCT0kAozSJkXsmW_MOAObnokMtGX3919mwi0NaoKuqwROpTRIQ33AxyfDSs_srud-eQE7PmhoU3yZOwJbta813YGNMQqqd4SUYtTY\"\r\n}\r\n]"

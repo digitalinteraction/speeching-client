@@ -14,28 +14,34 @@ using System.Threading.Tasks;
 
 namespace DroidSpeeching
 {
-    public class ResultsCardAdapter : RecyclerView.Adapter
+    public class FeedCardAdapter : RecyclerView.Adapter
     {
-        public List<IFeedbackItem> data;
+        public List<IFeedItem> data;
         private Dictionary<Type, int> viewTypes;
         private Context context;
 
-        public ResultsCardAdapter(List<IFeedbackItem> feedback, Context context)
+        public FeedCardAdapter(List<IFeedItem> feedData, Context context)
         {
-            this.data = feedback;
+            this.data = feedData;
             this.context = context;
 
             viewTypes = new Dictionary<Type, int>();
-            viewTypes.Add(typeof(PercentageFeedback), 0);
-            viewTypes.Add(typeof(StarRatingFeedback), 1);
-            viewTypes.Add(typeof(CommentFeedback), 2);
-            viewTypes.Add(typeof(FeedbackSubmissionButton), 3);
-            viewTypes.Add(typeof(GraphFeedback), 4);
+            viewTypes.Add(typeof(FeedItemBase), 0);
+            viewTypes.Add(typeof(FeedItemImage), 1);
+            viewTypes.Add(typeof(FeedItemPercentage), 2);
+            viewTypes.Add(typeof(FeedItemGraph), 3);
+            viewTypes.Add(typeof(FeedItemUser), 4);
+            viewTypes.Add(typeof(FeedbackSubmissionButton), 5);
+            viewTypes.Add(typeof(FeedItemStarRating), 6);
+            
         }
 
         public override int GetItemViewType(int position)
         {
-            return viewTypes[data[position].GetType()];
+            if (viewTypes.ContainsKey(data[position].GetType()))
+                return viewTypes[data[position].GetType()];
+            else
+                return 0; // Default to base layout (All types will populate this correctly)
         }
 
         public override int ItemCount
@@ -49,39 +55,47 @@ namespace DroidSpeeching
 
             switch (viewType)
             {
-                case 0:
+                case 1:
+                    View imageView = inflater.Inflate(Resource.Layout.ResultsCardImage, viewGroup, false);
+                    CardImageViewHolder imageHolder = new CardImageViewHolder(imageView);
+                    return imageHolder;
+                case 2:
                     View percentView = inflater.Inflate(Resource.Layout.ResultsCardPercentage, viewGroup, false);
                     ResultViewPercentHolder percentHolder = new ResultViewPercentHolder(percentView);
                     return percentHolder;
-                case 2:
-                    View commentView = inflater.Inflate(Resource.Layout.ResultsCardPerson, viewGroup, false);
-                    ResultViewPersonHolder commentHolder = new ResultViewPersonHolder(commentView);
-                    return commentHolder;
-                case 4:
+                case 3:
                     View graphView = inflater.Inflate(Resource.Layout.ResultsCardGraph, viewGroup, false);
                     ResultViewGraphHolder graphHolder = new ResultViewGraphHolder(graphView);
                     return graphHolder;
+                case 4:
+                    View commentView = inflater.Inflate(Resource.Layout.ResultsCardPerson, viewGroup, false);
+                    ResultViewPersonHolder commentHolder = new ResultViewPersonHolder(commentView);
+                    return commentHolder;
                 default:
                     View v = inflater.Inflate(Resource.Layout.ResultsCardText, viewGroup, false);
-                    ResultViewBaseHolder vh = new ResultViewBaseHolder(v);
+                    CardBaseViewHolder vh = new CardBaseViewHolder(v);
                     return vh;
             }
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder viewHolder, int position)
         {
-            (viewHolder as ResultViewBaseHolder).title.SetText(data[position].Title, TextView.BufferType.Normal);
-            (viewHolder as ResultViewBaseHolder).caption.SetText(data[position].Caption, TextView.BufferType.Normal);
+            (viewHolder as CardBaseViewHolder).title.SetText(data[position].Title, TextView.BufferType.Normal);
+            (viewHolder as CardBaseViewHolder).description.SetText(data[position].Description, TextView.BufferType.Normal);
 
-            if (viewHolder.GetType() == typeof(ResultViewPercentHolder))
+            if(viewHolder.GetType() == typeof(CardImageViewHolder))
             {
-                (viewHolder as ResultViewPercentHolder).AnimatePercentage(((PercentageFeedback)data[position]).Percentage, 1200);
+                (viewHolder as CardImageViewHolder).LoadImage(((FeedItemImage)data[position]).Image, context);
+            }
+            else if (viewHolder.GetType() == typeof(ResultViewPercentHolder))
+            {
+                (viewHolder as ResultViewPercentHolder).AnimatePercentage(((FeedItemPercentage)data[position]).Percentage, 1200);
             }
             else if (viewHolder.GetType() == typeof(ResultViewGraphHolder))
             {
                 try
                 {
-                    PlotModel model = ((GraphFeedback)data[position]).CreatePlotModel();
+                    PlotModel model = ((FeedItemGraph)data[position]).CreatePlotModel();
                     (viewHolder as ResultViewGraphHolder).PlotGraph(model);
                 }
                 catch (Exception ex)
@@ -91,25 +105,44 @@ namespace DroidSpeeching
             }
             else if (viewHolder.GetType() == typeof(ResultViewPersonHolder))
             {
-                (viewHolder as ResultViewPersonHolder).LoadUserAvatar(((CommentFeedback)data[position]).Commenter, context);
+                (viewHolder as ResultViewPersonHolder).LoadUserAvatar(((FeedItemUser)data[position]).Account, context);
             }
         }
     }
 
-    public class ResultViewBaseHolder : RecyclerView.ViewHolder
+    public class CardBaseViewHolder : RecyclerView.ViewHolder
     {
         public TextView title;
-        public TextView caption;
+        public TextView description;
 
-        public ResultViewBaseHolder(View v)
+        public CardBaseViewHolder(View v)
             : base(v)
         {
             title = v.FindViewById<TextView>(Resource.Id.resultCard_title);
-            caption = v.FindViewById<TextView>(Resource.Id.resultCard_caption);
+            description = v.FindViewById<TextView>(Resource.Id.resultCard_caption);
         }
     }
 
-    public class ResultViewPercentHolder : ResultViewBaseHolder
+    public class CardImageViewHolder : CardBaseViewHolder
+    {
+        public ImageView image;
+
+        public CardImageViewHolder(View v) : base(v)
+        {
+            image = v.FindViewById<ImageView>(Resource.Id.resultCard_image);
+        }
+
+        public async Task LoadImage(string imageLoc, Context context)
+        {
+            string localLoc = await Utils.FetchLocalCopy(imageLoc);
+
+            if (string.IsNullOrEmpty(localLoc)) return;
+
+            image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(localLoc)));
+        }
+    }
+
+    public class ResultViewPercentHolder : CardBaseViewHolder
     {
         public RadialProgressView percent;
 
@@ -132,7 +165,7 @@ namespace DroidSpeeching
         }
     }
 
-    public class ResultViewPersonHolder : ResultViewBaseHolder
+    public class ResultViewPersonHolder : CardBaseViewHolder
     {
         private ImageView avatarView;
         private TextView username;
@@ -161,7 +194,7 @@ namespace DroidSpeeching
         }
     }
 
-    public class ResultViewGraphHolder : ResultViewBaseHolder
+    public class ResultViewGraphHolder : CardBaseViewHolder
     {
         public PlotView plotView;
 

@@ -770,7 +770,7 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="resultId"></param>
         /// <returns></returns>
-        public static async Task<List<IFeedbackItem>> FetchFeedbackFor(int resultId)
+        public static async Task<List<IFeedItem>> FetchFeedbackFor(int resultId)
         {
             if (!AppData.CheckNetwork()) return null;
 
@@ -780,50 +780,46 @@ namespace SpeechingCommon
             //return await GetRequest<IFeedbackItem[]>("GetFeedback", data);
 
             // TEMP
-            List<IFeedbackItem> arr = new List<IFeedbackItem>();
+            List<IFeedItem> arr = new List<IFeedItem>();
 
             for(int i = 0; i < 12; i++)
             {
                 int thisRand = AppData.rand.Next(0, 150);
                 if(thisRand < 60)
                 {
-                    PercentageFeedback fb = new PercentageFeedback();
+                    FeedItemPercentage fb = new FeedItemPercentage();
                     fb.Id = AppData.rand.Next(1000000);
                     fb.Title = "Stammering";
                     fb.Percentage = AppData.rand.Next(0, 100);
-                    fb.Caption = (int)fb.Percentage + "% of users thought you stammered over the word \"sausage\"";
-                    fb.ActivityId = "sossie";
+                    fb.Description = (int)fb.Percentage + "% of users thought you stammered over the word \"sausage\"";
                     arr.Add(fb);
                 }
                 else if(thisRand < 80)
                 {
-                    StarRatingFeedback fb = new StarRatingFeedback();
+                    FeedItemStarRating fb = new FeedItemStarRating();
                     fb.Id = AppData.rand.Next(1000000);
                     fb.Title = "Your Rating";
-                    fb.Caption = "This is your rating for something you did. Hopefully it's meaningful!";
-                    fb.ActivityId = "sossie";
+                    fb.Description = "This is your rating for something you did. Hopefully it's meaningful!";
                     fb.Rating = (float)AppData.rand.Next(0, 10) / 2;
                     arr.Add(fb);
                 }
                 else if(thisRand < 110)
                 {
-                    CommentFeedback fb = new CommentFeedback();
+                    FeedItemUser fb = new FeedItemUser();
                     fb.Id = AppData.rand.Next(1000000);
                     fb.Title = "A comment on a recording";
-                    fb.Caption = "I really liked this recording - you should try to do it more like this in the future. Excellent work!";
-                    fb.ActivityId = "sossie";
-                    fb.Commenter = new User();
-                    fb.Commenter.name = "Tom Hanks";
-                    fb.Commenter.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
+                    fb.Description = "I really liked this recording - you should try to do it more like this in the future. Excellent work!";
+                    fb.Account = new User();
+                    fb.Account.name = "Tom Hanks";
+                    fb.Account.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
                     arr.Add(fb);
                 }
                 else
                 {
-                    GraphFeedback fb = new GraphFeedback();
+                    FeedItemGraph fb = new FeedItemGraph();
                     fb.Id = AppData.rand.Next(1000000);
                     fb.Title = "Your progress";
-                    fb.Caption = "This is a graph showing some data!";
-                    fb.ActivityId = "sossie";
+                    fb.Description = "This is a graph showing some data!";
                     fb.BottomAxisLength = 12;
                     fb.LeftAxisLength = 100;
                     fb.DataPoints = new TimeGraphPoint[12];
@@ -946,6 +942,15 @@ namespace SpeechingCommon
                 throw ex;
             }
             return null;
+        }
+
+        public static async Task<List<IFeedItem>> FetchMainFeed()
+        {
+            await Task.Delay(1500);
+
+            string jsonString = "[\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A Message From The Service\",\r\n\t\t\"Description\" \t: \"This is a simple message, which will be indicative of one which will be sent from the server. This is the simplest form that an item in the feed can take.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A Simple Message With An Image Accompaniment\",\r\n\t\t\"Description\" \t: \"This is a simple message, which will be indicative of one which will be sent from the server. It has an extra field to allow for an image to be passed.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5,\r\n\t\t\"Image\"\t\t\t: \"http://i.telegraph.co.uk/multimedia/archive/01830/speech_1830638c.jpg\"\r\n\t}\r\n]\r\n";
+            
+            return JsonConvert.DeserializeObject<List<IFeedItem>>(jsonString, new FeedItemConverter());
         }
     }
 

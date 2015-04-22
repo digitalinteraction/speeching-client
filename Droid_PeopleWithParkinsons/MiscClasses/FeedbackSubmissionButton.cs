@@ -13,7 +13,7 @@ using SpeechingCommon;
 
 namespace DroidSpeeching
 {
-    public class FeedbackSubmissionButton : IFeedbackItem
+    public class FeedbackSubmissionButton : IFeedItem
     {
 
         public FeedbackSubmissionButton()
@@ -21,18 +21,6 @@ namespace DroidSpeeching
         }
 
         public int Id
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string ActivityId
         {
             get
             {
@@ -56,7 +44,43 @@ namespace DroidSpeeching
             }
         }
 
-        public string Caption
+        public string Description
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public DateTime Date
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool Dismissable
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public int Importance
         {
             get
             {

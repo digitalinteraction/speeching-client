@@ -5,11 +5,13 @@ using System.Text;
 
 namespace SpeechingCommon
 {
-    public interface IFeedbackItem
+    public interface IFeedItem
     {
         int Id { get; set; }
-        string ActivityId { get; set; }
         string Title { get; set; }
-        string Caption { get; set; }
+        string Description { get; set; }
+        DateTime Date { get; set; }
+        bool Dismissable { get; set; }
+        int Importance { get; set; }
     }
 }

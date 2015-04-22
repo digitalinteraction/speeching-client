@@ -1,0 +1,17 @@
+[
+	{
+		"Title"			: "A Message From The Service",
+		"Description" 	: "This is a simple message, which will be indicative of one which will be sent from the server. This is the simplest form that an item in the feed can take.",
+		"Date"			: "2015-04-21T18:25:43.511Z",
+		"Dismissable" 	: true,
+		"Importance"	: 5
+	},
+	{
+		"Title"			: "A Simple Message With An Image Accompaniment",
+		"Description" 	: "This is a simple message, which will be indicative of one which will be sent from the server. It has an extra field to allow for an image to be passed.",
+		"Date"			: "2015-04-21T18:25:43.511Z",
+		"Dismissable" 	: true,
+		"Importance"	: 5,
+		"Image"			: "http://i.telegraph.co.uk/multimedia/archive/01830/speech_1830638c.jpg"
+	}
+]

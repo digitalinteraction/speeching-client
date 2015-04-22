@@ -120,6 +120,7 @@
     <Compile Include="Activity\WikiPracticeActivity.cs" />
     <Compile Include="Fragment\AssessmentImgDescFragment.cs" />
     <Compile Include="Fragment\AssessmentQuickFireFragment.cs" />
+    <Compile Include="Fragment\FeedFragment.cs" />
     <Compile Include="Fragment\ResultsFragment.cs" />
     <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\LoginActivity.cs" />
@@ -138,7 +139,7 @@
     <Compile Include="MiscClasses\GCMService.cs" />
     <Compile Include="Activity\MainActivity.cs" />
     <Compile Include="MiscClasses\IAudioRecorder.cs" />
-    <Compile Include="MiscClasses\ResultsCardAdapter.cs" />
+    <Compile Include="MiscClasses\FeedCardAdapter.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MiscClasses\RoundedDrawable.cs" />
@@ -302,6 +303,9 @@
     <AndroidResource Include="Resources\layout-large\AssessmentActivity.axml" />
     <AndroidResource Include="Resources\layout-large\ImageDescFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\AssessmentActivity.axml" />
+    <AndroidResource Include="Resources\layout\ResultsCardImage.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
