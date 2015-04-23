@@ -2930,8 +2930,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c007d
 			public const int mainMenuContent = 2131492989;
 			
-			// aapt resource value: 0x7f0c0085
-			public const int mainResults_recyclerView = 2131492997;
+			// aapt resource value: 0x7f0c0086
+			public const int mainResults_recyclerView = 2131492998;
 			
 			// aapt resource value: 0x7f0c007a
 			public const int map_fragment_container = 2131492986;
@@ -3065,8 +3065,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c003f
 			public const int radio = 2131492927;
 			
-			// aapt resource value: 0x7f0c0088
-			public const int refresher = 2131493000;
+			// aapt resource value: 0x7f0c0085
+			public const int refresher = 2131492997;
 			
 			// aapt resource value: 0x7f0c006b
 			public const int resultCard_activityTitle = 2131492971;
@@ -3254,11 +3254,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c007e
 			public const int tabs = 2131492990;
 			
-			// aapt resource value: 0x7f0c0086
-			public const int tasklist_childIcon = 2131492998;
-			
 			// aapt resource value: 0x7f0c0087
-			public const int tasklist_childTitle = 2131492999;
+			public const int tasklist_childIcon = 2131492999;
+			
+			// aapt resource value: 0x7f0c0088
+			public const int tasklist_childTitle = 2131493000;
 			
 			// aapt resource value: 0x7f0c0082
 			public const int tasklist_parentIcon = 2131492994;

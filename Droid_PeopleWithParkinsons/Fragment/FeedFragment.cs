@@ -1,5 +1,7 @@
+using Android.App;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using SnackbarSharp;
@@ -10,6 +12,7 @@ namespace DroidSpeeching
 {
     public class FeedFragment : Android.Support.V4.App.Fragment, ISwipeListener, IActionClickListener
     {
+        SwipeRefreshLayout refresher;
         RecyclerView feedList;
         FeedCardAdapter adapter;
         IFeedItem[] backup;
@@ -26,6 +29,23 @@ namespace DroidSpeeching
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
+
+            refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
+            refresher.Refresh += async delegate
+            {
+                if (!AppData.CheckNetwork() || adapter == null)
+                {
+                    AndroidUtils.OfflineAlert(Activity);
+                    refresher.Refreshing = false;
+                    return;
+                }
+
+                adapter.data = await ServerData.FetchMainFeed();
+                refresher.Refreshing = false;
+
+                Activity.RunOnUiThread(() => adapter.NotifyDataSetChanged());
+            };
+
 
             feedList = view.FindViewById<RecyclerView>(Resource.Id.mainResults_recyclerView);
 
@@ -44,6 +64,15 @@ namespace DroidSpeeching
 
         private async void InsertData()
         {
+            ProgressDialog progress = null;
+
+            Activity.RunOnUiThread(()=>{
+                progress = new ProgressDialog(Activity);
+                progress.SetTitle("Loading");
+                progress.SetMessage("Please wait...");
+                progress.Show();
+            });
+            
             items = await ServerData.FetchMainFeed();
 
             adapter = new FeedCardAdapter(items, Activity);
@@ -51,6 +80,8 @@ namespace DroidSpeeching
 
             SwipeableRecyclerViewTouchListener swipeTouchListener = new SwipeableRecyclerViewTouchListener(feedList, this);
             feedList.AddOnItemTouchListener(swipeTouchListener);
+
+            Activity.RunOnUiThread(() => progress.Hide());
         }
 
         public bool CanSwipe(int position)

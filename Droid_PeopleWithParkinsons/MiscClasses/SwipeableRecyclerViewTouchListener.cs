@@ -348,9 +348,11 @@ namespace DroidSpeeching
 
         public bool OnTouch(View v, MotionEvent e)
         {
-            if(e.ActionMasked != MotionEventActions.Move ||
-                (e.RawX - mDownX > 0 && mSwipeListener.CanSwipeRight) ||
-                (e.RawX - mDownX < 0 && mSwipeListener.CanSwipeLeft))
+            //if(e.ActionMasked != MotionEventActions.Move 
+                //||
+                //(e.RawX - mDownX > 0 && mSwipeListener.CanSwipeRight) ||
+                //(e.RawX - mDownX < 0 && mSwipeListener.CanSwipeLeft)
+              //  )
             {
                 v.Parent.RequestDisallowInterceptTouchEvent(true);
                 return HandleTouchEvent(e);
