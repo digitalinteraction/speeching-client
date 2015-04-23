@@ -36,7 +36,7 @@
             android:id="@+id/resultCard_interaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="15dp"
             android:layout_below="@id/resultCard_caption"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"

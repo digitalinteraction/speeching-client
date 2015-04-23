@@ -76,6 +76,7 @@
     <Compile Include="Assessments\_IAssessmentTask.cs" />
     <Compile Include="BiDictionary.cs" />
     <Compile Include="ConfidentialData.cs" />
+    <Compile Include="MainFeedStructs\FeedItemActivity.cs" />
     <Compile Include="MainFeedStructs\FeedItemInteraction.cs" />
     <Compile Include="MainFeedStructs\FeedItemUser.cs" />
     <Compile Include="MainFeedStructs\FeedItemGraph.cs" />

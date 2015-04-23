@@ -25,28 +25,56 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@id/resultCard_title">
-            <TextView
-                android:id="@+id/resultCard_caption"
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:text="Name"
-                android:gravity="center_vertical"
-                android:textSize="14dp"
-                android:padding="10dp"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp" />
-            <Button
-                android:id="@+id/resultCard_interaction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:visibility="gone" />
+                android:layout_marginLeft="5dp">
+                <TextView
+                    android:id="@+id/resultCard_caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:gravity="center_vertical"
+                    android:textSize="14dp"
+                    android:padding="10dp" />
+                <TextView
+                    android:id="@+id/resultCard_rationaleTease"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recommended to you because:"
+                    android:layout_below="@id/resultCard_caption"
+                    android:textStyle="italic"
+                    android:gravity="center_vertical"
+                    android:textSize="13dp"
+                    android:paddingLeft="10dp" />
+                <TextView
+                    android:id="@+id/resultCard_rationale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/resultCard_rationaleTease"
+                    android:text="justAList"
+                    android:textStyle="bold|italic"
+                    android:gravity="center_vertical"
+                    android:textSize="13dp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="10dp" />
+                <Button
+                    android:id="@+id/resultCard_interaction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/resultCard_rationale"
+                    android:padding="15dp"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:minHeight="130dp"
                 android:orientation="vertical"
                 android:layout_weight="2"
@@ -55,11 +83,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1">
+                    <View
+                        android:background="@drawable/whiteCircle"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:elevation="4dp" />
                     <ImageView
-                        android:layout_width="85dp"
-                        android:layout_height="85dp"
-                        android:id="@+id/resultCard_avatar"
-                        android:layout_margin="10dp"
+                        android:src="@drawable/Icon"
+                        android:id="@+id/resultCard_icon"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:elevation="4dp" />
@@ -70,7 +105,7 @@
                     android:layout_weight="1">
                     <TextView
                         android:text="A_Username"
-                        android:id="@+id/resultCard_username"
+                        android:id="@+id/resultCard_activityTitle"
                         android:layout_height="wrap_content"
                         android:layout_width="fill_parent"
                         android:gravity="center"

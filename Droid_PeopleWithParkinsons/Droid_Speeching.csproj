@@ -75,6 +75,9 @@
     <Reference Include="SharpZipLib">
       <HintPath>..\packages\icsharpcode-SharpZipLib-9478d50\SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="SnackbarSharp">
+      <HintPath>..\packages\SnackbarSharp.dll.1.0.3-alpha\lib\MonoAndroid\SnackbarSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -86,8 +89,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Xamarin.Android.Support.v4.22.0.0.0\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
-      <HintPath>..\Components\googleplayservices-22.0.0.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.21.0.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.CardView">
       <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.22.0.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
@@ -140,6 +144,7 @@
     <Compile Include="Activity\MainActivity.cs" />
     <Compile Include="MiscClasses\IAudioRecorder.cs" />
     <Compile Include="MiscClasses\FeedCardAdapter.cs" />
+    <Compile Include="MiscClasses\SwipeableRecyclerViewTouchListener.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MiscClasses\RoundedDrawable.cs" />
@@ -304,6 +309,9 @@
     <AndroidResource Include="Resources\layout-large\ImageDescFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\AssessmentActivity.axml" />
     <AndroidResource Include="Resources\layout\ResultsCardImage.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ResultsCardActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

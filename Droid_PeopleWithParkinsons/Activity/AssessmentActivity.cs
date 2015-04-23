@@ -71,7 +71,7 @@ namespace DroidSpeeching
             helpButton = FindViewById<ImageView>(Resource.Id.assessment_info);
             helpButton.Click += helpButton_Click;
             helpButton.Visibility = ViewStates.Gone;
-
+            
             LoadData(bundle);
         }
 

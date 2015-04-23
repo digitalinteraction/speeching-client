@@ -125,7 +125,7 @@ namespace DroidSpeeching
                 Array.Copy(Titles, _titles, Titles.Length);
             }
 
-            protected internal static readonly string[] Titles = { "Practice", "Progress", "Submitted" };
+            protected internal static readonly string[] Titles = { "Home", "Practice", "Progress" };
 
             protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
 
@@ -136,11 +136,11 @@ namespace DroidSpeeching
                 switch (position)
                 {
                     case 0:
-                        return new FeedFragment();//TaskListFragment();
+                        return new FeedFragment();
                     case 1:
-                        return new ResultsFragment();
+                        return new TaskListFragment();
                     case 2:
-                        return new SubmittedListFragment();
+                        return new ResultsFragment();
                     default:
                         return null;
                 }
@@ -184,6 +184,7 @@ namespace DroidSpeeching
                 //this one has to do it this way because 
                 NotifyDataSetChanged();
             }
+
         } 
 
     }

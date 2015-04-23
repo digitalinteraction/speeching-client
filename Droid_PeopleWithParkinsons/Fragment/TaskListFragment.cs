@@ -83,7 +83,7 @@ namespace DroidSpeeching
             else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
 
             Intent intent = new Intent(Activity, targetActivity);
-            int itemId = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition].Id;
+            int itemId = thisItem.Id;
             intent.PutExtra("ActivityId", itemId);
 
             if (!AppData.CheckNetwork() && !GetActivityPrefs(itemId).GetBoolean("DOWNLOADED", false))

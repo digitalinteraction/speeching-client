@@ -18,6 +18,10 @@ namespace SpeechingCommon
             {
                 return new FeedItemUser();
             }
+            else if(FieldExists("Activity", jObject))
+            {
+                return new FeedItemActivity();
+            }
             else
             {
                 return new FeedItemBase();

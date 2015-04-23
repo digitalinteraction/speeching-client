@@ -31,8 +31,9 @@ namespace DroidSpeeching
             viewTypes.Add(typeof(FeedItemPercentage), 2);
             viewTypes.Add(typeof(FeedItemGraph), 3);
             viewTypes.Add(typeof(FeedItemUser), 4);
-            viewTypes.Add(typeof(FeedbackSubmissionButton), 5);
-            viewTypes.Add(typeof(FeedItemStarRating), 6);
+            viewTypes.Add(typeof(FeedItemActivity), 5);
+            viewTypes.Add(typeof(FeedbackSubmissionButton), 6);
+            viewTypes.Add(typeof(FeedItemStarRating), 7);
             
         }
 
@@ -61,16 +62,20 @@ namespace DroidSpeeching
                     return imageHolder;
                 case 2:
                     View percentView = inflater.Inflate(Resource.Layout.ResultsCardPercentage, viewGroup, false);
-                    ResultViewPercentHolder percentHolder = new ResultViewPercentHolder(percentView);
+                    CardPercentViewHolder percentHolder = new CardPercentViewHolder(percentView);
                     return percentHolder;
                 case 3:
                     View graphView = inflater.Inflate(Resource.Layout.ResultsCardGraph, viewGroup, false);
-                    ResultViewGraphHolder graphHolder = new ResultViewGraphHolder(graphView);
+                    CardGraphViewHolder graphHolder = new CardGraphViewHolder(graphView);
                     return graphHolder;
                 case 4:
                     View commentView = inflater.Inflate(Resource.Layout.ResultsCardPerson, viewGroup, false);
-                    ResultViewPersonHolder commentHolder = new ResultViewPersonHolder(commentView);
+                    CardPersonViewHolder commentHolder = new CardPersonViewHolder(commentView);
                     return commentHolder;
+                case 5:
+                    View activityView = inflater.Inflate(Resource.Layout.ResultsCardActivity, viewGroup, false);
+                    CardActivityViewHolder activityHolder = new CardActivityViewHolder(activityView);
+                    return activityHolder;
                 default:
                     View v = inflater.Inflate(Resource.Layout.ResultsCardText, viewGroup, false);
                     CardBaseViewHolder vh = new CardBaseViewHolder(v);
@@ -87,25 +92,29 @@ namespace DroidSpeeching
             {
                 (viewHolder as CardImageViewHolder).LoadImage(((FeedItemImage)data[position]).Image, context);
             }
-            else if (viewHolder.GetType() == typeof(ResultViewPercentHolder))
+            else if (viewHolder.GetType() == typeof(CardPercentViewHolder))
             {
-                (viewHolder as ResultViewPercentHolder).AnimatePercentage(((FeedItemPercentage)data[position]).Percentage, 1200);
+                (viewHolder as CardPercentViewHolder).AnimatePercentage(((FeedItemPercentage)data[position]).Percentage, 1200);
             }
-            else if (viewHolder.GetType() == typeof(ResultViewGraphHolder))
+            else if (viewHolder.GetType() == typeof(CardGraphViewHolder))
             {
                 try
                 {
                     PlotModel model = ((FeedItemGraph)data[position]).CreatePlotModel();
-                    (viewHolder as ResultViewGraphHolder).PlotGraph(model);
+                    (viewHolder as CardGraphViewHolder).PlotGraph(model);
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
             }
-            else if (viewHolder.GetType() == typeof(ResultViewPersonHolder))
+            else if (viewHolder.GetType() == typeof(CardPersonViewHolder))
             {
-                (viewHolder as ResultViewPersonHolder).LoadUserAvatar(((FeedItemUser)data[position]).UserAccount, context);
+                (viewHolder as CardPersonViewHolder).LoadData(((FeedItemUser)data[position]).UserAccount, context);
+            }
+            else if(viewHolder.GetType() == typeof(CardActivityViewHolder))
+            {
+                (viewHolder as CardActivityViewHolder).LoadData((FeedItemActivity)data[position], context);
             }
 
             if (data[position].Interaction == null)
@@ -117,16 +126,33 @@ namespace DroidSpeeching
             (viewHolder as CardBaseViewHolder).interact.Visibility = ViewStates.Visible;
             (viewHolder as CardBaseViewHolder).interact.Text = data[position].Interaction.label;
 
-            if (data[position].Interaction.type == FeedItemInteraction.InteractionType.URL)
+            FeedItemInteraction interaction = data[position].Interaction;
+
+            if (interaction.type == FeedItemInteraction.InteractionType.URL)
             {
                 (viewHolder as CardBaseViewHolder).interact.Click += delegate
                 {
                     Intent i = new Intent(Intent.ActionView,
-                        Android.Net.Uri.Parse(data[position].Interaction.value));
+                        Android.Net.Uri.Parse(interaction.value));
                     context.StartActivity(i);
                 };
             }
-
+            else if(interaction.type == FeedItemInteraction.InteractionType.ASSESSMENT)
+            {
+                (viewHolder as CardBaseViewHolder).interact.Click += delegate
+                {
+                    context.StartActivity(typeof(AssessmentActivity));
+                };
+            }
+            else if(interaction.type == FeedItemInteraction.InteractionType.ACTIVITY)
+            {
+                (viewHolder as CardBaseViewHolder).interact.Click += delegate
+                {
+                    Intent intent = new Intent(context, typeof(ScenarioActivity));
+                    intent.PutExtra("ActivityId", int.Parse(interaction.value));
+                    context.StartActivity(intent);
+                };
+            }
         }
     }
 
@@ -142,6 +168,20 @@ namespace DroidSpeeching
             title = v.FindViewById<TextView>(Resource.Id.resultCard_title);
             description = v.FindViewById<TextView>(Resource.Id.resultCard_caption);
             interact = v.FindViewById<Button>(Resource.Id.resultCard_interaction);
+        }
+
+        public static async Task LoadImageIntoCircle( string imageUrl, ImageView imageView, Context context)
+        {
+            string imageLoc = await Utils.FetchLocalCopy(imageUrl, typeof(User));
+
+            if (string.IsNullOrEmpty(imageLoc)) return;
+
+            Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
+                        context.ContentResolver,
+                        Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+
+            RoundedDrawable avatar = new RoundedDrawable(thisBitmap);
+            imageView.SetImageDrawable(avatar);
         }
     }
 
@@ -164,11 +204,11 @@ namespace DroidSpeeching
         }
     }
 
-    public class ResultViewPercentHolder : CardBaseViewHolder
+    public class CardPercentViewHolder : CardBaseViewHolder
     {
         public RadialProgressView percent;
 
-        public ResultViewPercentHolder(View v)
+        public CardPercentViewHolder(View v)
             : base(v)
         {
             percent = v.FindViewById<RadialProgressView>(Resource.Id.resultCard_percent);
@@ -187,40 +227,74 @@ namespace DroidSpeeching
         }
     }
 
-    public class ResultViewPersonHolder : CardBaseViewHolder
+    public class CardPersonViewHolder : CardBaseViewHolder
     {
         private ImageView avatarView;
-        private TextView username;
+        public TextView username;
 
-        public ResultViewPersonHolder(View v)
+        public CardPersonViewHolder(View v)
             : base(v)
         {
             avatarView = v.FindViewById<ImageView>(Resource.Id.resultCard_avatar);
             username = v.FindViewById<TextView>(Resource.Id.resultCard_username);
         }
 
-        public async Task LoadUserAvatar(User user, Context context)
+        public void LoadData(User user, Context context)
         {
             username.Text = user.name;
+            LoadImageIntoCircle(user.avatar, avatarView, context);
+        }
+        
+    }
 
-            string imageLoc = await Utils.FetchLocalCopy(user.avatar, typeof(User));
+    public class CardActivityViewHolder : CardBaseViewHolder
+    {
+        private ImageView icon;
+        private TextView activityName;
 
-            if (string.IsNullOrEmpty(imageLoc)) return;
+        private TextView rationaleView;
+        private TextView rationaleTease;
 
-            Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
-                        context.ContentResolver,
-                        Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+        public CardActivityViewHolder(View v)
+            : base(v)
+        {
+            icon = v.FindViewById<ImageView>(Resource.Id.resultCard_icon);
+            activityName = v.FindViewById<TextView>(Resource.Id.resultCard_activityTitle);
+            rationaleView = v.FindViewById<TextView>(Resource.Id.resultCard_rationale);
+            rationaleTease = v.FindViewById<TextView>(Resource.Id.resultCard_rationaleTease);
 
-            RoundedDrawable avatar = new RoundedDrawable(thisBitmap);
-            avatarView.SetImageDrawable(avatar);
+            rationaleTease.Visibility = ViewStates.Gone;
+            rationaleView.Visibility = ViewStates.Gone;
+        }
+
+        private void SetRationale(string[] reasons)
+        {
+            if (reasons == null || reasons.Length == 0) return;
+
+            rationaleTease.Visibility = ViewStates.Visible;
+            rationaleView.Visibility = ViewStates.Visible;
+
+            rationaleView.Text = reasons[0];
+
+            for(int i = 1; i < reasons.Length; i++)
+            {
+                rationaleView.Text += "\n" + reasons[i];
+            }
+        }
+
+        public void LoadData(FeedItemActivity data, Context context)
+        {
+            activityName.Text = data.Activity.Title;
+            LoadImageIntoCircle(data.Activity.Icon, icon, context);
+            SetRationale(data.Rationale);
         }
     }
 
-    public class ResultViewGraphHolder : CardBaseViewHolder
+    public class CardGraphViewHolder : CardBaseViewHolder
     {
         public PlotView plotView;
 
-        public ResultViewGraphHolder(View v)
+        public CardGraphViewHolder(View v)
             : base(v)
         {
             plotView = v.FindViewById<PlotView>(Resource.Id.resultCard_graph);
@@ -229,8 +303,6 @@ namespace DroidSpeeching
         public void PlotGraph(PlotModel plotModel)
         {
             plotView.Model = plotModel;
-            plotView.Model.Axes[0].Key = "Axis 0 Key here";
-            plotView.Model.Axes[1].Key = "Axis 1 Key here";
         }
     }
 }
