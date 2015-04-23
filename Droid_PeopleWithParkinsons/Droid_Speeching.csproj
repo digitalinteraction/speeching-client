@@ -277,18 +277,18 @@
     <AndroidResource Include="Resources\layout\ViewSubmissionActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResultsCardPercentage.axml">
+    <AndroidResource Include="Resources\layout\FeedCardPercentage.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResultsCardText.axml">
+    <AndroidResource Include="Resources\layout\FeedCardText.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResultsCardGraph.axml">
+    <AndroidResource Include="Resources\layout\FeedCardGraph.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MainFriendsListHeader.axml" />
     <AndroidResource Include="Resources\layout\MainMenuListItem.axml" />
-    <AndroidResource Include="Resources\layout\ResultsCardPerson.axml">
+    <AndroidResource Include="Resources\layout\FeedCardPerson.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\WikiPracticeActivity.axml">
@@ -308,12 +308,16 @@
     <AndroidResource Include="Resources\layout-large\AssessmentActivity.axml" />
     <AndroidResource Include="Resources\layout-large\ImageDescFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\AssessmentActivity.axml" />
-    <AndroidResource Include="Resources\layout\ResultsCardImage.axml">
+    <AndroidResource Include="Resources\layout\FeedCardImage.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ResultsCardActivity.axml">
+    <AndroidResource Include="Resources\layout\FeedCardActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout-land\MainResultsFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\MainResultsFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-land\MainResultsFragment.axml" />
+    <AndroidResource Include="Resources\layout-land\FeedCardImage.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

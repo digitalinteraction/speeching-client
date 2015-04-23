@@ -57,27 +57,27 @@ namespace DroidSpeeching
             switch (viewType)
             {
                 case 1:
-                    View imageView = inflater.Inflate(Resource.Layout.ResultsCardImage, viewGroup, false);
+                    View imageView = inflater.Inflate(Resource.Layout.FeedCardImage, viewGroup, false);
                     CardImageViewHolder imageHolder = new CardImageViewHolder(imageView);
                     return imageHolder;
                 case 2:
-                    View percentView = inflater.Inflate(Resource.Layout.ResultsCardPercentage, viewGroup, false);
+                    View percentView = inflater.Inflate(Resource.Layout.FeedCardPercentage, viewGroup, false);
                     CardPercentViewHolder percentHolder = new CardPercentViewHolder(percentView);
                     return percentHolder;
                 case 3:
-                    View graphView = inflater.Inflate(Resource.Layout.ResultsCardGraph, viewGroup, false);
+                    View graphView = inflater.Inflate(Resource.Layout.FeedCardGraph, viewGroup, false);
                     CardGraphViewHolder graphHolder = new CardGraphViewHolder(graphView);
                     return graphHolder;
                 case 4:
-                    View commentView = inflater.Inflate(Resource.Layout.ResultsCardPerson, viewGroup, false);
+                    View commentView = inflater.Inflate(Resource.Layout.FeedCardPerson, viewGroup, false);
                     CardPersonViewHolder commentHolder = new CardPersonViewHolder(commentView);
                     return commentHolder;
                 case 5:
-                    View activityView = inflater.Inflate(Resource.Layout.ResultsCardActivity, viewGroup, false);
+                    View activityView = inflater.Inflate(Resource.Layout.FeedCardActivity, viewGroup, false);
                     CardActivityViewHolder activityHolder = new CardActivityViewHolder(activityView);
                     return activityHolder;
                 default:
-                    View v = inflater.Inflate(Resource.Layout.ResultsCardText, viewGroup, false);
+                    View v = inflater.Inflate(Resource.Layout.FeedCardText, viewGroup, false);
                     CardBaseViewHolder vh = new CardBaseViewHolder(v);
                     return vh;
             }
