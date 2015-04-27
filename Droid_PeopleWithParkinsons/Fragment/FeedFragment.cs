@@ -65,13 +65,9 @@ namespace DroidSpeeching
 
         private async void InsertData()
         {
-            ProgressDialog progress = null;
-
-            Activity.RunOnUiThread(()=>{
-                progress = new ProgressDialog(Activity);
-                progress.SetTitle("Loading");
-                progress.SetMessage("Please wait...");
-                progress.Show();
+            Activity.RunOnUiThread(()=>
+            {
+                refresher.Post(() => { refresher.Refreshing = true; });
             });
             
             items = await ServerData.FetchMainFeed();
@@ -82,7 +78,10 @@ namespace DroidSpeeching
             SwipeableRecyclerViewTouchListener swipeTouchListener = new SwipeableRecyclerViewTouchListener(feedList, this);
             feedList.AddOnItemTouchListener(swipeTouchListener);
 
-            Activity.RunOnUiThread(() => progress.Hide());
+            Activity.RunOnUiThread(() =>
+            {
+                refresher.Post(() => { refresher.Refreshing = false; });
+            });
         }
 
         public bool CanSwipe(int position)
