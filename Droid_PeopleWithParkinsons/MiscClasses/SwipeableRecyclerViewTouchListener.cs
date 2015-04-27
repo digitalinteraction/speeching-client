@@ -348,14 +348,13 @@ namespace DroidSpeeching
 
         public bool OnTouch(View v, MotionEvent e)
         {
-            float delta = e.RawX - mDownX;
+            float deltaX = e.RawX - mDownX;
+            float deltaY = e.RawY - mDownY;
 
-            if(e.ActionMasked != MotionEventActions.Move ||
-                (delta > 0 && mSwipeListener.CanSwipeRight) ||
-                (delta < 0 && mSwipeListener.CanSwipeLeft)
-               )
+            // If there is allowed movement on the X axis and we aren't swiping vertically
+            if(((deltaX > 10 && mSwipeListener.CanSwipeRight) || (deltaX < -10 && mSwipeListener.CanSwipeLeft)) && (System.Math.Abs(deltaY) < 30))
             {
-                v.Parent.RequestDisallowInterceptTouchEvent(true);
+                v.Parent.RequestDisallowInterceptTouchEvent(true); // See override on CustomSwipeToRefresh
                 return HandleTouchEvent(e);
             }
             v.Parent.RequestDisallowInterceptTouchEvent(false);

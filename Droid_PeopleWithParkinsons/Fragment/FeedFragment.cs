@@ -31,6 +31,7 @@ namespace DroidSpeeching
             base.OnViewCreated(view, savedInstanceState);
 
             refresher = view.FindViewById<CustomSwipeToRefresh>(Resource.Id.refresher);
+            refresher.SetSlop(Activity);
             refresher.Refresh += async delegate
             {
                 if (!AppData.CheckNetwork() || adapter == null)
