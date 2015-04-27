@@ -12,7 +12,6 @@ using Android.Widget;
 using SpeechingCommon;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
-using SpeechingCommon;
 using Android.Support.V7.App;
 using Android.Graphics;
 using Android.Support.V7.Graphics;

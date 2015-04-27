@@ -416,7 +416,7 @@ namespace DroidSpeeching
             /// <param name="context">The current activity</param>
             /// <param name="onMaxDurtion">Action performed when the max duration of the recording has been reached</param>
             /// <param name="backgroundNoise">TextView to display background noise level information</param>
-            public RecordAudioManager(Activity context, Action onMaxDurtion = null, TextView backgroundNoise = null)
+            public RecordAudioManager(Activity context, Action onMaxDuration = null, TextView backgroundNoise = null)
             {
                 this.context = context;
                 this.backgroundNoiseDisplay = backgroundNoise;
