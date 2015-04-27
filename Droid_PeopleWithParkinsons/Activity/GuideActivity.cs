@@ -51,7 +51,7 @@ namespace DroidSpeeching
         /// Retrieve the data needed to display the guide. 
         /// May connect to the server or need to download files, so has to be asynchronous
         /// </summary>
-        private async Task InitialiseData()
+        private async void InitialiseData()
         {
             guide = (Guide)await AppData.session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
             string scenarioFormatted = guide.Title.Replace(" ", String.Empty).Replace("/", String.Empty);

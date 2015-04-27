@@ -19,6 +19,11 @@ namespace DroidSpeeching
         private int mTouchSlop;
         private float mPrevX;
 
+        public CustomSwipeToRefresh(IntPtr pointer, JniHandleOwnership jni) : base(pointer, jni)
+        {
+
+        }
+
         public CustomSwipeToRefresh(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             mTouchSlop = ViewConfiguration.Get(context).ScaledTouchSlop;

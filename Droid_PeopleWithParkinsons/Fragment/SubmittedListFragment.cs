@@ -79,7 +79,7 @@ namespace DroidSpeeching
             return view;
         }
 
-        private async Task LoadData()
+        private async void LoadData()
         {
             results = await ServerData.FetchSubmittedList();
 
@@ -89,7 +89,7 @@ namespace DroidSpeeching
 
         void permissionsBtn_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent(Activity, typeof(PermissionsActivity));
+            Intent intent = new Intent(Activity, typeof(UploadsActivity)); //TODO
             intent.PutExtra("ResultId", res.Id);
             StartActivity(intent);
         }

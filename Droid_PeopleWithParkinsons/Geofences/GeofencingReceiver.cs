@@ -133,7 +133,7 @@ namespace DroidSpeeching
             toRemove.Add(fence.placeId);
         }
 
-        private async Task OnEnteredGeofences(PlaceGeofence fence)
+        private async void OnEnteredGeofences(PlaceGeofence fence)
         {
             Intent intent = await PrepareIntent(fence);
             AndroidUtils.SendNotification(
@@ -146,7 +146,7 @@ namespace DroidSpeeching
             RemoveFence(fence);
         }
 
-        private async Task OnExitedGeofences(PlaceGeofence fence)
+        private async void OnExitedGeofences(PlaceGeofence fence)
         {
             Intent intent = await PrepareIntent(fence);
             AndroidUtils.SendNotification(

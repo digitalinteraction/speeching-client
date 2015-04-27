@@ -7,7 +7,6 @@ using Android.Views;
 using Android.Widget;
 using SpeechingCommon;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DroidSpeeching
 {
@@ -15,7 +14,7 @@ namespace DroidSpeeching
     public class FeedbackActivity : ActionBarActivity
     {
         private DrawerLayout drawer;
-        private Android.Support.V4.App.ActionBarDrawerToggle drawerToggle;
+        private Android.Support.V7.App.ActionBarDrawerToggle drawerToggle;
         private ListView drawerList;
 
         private RecyclerView feedbackList;
@@ -53,7 +52,7 @@ namespace DroidSpeeching
             outState.PutInt("SelectedIndex", selectedIndex);
         }
 
-        private async Task FetchFeedbackDataInit()
+        private async void FetchFeedbackDataInit()
         {
             submissions = await ServerData.FetchSubmittedList();
 
@@ -81,7 +80,7 @@ namespace DroidSpeeching
             PrepareDrawer();
         }
 
-        private async Task PrepareDrawer()
+        private async void PrepareDrawer()
         {
             FeedbackAdapter adapter = new FeedbackAdapter(this, new List<FeedbackData>());
 
@@ -100,7 +99,7 @@ namespace DroidSpeeching
             if (drawer != null)
             {
                 // this won't be present on some layouts as the drawer might be a list which is always visible
-                drawerToggle = new Android.Support.V4.App.ActionBarDrawerToggle(this, drawer, Resource.Drawable.ic_drawer, Resource.String.drawer_open, Resource.String.drawer_close);
+                drawerToggle = new Android.Support.V7.App.ActionBarDrawerToggle(this, drawer, new Android.Support.V7.Widget.Toolbar(this), Resource.String.drawer_open, Resource.String.drawer_close);
                 drawer.SetDrawerListener(drawerToggle);
 
                 SupportActionBar.Show();
@@ -136,7 +135,7 @@ namespace DroidSpeeching
         /// </summary>
         /// <param name="actId">The ID fo the activity to show feedback for</param>
         /// <returns></returns>
-        private async Task LoadFeedbackForActivity(FeedbackData data)
+        private async void LoadFeedbackForActivity(FeedbackData data)
         {
             ProgressDialog prog = new ProgressDialog(this);
             prog.SetTitle("Fetching Feedback");

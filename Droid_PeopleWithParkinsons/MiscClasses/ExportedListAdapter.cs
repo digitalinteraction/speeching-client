@@ -38,7 +38,7 @@ namespace DroidSpeeching
             get { return results.Length; }
         }
 
-        private async Task PopulateView(int activityId, View view)
+        private async void PopulateView(int activityId, View view)
         {
             ISpeechingActivityItem thisItem = await AppData.session.FetchActivityWithId(activityId);
 

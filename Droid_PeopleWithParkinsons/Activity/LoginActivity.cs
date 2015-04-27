@@ -112,7 +112,7 @@ namespace DroidSpeeching
             }
         }
 
-        private async Task AttemptLoad()
+        private async void AttemptLoad()
         {
             bool successfulLoad = await AndroidUtils.InitSession(this);
 
@@ -191,7 +191,7 @@ namespace DroidSpeeching
             }
         }
 
-        public async Task ReadyMainMenu()
+        public async void ReadyMainMenu()
         {
             ProgressDialog dialog = null;
 

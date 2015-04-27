@@ -37,7 +37,6 @@ namespace DroidSpeeching
     public class GcmIntentService : IntentService, IGoogleApiClientConnectionCallbacks, IGoogleApiClientOnConnectionFailedListener
     {
         Intent lastIntent;
-        List<IGeofence> fences;
 
         string lastType = "";
         ISharedPreferences userPrefs;

@@ -66,16 +66,13 @@ namespace DroidSpeeching
             loadingContainer = FindViewById<LinearLayout>(Resource.Id.assessment_loading);
             loadingContainer.Visibility = ViewStates.Gone;
             fragmentContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
-            fragmentContainer.Visibility = ViewStates.Visible;
+            fragmentContainer.Visibility = ViewStates.Gone;
 
             helpButton = FindViewById<ImageView>(Resource.Id.assessment_info);
             helpButton.Click += helpButton_Click;
             helpButton.Visibility = ViewStates.Gone;
 
-            FeedFragment frag = new FeedFragment();
-            SupportFragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, frag, "ASSESSMENT_TASK").Commit();
-
-            //LoadData(bundle);
+            LoadData(bundle);
         }
 
         private async void LoadData(Bundle bundle)

@@ -75,7 +75,7 @@ namespace DroidSpeeching
             ReadyGoogleApi();
         }
 
-        private async Task LaunchRecorder(GooglePlace place)
+        private async void LaunchRecorder(GooglePlace place)
         {
             ProgressDialog dialog = ProgressDialog.Show(this, "Please wait", "Readying data...", true);
 

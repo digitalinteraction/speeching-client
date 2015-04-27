@@ -458,7 +458,6 @@ namespace DroidSpeeching
 
             foreach(double vol in vols)
             {
-                if(vol != null && vol != 0)
                 total += vol;
             }
 

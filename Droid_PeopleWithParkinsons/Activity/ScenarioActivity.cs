@@ -112,7 +112,7 @@ namespace DroidSpeeching
             InitialiseData(savedInstanceState);
         }
 
-        private async Task InitialiseData(Bundle savedInstanceState)
+        private async void InitialiseData(Bundle savedInstanceState)
         {
             // Load the scenario with the id that was given inside the current intent
             scenario = (Scenario)await AppData.session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));

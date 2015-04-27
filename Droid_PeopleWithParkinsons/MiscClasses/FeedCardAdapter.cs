@@ -170,7 +170,7 @@ namespace DroidSpeeching
             interact = v.FindViewById<Button>(Resource.Id.resultCard_interaction);
         }
 
-        public static async Task LoadImageIntoCircle( string imageUrl, ImageView imageView, Context context)
+        public static async void LoadImageIntoCircle( string imageUrl, ImageView imageView, Context context)
         {
             string imageLoc = await Utils.FetchLocalCopy(imageUrl, typeof(User));
 
@@ -194,7 +194,7 @@ namespace DroidSpeeching
             image = v.FindViewById<ImageView>(Resource.Id.resultCard_image);
         }
 
-        public async Task LoadImage(string imageLoc, Context context)
+        public async void LoadImage(string imageLoc, Context context)
         {
             string localLoc = await Utils.FetchLocalCopy(imageLoc);
 
@@ -214,7 +214,7 @@ namespace DroidSpeeching
             percent = v.FindViewById<RadialProgressView>(Resource.Id.resultCard_percent);
         }
 
-        public async Task AnimatePercentage(float toVal, float millis)
+        public async void AnimatePercentage(float toVal, float millis)
         {
             int waitTime = (int)(millis / toVal);
             float current = 0;

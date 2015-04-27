@@ -406,7 +406,6 @@ namespace DroidSpeeching
             private AudioRecorder backgroundAudioRecorder;
             private bool bgRunning = false;
             private bool bgShouldToggle = false;
-            private bool recording = false;
             private Activity context;
             private Action onMaxDuration;
 
@@ -538,8 +537,6 @@ namespace DroidSpeeching
                 }
                 bgShouldToggle = false;
 
-                recording = true;
-
                 audioRecorder.Start();
             }
 
@@ -569,8 +566,6 @@ namespace DroidSpeeching
 
                 audioRecorder.Stop();
                 audioRecorder.Reset();
-
-                recording = false;
 
                 return outputPath;
                 

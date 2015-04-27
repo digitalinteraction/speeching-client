@@ -30,7 +30,7 @@ namespace DroidSpeeching
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            /*refresher = view.FindViewById<CustomSwipeToRefresh>(Resource.Id.refresher);
+            refresher = view.FindViewById<CustomSwipeToRefresh>(Resource.Id.refresher);
             refresher.Refresh += async delegate
             {
                 if (!AppData.CheckNetwork() || adapter == null)
@@ -45,7 +45,7 @@ namespace DroidSpeeching
                 refresher.Refreshing = false;
 
                 Activity.RunOnUiThread(() => adapter.NotifyDataSetChanged());
-            };*/
+            };
 
             feedList = view.FindViewById<RecyclerView>(Resource.Id.mainResults_recyclerView);
 
