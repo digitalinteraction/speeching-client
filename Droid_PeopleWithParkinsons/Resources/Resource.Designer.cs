@@ -1055,6 +1055,9 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f040009
 			public const int scale_button_pressed = 2130968585;
 			
+			// aapt resource value: 0x7f04000a
+			public const int shake = 2130968586;
+			
 			static Animation()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

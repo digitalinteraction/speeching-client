@@ -396,6 +396,7 @@
     <AndroidResource Include="Resources\drawable\mode.png" />
     <AndroidResource Include="Resources\drawable-hdpi\mode.png" />
     <AndroidResource Include="Resources\drawable\info.png" />
+    <AndroidResource Include="Resources\anim\shake.xml" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

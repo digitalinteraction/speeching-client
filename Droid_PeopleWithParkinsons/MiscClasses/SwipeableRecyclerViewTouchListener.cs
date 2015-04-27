@@ -13,6 +13,7 @@ using Android.Support.V7.Widget;
 using Android.Graphics;
 using Android.Animation;
 using Java.Lang;
+using Android.Views.Animations;
 
 //https://raw.githubusercontent.com/brnunes/SwipeableRecyclerView/master/lib/src/main/java/com/github/brnunes/swipeablerecyclerview/SwipeableRecyclerViewTouchListener.java
 
@@ -45,6 +46,7 @@ namespace DroidSpeeching
         private View mDownView;
         private bool mPaused;
         private float mFinalDelta;
+        private Context context;
 
         /**
          * Constructs a new swipe touch listener for the given {@link android.support.v7.widget.RecyclerView}
@@ -52,7 +54,7 @@ namespace DroidSpeeching
          * @param recyclerView The recycler view whose items should be dismissable by swiping.
          * @param listener     The listener for the swipe events.
          */
-        public SwipeableRecyclerViewTouchListener(RecyclerView recyclerView, ISwipeListener listener)
+        public SwipeableRecyclerViewTouchListener(RecyclerView recyclerView, ISwipeListener listener, Context context)
         {
             ViewConfiguration vc = ViewConfiguration.Get(recyclerView.Context);
             mSlop = vc.ScaledTouchSlop;
@@ -62,7 +64,7 @@ namespace DroidSpeeching
                     Android.Resource.Integer.ConfigShortAnimTime);
             mRecyclerView = recyclerView;
             mSwipeListener = listener;
-
+            this.context = context;
 
             /**
              * This will ensure that this SwipeableRecyclerViewTouchListener is paused during list view scrolling.
@@ -137,15 +139,8 @@ namespace DroidSpeeching
                             mDownX = motionEvent.RawX;
                             mDownY = motionEvent.RawY;
                             mDownPosition = mRecyclerView.GetChildPosition(mDownView);
-                            if (mSwipeListener.CanSwipe(mDownPosition))
-                            {
-                                mVelocityTracker = VelocityTracker.Obtain();
-                                mVelocityTracker.AddMovement(motionEvent);
-                            }
-                            else
-                            {
-                                mDownView = null;
-                            }
+                            mVelocityTracker = VelocityTracker.Obtain();
+                            mVelocityTracker.AddMovement(motionEvent);
                         }
                         break;
                     }
@@ -203,7 +198,7 @@ namespace DroidSpeeching
                             dismiss = (velocityX < 0) == (mFinalDelta < 0);
                             dismissRight = mVelocityTracker.XVelocity > 0;
                         }
-                        if (dismiss && mDownPosition != mAnimatingPosition && mDownPosition != ListView.InvalidPosition)
+                        if (dismiss && mDownPosition != mAnimatingPosition && mDownPosition != ListView.InvalidPosition && mSwipeListener.CanSwipe(mDownPosition))
                         {
                             // dismiss
                             View downView = mDownView; // mDownView gets null'd before animation ends
@@ -229,6 +224,12 @@ namespace DroidSpeeching
                                     .Alpha(mAlpha)
                                     .SetDuration(mAnimationTime)
                                     .SetListener(null);
+                            if(!mSwipeListener.CanSwipe(mDownPosition))
+                            {
+                                Animation shake = AnimationUtils.LoadAnimation(context, Resource.Animation.shake);
+                                mDownView.StartAnimation(shake);
+                                Toast.MakeText(context, "Can't dismiss that!", ToastLength.Short).Show();
+                            }
                         }
                         mVelocityTracker.Recycle();
                         mVelocityTracker = null;
@@ -352,7 +353,7 @@ namespace DroidSpeeching
             float deltaY = e.RawY - mDownY;
 
             // If there is allowed movement on the X axis and we aren't swiping vertically
-            if(((deltaX > 20 && mSwipeListener.CanSwipeRight) || (deltaX < -20 && mSwipeListener.CanSwipeLeft)) && (System.Math.Abs(deltaY) < 100))
+            if (((deltaX > 20 && mSwipeListener.CanSwipeRight) || (deltaX < -20 && mSwipeListener.CanSwipeLeft)) && (System.Math.Abs(deltaY) < System.Math.Abs(deltaX)))
             {
                 v.Parent.RequestDisallowInterceptTouchEvent(true); // See override on CustomSwipeToRefresh
                 return HandleTouchEvent(e);

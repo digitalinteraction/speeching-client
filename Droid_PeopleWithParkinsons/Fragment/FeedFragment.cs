@@ -75,7 +75,7 @@ namespace DroidSpeeching
             adapter = new FeedCardAdapter(items, Activity);
             feedList.SetAdapter(adapter);
 
-            SwipeableRecyclerViewTouchListener swipeTouchListener = new SwipeableRecyclerViewTouchListener(feedList, this);
+            SwipeableRecyclerViewTouchListener swipeTouchListener = new SwipeableRecyclerViewTouchListener(feedList, this, Activity);
             feedList.AddOnItemTouchListener(swipeTouchListener);
 
             Activity.RunOnUiThread(() =>
