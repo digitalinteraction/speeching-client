@@ -352,7 +352,7 @@ namespace DroidSpeeching
             float deltaY = e.RawY - mDownY;
 
             // If there is allowed movement on the X axis and we aren't swiping vertically
-            if(((deltaX > 10 && mSwipeListener.CanSwipeRight) || (deltaX < -10 && mSwipeListener.CanSwipeLeft)) && (System.Math.Abs(deltaY) < 30))
+            if(((deltaX > 20 && mSwipeListener.CanSwipeRight) || (deltaX < -20 && mSwipeListener.CanSwipeLeft)) && (System.Math.Abs(deltaY) < 100))
             {
                 v.Parent.RequestDisallowInterceptTouchEvent(true); // See override on CustomSwipeToRefresh
                 return HandleTouchEvent(e);
