@@ -40,7 +40,6 @@ namespace DroidSpeeching
         List<IGeofence> fences;
 
         string lastType = "";
-        string lastData = "";
         ISharedPreferences userPrefs;
  
         IGoogleApiClient apiClient;

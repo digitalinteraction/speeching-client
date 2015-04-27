@@ -19,13 +19,11 @@ namespace DroidSpeeching
         private ListView drawerList;
 
         private RecyclerView feedbackList;
-        private List<FeedbackData> feedbackData;
         private TextView teaseText;
         private TextView activityTitle;
         private TextView completionDate;
 
         private IResultItem[] submissions;
-        private IFeedItem[] currentFeedback;
         private ISpeechingActivityItem thisActivity;
         private int selectedIndex;
 
