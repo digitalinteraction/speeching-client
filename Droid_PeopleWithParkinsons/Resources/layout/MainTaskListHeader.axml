@@ -25,7 +25,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/practiceAreaBtn"
-            android:text="Practice area"
+            android:text="Daily exercises"
             android:textSize="16sp"
             android:padding="12dp"
             android:layout_width="0dp"
@@ -37,7 +37,7 @@
             android:layout_marginBottom="6dp" />
         <Button
             android:id="@+id/viewSubmittedBtn"
-            android:text="View feedback for your submissions!"
+            android:text="Practice your last assessment!"
             android:textSize="16sp"
             android:padding="12dp"
             android:layout_width="0dp"

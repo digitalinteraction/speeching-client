@@ -160,6 +160,7 @@
     <Compile Include="MiscClasses\IAudioRecorder.cs" />
     <Compile Include="MiscClasses\FeedCardAdapter.cs" />
     <Compile Include="MiscClasses\SwipeableRecyclerViewTouchListener.cs" />
+    <Compile Include="MiscClasses\TTSManager.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MiscClasses\RoundedDrawable.cs" />

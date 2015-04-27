@@ -17,6 +17,7 @@ using System.Timers;
 using System.Threading;
 using Android.Views.Animations;
 using Android.Graphics;
+using Android.Speech.Tts;
 
 namespace DroidSpeeching
 {
@@ -54,8 +55,14 @@ namespace DroidSpeeching
         int loud_currentVol;
         int loud_targetVol = 45;
 
+        Button ttsBtn;
+        TTSManager tts;
         AndroidUtils.RecordAudioManager audioManager;
         bool reading = false;
+
+        Action<string> onSpeechComplete;
+        string speechWaiting = "Start Speech Preview";
+        string speechSpeaking = "Stop Speech Preview";
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -71,6 +78,8 @@ namespace DroidSpeeching
             wikiImage = FindViewById<ImageView>(Resource.Id.wiki_image);
             startBtn = FindViewById<Button>(Resource.Id.wiki_startBtn);
             startBtn.Click += startBtn_Click;
+            ttsBtn = FindViewById<Button>(Resource.Id.ttsBtn);
+            ttsBtn.Click += ttsBtn_Click;
 
             // Metronome layout
             metron_bpmText = FindViewById<TextView>(Resource.Id.wiki_bpm);
@@ -100,9 +109,40 @@ namespace DroidSpeeching
 
             currentMode = PracticeMode.None;
 
+            onSpeechComplete = (string id) => 
+            {
+                RunOnUiThread(()=> ttsBtn.Text = speechWaiting);
+            };
+
+            tts = new TTSManager(this, onSpeechComplete);
+
             SetupRecorder();
 
             LoadWikiInfo();
+        }
+
+        void ttsBtn_Click(object sender, EventArgs e)
+        {
+            if(tts.IsSpeaking())
+            {
+                tts.StopSpeaking();
+                ttsBtn.Text = speechWaiting;
+            }
+            else
+            {
+                tts.SayLine(wikiText.Text, "SpeechingWiki");
+                ttsBtn.Text = speechSpeaking;
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            tts = new TTSManager(this, onSpeechComplete);
+            ttsBtn.Text = speechWaiting;
+            audioManager = new AndroidUtils.RecordAudioManager(this, OnRecordingFull);
+
         }
 
         protected override void OnPause()
@@ -114,6 +154,12 @@ namespace DroidSpeeching
                 audioManager.StopRecording();
                 modeLayouts[currentMode].Visibility = ViewStates.Gone;
                 startBtn.Text = "Start!";
+            }
+
+            if(tts != null)
+            {
+                tts.Clean();
+                tts = null;
             }
 
             if(audioManager != null)

@@ -2681,8 +2681,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c00ad
 			public const int TextToSpeak = 2131493037;
 			
-			// aapt resource value: 0x7f0c00e4
-			public const int action_about = 2131493092;
+			// aapt resource value: 0x7f0c00e5
+			public const int action_about = 2131493093;
 			
 			// aapt resource value: 0x7f0c0045
 			public const int action_bar = 2131492933;
@@ -2708,8 +2708,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0046
 			public const int action_context_bar = 2131492934;
 			
-			// aapt resource value: 0x7f0c00e3
-			public const int action_logOut = 2131493091;
+			// aapt resource value: 0x7f0c00e4
+			public const int action_logOut = 2131493092;
 			
 			// aapt resource value: 0x7f0c0002
 			public const int action_menu_divider = 2131492866;
@@ -2726,14 +2726,14 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0034
 			public const int action_mode_close_button = 2131492916;
 			
-			// aapt resource value: 0x7f0c00e5
-			public const int action_practiceMode = 2131493093;
+			// aapt resource value: 0x7f0c00e6
+			public const int action_practiceMode = 2131493094;
+			
+			// aapt resource value: 0x7f0c00e3
+			public const int action_settings = 2131493091;
 			
 			// aapt resource value: 0x7f0c00e2
-			public const int action_settings = 2131493090;
-			
-			// aapt resource value: 0x7f0c00e1
-			public const int action_uploads = 2131493089;
+			public const int action_uploads = 2131493090;
 			
 			// aapt resource value: 0x7f0c0035
 			public const int activity_chooser_view_content = 2131492917;
@@ -2885,8 +2885,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0076
 			public const int guide_right = 2131492982;
 			
-			// aapt resource value: 0x7f0c00e6
-			public const int help = 2131493094;
+			// aapt resource value: 0x7f0c00e7
+			public const int help = 2131493095;
 			
 			// aapt resource value: 0x7f0c0023
 			public const int holo_dark = 2131492899;
@@ -3271,6 +3271,9 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f0c003b
 			public const int title = 2131492923;
+			
+			// aapt resource value: 0x7f0c00e1
+			public const int ttsBtn = 2131493089;
 			
 			// aapt resource value: 0x7f0c0008
 			public const int up = 2131492872;
