@@ -20,7 +20,7 @@ using SpeechingCommon;
 namespace DroidSpeeching
 {
     [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
-    public class MainActivity : ActionBarActivity //FragmentActivity
+    public class MainActivity : ActionBarActivity
     {
         private ViewPager pager;
         private PagerSlidingTabStrip.PagerSlidingTabStrip _tabs;
@@ -185,8 +185,7 @@ namespace DroidSpeeching
                 NotifyDataSetChanged();
             }
 
-        } 
-
+        }
     }
 }
 

@@ -12,7 +12,7 @@ namespace DroidSpeeching
 {
     public class FeedFragment : Android.Support.V4.App.Fragment, ISwipeListener, IActionClickListener
     {
-        SwipeRefreshLayout refresher;
+        CustomSwipeToRefresh refresher;
         RecyclerView feedList;
         FeedCardAdapter adapter;
         IFeedItem[] backup;
@@ -30,7 +30,7 @@ namespace DroidSpeeching
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
+            /*refresher = view.FindViewById<CustomSwipeToRefresh>(Resource.Id.refresher);
             refresher.Refresh += async delegate
             {
                 if (!AppData.CheckNetwork() || adapter == null)
@@ -40,12 +40,12 @@ namespace DroidSpeeching
                     return;
                 }
 
-                adapter.data = await ServerData.FetchMainFeed();
+                items = await ServerData.FetchMainFeed();
+                adapter.data = items;
                 refresher.Refreshing = false;
 
                 Activity.RunOnUiThread(() => adapter.NotifyDataSetChanged());
-            };
-
+            };*/
 
             feedList = view.FindViewById<RecyclerView>(Resource.Id.mainResults_recyclerView);
 

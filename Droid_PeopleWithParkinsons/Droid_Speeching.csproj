@@ -132,6 +132,7 @@
     <Compile Include="MiscClasses\AndroidUtils.cs" />
     <Compile Include="MiscClasses\AssessmentFragment.cs" />
     <Compile Include="MiscClasses\AudioRecorder.cs" />
+    <Compile Include="MiscClasses\CustomSwipeToRefresh.cs" />
     <Compile Include="MiscClasses\ExportedListAdapter.cs" />
     <Compile Include="Fragment\GuideFragment.cs" />
     <Compile Include="Fragment\TaskListFragment.cs" />
