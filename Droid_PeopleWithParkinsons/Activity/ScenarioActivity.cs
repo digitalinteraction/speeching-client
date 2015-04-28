@@ -67,6 +67,9 @@ namespace DroidSpeeching
         private AndroidUtils.RecordAudioManager audioManager;
         private bool recording = false;
 
+        private TTSManager tts;
+        private bool canSpeak = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             RequestWindowFeature(WindowFeatures.ActionBar);
@@ -84,11 +87,13 @@ namespace DroidSpeeching
 
             eventLayout = FindViewById<LinearLayout>(Resource.Id.scenarioEventLayout);
             eventTranscript = FindViewById<TextView>(Resource.Id.scenarioText);
+            eventTranscript.Click += SpeakableText_Click;
 
             mainLayout = FindViewById<RelativeLayout>(Resource.Id.scenarioRecordLayout);
-            eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
             eventImage = FindViewById<ImageView>(Resource.Id.scenarioImage);
             eventVideo = FindViewById<VideoView>(Resource.Id.scenarioVideo);
+            eventPrompt = FindViewById<TextView>(Resource.Id.scenarioPrompt);
+            eventPrompt.Click += SpeakableText_Click;
 
             mainButton = FindViewById<Button>(Resource.Id.scenarioProgressBtn);
             mainButton.Click += MainButtonClicked;
@@ -110,6 +115,12 @@ namespace DroidSpeeching
             eventLayout.Visibility = ViewStates.Gone;
 
             InitialiseData(savedInstanceState);
+        }
+
+        private void SpeakableText_Click(object sender, EventArgs e)
+        {
+            if (!canSpeak) return;
+            tts.SayLine((sender as TextView).Text, null, true);
         }
 
         private async void InitialiseData(Bundle savedInstanceState)
@@ -290,6 +301,8 @@ namespace DroidSpeeching
 
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
+            tts = new TTSManager(this, null);
+
             // Reload the resources for this stage of the scenario, incase they were lost (e.g. audio, video)
             if(currIndex >= 0)
             {
@@ -325,6 +338,11 @@ namespace DroidSpeeching
             {
                 eventVideo.StopPlayback();
             }
+            if(tts != null)
+            {
+                tts.Clean();
+                tts = null;
+            }
         }
 
         // Save the current index on rotation so progress isn't lost (used in createview)
@@ -344,12 +362,19 @@ namespace DroidSpeeching
             mainButton.Text = "Record Response";
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
+            canSpeak = true;
+            if(tts.IsSpeaking())
+            {
+                tts.StopSpeaking();
+            }
+
             // Check if the scenario is complete
             if (currIndex >= scenario.Tasks.Length)
             {
                 FinishScenario();
                 return;
             }
+
 
             this.Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.Tasks.Length;
             inputHint.Visibility = ViewStates.Visible;
@@ -389,6 +414,7 @@ namespace DroidSpeeching
 
                 if (scenario.Tasks[currIndex].TaskResponse.Type == TaskResponse.ResponseType.None)
                 {
+                    canSpeak = false;
                     inputHint.Visibility = ViewStates.Gone;
                     eventPrompt.Text = "";
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
@@ -465,6 +491,14 @@ namespace DroidSpeeching
                         mediaPlayer.Looping = false;
                         mediaPlayer.Start();
                     }
+                    else
+                    {
+                        tts.SayLine(eventTranscript.Text, null, true);
+                    }
+                }
+                else
+                {
+                    tts.SayLine(eventTranscript.Text, null, true);
                 }
             }
         }
@@ -515,6 +549,9 @@ namespace DroidSpeeching
                 {
                     mediaPlayer.Stop();
                 }
+
+                if (tts.IsSpeaking()) tts.StopSpeaking();
+                canSpeak = false;
 
                 recording = true;
                 string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.Tasks[currIndex].Id + ".mp4");

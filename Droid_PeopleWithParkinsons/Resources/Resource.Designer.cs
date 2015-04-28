@@ -3272,8 +3272,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c003b
 			public const int title = 2131492923;
 			
-			// aapt resource value: 0x7f0c00e1
-			public const int ttsBtn = 2131493089;
+			// aapt resource value: 0x7f0c00e0
+			public const int ttsBtn = 2131493088;
 			
 			// aapt resource value: 0x7f0c0008
 			public const int up = 2131492872;
@@ -3338,8 +3338,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c00d8
 			public const int wiki_speedControls = 2131493080;
 			
-			// aapt resource value: 0x7f0c00e0
-			public const int wiki_startBtn = 2131493088;
+			// aapt resource value: 0x7f0c00e1
+			public const int wiki_startBtn = 2131493089;
 			
 			// aapt resource value: 0x7f0c00d7
 			public const int wiki_text = 2131493079;
