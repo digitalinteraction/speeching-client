@@ -1,0 +1,9 @@
+﻿<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:speeching="http://schemas.android.com/apk/res-auto">
+  <!-- Settings, should always be in the overflow -->
+  <item android:id="@+id/action_settings"
+        android:title="Settings"
+        speeching:showAsAction="never"/>
+  <item android:id="@+id/action_help"
+        android:title="Help"
+        speeching:showAsAction="never"/>
+</menu>

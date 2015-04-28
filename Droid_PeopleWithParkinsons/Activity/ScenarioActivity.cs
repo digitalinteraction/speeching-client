@@ -4,6 +4,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Media;
 using Android.OS;
+using Android.Preferences;
 using Android.Provider;
 using Android.Support.V4.App;
 using Android.Support.V7.App;
@@ -62,6 +63,7 @@ namespace DroidSpeeching
         private string localTempDirectory;
         private string localZipPath;
         private ISharedPreferences prefs;
+        private string helpText;
 
         private int currIndex = -1;
         private AndroidUtils.RecordAudioManager audioManager;
@@ -69,6 +71,7 @@ namespace DroidSpeeching
 
         private TTSManager tts;
         private bool canSpeak = false;
+        private bool autoSpeak = true;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -114,7 +117,17 @@ namespace DroidSpeeching
             titleLayout.Visibility = ViewStates.Visible;
             eventLayout.Visibility = ViewStates.Gone;
 
+            helpText = "This is a short activity which may require you to perform multiple simple tasks." +
+            "\nOnce you have completed it, you'll be given the chance to upload your results for others to analyse and give you feedback." + 
+            "\nPress the Start button to begin!";
+
             InitialiseData(savedInstanceState);
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.scenarioActivityActions, menu);
+            return base.OnCreateOptionsMenu(menu);
         }
 
         private void SpeakableText_Click(object sender, EventArgs e)
@@ -217,6 +230,22 @@ namespace DroidSpeeching
                 NavUtils.NavigateUpFromSameTask(this);
                 return true;
             }
+            if (item.ItemId == Resource.Id.action_settings)
+            {
+                StartActivity(typeof(SettingsActivity));
+                return true;
+            }
+            if (item.ItemId == Resource.Id.action_help)
+            {
+                AlertDialog alert = new AlertDialog.Builder(this)
+                    .SetTitle("Help")
+                    .SetMessage(helpText)
+                    .SetPositiveButton("Confirm", (arg1, arg2) => { })
+                    .SetCancelable(true)
+                    .Create();
+                alert.Show();
+                return true;
+            }
             return base.OnOptionsItemSelected(item);
         }
 
@@ -303,6 +332,9 @@ namespace DroidSpeeching
 
             tts = new TTSManager(this, null);
 
+            ISharedPreferences userPrefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            autoSpeak = userPrefs.GetBoolean("autoTTS", true);
+
             // Reload the resources for this stage of the scenario, incase they were lost (e.g. audio, video)
             if(currIndex >= 0)
             {
@@ -359,6 +391,8 @@ namespace DroidSpeeching
         {
             currIndex++;
 
+            string ttsHelp = "Tap the text to listen to it spoken aloud!";
+
             mainButton.Text = "Record Response";
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
@@ -374,7 +408,6 @@ namespace DroidSpeeching
                 FinishScenario();
                 return;
             }
-
 
             this.Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.Tasks.Length;
             inputHint.Visibility = ViewStates.Visible;
@@ -405,6 +438,8 @@ namespace DroidSpeeching
                         choiceImage2.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice2Key])));
                     }
                 }
+
+                helpText = ttsHelp + "\nRead or listen to the prompt and decide which image is most likely the solution. Tap the image to make your choice!";
             }
             else
             {
@@ -419,6 +454,8 @@ namespace DroidSpeeching
                     eventPrompt.Text = "";
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     mainButton.Text = "Continue";
+
+                    helpText = ttsHelp + "\nPress the Continue button to advance the activity.";
                 }
 
                 // Load text
@@ -429,12 +466,14 @@ namespace DroidSpeeching
                     eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
                     eventPrompt.Text = (given != null) ? given : "";
                     inputHint.Text = "Your response:";
+                    helpText = ttsHelp + "\nPress the record button follow the instruction below \"Your Response\". Speak as clearly and loud as you can!";
                 }
                 else
                 {
                     eventPrompt.Text = scenario.Tasks[currIndex].TaskResponse.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     inputHint.Text = "Please say this:";
+                    helpText = ttsHelp + "\nPress the record button read the text below \"Please say this\". Speak as clearly and loud as you can, trying to be as accurate to the text as possible!";
                 }
             }
 
@@ -491,12 +530,12 @@ namespace DroidSpeeching
                         mediaPlayer.Looping = false;
                         mediaPlayer.Start();
                     }
-                    else
+                    else if(autoSpeak)
                     {
                         tts.SayLine(eventTranscript.Text, null, true);
                     }
                 }
-                else
+                else if(autoSpeak)
                 {
                     tts.SayLine(eventTranscript.Text, null, true);
                 }

@@ -2708,6 +2708,9 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0046
 			public const int action_context_bar = 2131492934;
 			
+			// aapt resource value: 0x7f0c00e8
+			public const int action_help = 2131493096;
+			
 			// aapt resource value: 0x7f0c00e4
 			public const int action_logOut = 2131493092;
 			
@@ -3629,6 +3632,9 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f0f0002
 			public const int RecordMenu = 2131689474;
+			
+			// aapt resource value: 0x7f0f0003
+			public const int scenarioActivityActions = 2131689475;
 			
 			static Menu()
 			{

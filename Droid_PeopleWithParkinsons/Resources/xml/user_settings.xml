@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <PreferenceCategory android:title="Application">
+    <CheckBoxPreference android:defaultValue="true" android:key="autoTTS" android:summary="Automatically play Text-to-Speech in activities when voice recordings aren't available." android:title="Auto Text-to-Speech">
+    </CheckBoxPreference>
+  </PreferenceCategory>
+  
   <PreferenceCategory android:title="Notifications">
     <CheckBoxPreference android:defaultValue="true" android:key="prefNotifNewContent" android:summary="Notify me when new content is available from the server." android:title="New content notifications">
     </CheckBoxPreference>
