@@ -415,12 +415,6 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpeechingCommon\SpeechingCommon.csproj">
-      <Project>{6dd42d10-3c7c-4f48-a57f-acd3df0e9812}</Project>
-      <Name>SpeechingCommon</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Resources\layout-xlarge-land\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

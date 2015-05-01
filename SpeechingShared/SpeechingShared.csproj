@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A671801E-DF63-4CDC-B702-CA13860BD733}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SpeechingShared</RootNamespace>
+    <AssemblyName>SpeechingShared</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1-beta2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\packages\OxyPlot.Core.2015.1.871-alpha\lib\net45\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActivityStructs\ActivityCategory.cs" />
+    <Compile Include="ActivityStructs\ActivityConverter.cs" />
+    <Compile Include="ActivityStructs\Guide.cs" />
+    <Compile Include="ActivityStructs\Scenario.cs" />
+    <Compile Include="ActivityStructs\_ActivityInterface.cs" />
+    <Compile Include="Assessments\Assessment.cs" />
+    <Compile Include="Assessments\AssessmentConverter.cs" />
+    <Compile Include="Assessments\ImageDescTask.cs" />
+    <Compile Include="Assessments\QuickFireTask.cs" />
+    <Compile Include="Assessments\_IAssessmentTask.cs" />
+    <Compile Include="BiDictionary.cs" />
+    <Compile Include="ConfidentialData.cs" />
+    <Compile Include="GooglePlacesResult.cs" />
+    <Compile Include="JsonCreationConverter.cs" />
+    <Compile Include="MainFeedStructs\FeedItemActivity.cs" />
+    <Compile Include="MainFeedStructs\FeedItemBase.cs" />
+    <Compile Include="MainFeedStructs\FeedItemConverter.cs" />
+    <Compile Include="MainFeedStructs\FeedItemGraph.cs" />
+    <Compile Include="MainFeedStructs\FeedItemImage.cs" />
+    <Compile Include="MainFeedStructs\FeedItemInteraction.cs" />
+    <Compile Include="MainFeedStructs\FeedItemPercentage.cs" />
+    <Compile Include="MainFeedStructs\FeedItemStarRating.cs" />
+    <Compile Include="MainFeedStructs\FeedItemUser.cs" />
+    <Compile Include="MainFeedStructs\_FeedItem.cs" />
+    <Compile Include="PlaceGeofence.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultStructs\LocationRecordingResult.cs" />
+    <Compile Include="ResultStructs\ScenarioResult.cs" />
+    <Compile Include="ResultStructs\_ResultInterface.cs" />
+    <Compile Include="SessionData.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="WikipediaStructs.cs" />
+    <Compile Include="_AppData.cs" />
+    <Compile Include="_ServerData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

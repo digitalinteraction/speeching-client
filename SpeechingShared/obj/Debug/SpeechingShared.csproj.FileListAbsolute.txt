@@ -1,0 +1,14 @@
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.csprojResolveAssemblyReference.cache
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.pdb
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\HtmlAgilityPack.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Newtonsoft.Json.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\HtmlAgilityPack.xml
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Newtonsoft.Json.xml
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.pdb
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.xml
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.pdb
