@@ -58,12 +58,11 @@ namespace DroidSpeeching
         protected override void OnStart()
         {
             base.OnStart();
-            apiClient.Connect();
         }
 
         public void OnClick(View view)
         {
-            if (view.Id == Resource.Id.splash_signIn && !apiClient.IsConnecting)
+            if (view.Id == Resource.Id.splash_signIn && (!apiClient.IsConnecting || apiClient.IsConnected))
             {
                 signInClicked = true;
                 ResolveSignInError();
@@ -136,6 +135,7 @@ namespace DroidSpeeching
             else
             {
                 needLogin = true;
+                apiClient.Connect();
 
                 // Unable to load previous session! Allow the user to log in
                 RunOnUiThread(() =>
