@@ -10,7 +10,7 @@ using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Widget;
 using Newtonsoft.Json;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

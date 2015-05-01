@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Threading;
 

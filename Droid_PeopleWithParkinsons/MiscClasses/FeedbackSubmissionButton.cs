@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using SpeechingCommon;
+using SpeechingShared;
 
 namespace DroidSpeeching
 {

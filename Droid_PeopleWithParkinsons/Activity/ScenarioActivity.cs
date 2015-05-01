@@ -13,7 +13,7 @@ using Android.Views;
 using Android.Widget;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -145,7 +145,7 @@ namespace DroidSpeeching
 
             string scenarioFormatted = scenario.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
-            localResourcesDirectory = AppData.cacheDir + "/" + scenarioFormatted;
+            localResourcesDirectory = AppData.cache.Path + scenarioFormatted;
             localTempDirectory = localResourcesDirectory + "/temp";
 
             // If the scenario folder doesn't exist we need to download the additional files
@@ -157,7 +157,7 @@ namespace DroidSpeeching
                     Directory.CreateDirectory(localTempDirectory);
                 }
 
-                localZipPath = System.IO.Path.Combine(AppData.exportsCache, scenarioFormatted + ".zip");
+                localZipPath = System.IO.Path.Combine(AppData.exports.Path, scenarioFormatted + ".zip");
                 try
                 {
                     PrepareData();

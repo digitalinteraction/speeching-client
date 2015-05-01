@@ -7,7 +7,7 @@ using Android.Widget;
 using OxyPlot;
 using OxyPlot.Xamarin.Android;
 using RadialProgress;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

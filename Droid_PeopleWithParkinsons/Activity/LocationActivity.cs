@@ -13,7 +13,7 @@ using Android.Support.V4.App;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Threading.Tasks;
 

@@ -17,7 +17,7 @@ namespace SpeechingShared
         public static IFolder root;
         public static IFolder cache;
         public static IFolder exports;
-
+        public static IFile tempRecording;
         public static IFileManager IO;
 
         public static Func<bool> checkForConnection;
@@ -90,6 +90,16 @@ namespace SpeechingShared
             else
             {
                 exports = await root.GetFolderAsync("exports");
+            }
+
+            ExistenceCheckResult tempFileExists = await root.CheckExistsAsync("tempRec.mp4");
+            if (tempFileExists == ExistenceCheckResult.NotFound)
+            {
+                tempRecording = await root.CreateFileAsync("tempRec.mp4", CreationCollisionOption.FailIfExists);
+            }
+            else
+            {
+                tempRecording = await root.GetFileAsync("tempRec.mp4");
             }
         }
 

@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using SpeechingCommon;
+using SpeechingShared;
 using Android.Support.V7.App;
 using Android.Media;
 using System.Threading.Tasks;
@@ -208,7 +208,7 @@ namespace DroidSpeeching
 
             if(popup)
             {
-                Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.practiceRecording));
+                Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.tempRecording.Path));
 
                 AlertDialog alert = new AlertDialog.Builder(this)
                     .SetTitle("Session complete!")
@@ -243,7 +243,7 @@ namespace DroidSpeeching
             startBtn.Text = "Stop!";
 
             SetupRecorder();
-            audioManager.StartRecording(AppData.practiceRecording, 300);
+            audioManager.StartRecording(AppData.tempRecording.Path, 300);
 
             StartModeFunc();
         }
@@ -469,7 +469,7 @@ namespace DroidSpeeching
                 countDialog.Show();
             });
 
-            audioManager.StartRecording(AppData.practiceRecording, 300);
+            audioManager.StartRecording(AppData.tempRecording.Path, 300);
             double[] vols = new double[startNum * 5];
 
             while(remaining > 0)

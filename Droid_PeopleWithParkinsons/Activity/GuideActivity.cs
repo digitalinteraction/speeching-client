@@ -6,7 +6,7 @@ using Android.Support.V4.View;
 using Android.Views;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Collections.Generic;
 using System.IO;

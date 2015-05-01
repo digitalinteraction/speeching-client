@@ -54,6 +54,8 @@ namespace DroidSpeeching
 			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps;
 			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_underlineColor;
 			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_underlineHeight;
+			global::PCLStorage.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
+			global::PCLStorage.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
 			global::SnackbarSharp.Resource.Animation.abc_fade_in = global::DroidSpeeching.Resource.Animation.abc_fade_in;
 			global::SnackbarSharp.Resource.Animation.abc_fade_out = global::DroidSpeeching.Resource.Animation.abc_fade_out;
 			global::SnackbarSharp.Resource.Animation.abc_slide_in_bottom = global::DroidSpeeching.Resource.Animation.abc_slide_in_bottom;

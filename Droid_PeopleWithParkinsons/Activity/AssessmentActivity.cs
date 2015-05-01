@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using PCLStorage;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Support.V7.App;
-using SpeechingCommon;
+using SpeechingShared;
 using System.IO;
 
 namespace DroidSpeeching
@@ -57,7 +57,7 @@ namespace DroidSpeeching
             assessmentType = FindViewById<TextView>(Resource.Id.assessment_type);
             assessmentType.Text = "";
 
-            localTempDirectory = AppData.cacheDir + "/assessment";
+            localTempDirectory = AppData.cache.Path + "/assessment";
 
             if(!Directory.Exists(localTempDirectory)) Directory.CreateDirectory(localTempDirectory);
 

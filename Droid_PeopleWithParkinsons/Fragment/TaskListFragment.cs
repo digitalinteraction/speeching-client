@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
-using SpeechingCommon;
+using SpeechingShared;
 
 namespace DroidSpeeching
 {

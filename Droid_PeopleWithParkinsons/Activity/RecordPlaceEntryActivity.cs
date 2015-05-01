@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using PCLStorage;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using SpeechingCommon;
+using SpeechingShared;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using Android.Support.V7.App;
@@ -50,7 +50,7 @@ namespace DroidSpeeching
 
             SetContentView(Resource.Layout.PlacesRecordEntry);
 
-            recFolder = System.IO.Path.Combine(AppData.placesRecordingsCache, placeId);
+            recFolder = System.IO.Path.Combine(AppData.cache.Path, placeId);
 
             if(!Directory.Exists(recFolder))
             {
@@ -58,7 +58,7 @@ namespace DroidSpeeching
             }
 
             recFile = System.IO.Path.Combine(recFolder, "entry.mp4");
-            resultsZipPath = System.IO.Path.Combine(AppData.exportsCache, placeId + ".zip");
+            resultsZipPath = System.IO.Path.Combine(AppData.exports.Path, placeId + ".zip");
 
             if(imageLoc != null)
             {
@@ -148,7 +148,7 @@ namespace DroidSpeeching
                 results.CompletionDate = DateTime.Now;
                 results.ParticipantActivityId = 8675309;
                 results.ResourceUrl = resultsZipPath;
-                results.UploadState = SpeechingCommon.Utils.UploadStage.Ready;
+                results.UploadState = SpeechingShared.Utils.UploadStage.Ready;
                 results.UserId = AppData.session.currentUser.id;
                 results.GooglePlaceID = placeId;
                 results.GooglePlaceName = placeName;

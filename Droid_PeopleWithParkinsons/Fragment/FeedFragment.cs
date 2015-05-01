@@ -5,7 +5,7 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using SnackbarSharp;
-using SpeechingCommon;
+using SpeechingShared;
 using System.Collections.Generic;
 
 namespace DroidSpeeching

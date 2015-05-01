@@ -493,7 +493,7 @@
             <summary>
             Gets or sets the fill color.
             </summary>
-            <value>The fill color.</value>
+            <value>The fill.</value>
         </member>
         <member name="P:OxyPlot.Annotations.ShapeAnnotation.Stroke">
             <summary>
@@ -646,6 +646,12 @@
             Occurs when the input device changes position during a manipulation.
             </summary>
             <param name="e">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:OxyPlot.ManipulatorBase`1.GetCursorType">
+            <summary>
+            Gets the cursor for the manipulation.
+            </summary>
+            <returns>The cursor.</returns>
         </member>
         <member name="M:OxyPlot.ManipulatorBase`1.Started(`0)">
             <summary>
@@ -1269,22 +1275,6 @@
             </summary>
             <value>The color.</value>
         </member>
-        <member name="T:OxyPlot.OxySizeExtensions">
-            <summary>
-            Provides extension methods for <see cref="T:OxyPlot.OxySize"/>
-            </summary>
-            <remarks>These are pure methods. They could also be placed in the <see cref="T:OxyPlot.OxySize"/> type with a <see cref="T:System.Diagnostics.Contracts.PureAttribute"/>.</remarks>
-        </member>
-        <member name="M:OxyPlot.OxySizeExtensions.GetBounds(OxyPlot.OxySize,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
-            <summary>
-            Calculates the bounds with respect to rotation angle and horizontal/vertical alignment.
-            </summary>
-            <param name="bounds">The size of the object to calculate bounds for.</param>
-            <param name="angle">The rotation angle (degrees).</param>
-            <param name="horizontalAlignment">The horizontal alignment.</param>
-            <param name="verticalAlignment">The vertical alignment.</param>
-            <returns>A minimum bounding rectangle.</returns>
-        </member>
         <member name="T:OxyPlot.Series.IScatterPointProvider">
             <summary>
             Defines functionality to provide a <see cref="T:OxyPlot.Series.ScatterPoint"/>.
@@ -1801,17 +1791,16 @@
             Provides a manipulator for panning and scaling by touch events.
             </summary>
         </member>
+        <member name="F:OxyPlot.TouchManipulator.previousPosition">
+            <summary>
+            The previous position
+            </summary>
+        </member>
         <member name="M:OxyPlot.TouchManipulator.#ctor(OxyPlot.IPlotView)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.TouchManipulator"/> class.
             </summary>
             <param name="plotView">The plot view.</param>
-        </member>
-        <member name="M:OxyPlot.TouchManipulator.Completed(OxyPlot.OxyTouchEventArgs)">
-            <summary>
-            Occurs when a manipulation is complete.
-            </summary>
-            <param name="e">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.TouchManipulator.Delta(OxyPlot.OxyTouchEventArgs)">
             <summary>
@@ -1825,16 +1814,6 @@
             </summary>
             <param name="e">The <see cref="T:OxyPlot.OxyTouchEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="P:OxyPlot.TouchManipulator.IsPanEnabled">
-            <summary>
-            Gets or sets a value indicating whether panning is enabled.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.TouchManipulator.IsZoomEnabled">
-            <summary>
-            Gets or sets a value indicating whether zooming is enabled.
-            </summary>
-        </member>
         <member name="T:OxyPlot.PlotCommands">
             <summary>
             Defines common commands for the plots.
@@ -1845,26 +1824,11 @@
             Initializes static members of the <see cref="T:OxyPlot.PlotCommands"/> class.
             </summary>
         </member>
-        <member name="M:OxyPlot.PlotCommands.HandleReset(OxyPlot.IPlotView,OxyPlot.OxyInputEventArgs)">
+        <member name="M:OxyPlot.PlotCommands.HandleReset(OxyPlot.IPlotView)">
             <summary>
-            Handles the reset event.
+            Handles the reset events.
             </summary>
             <param name="view">The view to reset.</param>
-            <param name="args">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:OxyPlot.PlotCommands.HandleCopyTextReport(OxyPlot.IPlotView,OxyPlot.OxyInputEventArgs)">
-            <summary>
-            Handles the copy text report event.
-            </summary>
-            <param name="view">The view.</param>
-            <param name="args">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
-        </member>
-        <member name="M:OxyPlot.PlotCommands.HandleCopyCode(OxyPlot.IPlotView,OxyPlot.OxyInputEventArgs)">
-            <summary>
-            Handles the copy code event.
-            </summary>
-            <param name="view">The view.</param>
-            <param name="args">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="M:OxyPlot.PlotCommands.HandleZoomAt(OxyPlot.IPlotView,OxyPlot.OxyMouseEventArgs,System.Double)">
             <summary>
@@ -1882,20 +1846,18 @@
             <param name="args">The <see cref="T:OxyPlot.OxyMouseWheelEventArgs"/> instance containing the event data.</param>
             <param name="factor">The zoom speed factor. Default value is 1.</param>
         </member>
-        <member name="M:OxyPlot.PlotCommands.HandleZoomCenter(OxyPlot.IPlotView,OxyPlot.OxyInputEventArgs,System.Double)">
+        <member name="M:OxyPlot.PlotCommands.HandleZoomCenter(OxyPlot.IPlotView,System.Double)">
             <summary>
             Zooms the view by the key in the specified factor.
             </summary>
             <param name="view">The view.</param>
-            <param name="args">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
             <param name="delta">The zoom factor (positive zoom in, negative zoom out).</param>
         </member>
-        <member name="M:OxyPlot.PlotCommands.HandlePan(OxyPlot.IPlotView,OxyPlot.OxyInputEventArgs,System.Double,System.Double)">
+        <member name="M:OxyPlot.PlotCommands.HandlePan(OxyPlot.IPlotView,System.Double,System.Double)">
             <summary>
             Pans the view by the key in the specified vector.
             </summary>
             <param name="view">The view.</param>
-            <param name="args">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
             <param name="dx">The horizontal delta (percentage of plot area width).</param>
             <param name="dy">The vertical delta (percentage of plot area height).</param>
         </member>
@@ -2816,14 +2778,6 @@
             <param name="d">The multiplication factor.</param>
             <returns>The result of the operator.</returns>
         </member>
-        <member name="M:OxyPlot.ScreenVector.op_Subtraction(OxyPlot.ScreenVector,OxyPlot.ScreenVector)">
-            <summary>
-            Implements the subtraction operator.
-            </summary>
-            <param name="v">The vector to subtract from.</param>
-            <param name="d">The vector to be subtracted.</param>
-            <returns>The result of operation.</returns>
-        </member>
         <member name="M:OxyPlot.ScreenVector.Normalize">
             <summary>
             Normalizes this vector.
@@ -2869,7 +2823,6 @@
             <param name="point">The point.</param>
             <param name="points">The points.</param>
             <returns>The nearest point.</returns>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="points"/> is <c>null</c>.</exception>
         </member>
         <member name="M:OxyPlot.ScreenPointHelper.FindPointOnLine(OxyPlot.ScreenPoint,OxyPlot.ScreenPoint,OxyPlot.ScreenPoint)">
             <summary>
@@ -3641,22 +3594,6 @@
             <param name="color2">The color2.</param>
             <param name="t">The t.</param>
             <returns>The interpolated color</returns>
-        </member>
-        <member name="M:OxyPlot.OxyColor.op_Equality(OxyPlot.OxyColor,OxyPlot.OxyColor)">
-            <summary>
-            Determines whether the specified colors are equal to each other.
-            </summary>
-            <param name="first">The first color.</param>
-            <param name="second">The second color.</param>
-            <returns><c>true</c> if the two colors are equal; otherwise, <c>false</c> .</returns>
-        </member>
-        <member name="M:OxyPlot.OxyColor.op_Inequality(OxyPlot.OxyColor,OxyPlot.OxyColor)">
-            <summary>
-            Determines whether the specified colors are not equal to each other.
-            </summary>
-            <param name="first">The first color.</param>
-            <param name="second">The second color.</param>
-            <returns><c>true</c> if the two colors are not equal; otherwise, <c>false</c> .</returns>
         </member>
         <member name="M:OxyPlot.OxyColor.Equals(System.Object)">
             <summary>
@@ -4717,7 +4654,7 @@
         </member>
         <member name="M:OxyPlot.IRenderContext.DrawEllipse(OxyPlot.OxyRect,OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
-            Draws an ellipse.
+            Draws an extents.
             </summary>
             <param name="extents">The rectangle defining the extents of the ellipse.</param>
             <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
@@ -4727,20 +4664,18 @@
         <member name="M:OxyPlot.IRenderContext.DrawEllipses(System.Collections.Generic.IList{OxyPlot.OxyRect},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
             Draws a collection of ellipses, where all have the same stroke and fill.
+            This performs better than calling DrawEllipse multiple times.
             </summary>
             <param name="extents">The rectangles defining the extents of the ellipses.</param>
             <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be filled.</param>
             <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the ellipses will not be stroked.</param>
             <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-            <remarks>
-            This should have better performance than calling <see cref="M:OxyPlot.IRenderContext.DrawEllipse(OxyPlot.OxyRect,OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)"/> multiple times.
-            </remarks>
         </member>
         <member name="M:OxyPlot.IRenderContext.DrawLine(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)">
             <summary>
             Draws a polyline.
             </summary>
-            <param name="points">The points defining the polyline. The polyline is drawn from point 0, to point 1, to point 2 and so on.</param>
+            <param name="points">The points defining the polyline.</param>
             <param name="stroke">The stroke color.</param>
             <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
             <param name="dashArray">The dash array (in device independent units, 1/96 inch). Use <c>null</c> to get a solid line.</param>
@@ -4749,17 +4684,15 @@
         </member>
         <member name="M:OxyPlot.IRenderContext.DrawLineSegments(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)">
             <summary>
-            Draws line segments.
+            Draws line segments defined by points (0,1) (2,3) (4,5) etc.
+            This should have better performance than calling DrawLine for each segment.
             </summary>
-            <param name="points">The points defining the line segments. Lines are drawn from point 0 to 1, point 2 to 3 and so on.</param>
+            <param name="points">The points defining the line segments.</param>
             <param name="stroke">The stroke color.</param>
             <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
             <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
             <param name="lineJoin">The line join type.</param>
             <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
-            <remarks>
-            This should have better performance than calling <see cref="M:OxyPlot.IRenderContext.DrawLine(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)"/> for each segment.
-            </remarks>
         </member>
         <member name="M:OxyPlot.IRenderContext.DrawPolygon(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)">
             <summary>
@@ -4776,6 +4709,7 @@
         <member name="M:OxyPlot.IRenderContext.DrawPolygons(System.Collections.Generic.IList{System.Collections.Generic.IList{OxyPlot.ScreenPoint}},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)">
             <summary>
             Draws a collection of polygons, where all polygons have the same stroke and fill.
+            This performs better than calling DrawPolygon multiple times.
             </summary>
             <param name="polygons">The polygons to draw.</param>
             <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the polygons will not be filled.</param>
@@ -4784,9 +4718,6 @@
             <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
             <param name="lineJoin">The line join type.</param>
             <param name="aliased">if set to <c>true</c> the shape will be aliased.</param>
-            <remarks>
-            This performs better than calling <see cref="M:OxyPlot.IRenderContext.DrawPolygon(System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)"/> multiple times.
-            </remarks>
         </member>
         <member name="M:OxyPlot.IRenderContext.DrawRectangle(OxyPlot.OxyRect,OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
@@ -4800,14 +4731,12 @@
         <member name="M:OxyPlot.IRenderContext.DrawRectangles(System.Collections.Generic.IList{OxyPlot.OxyRect},OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
             <summary>
             Draws a collection of extents, where all have the same stroke and fill.
+            This performs better than calling DrawRectangle multiple times.
             </summary>
             <param name="rectangles">The extents to draw.</param>
             <param name="fill">The fill color. If set to <c>OxyColors.Undefined</c>, the extents will not be filled.</param>
             <param name="stroke">The stroke color. If set to <c>OxyColors.Undefined</c>, the extents will not be stroked.</param>
             <param name="thickness">The stroke thickness (in device independent units, 1/96 inch).</param>
-            <remarks>
-            This should have better performance than calling <see cref="M:OxyPlot.IRenderContext.DrawRectangle(OxyPlot.OxyRect,OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)"/> multiple times.
-            </remarks>
         </member>
         <member name="M:OxyPlot.IRenderContext.DrawText(OxyPlot.ScreenPoint,System.String,OxyPlot.OxyColor,System.String,System.Double,System.Double,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment,System.Nullable{OxyPlot.OxySize})">
             <summary>
@@ -4822,16 +4751,13 @@
             <param name="rotation">The rotation angle.</param>
             <param name="horizontalAlignment">The horizontal alignment.</param>
             <param name="verticalAlignment">The vertical alignment.</param>
-            <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch). If set to <c>null</c>, the text will not be clipped.</param>
-            <remarks>
-            Multi-line text is not supported.
-            </remarks>
+            <param name="maxSize">The maximum size of the text (in device independent units, 1/96 inch).</param>
         </member>
         <member name="M:OxyPlot.IRenderContext.MeasureText(System.String,System.String,System.Double,System.Double)">
             <summary>
             Measures the size of the specified text.
             </summary>
-            <param name="text">The text to measure.</param>
+            <param name="text">The text.</param>
             <param name="fontFamily">The font family.</param>
             <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
             <param name="fontWeight">The font weight.</param>
@@ -4870,9 +4796,7 @@
             Sets the clipping rectangle.
             </summary>
             <param name="clippingRectangle">The clipping rectangle.</param>
-            <returns>
-              <c>true</c> if the clipping rectangle was set.
-            </returns>
+            <returns><c>true</c> if the clip rectangle was set.</returns>
         </member>
         <member name="M:OxyPlot.IRenderContext.ResetClip">
             <summary>
@@ -5101,12 +5025,12 @@
         </member>
         <member name="M:OxyPlot.RenderingExtensions.DrawClippedLineSegments(OxyPlot.IRenderContext,OxyPlot.OxyRect,System.Collections.Generic.IList{OxyPlot.ScreenPoint},OxyPlot.OxyColor,System.Double,System.Double[],OxyPlot.LineJoin,System.Boolean)">
             <summary>
-            Draws clipped line segments.
+            Draws the clipped line segments.
             </summary>
             <param name="rc">The render context.</param>
             <param name="clippingRectangle">The clipping rectangle.</param>
-            <param name="points">The points defining the line segments. Lines are drawn from point 0 to 1, point 2 to 3 and so on.</param>
-            <param name="stroke">The stroke color.</param>
+            <param name="points">The points.</param>
+            <param name="stroke">The stroke.</param>
             <param name="strokeThickness">The stroke thickness.</param>
             <param name="dashArray">The dash array (in device independent units, 1/96 inch).</param>
             <param name="lineJoin">The line join.</param>
@@ -5127,7 +5051,7 @@
         </member>
         <member name="M:OxyPlot.RenderingExtensions.DrawClippedImage(OxyPlot.IRenderContext,OxyPlot.OxyRect,OxyPlot.OxyImage,System.Double,System.Double,System.Double,System.Double,System.Double,System.Boolean)">
             <summary>
-            Draws a clipped image.
+            Draws the clipped image.
             </summary>
             <param name="rc">The render context.</param>
             <param name="clippingRectangle">The clipping rectangle.</param>
@@ -5147,8 +5071,8 @@
             <param name="clippingRectangle">The clipping rectangle.</param>
             <param name="points">The points.</param>
             <param name="minDistSquared">The squared minimum distance between points.</param>
-            <param name="fill">The fill color.</param>
-            <param name="stroke">The stroke color.</param>
+            <param name="fill">The fill.</param>
+            <param name="stroke">The stroke.</param>
             <param name="strokeThickness">The stroke thickness.</param>
             <param name="lineStyle">The line style.</param>
             <param name="lineJoin">The line join.</param>
@@ -5309,8 +5233,8 @@
             </summary>
             <param name="rc">The render context.</param>
             <param name="rect">The rectangle.</param>
-            <param name="fill">The fill color.</param>
-            <param name="stroke">The stroke color.</param>
+            <param name="fill">The fill.</param>
+            <param name="stroke">The stroke.</param>
             <param name="thickness">The thickness.</param>
         </member>
         <member name="M:OxyPlot.RenderingExtensions.DrawCircle(OxyPlot.IRenderContext,System.Double,System.Double,System.Double,OxyPlot.OxyColor,OxyPlot.OxyColor,System.Double)">
@@ -5355,38 +5279,27 @@
         </member>
         <member name="M:OxyPlot.RenderingExtensions.DrawRectangleAsPolygon(OxyPlot.IRenderContext,OxyPlot.OxyRect,OxyPlot.OxyColor,OxyPlot.OxyColor,OxyPlot.OxyThickness)">
             <summary>
-            Draws the rectangle as an aliased polygon. Makes sure pixel alignment is the same as for aliased lines.
+            Draws the rectangle as an aliased polygon.
+            (makes sure pixel alignment is the same as for lines)
             </summary>
             <param name="rc">The render context.</param>
             <param name="rect">The rectangle.</param>
-            <param name="fill">The fill color.</param>
-            <param name="stroke">The stroke color.</param>
+            <param name="fill">The fill.</param>
+            <param name="stroke">The stroke.</param>
             <param name="thickness">The thickness.</param>
-        </member>
-        <member name="M:OxyPlot.RenderingExtensions.MeasureText(OxyPlot.IRenderContext,System.String,System.String,System.Double,System.Double,System.Double)">
-            <summary>
-            Measures the size of the specified text.
-            </summary>
-            <param name="rc">The render context.</param>
-            <param name="text">The text.</param>
-            <param name="fontFamily">The font family.</param>
-            <param name="fontSize">Size of the font (in device independent units, 1/96 inch).</param>
-            <param name="fontWeight">The font weight.</param>
-            <param name="angle">The angle of measured text (degrees).</param>
-            <returns>The size of the text (in device independent units, 1/96 inch).</returns>
         </member>
         <member name="M:OxyPlot.RenderingExtensions.AddMarkerGeometry(OxyPlot.ScreenPoint,OxyPlot.MarkerType,System.Collections.Generic.IEnumerable{OxyPlot.ScreenPoint},System.Double,System.Collections.Generic.IList{OxyPlot.OxyRect},System.Collections.Generic.IList{OxyPlot.OxyRect},System.Collections.Generic.IList{System.Collections.Generic.IList{OxyPlot.ScreenPoint}},System.Collections.Generic.IList{OxyPlot.ScreenPoint})">
             <summary>
-            Adds a marker geometry to the specified collections.
+            Adds a marker geometry.
             </summary>
             <param name="p">The position of the marker.</param>
-            <param name="type">The marker type.</param>
-            <param name="outline">The custom outline, if <paramref name="type"/> is <see cref="F:OxyPlot.MarkerType.Custom"/>.</param>
-            <param name="size">The size of the marker.</param>
-            <param name="ellipses">The output ellipse collection.</param>
-            <param name="rects">The output rectangle collection.</param>
-            <param name="polygons">The output polygon collection.</param>
-            <param name="lines">The output line collection.</param>
+            <param name="type">The type.</param>
+            <param name="outline">The outline.</param>
+            <param name="size">The size.</param>
+            <param name="ellipses">The ellipse collection.</param>
+            <param name="rects">The rectangle collection.</param>
+            <param name="polygons">The polygon collection.</param>
+            <param name="lines">The line collection.</param>
         </member>
         <member name="M:OxyPlot.RenderingExtensions.ClipRect(OxyPlot.OxyRect,OxyPlot.OxyRect)">
             <summary>
@@ -5403,14 +5316,6 @@
             <param name="pts">The points (screen coordinates).</param>
             <remarks>If the line contains one point, another point is added.
             If the line contains two points at the same position, the points are moved 2 pixels apart.</remarks>
-        </member>
-        <member name="M:OxyPlot.RenderingExtensions.MeasureRotatedRectangleBound(OxyPlot.OxySize,System.Double)">
-            <summary>
-            Calculates the bounds with respect to rotation angle and horizontal/vertical alignment.
-            </summary>
-            <param name="bounds">The size of the object to calculate bounds for.</param>
-            <param name="angle">The rotation angle (degrees).</param>
-            <returns>A minimum bounding rectangle.</returns>
         </member>
         <member name="T:OxyPlot.XkcdRenderingDecorator">
             <summary>
@@ -7449,6 +7354,31 @@
             Represents a point in a <see cref="T:OxyPlot.Series.ScatterSeries"/>.
             </summary>
         </member>
+        <member name="F:OxyPlot.Series.ScatterPoint.size">
+            <summary>
+            The size.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.ScatterPoint.tag">
+            <summary>
+            The tag.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.ScatterPoint.value">
+            <summary>
+            The value.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.ScatterPoint.x">
+            <summary>
+            The x.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.ScatterPoint.y">
+            <summary>
+            The y.
+            </summary>
+        </member>
         <member name="M:OxyPlot.Series.ScatterPoint.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Series.ScatterPoint"/> class.
@@ -7541,7 +7471,7 @@
         </member>
         <member name="T:OxyPlot.Series.ScatterErrorSeries">
             <summary>
-            Represents a series for scatter plots with the possibility to display error bars.
+                Represents a series for scatter plots with the possibility to display error bars.
             </summary>
         </member>
         <member name="T:OxyPlot.Series.ScatterSeries`1">
@@ -8192,7 +8122,7 @@
         </member>
         <member name="M:OxyPlot.Series.ScatterErrorSeries.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.ScatterErrorSeries"/> class.
+                Initializes a new instance of the <see cref="T:OxyPlot.Series.ScatterErrorSeries"/> class.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.ScatterErrorSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
@@ -8222,51 +8152,48 @@
         </member>
         <member name="P:OxyPlot.Series.ScatterErrorSeries.DataFieldErrorX">
             <summary>
-            Gets or sets the data field for the X error property.
+                Gets or sets the data field for the X error property.
             </summary>
             <value>
-            The data field.
+                The data field.
             </value>
         </member>
         <member name="P:OxyPlot.Series.ScatterErrorSeries.DataFieldErrorY">
             <summary>
-            Gets or sets the data field for the Y error property.
+                Gets or sets the data field for the Y error property.
             </summary>
             <value>
-            The data field.
+                The data field.
             </value>
         </member>
         <member name="P:OxyPlot.Series.ScatterErrorSeries.ErrorBarColor">
             <summary>
-            Gets or sets the color of the error bar.
+                Gets or sets the color of the error bar.
             </summary>
             <value>
-            The color of the error bar.
+                The color of the error bar.
             </value>
         </member>
         <member name="P:OxyPlot.Series.ScatterErrorSeries.ErrorBarStopWidth">
             <summary>
-            Gets or sets the width of the error bar stop.
+                Gets or sets the width of the error bar stop.
             </summary>
             <value>
-            The width of the error bar stop.
+                The width of the error bar stop.
             </value>
         </member>
         <member name="P:OxyPlot.Series.ScatterErrorSeries.ErrorBarStrokeThickness">
             <summary>
-            Gets or sets the error bar stroke thickness.
+                Gets or sets the error bar stroke thickness.
             </summary>
             <value>
-            The error bar stroke thickness.
+                The error bar stroke thickness.
             </value>
         </member>
         <member name="P:OxyPlot.Series.ScatterErrorSeries.MinimumErrorSize">
             <summary>
-            Gets or sets the minimum size (relative to <see cref="P:OxyPlot.Series.ScatterSeries`1.MarkerSize"/>) of the error bars to be shown.
+            Gets or sets the minimum size (relative to <see cref="P:OxyPlot.Series.ScatterSeries`1.MarkerSize"/>) of the error bars to be shown. 
             </summary>
-            <value>
-            The minimum size of the error.
-            </value>
         </member>
         <member name="T:OxyPlot.ArrayExtensions">
             <summary>
@@ -8634,6 +8561,22 @@
             <param name="formatString">The format string.</param>
             <returns>The convert to fraction string.</returns>
         </member>
+        <member name="M:OxyPlot.FractionHelper.GreatestCommonDivisor(System.Int32,System.Int32)">
+            <summary>
+            Calculates the greatest common divisor.
+            </summary>
+            <param name="a">The a.</param>
+            <param name="b">The b.</param>
+            <returns>The greatest common divisor.</returns>
+        </member>
+        <member name="M:OxyPlot.FractionHelper.GreatestCommonFactor(System.Int32,System.Int32)">
+            <summary>
+            Calculates the greatest common factor.
+            </summary>
+            <param name="x">The x.</param>
+            <param name="y">The y.</param>
+            <returns>The greatest common factor.</returns>
+        </member>
         <member name="T:OxyPlot.ArrayBuilder">
             <summary>
             Provides functionality to build arrays.
@@ -8693,17 +8636,6 @@
             <param name="target">The target list to be filled.</param>
             <param name="source">The source target.</param>
             <param name="propertyName">The property name.</param>
-            <exception cref="T:System.InvalidOperationException">Could not find property.</exception>
-        </member>
-        <member name="M:OxyPlot.ReflectionExtensions.AddFormattedRange(System.Collections.Generic.List{System.String},System.Collections.IEnumerable,System.String,System.String,System.IFormatProvider)">
-            <summary>
-            Fills a formatted string collection by the specified property of a source enumerable.
-            </summary>
-            <param name="target">The target list to be filled.</param>
-            <param name="source">The source target.</param>
-            <param name="propertyName">The property name.</param>
-            <param name="formatString">The format string.</param>
-            <param name="provider">The provider.</param>
             <exception cref="T:System.InvalidOperationException">Could not find property.</exception>
         </member>
         <member name="M:OxyPlot.ReflectionExtensions.AddRange(System.Collections.Generic.List{OxyPlot.DataPoint},System.Collections.IEnumerable,System.String,System.String)">
@@ -9421,11 +9353,6 @@
             </summary>
             <remarks>Either in the range 0x00 to 0xFF, or -1 if the end of stream is reached</remarks>
         </member>
-        <member name="F:OxyPlot.ByteBitReader.disposed">
-            <summary>
-            The disposed flag.
-            </summary>
-        </member>
         <member name="F:OxyPlot.ByteBitReader.isEndOfStream">
             <summary>
             The is end of stream.
@@ -9444,11 +9371,6 @@
             </summary>
             <param name="s">The arguments.</param>
             <exception cref="T:System.ArgumentException">Argument is <c>null</c></exception>
-        </member>
-        <member name="M:OxyPlot.ByteBitReader.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
         </member>
         <member name="M:OxyPlot.ByteBitReader.Read">
             <summary>
@@ -9478,12 +9400,6 @@
             <summary>
             Closes this stream and the underlying InputStream.
             </summary>
-        </member>
-        <member name="M:OxyPlot.ByteBitReader.Dispose(System.Boolean)">
-            <summary>
-            Releases unmanaged and - optionally - managed resources
-            </summary>
-            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="T:OxyPlot.CanonicalCode">
             <summary>
@@ -9697,11 +9613,6 @@
             The output stream.
             </summary>
         </member>
-        <member name="F:OxyPlot.Deflate.disposed">
-            <summary>
-            The disposed flag.
-            </summary>
-        </member>
         <member name="M:OxyPlot.Deflate.#cctor">
             <summary>
             Initializes static members of the <see cref="T:OxyPlot.Deflate"/> class.
@@ -9733,11 +9644,6 @@
             </summary>
             <param name="input">The input.</param>
             <returns>An array of <see cref="T:System.Byte"/>.</returns>
-        </member>
-        <member name="M:OxyPlot.Deflate.Dispose">
-            <summary>
-            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            </summary>
         </member>
         <member name="M:OxyPlot.Deflate.DecodeHuffmanCodes">
             <summary>
@@ -9777,12 +9683,6 @@
             </summary>
             <param name="sym">The symbol.</param>
             <returns>The <see cref="T:System.Int32"/>.</returns>
-        </member>
-        <member name="M:OxyPlot.Deflate.Dispose(System.Boolean)">
-            <summary>
-            Releases unmanaged and - optionally - managed resources
-            </summary>
-            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="M:OxyPlot.Deflate.ReadInt(System.Int32)">
             <summary>
@@ -10932,6 +10832,34 @@
             Initializes a new instance of the <see cref="T:OxyPlot.Annotations.ImageAnnotation"/> class.
             </summary>
         </member>
+        <member name="M:OxyPlot.Annotations.ImageAnnotation.#ctor(OxyPlot.OxyImage,OxyPlot.ScreenPoint,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Annotations.ImageAnnotation"/> class.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="position">The position in screen coordinates.</param>
+            <param name="horizontalAlignment">The horizontal alignment.</param>
+            <param name="verticalAlignment">The vertical alignment.</param>
+        </member>
+        <member name="M:OxyPlot.Annotations.ImageAnnotation.#ctor(OxyPlot.OxyImage,OxyPlot.DataPoint,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Annotations.ImageAnnotation"/> class.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="position">The position in data coordinates.</param>
+            <param name="horizontalAlignment">The horizontal alignment.</param>
+            <param name="verticalAlignment">The vertical alignment.</param>
+        </member>
+        <member name="M:OxyPlot.Annotations.ImageAnnotation.#ctor(OxyPlot.OxyImage,System.Double,System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Annotations.ImageAnnotation"/> class.
+            </summary>
+            <param name="image">The image.</param>
+            <param name="relativeX">The x-coordinate relative to the plot area (0-1).</param>
+            <param name="relativeY">The y-coordinate relative to the plot area (0-1).</param>
+            <param name="horizontalAlignment">The horizontal alignment.</param>
+            <param name="verticalAlignment">The vertical alignment.</param>
+        </member>
         <member name="M:OxyPlot.Annotations.ImageAnnotation.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
             <summary>
             Renders the image annotation.
@@ -11853,6 +11781,11 @@
             Gets or sets the screen coordinate of the minimum end of the axis.
             </summary>
         </member>
+        <member name="P:OxyPlot.Axes.Axis.ShowMinorTicks">
+            <summary>
+            Gets or sets a value indicating whether minor ticks should be shown. The default value is <c>true</c>.
+            </summary>
+        </member>
         <member name="P:OxyPlot.Axes.Axis.StartPosition">
             <summary>
             Gets or sets the start position of the axis on the plot area. The default value is <c>0</c>.
@@ -11934,13 +11867,6 @@
             If <see cref="P:OxyPlot.Axes.Axis.StringFormat"/> is <c>null</c>, 1.0E+03 will be converted to 10^{3}, otherwise it will use the format string for the mantissa.
             </remarks>
         </member>
-        <member name="P:OxyPlot.Axes.Axis.DesiredSize">
-            <summary>
-            Gets or sets the "desired" size by the renderer such that the axis text &amp; ticks will not be clipped.  This
-            size is distinct from the margin settings or the size which is actually rendered, as in: ActualWidth / ActualSize.  
-            Actual rendered size may be smaller or larger than the desired size if the margins are set manually.
-            </summary>
-        </member>
         <member name="P:OxyPlot.Axes.Axis.PositionTierMaxShift">
             <summary>
             Gets or sets the position tier max shift.
@@ -11992,6 +11918,22 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.LogarithmicAxis"/> class.
             </summary>
+        </member>
+        <member name="M:OxyPlot.Axes.LogarithmicAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.LogarithmicAxis"/> class.
+            </summary>
+            <param name="pos">The position.</param>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Axes.LogarithmicAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.LogarithmicAxis"/> class.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="title">The title.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
         </member>
         <member name="M:OxyPlot.Axes.LogarithmicAxis.CoerceActualMaxMin">
             <summary>
@@ -12090,6 +12032,33 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
             </summary>
+        </member>
+        <member name="M:OxyPlot.Axes.LinearAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Axes.LinearAxis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Axes.LinearAxis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.Double,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.LinearAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
+            <param name="majorStep">The major step.</param>
+            <param name="minorStep">The minor step.</param>
+            <param name="title">The title.</param>
         </member>
         <member name="M:OxyPlot.Axes.LinearAxis.IsXyAxis">
             <summary>
@@ -12234,6 +12203,16 @@
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.AngleAxis"/> class.
             </summary>
         </member>
+        <member name="M:OxyPlot.Axes.AngleAxis.#ctor(System.Double,System.Double,System.Double,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.AngleAxis"/> class.
+            </summary>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
+            <param name="majorStep">The major step.</param>
+            <param name="minorStep">The minor step.</param>
+            <param name="title">The title.</param>
+        </member>
         <member name="M:OxyPlot.Axes.AngleAxis.GetTickValues(System.Collections.Generic.IList{System.Double}@,System.Collections.Generic.IList{System.Double}@,System.Collections.Generic.IList{System.Double}@)">
             <summary>
             Gets the coordinates used to draw ticks and tick labels (numbers or category names).
@@ -12297,31 +12276,17 @@
             Provides additional data for the <see cref="E:OxyPlot.Axes.Axis.AxisChanged"/> event.
             </summary>
         </member>
-        <member name="M:OxyPlot.Axes.AxisChangedEventArgs.#ctor(OxyPlot.Axes.AxisChangeTypes,System.Double,System.Double)">
+        <member name="M:OxyPlot.Axes.AxisChangedEventArgs.#ctor(OxyPlot.Axes.AxisChangeTypes)">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.AxisChangedEventArgs"/> class.
             </summary>
             <param name="changeType">Type of the change.</param>
-            <param name="deltaMinimum">The delta minimum.</param>
-            <param name="deltaMaximum">The delta maximum.</param>
         </member>
         <member name="P:OxyPlot.Axes.AxisChangedEventArgs.ChangeType">
             <summary>
-            Gets the type of the change.
+            Gets or sets the type of the change.
             </summary>
             <value>The type of the change.</value>
-        </member>
-        <member name="P:OxyPlot.Axes.AxisChangedEventArgs.DeltaMinimum">
-            <summary>
-            Gets the delta for the minimum.
-            </summary>
-            <value>The delta.</value>
-        </member>
-        <member name="P:OxyPlot.Axes.AxisChangedEventArgs.DeltaMaximum">
-            <summary>
-            Gets the delta for the maximum.
-            </summary>
-            <value>The delta.</value>
         </member>
         <member name="T:OxyPlot.Axes.AxisChangeTypes">
             <summary>
@@ -12450,6 +12415,21 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.CategoryAxis"/> class.
             </summary>
+        </member>
+        <member name="M:OxyPlot.Axes.CategoryAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.CategoryAxis"/> class.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="title">The title.</param>
+            <param name="categories">The categories.</param>
+        </member>
+        <member name="M:OxyPlot.Axes.CategoryAxis.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.CategoryAxis"/> class.
+            </summary>
+            <param name="title">The title.</param>
+            <param name="categories">The categories.</param>
         </member>
         <member name="M:OxyPlot.Axes.CategoryAxis.GetMaxWidth">
             <summary>
@@ -12866,6 +12846,26 @@
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.DateTimeAxis"/> class.
             </summary>
         </member>
+        <member name="M:OxyPlot.Axes.DateTimeAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String,System.String,OxyPlot.Axes.DateTimeIntervalType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.DateTimeAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="title">The axis title.</param>
+            <param name="format">The string format for the axis values.</param>
+            <param name="intervalType">The interval type.</param>
+        </member>
+        <member name="M:OxyPlot.Axes.DateTimeAxis.#ctor(OxyPlot.Axes.AxisPosition,System.DateTime,System.DateTime,System.String,System.String,OxyPlot.Axes.DateTimeIntervalType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.DateTimeAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="firstDateTime">The first date/time on the axis.</param>
+            <param name="lastDateTime">The last date/time on the axis.</param>
+            <param name="title">The axis title.</param>
+            <param name="format">The string format for the axis values.</param>
+            <param name="intervalType">The interval type.</param>
+        </member>
         <member name="M:OxyPlot.Axes.DateTimeAxis.CreateDataPoint(System.DateTime,System.Double)">
             <summary>
             Creates a data point.
@@ -13060,6 +13060,16 @@
             Initializes a new instance of the <see cref="T:OxyPlot.Axes.MagnitudeAxis"/> class.
             </summary>
         </member>
+        <member name="M:OxyPlot.Axes.MagnitudeAxis.#ctor(System.Double,System.Double,System.Double,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.MagnitudeAxis"/> class.
+            </summary>
+            <param name="minimum">The minimum.</param>
+            <param name="maximum">The maximum.</param>
+            <param name="majorStep">The major step.</param>
+            <param name="minorStep">The minor step.</param>
+            <param name="title">The title.</param>
+        </member>
         <member name="M:OxyPlot.Axes.MagnitudeAxis.InverseTransform(System.Double,System.Double,OxyPlot.Axes.Axis)">
             <summary>
             Inverse transform the specified screen point.
@@ -13137,6 +13147,29 @@
             The StringFormat value can be used to force formatting of the axis values
             <code>"h:mm"</code> shows hours and minutes
             <code>"m:ss"</code> shows minutes and seconds</remarks>
+        </member>
+        <member name="M:OxyPlot.Axes.TimeSpanAxis.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.TimeSpanAxis"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Axes.TimeSpanAxis.#ctor(OxyPlot.Axes.AxisPosition,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.TimeSpanAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="title">The axis title.</param>
+            <param name="format">The string format for the axis values.</param>
+        </member>
+        <member name="M:OxyPlot.Axes.TimeSpanAxis.#ctor(OxyPlot.Axes.AxisPosition,System.Double,System.Double,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Axes.TimeSpanAxis"/> class.
+            </summary>
+            <param name="position">The position of the axis.</param>
+            <param name="minimum">The minimum value.</param>
+            <param name="maximum">The maximum value.</param>
+            <param name="title">The axis title.</param>
+            <param name="format">The string format for the axis values.</param>
         </member>
         <member name="M:OxyPlot.Axes.TimeSpanAxis.ToDouble(System.TimeSpan)">
             <summary>
@@ -13444,6 +13477,16 @@
             <param name="valign">The vertical alignment.</param>
             <returns>The <see cref="T:OxyPlot.ScreenPoint"/>.</returns>
         </member>
+        <member name="M:OxyPlot.Axes.HorizontalAndVerticalAxisRenderer.GetRotatedAlignments(System.Double,OxyPlot.HorizontalAlignment,OxyPlot.VerticalAlignment,OxyPlot.HorizontalAlignment@,OxyPlot.VerticalAlignment@)">
+            <summary>
+            Gets the alignments given the specified rotation angle.
+            </summary>
+            <param name="angle">The angle.</param>
+            <param name="defaultHorizontalAlignment">The default horizontal alignment.</param>
+            <param name="defaultVerticalAlignment">The default vertical alignment.</param>
+            <param name="ha">The rotated horizontal alignment.</param>
+            <param name="va">The rotated vertical alignment.</param>
+        </member>
         <member name="M:OxyPlot.Axes.HorizontalAndVerticalAxisRenderer.RenderAxisTitle(OxyPlot.Axes.Axis,System.Double)">
             <summary>
             Renders the axis title.
@@ -13467,23 +13510,6 @@
             <param name="axis">The axis.</param>
             <param name="axisPosition">The axis position.</param>
         </member>
-        <member name="M:OxyPlot.Axes.HorizontalAndVerticalAxisRenderer.GetRotatedAlignments(System.Double,System.Double,OxyPlot.HorizontalAlignment@,OxyPlot.VerticalAlignment@)">
-            <summary>
-            Gets the alignments given the specified rotation angle.
-            </summary>
-            <param name="boxAngle">The angle of a box to rotate (usually it is label angle).</param>
-            <param name="axisAngle">
-            The axis angle, the original angle belongs to. The Top axis should have 0, next angles are computed clockwise. 
-            The angle should be in [-180, 180). (T, R, B, L) is (0, 90, -180, -90). 
-            </param>
-            <param name="ha">Horizontal alignment.</param>
-            <param name="va">Vertical alignment.</param>
-            <remarks>
-            This method is supposed to compute the alignment of the labels that are put near axis. 
-            Because such labels can have different angles, and the axis can have different angles as well,
-            computing the alignment is not straightforward.
-            </remarks>
-        </member>
         <member name="T:OxyPlot.PanManipulator">
             <summary>
             Provides a manipulator for panning functionality.
@@ -13495,17 +13521,17 @@
             </summary>
             <param name="plotView">The plot view.</param>
         </member>
-        <member name="M:OxyPlot.PanManipulator.Completed(OxyPlot.OxyMouseEventArgs)">
-            <summary>
-            Occurs when a manipulation is complete.
-            </summary>
-            <param name="e">The <see cref="T:OxyPlot.OxyInputEventArgs"/> instance containing the event data.</param>
-        </member>
         <member name="M:OxyPlot.PanManipulator.Delta(OxyPlot.OxyMouseEventArgs)">
             <summary>
             Occurs when the input device changes position during a manipulation.
             </summary>
             <param name="e">The <see cref="T:OxyPlot.OxyMouseEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:OxyPlot.PanManipulator.GetCursorType">
+            <summary>
+            Gets the cursor for the manipulation.
+            </summary>
+            <returns>The cursor.</returns>
         </member>
         <member name="M:OxyPlot.PanManipulator.Started(OxyPlot.OxyMouseEventArgs)">
             <summary>
@@ -13518,17 +13544,28 @@
             Gets or sets the previous position.
             </summary>
         </member>
-        <member name="P:OxyPlot.PanManipulator.IsPanEnabled">
-            <summary>
-            Gets or sets a value indicating whether panning is enabled.
-            </summary>
-        </member>
         <member name="T:OxyPlot.TrackerHitResult">
             <summary>
             Provides data for a tracker hit result.
             </summary>
             <remarks>This is used as DataContext for the TrackerControl.
             The TrackerControl is visible when the user use the left mouse button to "track" points on the series.</remarks>
+        </member>
+        <member name="M:OxyPlot.TrackerHitResult.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.TrackerHitResult"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.TrackerHitResult.#ctor(OxyPlot.Series.Series,OxyPlot.DataPoint,OxyPlot.ScreenPoint,System.Object,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.TrackerHitResult"/> class.
+            </summary>
+            <param name="series">The series.</param>
+            <param name="dp">The data point.</param>
+            <param name="sp">The screen point.</param>
+            <param name="item">The item.</param>
+            <param name="index">The index.</param>
+            <param name="text">The text.</param>
         </member>
         <member name="M:OxyPlot.TrackerHitResult.ToString">
             <summary>
@@ -13615,6 +13652,12 @@
             </summary>
             <param name="e">The <see cref="T:OxyPlot.OxyMouseEventArgs"/> instance containing the event data.</param>
         </member>
+        <member name="M:OxyPlot.TrackerManipulator.GetCursorType">
+            <summary>
+            Gets the cursor for the manipulation.
+            </summary>
+            <returns>The cursor.</returns>
+        </member>
         <member name="M:OxyPlot.TrackerManipulator.Started(OxyPlot.OxyMouseEventArgs)">
             <summary>
             Occurs when an input device begins a manipulation on the plot.
@@ -13675,22 +13718,17 @@
             </summary>
             <param name="e">The <see cref="T:OxyPlot.OxyMouseEventArgs"/> instance containing the event data.</param>
         </member>
-        <member name="M:OxyPlot.ZoomRectangleManipulator.Started(OxyPlot.OxyMouseEventArgs)">
-            <summary>
-            Occurs when an input device begins a manipulation on the plot.
-            </summary>
-            <param name="e">The <see cref="T:OxyPlot.OxyMouseEventArgs"/> instance containing the event data.</param>
-        </member>
         <member name="M:OxyPlot.ZoomRectangleManipulator.GetCursorType">
             <summary>
             Gets the cursor for the manipulation.
             </summary>
             <returns>The cursor.</returns>
         </member>
-        <member name="P:OxyPlot.ZoomRectangleManipulator.IsZoomEnabled">
+        <member name="M:OxyPlot.ZoomRectangleManipulator.Started(OxyPlot.OxyMouseEventArgs)">
             <summary>
-            Gets or sets a value indicating whether zooming is enabled.
+            Occurs when an input device begins a manipulation on the plot.
             </summary>
+            <param name="e">The <see cref="T:OxyPlot.OxyMouseEventArgs"/> instance containing the event data.</param>
         </member>
         <member name="T:OxyPlot.ZoomStepManipulator">
             <summary>
@@ -14179,16 +14217,13 @@
             <param name="endValue">The end value of the bar</param>
             <returns>The rectangle.</returns>
         </member>
-        <member name="M:OxyPlot.Series.BarSeriesBase.GetTrackerText(OxyPlot.Series.BarItemBase,System.Object,System.Int32)">
+        <member name="M:OxyPlot.Series.BarSeriesBase.GetTrackerText(System.Object,System.Int32)">
             <summary>
             Gets the tracker text for the specified item.
             </summary>
-            <param name="barItem">The bar/column item.</param>
-            <param name="item">The bound item.</param>
+            <param name="item">The item.</param>
             <param name="categoryIndex">Category index of the item.</param>
-            <returns>
-            The tracker text.
-            </returns>
+            <returns>The tracker text.</returns>
         </member>
         <member name="M:OxyPlot.Series.BarSeriesBase.GetValueAxis">
             <summary>
@@ -14476,11 +14511,6 @@
             </summary>
             <value>The width of the column.</value>
         </member>
-        <member name="F:OxyPlot.Series.ErrorColumnSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
         <member name="M:OxyPlot.Series.ErrorColumnSeries.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Series.ErrorColumnSeries"/> class.
@@ -14533,17 +14563,6 @@
             <param name="outliers">The outliers.</param>
             <param name="tag">The tag.</param>
         </member>
-        <member name="M:OxyPlot.Series.BoxPlotItem.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double)">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.BoxPlotItem"/> struct.
-            </summary>
-            <param name="x">The x.</param>
-            <param name="lowerWhisker">The lower whisker.</param>
-            <param name="boxBottom">The box bottom.</param>
-            <param name="median">The median.</param>
-            <param name="boxTop">The box top.</param>
-            <param name="upperWhisker">The upper whisker.</param>
-        </member>
         <member name="M:OxyPlot.Series.BoxPlotItem.ToString">
             <summary>
             Returns a <see cref="T:System.String"/> that represents this instance.
@@ -14573,12 +14592,6 @@
             Gets or sets the median.
             </summary>
             <value>The median.</value>
-        </member>
-        <member name="P:OxyPlot.Series.BoxPlotItem.Mean">
-            <summary>
-            Gets or sets the mean.
-            </summary>
-            <value>The mean.</value>
         </member>
         <member name="P:OxyPlot.Series.BoxPlotItem.Outliers">
             <summary>
@@ -14612,21 +14625,6 @@
         <member name="T:OxyPlot.Series.BoxPlotSeries">
             <summary>
             Represents a series for box plots.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.BoxPlotSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.BoxPlotSeries.itemsSourceItems">
-            <summary>
-            The items from the items source.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.BoxPlotSeries.ownsItemsSourceItems">
-            <summary>
-            Specifies if the ownsItemsSourceItems list can be modified.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.BoxPlotSeries.#ctor">
@@ -14665,11 +14663,6 @@
             <param name="rc">The rendering context.</param>
             <param name="legendBox">The legend rectangle.</param>
         </member>
-        <member name="M:OxyPlot.Series.BoxPlotSeries.UpdateData">
-            <summary>
-            Updates the data.
-            </summary>
-        </member>
         <member name="M:OxyPlot.Series.BoxPlotSeries.UpdateMaxMin">
             <summary>
             Updates the maximum and minimum values of the series.
@@ -14681,24 +14674,12 @@
             </summary>
             <param name="items">The items.</param>
         </member>
-        <member name="M:OxyPlot.Series.BoxPlotSeries.GetItem(System.Int32)">
-            <summary>
-            Gets the item at the specified index.
-            </summary>
-            <param name="i">The index of the item.</param>
-            <returns>The item of the index.</returns>
-        </member>
         <member name="M:OxyPlot.Series.BoxPlotSeries.GetBoxRect(OxyPlot.Series.BoxPlotItem)">
             <summary>
             Gets the screen rectangle for the box.
             </summary>
             <param name="item">The box item.</param>
             <returns>A rectangle.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.BoxPlotSeries.ClearItemsSourceItems">
-            <summary>
-            Clears or creates the <see cref="F:OxyPlot.Series.BoxPlotSeries.itemsSourceItems"/> list.
-            </summary>
         </member>
         <member name="P:OxyPlot.Series.BoxPlotSeries.BoxWidth">
             <summary>
@@ -14728,25 +14709,13 @@
             <summary>
             Gets or sets the size of the median point.
             </summary>
-            <remarks>This property is only used when ShowMedianAsDot = true.</remarks>
+            <remarks>This property is only used when MedianStyle = Dot.</remarks>
         </member>
         <member name="P:OxyPlot.Series.BoxPlotSeries.MedianThickness">
             <summary>
             Gets or sets the median thickness, relative to the StrokeThickness.
             </summary>
             <value>The median thickness.</value>
-        </member>
-        <member name="P:OxyPlot.Series.BoxPlotSeries.MeanPointSize">
-            <summary>
-            Gets or sets the size of the mean point.
-            </summary>
-            <remarks>This property is only used when ShowMeanAsDot = true.</remarks>
-        </member>
-        <member name="P:OxyPlot.Series.BoxPlotSeries.MeanThickness">
-            <summary>
-            Gets or sets the mean thickness, relative to the StrokeThickness.
-            </summary>
-            <value>The mean thickness.</value>
         </member>
         <member name="P:OxyPlot.Series.BoxPlotSeries.OutlierSize">
             <summary>
@@ -14784,16 +14753,11 @@
             Gets or sets a value indicating whether to show the median as a dot.
             </summary>
         </member>
-        <member name="P:OxyPlot.Series.BoxPlotSeries.ShowMeanAsDot">
-            <summary>
-            Gets or sets a value indicating whether to show the mean as a dot.
-            </summary>
-        </member>
         <member name="P:OxyPlot.Series.BoxPlotSeries.Stroke">
             <summary>
-            Gets or sets the stroke color.
+            Gets or sets the stroke.
             </summary>
-            <value>The stroke color.</value>
+            <value>The stroke.</value>
         </member>
         <member name="P:OxyPlot.Series.BoxPlotSeries.StrokeThickness">
             <summary>
@@ -14806,11 +14770,6 @@
             Gets or sets the width of the whiskers (relative to the BoxWidth).
             </summary>
             <value>The width of the whiskers.</value>
-        </member>
-        <member name="P:OxyPlot.Series.BoxPlotSeries.ActualItems">
-            <summary>
-            Gets the list of items that should be rendered.
-            </summary>
         </member>
         <member name="T:OxyPlot.Series.HeatMapCoordinateDefinition">
             <summary>
@@ -14830,11 +14789,6 @@
         <member name="T:OxyPlot.Series.HeatMapSeries">
             <summary>
             Represents a heat map.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.HeatMapSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
             </summary>
         </member>
         <member name="F:OxyPlot.Series.HeatMapSeries.DefaultColorAxisTitle">
@@ -15233,6 +15187,13 @@
             Initializes a new instance of the <see cref="T:OxyPlot.PlotModel"/> class.
             </summary>
         </member>
+        <member name="M:OxyPlot.PlotModel.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.PlotModel"/> class.
+            </summary>
+            <param name="title">The title.</param>
+            <param name="subtitle">The subtitle.</param>
+        </member>
         <member name="M:OxyPlot.PlotModel.OxyPlot#IPlotModel#AttachPlotView(OxyPlot.IPlotView)">
             <summary>
             Attaches this model to the specified plot view.
@@ -15298,6 +15259,16 @@
             Returns a <see cref="T:System.String"/> that represents this instance.
             </summary>
             <returns>A <see cref="T:System.String"/> that represents this instance.</returns>
+        </member>
+        <member name="M:OxyPlot.PlotModel.ToSvg(System.Double,System.Double,System.Boolean,OxyPlot.IRenderContext)">
+            <summary>
+            Creates an svg model and return it as a string.
+            </summary>
+            <param name="width">The width (points).</param>
+            <param name="height">The height (points).</param>
+            <param name="isDocument">if set to <c>true</c>, the xml headers will be included (?xml and !DOCTYPE).</param>
+            <param name="textMeasurer">The text measurer.</param>
+            <returns>The svg string.</returns>
         </member>
         <member name="M:OxyPlot.PlotModel.GetElements">
             <summary>
@@ -17550,6 +17521,20 @@
             Initializes a new instance of the <see cref="T:OxyPlot.Series.LineSeries"/> class.
             </summary>
         </member>
+        <member name="M:OxyPlot.Series.LineSeries.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.LineSeries"/> class.
+            </summary>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.LineSeries.#ctor(OxyPlot.OxyColor,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.LineSeries"/> class.
+            </summary>
+            <param name="color">The color of the line stroke.</param>
+            <param name="strokeThickness">The stroke thickness (optional).</param>
+            <param name="title">The title (optional).</param>
+        </member>
         <member name="M:OxyPlot.Series.LineSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
             <summary>
             Gets the point on the series that is nearest the specified point.
@@ -17901,7 +17886,7 @@
             <summary>
             Gets or sets the area fill color.
             </summary>
-            <value>The fill color.</value>
+            <value>The fill.</value>
         </member>
         <member name="P:OxyPlot.Series.AreaSeries.ActualFill">
             <summary>
@@ -17955,16 +17940,246 @@
             Placed inside at the base of the bar.
             </summary>
         </member>
+        <member name="T:OxyPlot.Series.CandleStickSeries">
+            <summary>
+            Represents a series for candlestick charts.
+            </summary>
+            <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
+            <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.</remarks>
+        </member>
+        <member name="T:OxyPlot.Series.HighLowSeries">
+            <summary>
+            Represents a series for high-low plots.
+            </summary>
+            <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowSeries.items">
+            <summary>
+            High/low items
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowSeries.defaultColor">
+            <summary>
+            The default color.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowSeries"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowSeries"/> class.
+            </summary>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.#ctor(OxyPlot.OxyColor,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowSeries"/> class.
+            </summary>
+            <param name="color">The color.</param>
+            <param name="strokeThickness">The stroke thickness.</param>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
+            <summary>
+            Gets the point on the series that is nearest the specified point.
+            </summary>
+            <param name="point">The point.</param>
+            <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
+            <returns>A TrackerHitResult for the current hit.</returns>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.IsValidItem(OxyPlot.Series.HighLowItem,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
+            <summary>
+            Determines whether the point is valid.
+            </summary>
+            <param name="pt">The point.</param>
+            <param name="xaxis">The x axis.</param>
+            <param name="yaxis">The y axis.</param>
+            <returns><c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
+            <summary>
+            Renders the series on the specified rendering context.
+            </summary>
+            <param name="rc">The rendering context.</param>
+            <param name="model">The owner plot model.</param>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
+            <summary>
+            Renders the legend symbol for the series on the specified rendering context.
+            </summary>
+            <param name="rc">The rendering context.</param>
+            <param name="legendBox">The bounding rectangle of the legend box.</param>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.SetDefaultValues(OxyPlot.PlotModel)">
+            <summary>
+            Sets the default values.
+            </summary>
+            <param name="model">The model.</param>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.UpdateData">
+            <summary>
+            Updates the data.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowSeries.UpdateMaxMin">
+            <summary>
+            Updates the maximum and minimum values of the series.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.Color">
+            <summary>
+            Gets or sets the color of the item.
+            </summary>
+            <value>The color.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.ActualColor">
+            <summary>
+            Gets the actual color of the item.
+            </summary>
+            <value>The actual color.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.Dashes">
+            <summary>
+            Gets or sets the dashes array.
+            If this is not <c>null</c> it overrides the LineStyle property.
+            </summary>
+            <value>The dashes.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldClose">
+            <summary>
+            Gets or sets the data field for the Close value.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldHigh">
+            <summary>
+            Gets or sets the data field for the High value.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldLow">
+            <summary>
+            Gets or sets the data field for the Low value.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldOpen">
+            <summary>
+            Gets or sets the data field for the Open value.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldX">
+            <summary>
+            Gets or sets the x data field (time).
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.Items">
+            <summary>
+            Gets the items of the series.
+            </summary>
+            <value>The items.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.LineJoin">
+            <summary>
+            Gets or sets the line join.
+            </summary>
+            <value>The line join.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.LineStyle">
+            <summary>
+            Gets or sets the line style.
+            </summary>
+            <value>The line style.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.Mapping">
+            <summary>
+            Gets or sets the mapping delegate.
+            </summary>
+            <value>The mapping.</value>
+            <remarks>Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);</remarks>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.StrokeThickness">
+            <summary>
+            Gets or sets the thickness of the curve.
+            </summary>
+            <value>The stroke thickness.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowSeries.TickLength">
+            <summary>
+            Gets or sets the length of the open/close ticks (screen coordinates).
+            </summary>
+            <value>The length of the open/close ticks.</value>
+        </member>
+        <member name="M:OxyPlot.Series.CandleStickSeries.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.CandleStickSeries"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.CandleStickSeries.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.CandleStickSeries"/> class.
+            </summary>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.CandleStickSeries.#ctor(OxyPlot.OxyColor,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.CandleStickSeries"/> class.
+            </summary>
+            <param name="color">The color.</param>
+            <param name="strokeThickness">The stroke thickness.</param>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.CandleStickSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
+            <summary>
+            Renders the series on the specified rendering context.
+            </summary>
+            <param name="rc">The rendering context.</param>
+            <param name="model">The owner plot model.</param>
+        </member>
+        <member name="M:OxyPlot.Series.CandleStickSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
+            <summary>
+            Renders the legend symbol for the series on the specified rendering context.
+            </summary>
+            <param name="rc">The rendering context.</param>
+            <param name="legendBox">The bounding rectangle of the legend box.</param>
+        </member>
+        <member name="P:OxyPlot.Series.CandleStickSeries.CandleWidth">
+            <summary>
+            Gets or sets the width of the candle (in screen space units).
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.CandleStickSeries.IncreasingFill">
+            <summary>
+            Gets or sets the color used when the closing value is greater than opening value.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.CandleStickSeries.DecreasingFill">
+            <summary>
+            Gets or sets the fill color used when the closing value is less than opening value.
+            </summary>
+        </member>
+        <member name="P:OxyPlot.Series.CandleStickSeries.ShadowEndColor">
+            <summary>
+            Gets or sets the end color of the shadow.
+            </summary>
+            <value>The end color of the shadow.</value>
+        </member>
+        <member name="P:OxyPlot.Series.CandleStickSeries.ShadowEndLength">
+            <summary>
+            Gets or sets the lengths of the shadow ends.
+            </summary>
+            <value>The length relative to the width of the candle.</value>
+        </member>
+        <member name="P:OxyPlot.Series.CandleStickSeries.ActualIncreasingFill">
+            <summary>
+            Gets the actual increasing fill color.
+            </summary>
+        </member>
         <member name="T:OxyPlot.Series.ContourSeries">
             <summary>
             Represents a series that renders contours.
             </summary>
             <remarks>See <a href="http://en.wikipedia.org/wiki/Contour_line">wikipedia</a> and <a href="http://www.mathworks.se/help/techdoc/ref/contour.html">link</a>.</remarks>
-        </member>
-        <member name="F:OxyPlot.Series.ContourSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
         </member>
         <member name="F:OxyPlot.Series.ContourSeries.contours">
             <summary>
@@ -18417,11 +18632,6 @@
             Represents a series for bar charts where the bars are defined by rectangles.
             </summary>
         </member>
-        <member name="F:OxyPlot.Series.RectangleBarSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
         <member name="F:OxyPlot.Series.RectangleBarSeries.defaultFillColor">
             <summary>
             The default fill color.
@@ -18524,11 +18734,6 @@
         <member name="T:OxyPlot.Series.IntervalBarSeries">
             <summary>
             Represents a series for bar charts defined by to/from values.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.IntervalBarSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
             </summary>
         </member>
         <member name="F:OxyPlot.Series.IntervalBarSeries.defaultFillColor">
@@ -18781,11 +18986,6 @@
             </summary>
             <remarks>See http://en.wikipedia.org/wiki/Tornado_diagram.</remarks>
         </member>
-        <member name="F:OxyPlot.Series.TornadoBarSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
         <member name="F:OxyPlot.Series.TornadoBarSeries.defaultMaximumFillColor">
             <summary>
             The default fill color.
@@ -19013,6 +19213,86 @@
             Gets or sets the dictionary which stores the index-inversion for the valid items
             </summary>
         </member>
+        <member name="T:OxyPlot.Series.HighLowItem">
+            <summary>
+            Represents an item in a <see cref="T:OxyPlot.Series.HighLowSeries"/>.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowItem.Undefined">
+            <summary>
+            The undefined.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowItem.close">
+            <summary>
+            The close.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowItem.high">
+            <summary>
+            The high.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowItem.low">
+            <summary>
+            The low.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowItem.open">
+            <summary>
+            The open.
+            </summary>
+        </member>
+        <member name="F:OxyPlot.Series.HighLowItem.x">
+            <summary>
+            The x.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowItem.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowItem"/> class.
+            </summary>
+        </member>
+        <member name="M:OxyPlot.Series.HighLowItem.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowItem"/> class.
+            </summary>
+            <param name="x">The x value.</param>
+            <param name="high">The high value.</param>
+            <param name="low">The low value.</param>
+            <param name="open">The open value.</param>
+            <param name="close">The close value.</param>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowItem.Close">
+            <summary>
+            Gets or sets the close value.
+            </summary>
+            <value>The close value.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowItem.High">
+            <summary>
+            Gets or sets the high value.
+            </summary>
+            <value>The high value.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowItem.Low">
+            <summary>
+            Gets or sets the low value.
+            </summary>
+            <value>The low value.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowItem.Open">
+            <summary>
+            Gets or sets the open value.
+            </summary>
+            <value>The open value.</value>
+        </member>
+        <member name="P:OxyPlot.Series.HighLowItem.X">
+            <summary>
+            Gets or sets the X value (time).
+            </summary>
+            <value>The X value.</value>
+        </member>
         <member name="T:OxyPlot.Series.StemSeries">
             <summary>
             Represents a series that plots discrete data in a stem plot.
@@ -19024,6 +19304,20 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Series.StemSeries"/> class.
             </summary>
+        </member>
+        <member name="M:OxyPlot.Series.StemSeries.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.StemSeries"/> class.
+            </summary>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.StemSeries.#ctor(OxyPlot.OxyColor,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.StemSeries"/> class.
+            </summary>
+            <param name="color">The color of the line stroke.</param>
+            <param name="strokeThickness">The stroke thickness (optional).</param>
+            <param name="title">The title (optional).</param>
         </member>
         <member name="M:OxyPlot.Series.StemSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
             <summary>
@@ -19054,6 +19348,20 @@
             <summary>
             Initializes a new instance of the <see cref="T:OxyPlot.Series.StairStepSeries"/> class.
             </summary>
+        </member>
+        <member name="M:OxyPlot.Series.StairStepSeries.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.StairStepSeries"/> class.
+            </summary>
+            <param name="title">The title.</param>
+        </member>
+        <member name="M:OxyPlot.Series.StairStepSeries.#ctor(OxyPlot.OxyColor,System.Double,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OxyPlot.Series.StairStepSeries"/> class.
+            </summary>
+            <param name="color">The color.</param>
+            <param name="strokeThickness">The stroke thickness.</param>
+            <param name="title">The title.</param>
         </member>
         <member name="M:OxyPlot.Series.StairStepSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
             <summary>
@@ -19161,90 +19469,6 @@
             Gets the actual dash array for the line that is below the limit.
             </summary>
         </member>
-        <member name="T:OxyPlot.Series.TwoColorAreaSeries">
-            <summary>
-            Represents a two-color area series.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.TwoColorAreaSeries.points2">
-            <summary>
-            The second list of points representing limit line.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.TwoColorAreaSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.TwoColorAreaSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.TwoColorAreaSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
-            <summary>
-            Gets the nearest point.
-            </summary>
-            <param name="point">The point.</param>
-            <param name="interpolate">Interpolate if set to <c>true</c> .</param>
-            <returns>A TrackerHitResult for the current hit.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.TwoColorAreaSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
-            <summary>
-            Renders the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="model">The owner plot model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.TwoColorAreaSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
-            <summary>
-            Renders the legend symbol for the line series on the
-            specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="legendBox">The bounding rectangle of the legend box.</param>
-        </member>
-        <member name="M:OxyPlot.Series.TwoColorAreaSeries.UpdateData">
-            <summary>
-            The update data.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.TwoColorAreaSeries.UpdateMaxMin">
-            <summary>
-            Updates the maximum and minimum values of the series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.TwoColorAreaSeries.Fill">
-            <summary>
-            Gets or sets the area fill color above the limit line.
-            </summary>
-            <value>The fill above the limit line.</value>
-        </member>
-        <member name="P:OxyPlot.Series.TwoColorAreaSeries.Fill2">
-            <summary>
-            Gets or sets the area fill color below the limit line.
-            </summary>
-            <value>The fill below the limit line.</value>
-        </member>
-        <member name="P:OxyPlot.Series.TwoColorAreaSeries.ActualFill">
-            <summary>
-            Gets the actual fill color above the limit line.
-            </summary>
-            <value>The actual fill above the limit line.</value>
-        </member>
-        <member name="P:OxyPlot.Series.TwoColorAreaSeries.ActuallFill2">
-            <summary>
-            Gets the actual fill color below the limit line.
-            </summary>
-            <value>The actual fill below the limit line.</value>
-        </member>
-        <member name="P:OxyPlot.Series.TwoColorAreaSeries.MarkerFill2">
-            <summary>
-            Gets or sets the marker fill color which is below the limit line. The default is <see cref="F:OxyPlot.OxyColors.Automatic"/>.
-            </summary>
-            <value>The marker fill.</value>
-        </member>
-        <member name="P:OxyPlot.Series.TwoColorAreaSeries.MarkerStroke2">
-            <summary>
-            Gets or sets the marker stroke which is below the limit line. The default is <c>OxyColors.Automatic</c>.
-            </summary>
-            <value>The marker stroke.</value>
-        </member>
         <member name="T:OxyPlot.Series.PieSeries">
             <summary>
             Represents a series for pie/circle/doughnut charts.
@@ -19252,24 +19476,9 @@
             <remarks>The arc length/central angle/area of each slice is proportional to the quantity it represents.
             See <a href="http://en.wikipedia.org/wiki/Pie_chart">Pie charts</a>.</remarks>
         </member>
-        <member name="F:OxyPlot.Series.PieSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
         <member name="F:OxyPlot.Series.PieSeries.slices">
             <summary>
             The slices.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.PieSeries.slicePoints">
-            <summary>
-            The actual points of the slices.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.PieSeries.total">
-            <summary>
-            The total value of all the pie slices.
             </summary>
         </member>
         <member name="M:OxyPlot.Series.PieSeries.#ctor">
@@ -19340,17 +19549,17 @@
         </member>
         <member name="P:OxyPlot.Series.PieSeries.AngleIncrement">
             <summary>
-            Gets or sets the angle increment.
+            Gets or sets AngleIncrement.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSeries.AngleSpan">
             <summary>
-            Gets or sets the angle span.
+            Gets or sets AngleSpan.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSeries.AreInsideLabelsAngled">
             <summary>
-            Gets or sets a value indicating whether inside labels are angled.
+            Gets or sets a value indicating whether AreInsideLabelsAngled.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSeries.ColorField">
@@ -19436,7 +19645,7 @@
             <summary>
             Gets or sets the stroke color.
             </summary>
-            <value>The stroke color.</value>
+            <value>The stroke.</value>
         </member>
         <member name="P:OxyPlot.Series.PieSeries.StrokeThickness">
             <summary>
@@ -19546,7 +19755,7 @@
         </member>
         <member name="P:OxyPlot.Series.PieSlice.Fill">
             <summary>
-            Gets or sets the fill color.
+            Gets or sets Fill.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSlice.ActualFillColor">
@@ -19557,17 +19766,17 @@
         </member>
         <member name="P:OxyPlot.Series.PieSlice.IsExploded">
             <summary>
-            Gets or sets a value indicating whether the slice is exploded.
+            Gets or sets a value indicating whether IsExploded.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSlice.Label">
             <summary>
-            Gets or sets the label.
+            Gets or sets Label.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSlice.Value">
             <summary>
-            Gets or sets the value.
+            Gets or sets Value.
             </summary>
         </member>
         <member name="P:OxyPlot.Series.PieSlice.DefaultFillColor">
@@ -19575,888 +19784,6 @@
             Gets or sets the default fill color.
             </summary>
             <value>The default fill color.</value>
-        </member>
-        <member name="T:OxyPlot.Series.CandleStickAndVolumeSeries">
-            <summary>
-            Represents a dual view (candlestick + volume) series for OHLCV bars
-            <para/>
-            Note that to use this series, one *must* define two y-axes, one named "Bars" and the other named
-            "Volume".  Typically would set up the volume on StartPosition =0, EndPosition = fraction and for
-            the bar axis StartPosition = fraction + delta, EndPosition = 1.0.
-            </summary>
-            <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
-        </member>
-        <member name="F:OxyPlot.Series.CandleStickAndVolumeSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.CandleStickAndVolumeSeries.data">
-            <summary>
-            The data series
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.CandleStickAndVolumeSeries.minDx">
-            <summary>
-            The minimum X gap between successive data items
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.CandleStickAndVolumeSeries.winIndex">
-            <summary>
-            The index of the data item at the start of visible window
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.CandleStickAndVolumeSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.Append(OxyPlot.Series.OhlcvItem)">
-            <summary>
-            Append a bar to the series (must be in X order)
-            </summary>
-            <param name="bar">Bar object.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.FindByX(System.Double,System.Int32)">
-            <summary>
-            Fast index of bar where max(bar[i].X) &lt;= x 
-            </summary>
-            <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
-            <param name="x">The x coordinate.</param>
-            <param name="startingIndex">starting index</param> 
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
-            <summary>
-            Renders the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="model">The owner plot model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
-            <summary>
-            Renders the legend symbol for the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="legendBox">The bounding rectangle of the legend box.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
-            <summary>
-            Gets the point on the series that is nearest the specified point.
-            </summary>
-            <param name="point">The point.</param>
-            <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-            <returns>A TrackerHitResult for the current hit.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.UpdateData">
-            <summary>
-            Updates the data.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.EnsureAxes">
-            <summary>
-            Ensures that the axes of the series is defined.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.UpdateAxisMaxMin">
-            <summary>
-            Updates the axes to include the max and min of this series.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.UpdateMaxMin">
-            <summary>
-            Updates the maximum and minimum values of the series.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.GetClippingRect(OxyPlot.Axes.Axis)">
-            <summary>
-            Gets the clipping rectangle for the given combination of existing X-Axis and specific Y-Axis
-            </summary>
-            <returns>The clipping rectangle.</returns>
-            <param name="yaxis">Y axis.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickAndVolumeSeries.GetSeparationClippingRect">
-            <summary>
-            Gets the clipping rectangle between plots
-            </summary>
-            <returns>The clipping rectangle.</returns>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.Items">
-            <summary>
-            Gets or sets the items of the series.
-            </summary>
-            <value>The items.</value>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.BarAxis">
-            <summary>
-            Gets the portion of the Y axis associated with bars
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.VolumeAxis">
-            <summary>
-            Gets the portion of the Y axis associated with volume
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.VolumeAxisKey">
-            <summary>
-            Gets or sets the volume axis key (defaults to "Volume")
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.BarAxisKey">
-            <summary>
-            Gets or sets the bar axis key (defaults to null, as is the primary axis).
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.VolumeStyle">
-            <summary>
-            Gets or sets the style of volume rendering (defaults to Combined)
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.StrokeThickness">
-            <summary>
-            Gets or sets the thickness of the bar lines
-            </summary>
-            <value>The stroke thickness.</value>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.StrokeIntensity">
-            <summary>
-            Gets or sets the stroke intensity scale (used to generate stroke color from positive or negative color).
-            For example, 1.0 = same color and 0.5 is 1/2 of the intensity of the source fill color.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.SeparatorStrokeThickness">
-            <summary>
-            Gets or sets the thickness of the volume / bar separator
-            </summary>
-            <value>The stroke thickness.</value>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.SeparatorLineStyle">
-            <summary>
-            Gets or sets the line style for the volume / bar separator
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.PositiveColor">
-            <summary>
-            Gets or sets the color used when the closing value is greater than opening value or
-            for buying volume.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.NegativeColor">
-            <summary>
-            Gets or sets the fill color used when the closing value is less than opening value or
-            for selling volume
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.SeparatorColor">
-            <summary>
-            Gets or sets the color of the separator line
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.PositiveHollow">
-            <summary>
-            Gets or sets a value indicating whether positive bars are shown as filled (false) or hollow (true) candlesticks
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.NegativeHollow">
-            <summary>
-            Gets or sets a value indicating whether negative bars are shown as filled (false) or hollow (true) candlesticks
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.CandleWidth">
-            <summary>
-            Gets or sets the bar width in data units (for example if the X axis is date-time based, then should
-            use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
-            series will use 0.80 x the minimum difference in data points.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.MinimumVolume">
-            <summary>
-            Gets or sets the minimum volume seen in the data series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.MaximumVolume">
-            <summary>
-            Gets or sets the maximum volume seen in the data series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickAndVolumeSeries.AverageVolume">
-            <summary>
-            Gets or sets the average volume seen in the data series.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Series.VolumeSeries">
-            <summary>
-            Represents a dual view (candlestick + volume) series for OHLCV bars
-            </summary>
-            <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeSeries.data">
-            <summary>
-            The data series
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeSeries.minDx">
-            <summary>
-            The minimum X gap between successive data items
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeSeries.winIndex">
-            <summary>
-            The index of the data item at the start of visible window
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.VolumeSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.Append(OxyPlot.Series.OhlcvItem)">
-            <summary>
-            Append a bar to the series (must be in X order)
-            </summary>
-            <param name="bar">The Bar.</param>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.FindByX(System.Double,System.Int32)">
-            <summary>
-            Fast index of bar where max(bar[i].X) &lt;= x 
-            </summary>
-            <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
-            <param name="x">The x coordinate.</param>
-            <param name="startingIndex">starting index</param> 
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
-            <summary>
-            Renders the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="model">The owner plot model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
-            <summary>
-            Renders the legend symbol for the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="legendBox">The bounding rectangle of the legend box.</param>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
-            <summary>
-            Gets the point on the series that is nearest the specified point.
-            </summary>
-            <param name="point">The point.</param>
-            <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-            <returns>A TrackerHitResult for the current hit.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.UpdateData">
-            <summary>
-            Updates the data.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.UpdateAxisMaxMin">
-            <summary>
-            Updates the axes to include the max and min of this series.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.VolumeSeries.UpdateMaxMin">
-            <summary>
-            Updates the maximum and minimum values of the series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.Items">
-            <summary>
-            Gets or sets the items of the series.
-            </summary>
-            <value>The items.</value>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.VolumeStyle">
-            <summary>
-            Gets or sets the style of volume rendering (defaults to Combined)
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.StrokeThickness">
-            <summary>
-            Gets or sets the thickness of the bar lines
-            </summary>
-            <value>The stroke thickness.</value>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.StrokeIntensity">
-            <summary>
-            Gets or sets the stroke intensity scale (used to generate stroke color from positive or negative color).
-            For example, 1.0 = same color and 0.5 is 1/2 of the intensity of the source fill color.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.PositiveColor">
-            <summary>
-            Gets or sets the color used when the closing value is greater than opening value or
-            for buying volume.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.NegativeColor">
-            <summary>
-            Gets or sets the fill color used when the closing value is less than opening value or
-            for selling volume
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.InterceptColor">
-            <summary>
-            Gets or sets the stroke color of the Y=0 intercept
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.InterceptStrokeThickness">
-            <summary>
-            Gets or sets the thickness of the Y=0 intercept
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.InterceptLineStyle">
-            <summary>
-            Gets or sets the line style of the Y=0 intercept
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.PositiveHollow">
-            <summary>
-            Gets or sets a value indicating whether positive bars are shown as filled (false) or hollow (true) candlesticks
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.NegativeHollow">
-            <summary>
-            Gets or sets a value indicating whether negative bars are shown as filled (false) or hollow (true) candlesticks
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.BarWidth">
-            <summary>
-            Gets or sets the bar width in data units (for example if the X axis is date/time based, then should
-            use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
-            series will use 0.80 x the minimum difference in data points.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.MinimumVolume">
-            <summary>
-            Gets or sets the minimum volume seen in the data series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.MaximumVolume">
-            <summary>
-            Gets or sets the maximum volume seen in the data series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.VolumeSeries.AverageVolume">
-            <summary>
-            Gets or sets the average volume seen in the data series.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Series.VolumeStyle">
-            <summary>
-            Represents rendering style for volume in either <see cref="T:OxyPlot.Series.CandleStickAndVolumeSeries"/> or <see cref="T:OxyPlot.Series.VolumeSeries"/>.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeStyle.None">
-            <summary>
-            Volume is not displayed
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeStyle.Combined">
-            <summary>
-            Buy + Sell volume summed to produce net positive or negative volume
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeStyle.Stacked">
-            <summary>
-            Buy and Sell volume is stacked, one on top of the other, with the dominant on top
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.VolumeStyle.PositiveNegative">
-            <summary>
-            Buy volume above y=0 axis and Sell volume below y=0 axis
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Series.CandleStickSeries">
-            <summary>
-            Represents a "higher performance" ordered OHLC series for candlestick charts
-            <para>
-            Does the following:
-            - automatically calculates the appropriate bar width based on available screen + # of bars
-            - can render and pan within millions of bars, using a fast approach to indexing in series
-            - convenience methods
-            </para>
-            This implementation is associated with <a href="https://github.com/oxyplot/oxyplot/issues/369">issue 369</a>.
-            </summary>
-            <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
-            <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.</remarks>
-        </member>
-        <member name="T:OxyPlot.Series.HighLowSeries">
-            <summary>
-            Represents a series for high-low plots.
-            </summary>
-            <remarks>See <a href="http://www.mathworks.com/help/toolbox/finance/highlowfts.html">link</a></remarks>
-        </member>
-        <member name="F:OxyPlot.Series.HighLowSeries.DefaultTrackerFormatString">
-            <summary>
-            The default tracker format string
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.HighLowSeries.items">
-            <summary>
-            High/low items
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.HighLowSeries.defaultColor">
-            <summary>
-            The default color.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
-            <summary>
-            Gets the point on the series that is nearest the specified point.
-            </summary>
-            <param name="point">The point.</param>
-            <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-            <returns>A TrackerHitResult for the current hit.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.IsValidItem(OxyPlot.Series.HighLowItem,OxyPlot.Axes.Axis,OxyPlot.Axes.Axis)">
-            <summary>
-            Determines whether the point is valid.
-            </summary>
-            <param name="pt">The point.</param>
-            <param name="xaxis">The x axis.</param>
-            <param name="yaxis">The y axis.</param>
-            <returns><c>true</c> if [is valid point] [the specified pt]; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
-            <summary>
-            Renders the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="model">The owner plot model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
-            <summary>
-            Renders the legend symbol for the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="legendBox">The bounding rectangle of the legend box.</param>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.SetDefaultValues(OxyPlot.PlotModel)">
-            <summary>
-            Sets the default values.
-            </summary>
-            <param name="model">The model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.UpdateData">
-            <summary>
-            Updates the data.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowSeries.UpdateMaxMin">
-            <summary>
-            Updates the maximum and minimum values of the series.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.Color">
-            <summary>
-            Gets or sets the color of the item.
-            </summary>
-            <value>The color.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.ActualColor">
-            <summary>
-            Gets the actual color of the item.
-            </summary>
-            <value>The actual color.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.Dashes">
-            <summary>
-            Gets or sets the dashes array.
-            If this is not <c>null</c> it overrides the LineStyle property.
-            </summary>
-            <value>The dashes.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldClose">
-            <summary>
-            Gets or sets the data field for the Close value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldHigh">
-            <summary>
-            Gets or sets the data field for the High value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldLow">
-            <summary>
-            Gets or sets the data field for the Low value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldOpen">
-            <summary>
-            Gets or sets the data field for the Open value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.DataFieldX">
-            <summary>
-            Gets or sets the x data field (time).
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.Items">
-            <summary>
-            Gets the items of the series.
-            </summary>
-            <value>The items.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.LineJoin">
-            <summary>
-            Gets or sets the line join.
-            </summary>
-            <value>The line join.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.LineStyle">
-            <summary>
-            Gets or sets the line style.
-            </summary>
-            <value>The line style.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.Mapping">
-            <summary>
-            Gets or sets the mapping delegate.
-            </summary>
-            <value>The mapping.</value>
-            <remarks>Example: series1.Mapping = item => new HighLowItem(((MyType)item).Time,((MyType)item).Value);</remarks>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.StrokeThickness">
-            <summary>
-            Gets or sets the thickness of the curve.
-            </summary>
-            <value>The stroke thickness.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowSeries.TickLength">
-            <summary>
-            Gets or sets the length of the open/close ticks (screen coordinates).
-            </summary>
-            <value>The length of the open/close ticks.</value>
-        </member>
-        <member name="F:OxyPlot.Series.CandleStickSeries.minDx">
-            <summary>
-            The minimum X gap between successive data items
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.CandleStickSeries.winIndex">
-            <summary>
-            The index of the data item at the start of visible window
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.CandleStickSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.Append(System.Object)">
-            <summary>
-            Append a bar to the series (must be in X order)
-            </summary>
-            <param name="bar">Bar to be appended.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.FindByX(System.Double,System.Int32)">
-            <summary>
-            Fast index of bar where max(bar[i].X) &lt;= x 
-            </summary>
-            <returns>The index of the bar closest to X, where max(bar[i].X) &lt;= x.</returns>
-            <param name="x">The x coordinate.</param>
-            <param name="startIndex">starting index</param> 
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
-            <summary>
-            Renders the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="model">The owner plot model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
-            <summary>
-            Renders the legend symbol for the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="legendBox">The bounding rectangle of the legend box.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.GetNearestPoint(OxyPlot.ScreenPoint,System.Boolean)">
-            <summary>
-            Gets the point on the series that is nearest the specified point.
-            </summary>
-            <param name="point">The point.</param>
-            <param name="interpolate">Interpolate the series if this flag is set to <c>true</c>.</param>
-            <returns>A TrackerHitResult for the current hit.</returns>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.UpdateData">
-            <summary>
-            Updates the data.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.ToNativeBar(System.Object)">
-            <summary>
-            Convert incoming bar to native bar
-            </summary>
-            <returns>The native bar.</returns>
-            <param name="bar">Bar as object.</param>
-        </member>
-        <member name="M:OxyPlot.Series.CandleStickSeries.FieldValueOf(System.Object,System.String)">
-            <summary>
-            Gets the value of the specified property in the specified item. 
-            </summary>
-            <returns>The value of field.</returns>
-            <param name="item">Bar object.</param>
-            <param name="propertyName">Property name.</param>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickSeries.IncreasingColor">
-            <summary>
-            Gets or sets the color used when the closing value is greater than opening value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickSeries.DecreasingColor">
-            <summary>
-            Gets or sets the fill color used when the closing value is less than opening value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.CandleStickSeries.CandleWidth">
-            <summary>
-            Gets or sets the bar width in data units (for example if the X axis is date/time based, then should
-            use the difference of DateTimeAxis.ToDouble(date) to indicate the width).  By default candlestick
-            series will use 0.80 x the minimum difference in data points.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Series.OldCandleStickSeries">
-            <summary>
-            Represents a series for candlestick charts.
-            </summary>
-            <remarks>See also <a href="http://en.wikipedia.org/wiki/Candlestick_chart">Wikipedia</a> and
-            <a href="http://www.mathworks.com/help/toolbox/finance/candle.html">Matlab documentation</a>.</remarks>
-        </member>
-        <member name="M:OxyPlot.Series.OldCandleStickSeries.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.OldCandleStickSeries"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.OldCandleStickSeries.Render(OxyPlot.IRenderContext,OxyPlot.PlotModel)">
-            <summary>
-            Renders the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="model">The owner plot model.</param>
-        </member>
-        <member name="M:OxyPlot.Series.OldCandleStickSeries.RenderLegend(OxyPlot.IRenderContext,OxyPlot.OxyRect)">
-            <summary>
-            Renders the legend symbol for the series on the specified rendering context.
-            </summary>
-            <param name="rc">The rendering context.</param>
-            <param name="legendBox">The bounding rectangle of the legend box.</param>
-        </member>
-        <member name="P:OxyPlot.Series.OldCandleStickSeries.CandleWidth">
-            <summary>
-            Gets or sets the width of the candle (in screen space units).
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.OldCandleStickSeries.IncreasingFill">
-            <summary>
-            Gets or sets the color used when the closing value is greater than opening value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.OldCandleStickSeries.DecreasingFill">
-            <summary>
-            Gets or sets the fill color used when the closing value is less than opening value.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.OldCandleStickSeries.ShadowEndColor">
-            <summary>
-            Gets or sets the end color of the shadow.
-            </summary>
-            <value>The end color of the shadow.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OldCandleStickSeries.ShadowEndLength">
-            <summary>
-            Gets or sets the lengths of the shadow ends.
-            </summary>
-            <value>The length relative to the width of the candle.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OldCandleStickSeries.ActualIncreasingFill">
-            <summary>
-            Gets the actual increasing fill color.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Series.OhlcvItem">
-            <summary>
-            Represents an item in a <see cref="T:OxyPlot.Series.CandleStickAndVolumeSeries"/>.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.OhlcvItem.Undefined">
-            <summary>
-            The undefined.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.OhlcvItem.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.OhlcvItem"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.OhlcvItem.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double)">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.OhlcvItem"/> class.
-            </summary>
-            <param name="x">The x coordinate / time.</param>
-            <param name="open">Open value.</param>
-            <param name="high">High value.</param>
-            <param name="low">Low value.</param>
-            <param name="close">Close value.</param>
-            <param name="buyvolume">Buy volume.</param>
-            <param name="sellvolume">Sell volume.</param>
-        </member>
-        <member name="M:OxyPlot.Series.OhlcvItem.FindIndex(System.Collections.Generic.List{OxyPlot.Series.OhlcvItem},System.Double,System.Int32)">
-            <summary>
-            Find index of max(x) &lt;= target x in a list of OHLCV items
-            </summary>
-            <param name='items'>
-            vector of bars
-            </param>
-            <param name='targetX'>
-            target x.
-            </param>
-            <param name='guessIdx'>
-            initial guess.
-            </param>
-            <returns>
-            index of x with max(x) &lt;= target x or -1 if cannot find
-            </returns>
-        </member>
-        <member name="M:OxyPlot.Series.OhlcvItem.IsValid">
-            <summary>
-            Indicate whether is valid for rendering or not
-            </summary>
-            <returns><c>true</c> if this instance is valid; otherwise, <c>false</c>.</returns>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.X">
-            <summary>
-            Gets or sets the X value (time).
-            </summary>
-            <value>The X value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.Open">
-            <summary>
-            Gets or sets the open value.
-            </summary>
-            <value>The open value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.High">
-            <summary>
-            Gets or sets the high value.
-            </summary>
-            <value>The high value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.Low">
-            <summary>
-            Gets or sets the low value.
-            </summary>
-            <value>The low value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.Close">
-            <summary>
-            Gets or sets the close value.
-            </summary>
-            <value>The close value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.BuyVolume">
-            <summary>
-            Gets or sets the buy volume.
-            </summary>
-        </member>
-        <member name="P:OxyPlot.Series.OhlcvItem.SellVolume">
-            <summary>
-            Gets or sets the sell volume.
-            </summary>
-        </member>
-        <member name="T:OxyPlot.Series.HighLowItem">
-            <summary>
-            Represents an item in a <see cref="T:OxyPlot.Series.HighLowSeries"/>.
-            </summary>
-        </member>
-        <member name="F:OxyPlot.Series.HighLowItem.Undefined">
-            <summary>
-            The undefined.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowItem.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowItem"/> class.
-            </summary>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowItem.#ctor(System.Double,System.Double,System.Double,System.Double,System.Double)">
-            <summary>
-            Initializes a new instance of the <see cref="T:OxyPlot.Series.HighLowItem"/> class.
-            </summary>
-            <param name="x">
-            The x value.
-            </param>
-            <param name="high">
-            The high value.
-            </param>
-            <param name="low">
-            The low value.
-            </param>
-            <param name="open">
-            The open value.
-            </param>
-            <param name="close">
-            The close value.
-            </param>
-        </member>
-        <member name="M:OxyPlot.Series.HighLowItem.FindIndex(System.Collections.Generic.List{OxyPlot.Series.HighLowItem},System.Double,System.Int32)">
-            <summary>
-            Find index of max(x) &lt;= target x in a list of OHLC items
-            </summary>
-            <param name='items'>
-            vector of bars
-            </param>
-            <param name='targetX'>
-            target x.
-            </param>
-            <param name='guess'>
-            initial guess index.
-            </param>
-            <returns>
-            index of x with max(x) &lt;= target x or -1 if cannot find
-            </returns>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowItem.Close">
-            <summary>
-            Gets or sets the close value.
-            </summary>
-            <value>The close value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowItem.High">
-            <summary>
-            Gets or sets the high value.
-            </summary>
-            <value>The high value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowItem.Low">
-            <summary>
-            Gets or sets the low value.
-            </summary>
-            <value>The low value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowItem.Open">
-            <summary>
-            Gets or sets the open value.
-            </summary>
-            <value>The open value.</value>
-        </member>
-        <member name="P:OxyPlot.Series.HighLowItem.X">
-            <summary>
-            Gets or sets the X value (time).
-            </summary>
-            <value>The X value.</value>
         </member>
     </members>
 </doc>

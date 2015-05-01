@@ -1,5 +1,5 @@
 using Android.App;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;

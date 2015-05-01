@@ -5,7 +5,7 @@ using Android.Gms.Location;
 using Android.OS;
 using Android.Widget;
 using Newtonsoft.Json;
-using SpeechingCommon;
+using SpeechingShared;
 using System;
 using System.Collections.Generic;
 

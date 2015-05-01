@@ -13,7 +13,7 @@ using System.Threading;
 using Android.Media;
 using Android.Support.V4.App;
 using Android.Support.V4.View;
-using SpeechingCommon;
+using SpeechingShared;
 using System.IO;
 using System.Threading.Tasks;
 using Android.Gms.Gcm;
@@ -23,6 +23,7 @@ using Android.Gms.Location;
 using Android.Net;
 using Android.Preferences;
 using Newtonsoft.Json;
+using RestSharp.Contrib;
 
 namespace DroidSpeeching
 {
@@ -42,7 +43,7 @@ namespace DroidSpeeching
         /// <returns>If a previous session was actively loaded</returns>
         public static async Task<bool> InitSession(Activity context = null)
         {
-            AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
+            await AppData.AssignCacheLocations();
 
             AppData.checkForConnection = () =>
             {
@@ -300,7 +301,7 @@ namespace DroidSpeeching
             if(storedDay != daysSinceEpoch || wikiJson == null)
             {
                 // We have either the wrong data or no data stored
-                toReturn = await ServerData.FetchWikiData();
+                toReturn = await ServerData.FetchWikiData(DecodeHTML);
 
                 // Store so that we don't need to download again today
                 ISharedPreferencesEditor editor = prefs.Edit();
@@ -313,6 +314,11 @@ namespace DroidSpeeching
 
             // Today's featured article has already been cached!
             return JsonConvert.DeserializeObject<WikipediaResult>(wikiJson);
+        }
+
+        private static string DecodeHTML(string toDecode)
+        {
+            return HttpUtility.HtmlDecode(toDecode);
         }
 
         /// <summary>
@@ -425,7 +431,7 @@ namespace DroidSpeeching
             public void StartBackgroundCheck()
             {
                 backgroundAudioRecorder = new AudioRecorder();
-                backgroundAudioRecorder.PrepareAudioRecorder(AppData.cacheDir + "bgnoise.3gpp", false);
+                backgroundAudioRecorder.PrepareAudioRecorder(AppData.cache.Path + "bgnoise.3gpp", false);
                 bgRunning = true;
                 bgShouldToggle = true;
 
