@@ -92,6 +92,9 @@
     <Reference Include="SnackbarSharp">
       <HintPath>..\packages\SnackbarSharp.dll.1.0.3-alpha\lib\MonoAndroid\SnackbarSharp.dll</HintPath>
     </Reference>
+    <Reference Include="SQLite">
+      <HintPath>..\Components\sqlite-net-1.0.8.3\lib\android\SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
@@ -412,6 +415,10 @@
     <XamarinComponentReference Include="restsharp">
       <Visible>False</Visible>
       <Version>105.0.1.0</Version>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="sqlite-net">
+      <Visible>False</Visible>
+      <Version>1.0.8.3</Version>
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>

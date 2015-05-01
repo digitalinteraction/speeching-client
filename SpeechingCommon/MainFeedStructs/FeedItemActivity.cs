@@ -9,7 +9,7 @@ namespace SpeechingCommon
     public class FeedItemActivity : FeedItemBase
     {
         [JsonConverter(typeof(ActivityConverter))]
-        public ISpeechingActivityItem Activity;
+        public SpeechingActivityItem Activity;
         public string[] Rationale;
     }
 }

@@ -6,9 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace SpeechingCommon
 {
-    class ActivityConverter : JsonCreationConverter<ISpeechingActivityItem>
+    class ActivityConverter : JsonCreationConverter<SpeechingActivityItem>
     {
-        protected override ISpeechingActivityItem Create(Type objectType, JObject jObject)
+        protected override SpeechingActivityItem Create(Type objectType, JObject jObject)
         {
             if (FieldExists("Tasks", jObject))
             {

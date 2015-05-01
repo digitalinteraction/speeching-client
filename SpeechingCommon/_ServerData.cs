@@ -183,12 +183,12 @@ namespace SpeechingCommon
             {
                 if (!AppData.CheckNetwork()) return false;
 
-                List<ISpeechingActivityItem> currentActs = new List<ISpeechingActivityItem>();
+                List<SpeechingActivityItem> currentActs = new List<SpeechingActivityItem>();
                 if (AppData.session.categories != null)
                 {
                     foreach(ActivityCategory cat in AppData.session.categories)
                     {
-                        foreach(ISpeechingActivityItem act in cat.activities)
+                        foreach (SpeechingActivityItem act in cat.Activities)
                         {
                             currentActs.Add(act);
                         }
@@ -202,7 +202,7 @@ namespace SpeechingCommon
                 {
                     AppData.session.categories[i].DownloadIcon();
 
-                    for (int j = 0; j < AppData.session.categories[i].activities.Length; j++)
+                    for (int j = 0; j < AppData.session.categories[i].Activities.Length; j++)
                     {
                         AppData.session.ProcessScenario(i, j, true);
                     }
@@ -224,11 +224,11 @@ namespace SpeechingCommon
                 }
 
                 // See if any activities have been removed and delete their local content if necessary
-                foreach(ISpeechingActivityItem act in currentActs)
+                foreach (SpeechingActivityItem act in currentActs)
                 {
                     foreach (ActivityCategory cat in AppData.session.categories)
                     {
-                        if(Array.IndexOf(cat.activities, act) == -1)
+                        if(Array.IndexOf(cat.Activities, act) == -1)
                         {
                             string titleFormatted = act.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
                             string localResourcesDirectory = AppData.cacheDir + "/" + titleFormatted;
@@ -634,6 +634,7 @@ namespace SpeechingCommon
             return users.ToArray();
         }
 
+        /*
         /// <summary>
         /// Filtered version of the friends list showing only users who have accepted a friend request
         /// </summary>
@@ -654,8 +655,9 @@ namespace SpeechingCommon
             }
 
             return toRet.ToArray();
-        }
+        }*/
 
+        /*
         /// <summary>
         /// Sends a friend request to the server
         /// </summary>
@@ -690,7 +692,7 @@ namespace SpeechingCommon
 
             AppData.SaveCurrentData();
             return true;
-        }
+        }*/
 
         /// <summary>
         /// TODO Prepares all of the submission's data, including audio recordings
@@ -969,7 +971,7 @@ namespace SpeechingCommon
     {
         // Includes addresses for unzipped recordings and scenario for easy access
         public Dictionary<string, string> resources;
-        public ISpeechingActivityItem activity;
+        public SpeechingActivityItem activity;
         public IResultItem resultItem;
 
         public ResultPackage(IResultItem result)

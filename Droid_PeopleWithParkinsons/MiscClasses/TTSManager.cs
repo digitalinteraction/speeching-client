@@ -28,6 +28,7 @@ namespace DroidSpeeching
             {
                 tts.SetLanguage(Locale.Default);
                 tts.SetOnUtteranceProgressListener(this);
+                tts.SetSpeechRate(0.9f); // Slow it down just a little
             }
             else
             {

@@ -1,6 +1,5 @@
-using System;
-using System.IO;
-using System.Net;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 using System.Threading.Tasks;
 
 namespace SpeechingCommon
@@ -10,11 +9,14 @@ namespace SpeechingCommon
     /// </summary>
     public class ActivityCategory
     {
-        public string id;
-        public string title;
-        public string icon;
-        public bool recommended;
-        public ISpeechingActivityItem[] activities;
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Icon { get; set; }
+        public bool Recommended { get; set; }
+
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public SpeechingActivityItem[] Activities { get; set; }
 
         /// <summary>
         /// How many icon downloads are currently running
@@ -29,9 +31,9 @@ namespace SpeechingCommon
         {
             runningDLs++;
             
-            string local = await Utils.FetchLocalCopy(icon);
+            string local = await Utils.FetchLocalCopy(Icon);
 
-            icon = (local != null)? local : icon;
+            Icon = (local != null)? local : Icon;
             runningDLs--;
         }
     }

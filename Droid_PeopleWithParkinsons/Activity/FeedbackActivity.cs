@@ -23,7 +23,7 @@ namespace DroidSpeeching
         private TextView completionDate;
 
         private IResultItem[] submissions;
-        private ISpeechingActivityItem thisActivity;
+        private SpeechingActivityItem thisActivity;
         private int selectedIndex;
 
         protected override void OnCreate(Bundle bundle)
@@ -115,7 +115,7 @@ namespace DroidSpeeching
             // Fetch the data after making the drawer
             for(int i = 0; i < submissions.Length; i++)
             {
-                ISpeechingActivityItem act = await AppData.session.FetchActivityWithId(submissions[i].ParticipantActivityId);
+                SpeechingActivityItem act = await AppData.session.FetchActivityWithId(submissions[i].ParticipantActivityId);
                 FeedbackData newData = new FeedbackData();
                 newData.activity = act;
                 newData.submission = submissions[i];
@@ -204,7 +204,7 @@ namespace DroidSpeeching
     /// </summary>
     public class FeedbackData
     {
-        public ISpeechingActivityItem activity;
+        public SpeechingActivityItem activity;
         public IResultItem submission;
         public List<IFeedItem> feedback;
     }

@@ -74,7 +74,7 @@ namespace DroidSpeeching
         /// </summary>
         void mainList_ChildClick(object sender, ExpandableListView.ChildClickEventArgs e)
         {
-            ISpeechingActivityItem thisItem = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition];
+            SpeechingActivityItem thisItem = AppData.session.categories[e.GroupPosition].Activities[e.ChildPosition];
 
             System.Type objectType = thisItem.GetType();
             System.Type targetActivity = typeof(MainActivity);
@@ -156,7 +156,7 @@ namespace DroidSpeeching
 
             public override int GetChildrenCount(int groupPosition)
             {
-                return categories[groupPosition].activities.Length;
+                return categories[groupPosition].Activities.Length;
             }
 
             public override Java.Lang.Object GetGroup(int groupPosition)
@@ -177,7 +177,7 @@ namespace DroidSpeeching
             public override View GetChildView(int groupPosition, int childPosition, bool isLastChild, View convertView, ViewGroup parent)
             {
                 View view = convertView;
-                ISpeechingActivityItem scenario = categories[groupPosition].activities[childPosition];
+                SpeechingActivityItem scenario = categories[groupPosition].Activities[childPosition];
                 if (view == null)
                 {
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListChild, null);
@@ -197,9 +197,9 @@ namespace DroidSpeeching
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListParent, null);
                 }
 
-                view.FindViewById<TextView>(Resource.Id.tasklist_parentTitle).Text = category.title;
+                view.FindViewById<TextView>(Resource.Id.tasklist_parentTitle).Text = category.Title;
 
-                if(category.icon != null) view.FindViewById<ImageView>(Resource.Id.tasklist_parentIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(category.icon)));
+                if(category.Icon != null) view.FindViewById<ImageView>(Resource.Id.tasklist_parentIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(category.Icon)));
                 return view;
             }
 

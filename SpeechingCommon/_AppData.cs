@@ -4,6 +4,12 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using SQLiteNetExtensions;
+using SQLiteNetExtensions.Attributes;
+using SQLiteNetExtensions.Extensions;
+using SQLite.Net.Attributes;
+using SQLite.Net.Interop;
+using SQLite.Net;
 
 namespace SpeechingCommon
 {
@@ -174,6 +180,28 @@ namespace SpeechingCommon
         {
             if (rand == null) rand = new Random();
 
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                "speechingData.db3");
+
+            SQLiteConnection db;
+
+            try
+            {
+                db = new SQLiteConnection(new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid(), dbPath);
+                db.CreateTable<SpeechingTask>();
+                db.CreateTable<User>();
+                db.CreateTable<SpeechingActivityItem>();
+                db.CreateTable<Scenario>();
+                db.CreateTable<Guide>();
+                db.CreateTable<ActivityCategory>();
+                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+           
+
             try
             {
                 if (File.Exists(cacheDir + "/offline.json"))
@@ -185,6 +213,34 @@ namespace SpeechingCommon
                         Binder = binder
                     });
                     ServerData.storageRemoteDir = "uploads/" + session.currentUser.id + "/";
+
+                    if (db.Table<ActivityCategory>().Count() != 0)
+                    {
+                        db.DropTable<ActivityCategory>();
+                        db.CreateTable<ActivityCategory>();
+                    }
+
+                    ActivityCategory cat = new ActivityCategory
+                    {
+                        Title = "Test cat",
+                        Activities = new[] { 
+                            new Scenario{
+                                Title = "Test scenario"
+                            }
+                         }
+                    };
+
+                    db.InsertWithChildren(cat, recursive: true);
+                    //db.InsertAllWithChildren(session.categories);
+
+                    TableQuery<ActivityCategory> table = db.Table<ActivityCategory>();
+
+                    foreach (ActivityCategory found in table)
+                    {
+                        ActivityCategory fullfound = db.GetWithChildren<ActivityCategory>(found.Id, true);
+
+                    }
+
                     return true;
                 }
             }

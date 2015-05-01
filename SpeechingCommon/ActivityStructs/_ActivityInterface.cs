@@ -1,16 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace SpeechingCommon
 {
-    public interface ISpeechingActivityItem
+    public abstract class SpeechingActivityItem
     {
-        int Id { get; set; }
-        User Creator { get; set; }
-        string Title { get; set; }
-        string Resource { get; set; }
-        string Icon { get; set; }
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
+        //[ManyToOne(CascadeOperations = CascadeOperation.All)]
+        [Ignore]
+        public User Creator { get; set; }
+        public string Title { get; set; }
+        public string Resource { get; set; }
+        public string Icon { get; set; }
+
+        [ForeignKey(typeof(ActivityCategory))]
+        public int ActivityCategoryId { get; set; }
+
+        [ManyToOne(CascadeOperations = CascadeOperation.All)]
+        public ActivityCategory Category { get; set; }
     }
 }

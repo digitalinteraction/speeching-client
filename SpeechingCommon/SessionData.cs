@@ -12,7 +12,7 @@ namespace SpeechingCommon
         public List<ActivityCategory> categories;
         public List<IResultItem> resultsToUpload;
         public List<User> userCache;
-        public List<ISpeechingActivityItem> activityCache;
+        public List<SpeechingActivityItem> activityCache;
         public bool serverFolderExists = false;
         public Dictionary<string, string> placesPhotos;
 
@@ -33,27 +33,27 @@ namespace SpeechingCommon
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
-        public async Task<ISpeechingActivityItem> FetchActivityWithId(int activityId)
+        public async Task<SpeechingActivityItem> FetchActivityWithId(int activityId)
         {
             // See if it is in one of the categories already in memory
             for (int i = 0; i < categories.Count; i++)
             {
-                for (int j = 0; j < categories[i].activities.Length; j++)
+                for (int j = 0; j < categories[i].Activities.Length; j++)
                 {
-                    if (categories[i].activities[j].Id == activityId) return categories[i].activities[j];
+                    if (categories[i].Activities[j].Id == activityId) return categories[i].Activities[j];
                 }
             }
 
-            if (activityCache == null) activityCache = new List<ISpeechingActivityItem>();
+            if (activityCache == null) activityCache = new List<SpeechingActivityItem>();
 
             // Check if it's already been downloaded and exists in the cache
-            foreach(ISpeechingActivityItem activity in activityCache)
+            foreach (SpeechingActivityItem activity in activityCache)
             {
                 if (activity.Id == activityId) return activity;
             }
 
             // We don't have it locally - check the server and add to the cache for next time!
-            ISpeechingActivityItem newActivity = await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId.ToString(), new ActivityConverter());
+            SpeechingActivityItem newActivity = await ServerData.GetRequest<SpeechingActivityItem>("activity", activityId.ToString(), new ActivityConverter());
             activityCache.Add(newActivity);
 
             AppData.SaveCurrentData();
@@ -107,7 +107,7 @@ namespace SpeechingCommon
             {
                 scenariosProcessing++;
 
-                ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
+                SpeechingActivityItem activity = categories[catIndex].Activities[scenIndex];
                 if (activity.Id == null) activity.Id = AppData.rand.Next(0, 1000);
 
                 string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(activity.Icon);
@@ -125,7 +125,7 @@ namespace SpeechingCommon
                 }
 
                 activity.Icon = localIconPath;
-                categories[catIndex].activities[scenIndex] = activity;
+                categories[catIndex].Activities[scenIndex] = activity;
 
                 if (shouldSave) AppData.SaveCurrentData();
                 scenariosProcessing--;

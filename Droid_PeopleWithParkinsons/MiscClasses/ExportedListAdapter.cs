@@ -40,7 +40,7 @@ namespace DroidSpeeching
 
         private async void PopulateView(int activityId, View view)
         {
-            ISpeechingActivityItem thisItem = await AppData.session.FetchActivityWithId(activityId);
+            SpeechingActivityItem thisItem = await AppData.session.FetchActivityWithId(activityId);
 
             view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisItem.Title;
         }

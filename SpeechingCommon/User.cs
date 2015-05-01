@@ -1,3 +1,5 @@
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 using System.Collections.Generic;
 
 namespace SpeechingCommon
@@ -10,18 +12,25 @@ namespace SpeechingCommon
         public enum UserType { Patient, Therapist, Rater };
         public enum FriendStatus { Accepted, Denied, Sent, Received };
 
-        public string id;
-        public string nickname;
-        public string name;
-        public string avatar;
-        public string email;
-        public UserType userType;
-        public FriendStatus status;
-        public List<string> friends;
+        [PrimaryKey, AutoIncrement]
+        public int localId { get; set; }
+
+        public string id {get; set;}
+
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        //public List<SpeechingActivityItem> CreatedActivities { get; set; }
+
+        public string nickname { get; set; }
+        public string name { get; set; }
+        public string avatar { get; set; }
+        public string email { get; set; }
+        public UserType userType { get; set; }
+        public FriendStatus status { get; set; }
+        //public List<string> friends;
 
         public User()
         {
-            friends = new List<string>();
+            //friends = new List<string>();
         }
     }
 }
