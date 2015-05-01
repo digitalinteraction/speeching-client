@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     public class FeedItemConverter : JsonCreationConverter<IFeedItem>
     {

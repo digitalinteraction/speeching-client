@@ -1,2 +1,0 @@
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\WindowsRuntimeComponent1\obj\Debug\SpeechingShared.csprojResolveAssemblyReference.cache
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\WindowsRuntimeComponent1\obj\Debug\SpeechingShared.csproj.App.config

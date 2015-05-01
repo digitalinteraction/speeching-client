@@ -2,17 +2,16 @@ using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using PCLStorage;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// A collection of server structures, variables and methods
@@ -62,7 +61,6 @@ namespace SpeechingCommon
             }
             catch(Exception except)
             {
-                Console.WriteLine(except);
                 throw except;
             }
         }
@@ -231,11 +229,11 @@ namespace SpeechingCommon
                         if(Array.IndexOf(cat.activities, act) == -1)
                         {
                             string titleFormatted = act.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
-                            string localResourcesDirectory = AppData.cacheDir + "/" + titleFormatted;
 
-                            if(Directory.Exists(localResourcesDirectory))
+                            if(await AppData.root.CheckExistsAsync(titleFormatted) == ExistenceCheckResult.FileExists)
                             {
-                                Directory.Delete(localResourcesDirectory, true);
+                                IFolder folder = await AppData.root.GetFolderAsync(titleFormatted);
+                                await folder.DeleteAsync();
                             }
                             break;
                         }
@@ -247,7 +245,6 @@ namespace SpeechingCommon
             }
             catch(Exception except)
             {
-                Console.WriteLine(except);
                 return false;
             }
         }
@@ -377,12 +374,16 @@ namespace SpeechingCommon
                     {
                         Byte[] data = await response.Content.ReadAsByteArrayAsync();
                         string localFileName = localRef + ".png";
-                        string localPath = Path.Combine(AppData.placesImageCache, localFileName);
-                        File.WriteAllBytes(localPath, data);
 
-                        AppData.session.placesPhotos.Add(localRef, localPath);
+                        IFile file = await AppData.cache.CreateFileAsync(localFileName, CreationCollisionOption.ReplaceExisting);
+                        using(Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
+                        {
+                            stream.Write(data, 0, data.Length);
+                        }
 
-                        return localPath;
+                        AppData.session.placesPhotos.Add(localRef, file.Path);
+
+                        return file.Path;
                     }
                     catch (Exception except)
                     {
@@ -393,6 +394,27 @@ namespace SpeechingCommon
                 {
                     string msg = await response.Content.ReadAsStringAsync();
                     throw new Exception(msg);
+                }
+            }
+        }
+
+        private static async Task<string> UploadFile(string toUrl, IFile file, HttpClientHandler credentials)
+        {
+            using(HttpClient client = new HttpClient(credentials))
+            {
+                using (StreamContent content = new StreamContent(await file.OpenAsync(FileAccess.Read)))
+                {
+                    using(HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Put, toUrl))
+                    {
+                        req.Content = content;
+
+                        using(HttpResponseMessage res = await client.SendAsync(req))
+                        {
+                            res.EnsureSuccessStatusCode();
+
+                            return await res.Content.ReadAsStringAsync();
+                        }
+                    }
                 }
             }
         }
@@ -409,7 +431,7 @@ namespace SpeechingCommon
                 return;
             }
 
-            bool success = false;
+            bool success = true;
             string millis = DateTime.Now.Subtract(DateTime.MinValue.AddYears(1969)).TotalMilliseconds.ToString();
             string filename = millis + "_" + toUpload.ParticipantActivityId + ".zip";
 
@@ -423,50 +445,21 @@ namespace SpeechingCommon
                         onUpdate();
                     }
 
-                    FileStream fs = File.OpenRead(toUpload.ResourceUrl);
-                    byte[] content = new byte[fs.Length];
-                    fs.Read(content, 0, content.Length);
-                    fs.Close();
-
-                    HttpWebRequest putReq = (HttpWebRequest)WebRequest.Create(storageServer + storageRemoteDir + filename);
-                    putReq.Credentials = new NetworkCredential(ConfidentialData.storageUsername, ConfidentialData.storagePassword);
-                    putReq.PreAuthenticate = true;
-                    putReq.Method = @"PUT";
-                    putReq.Headers.Add(@"Overwrite", @"T");
-                    putReq.ContentLength = content.Length;
-                    putReq.SendChunked = true;
-
-                    using (Stream reqStream = putReq.GetRequestStream())
+                    using (HttpClientHandler handler = new HttpClientHandler { 
+                                                            Credentials = new NetworkCredential(
+                                                                ConfidentialData.storageUsername, 
+                                                                ConfidentialData.storagePassword) })
                     {
-                        await reqStream.WriteAsync(content, 0, content.Length, cancelToken);
-                        reqStream.Close();
-
-                        try
-                        {
-                            HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
-                            success = true;
-                        }
-                        catch (System.Net.WebException ex)
-                        {
-                            // Might need to make the folder first...
-                            HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(storageServer + storageRemoteDir);
-                            httpMkColRequest.Credentials = new NetworkCredential(ConfidentialData.storageUsername, ConfidentialData.storagePassword);
-                            httpMkColRequest.PreAuthenticate = true;
-                            httpMkColRequest.Method = @"MKCOL";
-                            HttpWebResponse httpMkColResponse = (HttpWebResponse)httpMkColRequest.GetResponse();
-
-                            // Try again!
-                            reqStream.Write(content, 0, content.Length);
-                            reqStream.Close();
-                            HttpWebResponse putResp = (HttpWebResponse)putReq.GetResponse();
-                            success = true;
-                        }
+                        await UploadFile(storageServer + storageRemoteDir + filename, 
+                            await AppData.exports.GetFileAsync(Path.GetFileName(toUpload.ResourceUrl)), handler);
                     }
+
+                    
                 }
             }
             catch(Exception except)
             {
-                Console.WriteLine("Oh dear! " + except);
+                success = false;
                 toUpload.UploadState = Utils.UploadStage.Ready;
                 if (onUpdate != null) onUpdate();
             }
@@ -506,31 +499,6 @@ namespace SpeechingCommon
             {
                 if (onFinish != null) onFinish(false);
                 return;
-            }
-
-            // Make sure that the folder exists on the server
-            HttpWebRequest httpMkColRequest = (HttpWebRequest)WebRequest.Create(storageServer + storageRemoteDir);
-            httpMkColRequest.Credentials = new NetworkCredential(ConfidentialData.storageUsername, ConfidentialData.storagePassword);
-            httpMkColRequest.PreAuthenticate = true;
-            httpMkColRequest.Method = @"MKCOL";
-
-            using(cancelToken.Register(() => httpMkColRequest.Abort(), useSynchronizationContext: false))
-            {
-                try
-                {
-                    HttpWebResponse httpMkColResponse = (System.Net.HttpWebResponse)await httpMkColRequest.GetResponseAsync();
-                    cancelToken.ThrowIfCancellationRequested();
-                }
-                catch (Exception e)
-                {
-                    if(cancelToken.IsCancellationRequested)
-                    {
-                        onFinish(false);
-                        return;
-                    }
-
-                    Console.WriteLine(e);
-                }
             }
            
             DateTime old = DateTime.MinValue.AddYears(1969);
@@ -703,18 +671,19 @@ namespace SpeechingCommon
 
             // TO TEST
 
-            string extractPath = AppData.cacheDir + "/DL_" + resultId;
+            string extractPath = "DL_" + resultId;
 
             ret.resources = new Dictionary<string, string>();
             //ret.activity = ISpeechingActivityItem.GetWithId(session.categories, ret.resultItem.activityId);
 
             // No need to download + unpack zip if this folder already exists
-            if(Directory.Exists(extractPath))
+            if(await AppData.cache.CheckExistsAsync(extractPath) == ExistenceCheckResult.FileExists)
             {
-                string[] files = Directory.GetFiles(extractPath);
-                foreach(string file in files)
+                IFolder folder = await AppData.cache.GetFolderAsync(extractPath);
+                IList<IFile> files = await folder.GetFilesAsync();
+                foreach (IFile file in files)
                 {
-                    ret.resources.Add(Path.GetFileName(file), file);
+                    ret.resources.Add(Path.GetFileName(file.Path), file.Path);
                 }
 
                 return ret;
@@ -723,21 +692,23 @@ namespace SpeechingCommon
             // Data isn't already present - download the zip and extract it!
             // TODO zip needs to download
             ZipFile zip = null;
+            IFile zipFile = null;
             try
             {
                 //Unzip the downloaded file and add references to its contents in the resources dictionary
-                zip = new ZipFile(File.OpenRead(ret.resultItem.ResourceUrl));
+                zipFile = await AppData.cache.GetFileAsync(Path.GetFileName(ret.resultItem.ResourceUrl));
+                zip = new ZipFile(await zipFile.OpenAsync(FileAccess.ReadAndWrite));
 
                 foreach (ZipEntry entry in zip)
                 {
-                    string filename = Path.Combine(extractPath, entry.Name);
+                    /*string filename = Path.Combine(extractPath, entry.Name);
                     byte[] buffer = new byte[4096];
-                    System.IO.Stream zipStream = zip.GetInputStream(entry);
-                    using (FileStream streamWriter = File.Create(filename))
+                    Stream zipStream = zip.GetInputStream(entry);
+                    using (Stream streamWriter = AppData.IO.CreateFile(filename))
                     {
                         StreamUtils.Copy(zipStream, streamWriter, buffer);
                     }
-                    ret.resources.Add(entry.Name, filename);
+                    ret.resources.Add(entry.Name, filename);*/
                 }
             }
             finally
@@ -746,7 +717,7 @@ namespace SpeechingCommon
                 {
                     zip.IsStreamOwner = true;
                     zip.Close();
-                    File.Delete(ret.resultItem.ResourceUrl);
+                    zipFile.DeleteAsync();
                 }
             }
 
@@ -843,7 +814,7 @@ namespace SpeechingCommon
         /// Pull today's featured article from Wikipedia
         /// </summary>
         /// <returns></returns>
-        public static async Task<WikipediaResult> FetchWikiData()
+        public static async Task<WikipediaResult> FetchWikiData(Func<string, string> HTMLDecode)
         {
             try
             {
@@ -899,7 +870,7 @@ namespace SpeechingCommon
                 {
                     if(node.Name == "p")
                     {
-                        pageText += HttpUtility.HtmlDecode(node.InnerText) + "\n";
+                        pageText += HTMLDecode(node.InnerText) + "\n";
                     }
                 }
 

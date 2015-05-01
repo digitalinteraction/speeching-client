@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// Holds the data passed by the Google Places API for a single location

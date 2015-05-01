@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Droid_Speeching", "Droid_Pe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechingCommon", "SpeechingCommon\SpeechingCommon.csproj", "{6DD42D10-3C7C-4F48-A57F-ACD3DF0E9812}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechingShared", "WindowsRuntimeComponent1\SpeechingShared.csproj", "{C592A9E6-5DE7-462A-9901-343DD2FC25C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechingShared", "SpeechingShared\SpeechingShared.csproj", "{C592A9E6-5DE7-462A-9901-343DD2FC25C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

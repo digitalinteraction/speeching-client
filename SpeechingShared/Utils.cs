@@ -2,8 +2,11 @@ using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using PCLStorage;
+using System.Collections.Generic;
+using System.Net.Http;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// Useful functions that are likely to be needed across all platforms
@@ -12,31 +15,20 @@ namespace SpeechingCommon
     {
         public enum UploadStage { Incomplete, Ready, Uploading, OnStorage, Finished };
 
-        public static async Task LoadStringFromFile(string fileAddress, Action<string> callback)
-        {
-            callback(System.IO.File.ReadAllText(fileAddress));
-        }
-
-        public static long DirSize(string directoryAddress)
-        {
-            DirectoryInfo d = new DirectoryInfo(directoryAddress);
-            return DirSize(d);
-        }
-
-        public static long DirSize(DirectoryInfo d)
+        public static async Task<long> DirSize(IFolder d, Func<string, long> GetFolderSize, Func<string, long> GetFileSize)
         {
             long Size = 0;
             // Add file sizes.
-            FileInfo[] fis = d.GetFiles();
-            foreach (FileInfo fi in fis)
+            IList<IFile> fis = await d.GetFilesAsync();
+            foreach (IFile fi in fis)
             {
-                Size += fi.Length;
+                Size += GetFileSize(fi.Path);
             }
             // Add subdirectory sizes.
-            DirectoryInfo[] dis = d.GetDirectories();
-            foreach (DirectoryInfo di in dis)
+            IList<IFolder> fols = await d.GetFoldersAsync();
+            foreach (IFile fo in fols)
             {
-                Size += DirSize(di);
+                Size += GetFolderSize(fo.Path);
             }
             return (Size);
         }
@@ -49,38 +41,47 @@ namespace SpeechingCommon
         public static async Task<string> FetchLocalCopy(string remoteUrl, Type ownerType = null)
         {
             string localIconPath;
+            bool exists = false;
+
+            string filename = (ownerType == typeof(WikipediaResult))? "wikiImage.jpg" : Path.GetFileName(remoteUrl);
+
+            localIconPath = AppData.cache.Path + filename;
             
-            if(ownerType == typeof(User))
+            exists = await AppData.cache.CheckExistsAsync(filename) == ExistenceCheckResult.FileExists;
+
+            if (ownerType == typeof(WikipediaResult) && exists)
             {
-                localIconPath = AppData.avatarsCache + "/" + Path.GetFileName(remoteUrl);
+                IFile existing = await AppData.cache.GetFileAsync(filename);
+                await existing.DeleteAsync();
+                exists = false;
             }
-            else if(ownerType == typeof(WikipediaResult))
-            {
-                localIconPath = AppData.cacheDir + "/wikiImage.jpg";
-                if(File.Exists(localIconPath)) File.Delete(localIconPath);
-            }
-            else
-            {
-                localIconPath = AppData.cacheDir + "/" + Path.GetFileName(remoteUrl);
-            }
-            
+
             try
             {
                 // Download the file if it isn't already stored locally
-                if (!File.Exists(localIconPath))
+                if (!exists)
                 {
-                    WebClient request = new WebClient();
-                    await request.DownloadFileTaskAsync(
-                        new Uri(remoteUrl),
-                        localIconPath
-                        );
-                    request.Dispose();
-                    request = null;
+                    IFile file = await AppData.cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+
+                    using(HttpClient client = new HttpClient())
+                    {
+                        using(HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, remoteUrl))
+                        {
+                            using(Stream content =  await (await client.SendAsync(req)).Content.ReadAsStreamAsync())
+                            {
+                                using (Stream filestream = await file.OpenAsync(FileAccess.ReadAndWrite))
+                                {
+                                    await content.CopyToAsync(filestream);
+                                }
+                            }
+                                
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                throw e;
             }
 
             return localIconPath;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// A user of the Speeching service

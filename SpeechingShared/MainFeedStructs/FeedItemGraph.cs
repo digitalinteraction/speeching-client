@@ -3,8 +3,8 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-namespace SpeechingCommon
+
+namespace SpeechingShared
 {
     public class TimeGraphPoint
     {

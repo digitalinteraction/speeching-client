@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// Holds information regarding a user's results from completing a Scenario

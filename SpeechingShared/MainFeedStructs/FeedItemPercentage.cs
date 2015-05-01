@@ -1,4 +1,4 @@
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// Feed item which contains a percentage statistic

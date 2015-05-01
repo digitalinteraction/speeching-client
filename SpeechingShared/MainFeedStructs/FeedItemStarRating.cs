@@ -1,6 +1,6 @@
 
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// Feed item which contains a * rating out of 5

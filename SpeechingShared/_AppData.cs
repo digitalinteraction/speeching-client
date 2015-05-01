@@ -4,21 +4,21 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using PCLStorage;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     public static class AppData
     {
         // Account related data
         public static SessionData session;
         // System data
-        public static string cacheDir;
-        public static string exportsCache;
-        public static string avatarsCache;
-        public static string placesImageCache;
-        public static string placesRecordingsCache;
-        public static string practiceRecording;
         public static Random rand;
+        public static IFolder root;
+        public static IFolder cache;
+        public static IFolder exports;
+
+        public static IFileManager IO;
 
         public static Func<bool> checkForConnection;
         public static Action onConnectionSuccess;
@@ -56,9 +56,9 @@ namespace SpeechingCommon
 
             if(!success)
             {
-                success = TryLoadExistingData();
+                success = await TryLoadExistingData();
 
-                CleanupPlaces();
+                CleanupPlaces(cache.Path, 10);
             }
 
             return success;
@@ -68,38 +68,28 @@ namespace SpeechingCommon
         /// Initialise and create necessary cache folders
         /// </summary>
         /// <param name="rootFolder"></param>
-        public static void AssignCacheLocations(string rootFolder)
+        public static async Task AssignCacheLocations()
         {
-            cacheDir = rootFolder;
-            placesImageCache = Path.Combine(cacheDir, "places/");
-            avatarsCache = Path.Combine(cacheDir, "avatars/");
-            placesRecordingsCache = Path.Combine(placesImageCache, "tempRecs/");
-            exportsCache = Path.Combine(cacheDir, "exports/");
-            practiceRecording = Path.Combine(cacheDir, "practice.mp4");
+            root = FileSystem.Current.LocalStorage;
 
-            if (!Directory.Exists(cacheDir))
+            ExistenceCheckResult cacheExists = await root.CheckExistsAsync("cache");
+            if(cacheExists == ExistenceCheckResult.NotFound)
             {
-                Directory.CreateDirectory(cacheDir);
+                cache = await root.CreateFolderAsync("cache", CreationCollisionOption.ReplaceExisting);
+            }
+            else
+            {
+                cache = await root.GetFolderAsync("cache");
             }
 
-            if (!Directory.Exists(avatarsCache))
+            ExistenceCheckResult exportExists = await root.CheckExistsAsync("exports");
+            if (exportExists == ExistenceCheckResult.NotFound)
             {
-                Directory.CreateDirectory(avatarsCache);
+                exports = await root.CreateFolderAsync("exports", CreationCollisionOption.FailIfExists);
             }
-
-            if (!Directory.Exists(placesImageCache))
+            else
             {
-                Directory.CreateDirectory(placesImageCache);
-            }
-
-            if (!Directory.Exists(placesRecordingsCache))
-            {
-                Directory.CreateDirectory(placesRecordingsCache);
-            }
-
-            if (!Directory.Exists(exportsCache))
-            {
-                Directory.CreateDirectory(exportsCache);
+                exports = await root.GetFolderAsync("exports");
             }
         }
 
@@ -107,9 +97,10 @@ namespace SpeechingCommon
         /// Check the size of the places cache and clean it up if necessary
         /// Get the biggest files and delete them by ascending order of last date accessed until under the limit
         /// </summary>
-        private static async void CleanupPlaces()
+        private static async void CleanupPlaces(string path, int maxMb)
         {
-            long size = Utils.DirSize(placesImageCache);
+            await IO.CleanDirectory(path, maxMb);
+            /*long size = Utils.DirSize(placesImageCache);
             long max = 1000000;// 1Mb
 
             if(size >= max)
@@ -161,7 +152,7 @@ namespace SpeechingCommon
                     }
                 }
                 AppData.SaveCurrentData();
-            }
+            }*/
 
             
         }
@@ -170,16 +161,18 @@ namespace SpeechingCommon
         /// Attempts to load existing data stored in a local file.
         /// </summary>
         /// <returns>true if successful, false if a request to the server is needed</returns>
-        public static bool TryLoadExistingData()
+        public static async Task<bool> TryLoadExistingData()
         {
             if (rand == null) rand = new Random();
 
             try
             {
-                if (File.Exists(cacheDir + "/offline.json"))
+                if ((await root.CheckExistsAsync("offline.json")) == ExistenceCheckResult.FileExists)
                 {
+                    IFile json = await root.GetFileAsync("offline.json");
+
                     var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
-                    session = JsonConvert.DeserializeObject<SessionData>(File.ReadAllText(cacheDir + "/offline.json"), new JsonSerializerSettings
+                    session = JsonConvert.DeserializeObject<SessionData>(await json.ReadAllTextAsync(), new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto,
                         Binder = binder
@@ -190,7 +183,7 @@ namespace SpeechingCommon
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error loading data: " + e);
+                
             }
 
             session = new SessionData();
@@ -223,16 +216,11 @@ namespace SpeechingCommon
 
             try
             {
-                if (!Directory.Exists(cacheDir))
-                {
-                    Directory.CreateDirectory(cacheDir);
-                }
-
-                File.WriteAllText(cacheDir + "/offline.json", dataString);
+                await root.CreateFileAsync("offline.json", CreationCollisionOption.ReplaceExisting);
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR SAVING DATA: " + e);
+                throw e;
             }
         }
 

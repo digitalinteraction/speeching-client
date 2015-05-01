@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
+using System.Reflection;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     //http://stackoverflow.com/questions/8030538/how-to-implement-custom-jsonconverter-in-json-net-to-deserialize-a-list-of-base
     public abstract class JsonCreationConverter<T> : JsonConverter
@@ -23,7 +23,7 @@ namespace SpeechingCommon
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(T).IsAssignableFrom(objectType);
+            return typeof(T).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override object ReadJson(JsonReader reader,

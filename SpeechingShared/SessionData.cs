@@ -1,10 +1,11 @@
+using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     public class SessionData
     {
@@ -66,12 +67,16 @@ namespace SpeechingCommon
         /// Removes the result object from the toUpload list and deletes the files on disk (local deletion only)
         /// </summary>
         /// <param name="result">The item to delete</param>
-        public void DeleteResult(IResultItem result, bool save = true)
+        public async void DeleteResult(IResultItem result, bool save = true)
         {
             resultsToUpload.Remove(result);
 
-            if(File.Exists(result.ResourceUrl))
-                File.Delete(result.ResourceUrl);
+            if(await AppData.exports.CheckExistsAsync(Path.GetFileName(result.ResourceUrl)) == ExistenceCheckResult.FileExists)
+            {
+                IFile toDel = await AppData.exports.GetFileAsync(Path.GetFileName(result.ResourceUrl));
+
+                await toDel.DeleteAsync();
+            }
 
             if (save) AppData.SaveCurrentData();
         }
@@ -110,21 +115,8 @@ namespace SpeechingCommon
                 ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
                 if (activity.Id == null) activity.Id = AppData.rand.Next(0, 1000);
 
-                string localIconPath = AppData.cacheDir + "/" + Path.GetFileName(activity.Icon);
+                activity.Icon = await Utils.FetchLocalCopy(activity.Icon);
 
-                // Download the icon if it isn't already stored locally
-                if (!File.Exists(localIconPath))
-                {
-                    WebClient request = new WebClient();
-                    await request.DownloadFileTaskAsync(
-                        new Uri(activity.Icon),
-                        localIconPath
-                        );
-                    request.Dispose();
-                    request = null;
-                }
-
-                activity.Icon = localIconPath;
                 categories[catIndex].activities[scenIndex] = activity;
 
                 if (shouldSave) AppData.SaveCurrentData();
@@ -132,7 +124,7 @@ namespace SpeechingCommon
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error adding new activity item: " + e);
+                throw e;
             }
 
         }
