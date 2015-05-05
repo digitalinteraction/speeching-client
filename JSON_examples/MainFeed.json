@@ -20,7 +20,7 @@
 		"UserAccount"	: {
 			"id"	: 768705735,
 			"name"	: "Tom Hanks",
-			"avatar": "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg"
+			"avatar": "http://assets-s3.mensjournal.com/img/article/tom-hanks-the-mj-interview/298_298_tom-hanks-the-mj-interview.jpg"
 		}
 	},
 	{
@@ -63,7 +63,7 @@
         "UserAccount": {
             "id": 768705735,
             "name": "Tom Hanks",
-            "avatar": "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg"
+            "avatar": "http://assets-s3.mensjournal.com/img/article/tom-hanks-the-mj-interview/298_298_tom-hanks-the-mj-interview.jpg"
         },
         "Interaction": {
             "type": "URL",

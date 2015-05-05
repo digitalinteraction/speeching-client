@@ -1,6 +1,7 @@
 using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using ModernHttpClient;
 using Newtonsoft.Json;
 using PCLStorage;
 using System;
@@ -144,7 +145,7 @@ namespace SpeechingShared
         {
             if (!AppData.CheckNetwork()) return null;
 
-            using(HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient())//new NativeMessageHandler()))
             {
                 Uri baseAddress = new Uri(serviceUrl);
                 client.BaseAddress = baseAddress;
@@ -194,15 +195,16 @@ namespace SpeechingShared
                 }
 
                 AppData.session.categories = await ServerData.GetRequest<List<ActivityCategory>>("category", "", new ActivityConverter());
+                List<Task> allTasks = new List<Task>();
 
                 // Loop over all categories, downloading icons as needed for them and their scenarios
                 for (int i = 0; i < AppData.session.categories.Count; i++)
                 {
-                    AppData.session.categories[i].DownloadIcon();
+                    allTasks.Add(AppData.session.categories[i].DownloadIcon());
 
                     for (int j = 0; j < AppData.session.categories[i].activities.Length; j++)
                     {
-                        AppData.session.ProcessScenario(i, j, true);
+                        allTasks.Add(AppData.session.ProcessScenario(i, j, true));
                     }
                 }
 
@@ -210,6 +212,8 @@ namespace SpeechingShared
                 int timeout = 10000;
                 int waited = 0;
                 int interval = 100;
+
+                //Task.WaitAll(allTasks.ToArray(), timeout);
 
                 while (waited < timeout)
                 {
@@ -910,16 +914,15 @@ namespace SpeechingShared
             }
             catch(Exception ex)
             {
-                throw ex;
+                return null;
             }
-            return null;
         }
 
         public static async Task<List<IFeedItem>> FetchMainFeed()
         {
             await Task.Delay(1500);
 
-            string jsonString = "[\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A New Assessment Is Available!\",\r\n\t\t\"Description\" \t: \"There's a new assessment available for you to complete! The feedback from completing this short activity will help you to keep track of your progress.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: false,\r\n\t\t\"Importance\"\t: 10,\r\n\t\t\"Interaction\"\t: {\r\n\t\t\t\"type\"\t: \"ASSESSMENT\",\r\n\t\t\t\"value\"\t: \"\",\r\n\t\t\t\"label\"\t: \"Start Assessment\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"Feedback From Your Last Assessment\",\r\n\t\t\"Description\" \t: \"\\\"Your control over your rate of speech has really improved since last month's assessment! It was much easier to understand what you were saying. Keep it up! :D\\\"\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 8,\r\n\t\t\"UserAccount\"\t: {\r\n\t\t\t\"id\"\t: 768705735,\r\n\t\t\t\"name\"\t: \"Tom Hanks\",\r\n\t\t\t\"avatar\": \"http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"Recommended Activity\",\r\n\t\t\"Description\" \t: \"A short roleplay where you catch the bus.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 9,\r\n\t\t\"Rationale\"\t\t: [\"Good for practicing voice pitch\", \"Roisin shared this\"],\r\n\t\t\"Activity\"\t\t: {\r\n\t\t\t\"Id\"\t: 1,\r\n\t\t\t\"Title\"\t: \"Getting the Bus\",\r\n\t\t\t\"Icon\"\t: \"http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png\"\r\n\t\t},\r\n\t\t\"Interaction\"\t: {\r\n\t\t\t\"type\"\t: \"ACTIVITY\",\r\n\t\t\t\"value\"\t: \"1\",\r\n\t\t\t\"label\"\t: \"Start Activity\"\r\n\t\t}\r\n\t},\r\n    {\r\n        \"Title\": \"Featured Article: 'Stuttering is in the genes not the head, say scientists'\",\r\n        \"Description\": \"Stuttering is not to do with nervousness or a traumatic childhood as portrayed in the award winning film The King\u2019s Speech but has its root cause in a genetic disorder, new research suggests.\",\r\n        \"Date\": \"2015-04-21T18:25:43.511Z\",\r\n        \"Dismissable\": true,\r\n        \"Importance\": 4,\r\n        \"Image\": \"http://i.telegraph.co.uk/multimedia/archive/01830/speech_1830638c.jpg\",\r\n        \"Interaction\": {\r\n            \"type\": \"URL\",\r\n            \"value\": \"http://www.telegraph.co.uk/news/science/science-news/8336493/Stuttering-is-in-the-genes-not-the-head-say-scientists.html\",\r\n            \"label\": \"Read More\"\r\n        }\r\n    },\r\n    {\r\n\t\t\"Title\"\t\t\t: \"A Friend Is Looking For Feedback!\",\r\n\t\t\"Description\" \t: \"Help Tom out by leaving him feedback on this recent recording!\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5,\r\n        \"UserAccount\": {\r\n            \"id\": 768705735,\r\n            \"name\": \"Tom Hanks\",\r\n            \"avatar\": \"http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg\"\r\n        },\r\n        \"Interaction\": {\r\n            \"type\": \"URL\",\r\n            \"value\": \"http://www.telegraph.co.uk/news/science/science-news/8336493/Stuttering-is-in-the-genes-not-the-head-say-scientists.html\",\r\n            \"label\": \"Listen\"\r\n        }\r\n\t},\r\n]";
+            string jsonString = "[\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"A New Assessment Is Available!\",\r\n\t\t\"Description\" \t: \"There's a new assessment available for you to complete! The feedback from completing this short activity will help you to keep track of your progress.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: false,\r\n\t\t\"Importance\"\t: 10,\r\n\t\t\"Interaction\"\t: {\r\n\t\t\t\"type\"\t: \"ASSESSMENT\",\r\n\t\t\t\"value\"\t: \"\",\r\n\t\t\t\"label\"\t: \"Start Assessment\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"Feedback From Your Last Assessment\",\r\n\t\t\"Description\" \t: \"\\\"Your control over your rate of speech has really improved since last month's assessment! It was much easier to understand what you were saying. Keep it up! :D\\\"\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 8,\r\n\t\t\"UserAccount\"\t: {\r\n\t\t\t\"id\"\t: 768705735,\r\n\t\t\t\"name\"\t: \"Tom Hanks\",\r\n\t\t\t\"avatar\": \"http://assets-s3.mensjournal.com/img/article/tom-hanks-the-mj-interview/298_298_tom-hanks-the-mj-interview.jpg\"\r\n\t\t}\r\n\t},\r\n\t{\r\n\t\t\"Title\"\t\t\t: \"Recommended Activity\",\r\n\t\t\"Description\" \t: \"A short roleplay where you catch the bus.\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 9,\r\n\t\t\"Rationale\"\t\t: [\"Good for practicing voice pitch\", \"Roisin shared this\"],\r\n\t\t\"Activity\"\t\t: {\r\n\t\t\t\"Id\"\t: 1,\r\n\t\t\t\"Title\"\t: \"Getting the Bus\",\r\n\t\t\t\"Icon\"\t: \"http://www.survivingamsterdam.com/public/files/e96fc9baf228c0cb8d210a1768995bb1.png\"\r\n\t\t},\r\n\t\t\"Interaction\"\t: {\r\n\t\t\t\"type\"\t: \"ACTIVITY\",\r\n\t\t\t\"value\"\t: \"1\",\r\n\t\t\t\"label\"\t: \"Start Activity\"\r\n\t\t}\r\n\t},\r\n    {\r\n        \"Title\": \"Featured Article: 'Stuttering is in the genes not the head, say scientists'\",\r\n        \"Description\": \"Stuttering is not to do with nervousness or a traumatic childhood as portrayed in the award winning film The King\u2019s Speech but has its root cause in a genetic disorder, new research suggests.\",\r\n        \"Date\": \"2015-04-21T18:25:43.511Z\",\r\n        \"Dismissable\": true,\r\n        \"Importance\": 4,\r\n        \"Image\": \"http://i.telegraph.co.uk/multimedia/archive/01830/speech_1830638c.jpg\",\r\n        \"Interaction\": {\r\n            \"type\": \"URL\",\r\n            \"value\": \"http://www.telegraph.co.uk/news/science/science-news/8336493/Stuttering-is-in-the-genes-not-the-head-say-scientists.html\",\r\n            \"label\": \"Read More\"\r\n        }\r\n    },\r\n    {\r\n\t\t\"Title\"\t\t\t: \"A Friend Is Looking For Feedback!\",\r\n\t\t\"Description\" \t: \"Help Tom out by leaving him feedback on this recent recording!\",\r\n\t\t\"Date\"\t\t\t: \"2015-04-21T18:25:43.511Z\",\r\n\t\t\"Dismissable\" \t: true,\r\n\t\t\"Importance\"\t: 5,\r\n        \"UserAccount\": {\r\n            \"id\": 768705735,\r\n            \"name\": \"Tom Hanks\",\r\n            \"avatar\": \"http://assets-s3.mensjournal.com/img/article/tom-hanks-the-mj-interview/298_298_tom-hanks-the-mj-interview.jpg\"\r\n        },\r\n        \"Interaction\": {\r\n            \"type\": \"URL\",\r\n            \"value\": \"http://www.telegraph.co.uk/news/science/science-news/8336493/Stuttering-is-in-the-genes-not-the-head-say-scientists.html\",\r\n            \"label\": \"Listen\"\r\n        }\r\n\t}\r\n]";
 
             List<IFeedItem> results;
 

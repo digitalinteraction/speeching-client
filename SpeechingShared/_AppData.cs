@@ -18,13 +18,11 @@ namespace SpeechingShared
         public static IFolder cache;
         public static IFolder exports;
         public static IFile tempRecording;
-        public static IFileManager IO;
+        public static IPlatformSpecifics IO;
 
         public static Func<bool> checkForConnection;
         public static Action onConnectionSuccess;
         public static bool connectionInitialized = false;
-
-        static bool initializing = false;
 
         /// <summary>
         /// Checks that the app is connected to the network, performing first time inits if necessary
@@ -68,9 +66,16 @@ namespace SpeechingShared
         /// Initialise and create necessary cache folders
         /// </summary>
         /// <param name="rootFolder"></param>
-        public static async Task AssignCacheLocations()
+        public static async Task AssignCacheLocations(string rootFolder = null)
         {
-            root = FileSystem.Current.LocalStorage;
+            if (rootFolder != null)
+            {
+                root = await FileSystem.Current.GetFolderFromPathAsync(rootFolder);
+            }
+            else
+            {
+                root = FileSystem.Current.LocalStorage;
+            }
 
             ExistenceCheckResult cacheExists = await root.CheckExistsAsync("cache");
             if(cacheExists == ExistenceCheckResult.NotFound)
@@ -109,7 +114,7 @@ namespace SpeechingShared
         /// </summary>
         private static async void CleanupPlaces(string path, int maxMb)
         {
-            await IO.CleanDirectory(path, maxMb);
+            //await IO.CleanDirectory(path, maxMb);
             /*long size = Utils.DirSize(placesImageCache);
             long max = 1000000;// 1Mb
 

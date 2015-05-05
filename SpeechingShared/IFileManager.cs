@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using ModernHttpClient;
 
 namespace SpeechingShared
 {
@@ -11,7 +8,7 @@ namespace SpeechingShared
     /// Portable Class Libraries can't access System.IO so has to be done via an interface 
     /// and then implemented on platform-specific projects
     /// </summary>
-    public interface IFileManager
+    public interface IPlatformSpecifics
     {
         Task CleanDirectory(string path, int maxMb);
     }

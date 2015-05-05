@@ -58,7 +58,6 @@ namespace DroidSpeeching
         protected override void OnStart()
         {
             base.OnStart();
-            apiClient.Connect();
         }
 
         public void OnClick(View view)
@@ -136,6 +135,7 @@ namespace DroidSpeeching
             else
             {
                 needLogin = true;
+                apiClient.Connect();
 
                 // Unable to load previous session! Allow the user to log in
                 RunOnUiThread(() =>

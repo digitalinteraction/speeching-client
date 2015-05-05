@@ -1,10 +1,11 @@
 using System;
 using System.IO;
-using System.Net;
+using ModernHttpClient;
 using System.Threading.Tasks;
 using PCLStorage;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net;
 
 namespace SpeechingShared
 {
@@ -45,43 +46,69 @@ namespace SpeechingShared
 
             string filename = (ownerType == typeof(WikipediaResult))? "wikiImage.jpg" : Path.GetFileName(remoteUrl);
 
-            localIconPath = AppData.cache.Path + filename;
-            
-            exists = await AppData.cache.CheckExistsAsync(filename) == ExistenceCheckResult.FileExists;
-
-            if (ownerType == typeof(WikipediaResult) && exists)
-            {
-                IFile existing = await AppData.cache.GetFileAsync(filename);
-                await existing.DeleteAsync();
-                exists = false;
-            }
+            localIconPath = AppData.cache.Path + "/" + filename;
+            IFile file = null;
 
             try
             {
+                ExistenceCheckResult checkRes = await AppData.cache.CheckExistsAsync(filename);
+                exists =  (checkRes == ExistenceCheckResult.FileExists);
+
+                if (ownerType == typeof(WikipediaResult) && exists)
+                {
+                    try
+                    {
+                        IFile existing = await AppData.cache.GetFileAsync(filename);
+                        await existing.DeleteAsync();
+                        exists = false;
+                    }
+                    catch(Exception e)
+                    {
+                        throw e;
+                    }
+                }
+
                 // Download the file if it isn't already stored locally
                 if (!exists)
                 {
-                    IFile file = await AppData.cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+                    file = await AppData.cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
-                    using(HttpClient client = new HttpClient())
+                    using (HttpClient client = new HttpClient())//new NativeMessageHandler()))
                     {
-                        using(HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, remoteUrl))
+                        Uri baseAddress = new Uri(remoteUrl);
+                        client.BaseAddress = new Uri(baseAddress.Scheme + "://" + baseAddress.Authority);
+
+                        try
                         {
-                            using(Stream content =  await (await client.SendAsync(req)).Content.ReadAsStreamAsync())
+                            HttpResponseMessage response = await client.GetAsync(baseAddress);
+                            if (response.IsSuccessStatusCode)
                             {
-                                using (Stream filestream = await file.OpenAsync(FileAccess.ReadAndWrite))
-                                {
-                                    await content.CopyToAsync(filestream);
-                                }
+
+                                Stream fileStream = await file.OpenAsync(FileAccess.ReadAndWrite);
+                                Stream contentStream = await response.Content.ReadAsStreamAsync();
+                                contentStream.CopyTo(fileStream);
+
+                                return file.Path;
                             }
-                                
+                            else
+                            {
+                                string msg = await response.Content.ReadAsStringAsync();
+                                throw new Exception(msg);
+                            }
+                        }
+                        catch (Exception except)
+                        {
+                            throw except;
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                throw e;
+                if(file != null)
+                {
+                    file.DeleteAsync();
+                }
             }
 
             return localIconPath;

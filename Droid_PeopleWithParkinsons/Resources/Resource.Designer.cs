@@ -26,6 +26,10 @@ namespace DroidSpeeching
 		
 		public static void UpdateIdValues()
 		{
+			global::ModernHttpClient.Resource.String.library_name = global::DroidSpeeching.Resource.String.library_name;
+			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
+			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
+			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.library_name = global::DroidSpeeching.Resource.String.library_name;
 			global::PagerSlidingTabStrip.Resource.Attribute.dividerColor = global::DroidSpeeching.Resource.Attribute.dividerColor;
 			global::PagerSlidingTabStrip.Resource.Attribute.indicatorColor = global::DroidSpeeching.Resource.Attribute.indicatorColor;
 			global::PagerSlidingTabStrip.Resource.Attribute.indicatorHeight = global::DroidSpeeching.Resource.Attribute.indicatorHeight;
@@ -1020,6 +1024,8 @@ namespace DroidSpeeching
 			global::SnackbarSharp.Resource.Styleable.ViewStubCompat_android_id = global::DroidSpeeching.Resource.Styleable.ViewStubCompat_android_id;
 			global::SnackbarSharp.Resource.Styleable.ViewStubCompat_android_inflatedId = global::DroidSpeeching.Resource.Styleable.ViewStubCompat_android_inflatedId;
 			global::SnackbarSharp.Resource.Styleable.ViewStubCompat_android_layout = global::DroidSpeeching.Resource.Styleable.ViewStubCompat_android_layout;
+			global::Xamarin.Forms.Platform.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
+			global::Xamarin.Forms.Platform.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
 		}
 		
 		public partial class Animation
@@ -3725,8 +3731,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0e0012
 			public const int accept = 2131623954;
 			
-			// aapt resource value: 0x7f0e0035
-			public const int appTitleMain = 2131623989;
+			// aapt resource value: 0x7f0e0036
+			public const int appTitleMain = 2131623990;
 			
 			// aapt resource value: 0x7f0e0019
 			public const int common_android_wear_notification_needs_update_text = 2131623961;
@@ -3821,11 +3827,14 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0e0013
 			public const int decline = 2131623955;
 			
-			// aapt resource value: 0x7f0e0037
-			public const int drawer_close = 2131623991;
+			// aapt resource value: 0x7f0e0038
+			public const int drawer_close = 2131623992;
 			
-			// aapt resource value: 0x7f0e0036
-			public const int drawer_open = 2131623990;
+			// aapt resource value: 0x7f0e0037
+			public const int drawer_open = 2131623991;
+			
+			// aapt resource value: 0x7f0e0035
+			public const int library_name = 2131623989;
 			
 			// aapt resource value: 0x7f0e0011
 			public const int store_picture_message = 2131623953;

@@ -43,7 +43,7 @@ namespace DroidSpeeching
         /// <returns>If a previous session was actively loaded</returns>
         public static async Task<bool> InitSession(Activity context = null)
         {
-            await AppData.AssignCacheLocations();
+            await AppData.AssignCacheLocations();//Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
 
             AppData.checkForConnection = () =>
             {

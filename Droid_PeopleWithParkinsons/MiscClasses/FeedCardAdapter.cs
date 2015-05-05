@@ -172,16 +172,23 @@ namespace DroidSpeeching
 
         public static async void LoadImageIntoCircle( string imageUrl, ImageView imageView, Context context)
         {
-            string imageLoc = await Utils.FetchLocalCopy(imageUrl, typeof(User));
+            try
+            {
+                string imageLoc = await Utils.FetchLocalCopy(imageUrl, typeof(User));
 
-            if (string.IsNullOrEmpty(imageLoc)) return;
+                if (string.IsNullOrEmpty(imageLoc)) return;
 
-            Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
-                        context.ContentResolver,
-                        Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+                Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
+                            context.ContentResolver,
+                            Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
 
-            RoundedDrawable avatar = new RoundedDrawable(thisBitmap);
-            imageView.SetImageDrawable(avatar);
+                RoundedDrawable avatar = new RoundedDrawable(thisBitmap);
+                imageView.SetImageDrawable(avatar);
+            }
+            catch(Exception except)
+            {
+                Console.WriteLine(except);
+            }
         }
     }
 
@@ -196,11 +203,18 @@ namespace DroidSpeeching
 
         public async void LoadImage(string imageLoc, Context context)
         {
-            string localLoc = await Utils.FetchLocalCopy(imageLoc);
+            try
+            {
+                string localLoc = await Utils.FetchLocalCopy(imageLoc);
 
-            if (string.IsNullOrEmpty(localLoc)) return;
+                if (string.IsNullOrEmpty(localLoc)) return;
 
-            image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(localLoc)));
+                image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(localLoc)));
+            }
+            catch(Exception except)
+            {
+                Console.WriteLine(except);
+            }
         }
     }
 
