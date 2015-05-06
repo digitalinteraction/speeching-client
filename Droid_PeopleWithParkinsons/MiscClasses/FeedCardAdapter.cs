@@ -10,6 +10,7 @@ using RadialProgress;
 using SpeechingShared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace DroidSpeeching
@@ -203,16 +204,22 @@ namespace DroidSpeeching
 
         public async void LoadImage(string imageLoc, Context context)
         {
+            string localLoc = null;
+
             try
             {
-                string localLoc = await Utils.FetchLocalCopy(imageLoc);
+                localLoc = await Utils.FetchLocalCopy(imageLoc);
 
-                if (string.IsNullOrEmpty(localLoc)) return;
+                if (string.IsNullOrEmpty(localLoc)) throw new Exception("Failed to load local copy of image file");
 
-                image.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(localLoc)));
+                image.SetImageBitmap(BitmapFactory.DecodeFile(localLoc));
             }
             catch(Exception except)
             {
+                if(File.Exists(localLoc))
+                {
+                    File.Delete(localLoc);
+                }
                 Console.WriteLine(except);
             }
         }

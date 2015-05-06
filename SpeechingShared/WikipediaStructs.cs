@@ -18,7 +18,7 @@ namespace SpeechingShared
     {
         // This is dynamically typed with objects named after their page IDs, so can't just be a static array
         // See: http://stackoverflow.com/questions/8738031/deserializing-json-using-json-net-with-dynamic-data
-        public IDictionary<string, QueryWikiInfo> pages {get; set;}
+        public IDictionary<string, QueryWikiInfo> pages { get; set; }
     }
 
     public struct QueryWikiInfo
@@ -33,6 +33,8 @@ namespace SpeechingShared
         public string url;
         [JsonProperty("descriptionurl")]
         public string descriptionUrl;
+        [JsonProperty("thumburl")]
+        public string thumbUrl;
     }
 
     public class ParsedWikiRes

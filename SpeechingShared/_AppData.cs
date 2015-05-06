@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using PCLStorage;
+using System.Threading;
 
 namespace SpeechingShared
 {
@@ -19,6 +20,8 @@ namespace SpeechingShared
         public static IFolder exports;
         public static IFile tempRecording;
         public static IPlatformSpecifics IO;
+        private static IFile saveFile;
+        private static SemaphoreSlim saveSemaphore = new SemaphoreSlim(1);
 
         public static Func<bool> checkForConnection;
         public static Action onConnectionSuccess;
@@ -186,7 +189,7 @@ namespace SpeechingShared
                 {
                     IFile json = await root.GetFileAsync("offline.json");
 
-                    var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
+                    var binder = new TypeNameSerializationBinder("SpeechingShared.{0}, SpeechingShared");
                     session = JsonConvert.DeserializeObject<SessionData>(await json.ReadAllTextAsync(), new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.Auto,
@@ -222,7 +225,7 @@ namespace SpeechingShared
         /// </summary>
         public static async void SaveCurrentData()
         {
-            var binder = new TypeNameSerializationBinder("SpeechingCommon.{0}, SpeechingCommon");
+            var binder = new TypeNameSerializationBinder("SpeechingShared.{0}, SpeechingShared");
             string dataString = JsonConvert.SerializeObject(session, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
@@ -231,7 +234,26 @@ namespace SpeechingShared
 
             try
             {
-                await root.CreateFileAsync("offline.json", CreationCollisionOption.ReplaceExisting);
+                if(saveFile == null)
+                {
+                    if (await root.CheckExistsAsync("offline.json") != ExistenceCheckResult.FileExists)
+                    {
+                        await root.CreateFileAsync("offline.json", CreationCollisionOption.ReplaceExisting);
+                    }
+                    saveFile = await root.GetFileAsync("offline.json");
+                }
+
+                await saveSemaphore.WaitAsync();
+                try
+                {
+                    // Make sure only 1 thread is allowed here at a time :)
+                    await saveFile.WriteAllTextAsync(dataString);
+                }
+                finally
+                {
+                    saveSemaphore.Release();
+                }
+                
             }
             catch (Exception e)
             {

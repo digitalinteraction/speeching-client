@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Threading.Tasks;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     public class Scenario : ISpeechingActivityItem
     {
