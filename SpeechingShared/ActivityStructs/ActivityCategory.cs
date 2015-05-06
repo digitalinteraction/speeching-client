@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace SpeechingCommon
+namespace SpeechingShared
 {
     /// <summary>
     /// An object which holds activities of a given type or genre, as decided by the server
@@ -25,7 +25,7 @@ namespace SpeechingCommon
         /// Download the icon for this category
         /// </summary>
         /// <returns></returns>
-        public async Task DownloadIcon()
+        public async Task<bool> DownloadIcon()
         {
             runningDLs++;
             
@@ -33,6 +33,8 @@ namespace SpeechingCommon
 
             icon = (local != null)? local : icon;
             runningDLs--;
+
+            return local != null;
         }
     }
 }

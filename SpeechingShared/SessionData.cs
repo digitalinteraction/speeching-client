@@ -106,7 +106,7 @@ namespace SpeechingShared
         /// Prepare a new scenario based off of the given JSON
         /// </summary>
         /// <param name="json"></param>
-        public async Task ProcessScenario(int catIndex, int scenIndex, bool shouldSave = true)
+        public async Task<bool> ProcessScenario(int catIndex, int scenIndex, bool shouldSave = true)
         {
             try
             {
@@ -115,16 +115,22 @@ namespace SpeechingShared
                 ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
                 if (activity.Id == null) activity.Id = AppData.rand.Next(0, 1000);
 
-                activity.Icon = await Utils.FetchLocalCopy(activity.Icon);
+                string result = await Utils.FetchLocalCopy(activity.Icon);
 
-                categories[catIndex].activities[scenIndex] = activity;
+                if (result != null)
+                {
+                    activity.Icon = result;
+                    categories[catIndex].activities[scenIndex] = activity;
+                    scenariosProcessing--;
+                    if (shouldSave) AppData.SaveCurrentData();
+                    return true;
+                }
 
-                if (shouldSave) AppData.SaveCurrentData();
-                scenariosProcessing--;
+                return false;
             }
             catch (Exception e)
             {
-                throw e;
+                return false;
             }
 
         }

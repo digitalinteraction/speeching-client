@@ -27,6 +27,8 @@ namespace SpeechingShared
 
         public static string serviceUrl = "http://api.opescode.com/api/";
 
+        public static NativeMessageHandler handler;
+
         /// <summary>
         /// Send a POST request to the server and return an Object of type T in response
         /// </summary>
@@ -195,7 +197,7 @@ namespace SpeechingShared
                 }
 
                 AppData.session.categories = await ServerData.GetRequest<List<ActivityCategory>>("category", "", new ActivityConverter());
-                List<Task> allTasks = new List<Task>();
+                List<Task<bool>> allTasks = new List<Task<bool>>();
 
                 // Loop over all categories, downloading icons as needed for them and their scenarios
                 for (int i = 0; i < AppData.session.categories.Count; i++)
@@ -209,13 +211,10 @@ namespace SpeechingShared
                 }
 
                 // More efficient to await them all collectively than one at a time
-                int timeout = 10000;
-                int waited = 0;
-                int interval = 100;
-
-                //Task.WaitAll(allTasks.ToArray(), timeout);
-
-                while (waited < timeout)
+                //int timeout = 10000;
+                //int waited = 0;
+                //int interval = 100;
+                /*while (waited < timeout)
                 {
                     if (SessionData.scenariosProcessing == 0 && ActivityCategory.runningDLs == 0)
                     {
@@ -223,6 +222,17 @@ namespace SpeechingShared
                     }
                     waited += interval;
                     await Task.Delay(interval);
+                }*/
+
+                bool allSuccess = true;
+
+                while(allSuccess && allTasks.Count > 0)
+                {
+                    Task<bool> firstFinished = await Task.WhenAny(allTasks);
+                    allTasks.Remove(firstFinished);
+                    allSuccess = await firstFinished;
+
+                    if (!allSuccess) return false;
                 }
 
                 // See if any activities have been removed and delete their local content if necessary

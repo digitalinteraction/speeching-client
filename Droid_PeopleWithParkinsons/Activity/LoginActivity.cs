@@ -207,24 +207,26 @@ namespace DroidSpeeching
             bool success = await ServerData.FetchCategories();
 
             this.RunOnUiThread(() => { dialog.Hide(); });
-
-
             signInClicked = false;
 
-            if (success)
+            if(!success)
             {
-                StartActivity(typeof(MainActivity));
-                this.Finish();
+                this.RunOnUiThread(() =>
+                {
+                    AlertDialog errorDialog = new AlertDialog.Builder(this)
+                        .SetTitle("Network error")
+                        .SetMessage("Failed to download all of the necessary files. Please check your Internet connection and try again later!")
+                        .SetPositiveButton("Got it", (par1, par2) => { })
+                        .Create();
+                    errorDialog.Show();
+                });
+
+                AppData.session = null;
+                return;
             }
-            else
-            {
-                AlertDialog alert = new AlertDialog.Builder(this)
-                    .SetTitle("Connection error")
-                    .SetMessage("We were unable to reach the server - please try again later.")
-                    .SetPositiveButton("Ok", (arg1, arg2) => { })
-                    .Create();
-                alert.Show();
-            }
+
+            StartActivity(typeof(MainActivity));
+            this.Finish();
         }
 
         public void OnConnectionSuspended(int cause)

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using PCLStorage;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net;
 
 namespace SpeechingShared
 {
@@ -41,6 +40,8 @@ namespace SpeechingShared
         /// <returns></returns>
         public static async Task<string> FetchLocalCopy(string remoteUrl, Type ownerType = null)
         {
+            if (!AppData.CheckNetwork()) return null;
+
             string localIconPath;
             bool exists = false;
 
@@ -73,32 +74,26 @@ namespace SpeechingShared
                 {
                     file = await AppData.cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
-                    using (HttpClient client = new HttpClient())//new NativeMessageHandler()))
+                    using (HttpClient client = new HttpClient()) // TODO get ModernHttpClient working
                     {
                         Uri baseAddress = new Uri(remoteUrl);
                         client.BaseAddress = new Uri(baseAddress.Scheme + "://" + baseAddress.Authority);
+                        client.Timeout = TimeSpan.FromSeconds(30);
 
-                        try
+                        HttpResponseMessage response = await client.GetAsync(baseAddress);
+                        if (response.IsSuccessStatusCode)
                         {
-                            HttpResponseMessage response = await client.GetAsync(baseAddress);
-                            if (response.IsSuccessStatusCode)
-                            {
 
-                                Stream fileStream = await file.OpenAsync(FileAccess.ReadAndWrite);
-                                Stream contentStream = await response.Content.ReadAsStreamAsync();
-                                contentStream.CopyTo(fileStream);
+                            Stream fileStream = await file.OpenAsync(FileAccess.ReadAndWrite);
+                            Stream contentStream = await response.Content.ReadAsStreamAsync();
+                            contentStream.CopyTo(fileStream);
 
-                                return file.Path;
-                            }
-                            else
-                            {
-                                string msg = await response.Content.ReadAsStringAsync();
-                                throw new Exception(msg);
-                            }
+                            return file.Path;
                         }
-                        catch (Exception except)
+                        else
                         {
-                            throw except;
+                            string msg = await response.Content.ReadAsStringAsync();
+                            throw new Exception(msg);
                         }
                     }
                 }
@@ -107,8 +102,9 @@ namespace SpeechingShared
             {
                 if(file != null)
                 {
-                    file.DeleteAsync();
+                    file.DeleteAsync().Start();
                 }
+                return null;
             }
 
             return localIconPath;

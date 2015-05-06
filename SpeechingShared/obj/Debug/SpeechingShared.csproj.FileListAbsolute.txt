@@ -23,7 +23,6 @@ C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\WindowsRuntimeComponent1\b
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\WindowsRuntimeComponent1\bin\Debug\SpeechingShared.pdb
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\WindowsRuntimeComponent1\obj\Debug\SpeechingShared.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\WindowsRuntimeComponent1\obj\Debug\SpeechingShared.pdb
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.dll.config
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.pdb
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\HtmlAgilityPack.dll
@@ -34,8 +33,6 @@ C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.Xamarin.Forms.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\PCLStorage.Abstractions.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\PCLStorage.dll
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\System.Net.Http.Extensions.dll
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\System.Net.Http.Primitives.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Xamarin.Forms.Core.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Xamarin.Forms.Platform.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Xamarin.Forms.Xaml.dll
@@ -49,10 +46,12 @@ C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.Xamarin.Forms.xml
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\PCLStorage.xml
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\PCLStorage.Abstractions.xml
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\System.Net.Http.Extensions.xml
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\System.Net.Http.Primitives.xml
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Xamarin.Forms.Core.xml
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Xamarin.Forms.Xaml.xml
-C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.csproj.App.config
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.pdb
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Microsoft.Threading.Tasks.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Microsoft.Threading.Tasks.Extensions.dll
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Microsoft.Threading.Tasks.xml
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Microsoft.Threading.Tasks.Extensions.xml
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.csprojResolveAssemblyReference.cache
