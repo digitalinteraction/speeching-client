@@ -62,7 +62,7 @@ namespace DroidSpeeching
 
         public void OnClick(View view)
         {
-            if (view.Id == Resource.Id.splash_signIn && !apiClient.IsConnecting)
+            if (view.Id == Resource.Id.splash_signIn && (!apiClient.IsConnecting || apiClient.IsConnected))
             {
                 signInClicked = true;
                 ResolveSignInError();

@@ -33,6 +33,8 @@ namespace SpeechingCommon
         public string url;
         [JsonProperty("descriptionurl")]
         public string descriptionUrl;
+        [JsonProperty("thumburl")]
+        public string thumbUrl;
     }
 
     public class ParsedWikiRes
