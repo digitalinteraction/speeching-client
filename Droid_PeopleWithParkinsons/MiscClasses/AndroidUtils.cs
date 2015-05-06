@@ -297,7 +297,7 @@ namespace DroidSpeeching
             int storedDay = prefs.GetInt("DayNum", -1);
             string wikiJson = prefs.GetString("JsonData", null);
 
-            if(storedDay != daysSinceEpoch || wikiJson == null)
+            //if(storedDay != daysSinceEpoch || wikiJson == null)
             {
                 // We have either the wrong data or no data stored
                 toReturn = await ServerData.FetchWikiData();
