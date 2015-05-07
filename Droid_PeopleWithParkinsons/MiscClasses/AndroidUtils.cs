@@ -1,31 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using System.Threading;
-using Android.Media;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
-using SpeechingShared;
-using System.IO;
-using System.Threading.Tasks;
-using Android.Gms.Gcm;
 using Android.Content.PM;
 using Android.Gms.Common;
-using Android.Gms.Location;
+using Android.Gms.Gcm;
+using Android.Media;
 using Android.Net;
+using Android.OS;
 using Android.Preferences;
+using Android.Support.V4.App;
+using Android.Widget;
 using Newtonsoft.Json;
 using RestSharp.Contrib;
-using ModernHttpClient;
-using System.Net.Http;
+using SpeechingShared;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DroidSpeeching
 {
@@ -46,8 +36,6 @@ namespace DroidSpeeching
         public static async Task<bool> InitSession(Activity context = null)
         {
             await AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
-
-            ServerData.handler = new NativeMessageHandler();
 
             AppData.checkForConnection = () =>
             {
@@ -357,7 +345,7 @@ namespace DroidSpeeching
             return JsonConvert.DeserializeObject<WikipediaResult>(wikiJson);
         }
 
-        private static string DecodeHTML(string toDecode)
+        public static string DecodeHTML(string toDecode)
         {
             return HttpUtility.HtmlDecode(toDecode);
         }

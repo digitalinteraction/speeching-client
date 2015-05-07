@@ -26,7 +26,6 @@ namespace DroidSpeeching
 		
 		public static void UpdateIdValues()
 		{
-			global::ModernHttpClient.Resource.String.library_name = global::DroidSpeeching.Resource.String.library_name;
 			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
 			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
 			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.library_name = global::DroidSpeeching.Resource.String.library_name;

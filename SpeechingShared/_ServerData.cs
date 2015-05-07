@@ -1,7 +1,6 @@
 using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using ModernHttpClient;
 using Newtonsoft.Json;
 using PCLStorage;
 using System;
@@ -26,8 +25,6 @@ namespace SpeechingShared
         public static string storageRemoteDir;
 
         public static string serviceUrl = "http://api.opescode.com/api/";
-
-        public static NativeMessageHandler handler;
 
         /// <summary>
         /// Send a POST request to the server and return an Object of type T in response

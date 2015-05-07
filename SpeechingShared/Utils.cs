@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using ModernHttpClient;
 using System.Threading.Tasks;
 using PCLStorage;
 using System.Collections.Generic;

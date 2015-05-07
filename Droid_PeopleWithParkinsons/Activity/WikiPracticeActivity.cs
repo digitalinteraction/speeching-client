@@ -18,10 +18,11 @@ using System.Threading;
 using Android.Views.Animations;
 using Android.Graphics;
 using Android.Speech.Tts;
+using System.IO;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "WikiPaceActivity", ParentActivity = typeof(MainActivity))]
+    [Activity(Label = "Wikipedia Practice", ParentActivity = typeof(MainActivity))]
     public class WikiPracticeActivity : ActionBarActivity, Android.Content.IDialogInterfaceOnClickListener
     {
         public enum PracticeMode { None, Loudness, Metronome};
@@ -281,6 +282,22 @@ namespace DroidSpeeching
 
             wiki = await AndroidUtils.GetTodaysWiki(this);
 
+            if (wiki.imageURL != null)
+            {
+                if (!File.Exists(wiki.imageURL))
+                {
+                    // Force update, file has been deleted somehow
+                    wiki = await ServerData.FetchWikiData(AndroidUtils.DecodeHTML);
+                }
+                wikiImage.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(wiki.imageURL)));
+                wikiImage.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                wikiImage.Visibility = ViewStates.Gone;
+            }
+
+
             string[] sentences = wiki.content.Split(new string[] { ". " }, StringSplitOptions.RemoveEmptyEntries);
 
             string finalText = "";
@@ -305,16 +322,6 @@ namespace DroidSpeeching
                 ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <= Android.Content.Res.ScreenLayout.SizeNormal))
             {
                 wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
-            }
-
-            if (wiki.imageURL != null)
-            {
-                wikiImage.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(wiki.imageURL)));
-                wikiImage.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                wikiImage.Visibility = ViewStates.Gone;
             }
 
             SwitchMode(PracticeMode.Loudness);
@@ -550,7 +557,7 @@ namespace DroidSpeeching
             anim.RepeatCount = Animation.Infinite;
             RunOnUiThread(() => { metron_bpmText.StartAnimation(anim); });
 
-            metron_audioTrack = new AudioTrack(Stream.Music, 44100, ChannelOut.Mono, Android.Media.Encoding.Pcm16bit, metron_buffSize, AudioTrackMode.Stream);
+            metron_audioTrack = new AudioTrack(Android.Media.Stream.Music, 44100, ChannelOut.Mono, Android.Media.Encoding.Pcm16bit, metron_buffSize, AudioTrackMode.Stream);
 
             metron_audioTrack.Play();
 
