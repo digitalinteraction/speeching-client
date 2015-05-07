@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SpeechingShared
 {
@@ -12,5 +13,8 @@ namespace SpeechingShared
         string Title { get; set; }
         string Resource { get; set; }
         string Icon { get; set; }
+        string LocalIcon { get; set; }
+
+        Task<bool> PrepareIcon();
     }
 }

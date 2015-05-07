@@ -113,13 +113,13 @@ namespace SpeechingShared
                 scenariosProcessing++;
 
                 ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
-                if (activity.Id == null) activity.Id = AppData.rand.Next(0, 1000);
+                if (activity.Id == null) activity.Id = AppData.rand.Next(0, 10000);
 
                 string result = await Utils.FetchLocalCopy(activity.Icon);
 
                 if (result != null)
                 {
-                    activity.Icon = result;
+                    activity.LocalIcon = result;
                     categories[catIndex].activities[scenIndex] = activity;
                     scenariosProcessing--;
                     if (shouldSave) AppData.SaveCurrentData();

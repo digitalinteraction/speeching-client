@@ -243,6 +243,43 @@ namespace DroidSpeeching
         }
 
         /// <summary>
+        /// Prepare an activity's icon within a given imageview
+        /// </summary>
+        /// <param name="icon"></param>
+        /// <param name="activity"></param>
+        public static async void PrepareIcon(ImageView icon, ISpeechingActivityItem activity)
+        {
+            bool success = true;
+
+            if (activity.LocalIcon == null && !(await activity.PrepareIcon()))
+            {
+                // Icon download attempt failed...
+                success = false;
+            }
+
+            if (success && icon != null)
+            {
+                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(activity.LocalIcon)));
+            }
+        }
+
+        public static async void PrepareIcon(ImageView icon, ActivityCategory category)
+        {
+            bool success = true;
+
+            if (category.localIcon == null && !(await category.PrepareIcon()))
+            {
+                // Icon download attempt failed...
+                success = false;
+            }
+
+            if (success && icon != null)
+            {
+                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(category.localIcon)));
+            }
+        }
+
+        /// <summary>
         /// Registers for a new Google Play ID and saves it to the app preferences
         /// </summary>
         /// <param name="context"></param>

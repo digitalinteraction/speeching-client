@@ -303,11 +303,23 @@ namespace DroidSpeeching
             }
         }
 
-        public void LoadData(FeedItemActivity data, Context context)
+        public async void LoadData(FeedItemActivity data, Context context)
         {
             activityName.Text = data.Activity.Title;
-            LoadImageIntoCircle(data.Activity.Icon, icon, context);
             SetRationale(data.Rationale);
+
+            bool success = true;
+
+            if (data.Activity.LocalIcon == null && !(await data.Activity.PrepareIcon()))
+            {
+                // Icon download attempt failed...
+                success = false;
+            }
+
+            if(success)
+            {
+                LoadImageIntoCircle(data.Activity.LocalIcon, icon, context);
+            }  
         }
     }
 

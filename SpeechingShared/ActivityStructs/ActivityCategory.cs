@@ -13,28 +13,19 @@ namespace SpeechingShared
         public string id;
         public string title;
         public string icon;
+        public string localIcon;
         public bool recommended;
         public ISpeechingActivityItem[] activities;
-
-        /// <summary>
-        /// How many icon downloads are currently running
-        /// </summary>
-        public static int runningDLs;
 
         /// <summary>
         /// Download the icon for this category
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> DownloadIcon()
+        public async Task<bool> PrepareIcon()
         {
-            runningDLs++;
-            
-            string local = await Utils.FetchLocalCopy(icon);
+            localIcon = await Utils.FetchLocalCopy(icon);
 
-            icon = (local != null)? local : icon;
-            runningDLs--;
-
-            return local != null;
+            return localIcon != null;
         }
     }
 }

@@ -21,7 +21,6 @@ namespace SpeechingShared
         public static IFile tempRecording;
         public static IPlatformSpecifics IO;
         private static IFile saveFile;
-        private static SemaphoreSlim saveSemaphore = new SemaphoreSlim(1);
 
         public static Func<bool> checkForConnection;
         public static Action onConnectionSuccess;
@@ -243,7 +242,7 @@ namespace SpeechingShared
                     saveFile = await root.GetFileAsync("offline.json");
                 }
 
-                await saveSemaphore.WaitAsync();
+                await Utils.GetSemaphore("offline.json").WaitAsync();
                 try
                 {
                     // Make sure only 1 thread is allowed here at a time :)
@@ -251,7 +250,7 @@ namespace SpeechingShared
                 }
                 finally
                 {
-                    saveSemaphore.Release();
+                    Utils.GetSemaphore("offline.json").Release();
                 }
                 
             }

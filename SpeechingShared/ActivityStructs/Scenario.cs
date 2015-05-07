@@ -14,6 +14,7 @@ namespace SpeechingShared
         private string title;
         private string resources;
         private string icon;
+        private string localIcon;
 
         public SpeechingTask[] Tasks;
 
@@ -91,6 +92,26 @@ namespace SpeechingShared
             AppData.SaveCurrentData();
 
             return Tasks;
+        }
+
+
+        public string LocalIcon
+        {
+            get
+            {
+                return localIcon;
+            }
+            set
+            {
+                localIcon = value;
+            }
+        }
+
+        public async Task<bool> PrepareIcon()
+        {
+            LocalIcon = await Utils.FetchLocalCopy(Icon);
+
+            return LocalIcon != null;
         }
     }
 

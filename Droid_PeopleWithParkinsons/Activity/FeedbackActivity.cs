@@ -151,9 +151,19 @@ namespace DroidSpeeching
             //data.feedback.Insert(0, new FeedbackSubmissionButton());
 
             thisActivity = data.activity;
-            string iconAddress = await Utils.FetchLocalCopy(thisActivity.Icon);
+            bool success = true;
 
-            FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(iconAddress)));
+            if(thisActivity.LocalIcon == null && !(await thisActivity.PrepareIcon()))
+            {
+                // Icon download attempt failed...
+                success = false;
+            }
+
+            if(success)
+            {
+                FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(thisActivity.LocalIcon)));
+            }
+            
             activityTitle.Text = thisActivity.Title;
             completionDate.Text = "Completed on " + data.submission.CompletionDate.ToShortDateString();
 

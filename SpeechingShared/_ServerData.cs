@@ -202,7 +202,7 @@ namespace SpeechingShared
                 // Loop over all categories, downloading icons as needed for them and their scenarios
                 for (int i = 0; i < AppData.session.categories.Count; i++)
                 {
-                    allTasks.Add(AppData.session.categories[i].DownloadIcon());
+                    allTasks.Add(AppData.session.categories[i].PrepareIcon());
 
                     for (int j = 0; j < AppData.session.categories[i].activities.Length; j++)
                     {
@@ -232,7 +232,10 @@ namespace SpeechingShared
                     allTasks.Remove(firstFinished);
                     allSuccess = await firstFinished;
 
-                    if (!allSuccess) return false;
+                    if (!allSuccess)
+                    {
+                        return false;
+                    }
                 }
 
                 // See if any activities have been removed and delete their local content if necessary
@@ -481,6 +484,8 @@ namespace SpeechingShared
             if(success)
             {
                 // We've uploaded the file
+                string original = toUpload.ResourceUrl;
+
                 toUpload.ResourceUrl = storageServer + storageRemoteDir + filename;
                 toUpload.UploadState = Utils.UploadStage.OnStorage;
                 if (onUpdate != null) onUpdate();
@@ -496,6 +501,10 @@ namespace SpeechingShared
                     toUpload.UploadState = Utils.UploadStage.Finished;
                     if (onUpdate != null) onUpdate();
                     AppData.SaveCurrentData();
+
+                    // Delete the local zip file now that it isn't needed
+                    IFile toDel = await AppData.exports.GetFileAsync(Path.GetFileName(original));
+                    await toDel.DeleteAsync();
                 }
             }
 

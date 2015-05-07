@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SpeechingShared
 {
@@ -18,7 +19,7 @@ namespace SpeechingShared
         private string title;
         private string resources;
         private string icon;
-
+        private string localIcon;
         public Page[] Guides;
 
         public int Id
@@ -81,5 +82,23 @@ namespace SpeechingShared
             }
         }
 
+        public string LocalIcon
+        {
+            get
+            {
+                return localIcon;
+            }
+            set
+            {
+                localIcon = value;
+            }
+        }
+
+        public async Task<bool> PrepareIcon()
+        {
+            LocalIcon = await Utils.FetchLocalCopy(Icon);
+
+            return LocalIcon != null;
+        }
     }
 }

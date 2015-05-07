@@ -187,7 +187,7 @@ namespace DroidSpeeching
 
             if (scenario.Creator != null) authorName.Text = scenario.Creator.name;
 
-            resultsZipPath = System.IO.Path.Combine(localResourcesDirectory, "final.zip");
+            resultsZipPath = System.IO.Path.Combine(AppData.exports.Path, scenario.Id + "_final.zip");
             results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.session.currentUser.id);
 
             if (savedInstanceState != null)
@@ -308,11 +308,7 @@ namespace DroidSpeeching
             }
 
             ImageView icon = FindViewById<ImageView>(Resource.Id.scenarioIcon);
-            
-            if(icon != null)
-            {
-                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
-            }
+            AndroidUtils.PrepareIcon(icon, scenario);
 
             File.Delete(localZipPath);
 
@@ -344,11 +340,7 @@ namespace DroidSpeeching
             else
             {
                 ImageView icon = FindViewById<ImageView>(Resource.Id.scenarioIcon);
-
-                if (icon != null && scenario != null)
-                {
-                    icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
-                }
+                AndroidUtils.PrepareIcon(icon, scenario);
             }
         }
 
@@ -631,8 +623,7 @@ namespace DroidSpeeching
             {
                 FastZip fastZip = new FastZip();
                 bool recurse = true;
-                string filter = @"-final\.zip$"; // Don't include yourself, you daft thing
-                fastZip.CreateZip(resultsZipPath, localTempDirectory, recurse, filter);
+                fastZip.CreateZip(resultsZipPath, localTempDirectory, recurse, null);
 
                 results.CompletionDate = DateTime.Now;
 

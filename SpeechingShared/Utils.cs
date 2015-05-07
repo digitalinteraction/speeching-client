@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PCLStorage;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 
 namespace SpeechingShared
 {
@@ -14,6 +15,18 @@ namespace SpeechingShared
     public class Utils
     {
         public enum UploadStage { Incomplete, Ready, Uploading, OnStorage, Finished };
+
+        private static Dictionary<string, SemaphoreSlim> semaphores = new Dictionary<string, SemaphoreSlim>();
+
+        public static SemaphoreSlim GetSemaphore(string filename)
+        {
+            if (semaphores.ContainsKey(filename))
+                return semaphores[filename];
+
+            var semaphore = new SemaphoreSlim(1);
+            semaphores[filename] = semaphore;
+            return semaphore;
+        }
 
         public static async Task<long> DirSize(IFolder d, Func<string, long> GetFolderSize, Func<string, long> GetFileSize)
         {
@@ -49,6 +62,8 @@ namespace SpeechingShared
 
             localIconPath = AppData.cache.Path + "/" + filename;
             IFile file = null;
+
+            await Utils.GetSemaphore(filename).WaitAsync();
 
             try
             {
@@ -102,11 +117,14 @@ namespace SpeechingShared
             {
                 if(file != null)
                 {
-                    file.DeleteAsync().Start();
+                    file.DeleteAsync();
                 }
                 return null;
             }
-
+            finally
+            {
+                Utils.GetSemaphore(filename).Release();
+            }
             return localIconPath;
         }
     }

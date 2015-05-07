@@ -1,10 +1,14 @@
 using Android.App;
 using Android.Content;
+using Android.Graphics;
+using Android.Net;
 using Android.OS;
+using Android.Provider;
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
 using SpeechingShared;
+using System;
 
 namespace DroidSpeeching
 {
@@ -184,7 +188,9 @@ namespace DroidSpeeching
                 }
 
                 view.FindViewById<TextView>(Resource.Id.tasklist_childTitle).Text = scenario.Title;
-                view.FindViewById<ImageView>(Resource.Id.tasklist_childIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(scenario.Icon)));
+
+                AndroidUtils.PrepareIcon(view.FindViewById<ImageView>(Resource.Id.tasklist_childIcon), scenario);
+
                 return view;
             }
 
@@ -199,7 +205,8 @@ namespace DroidSpeeching
 
                 view.FindViewById<TextView>(Resource.Id.tasklist_parentTitle).Text = category.title;
 
-                if(category.icon != null) view.FindViewById<ImageView>(Resource.Id.tasklist_parentIcon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(category.icon)));
+                AndroidUtils.PrepareIcon(view.FindViewById<ImageView>(Resource.Id.tasklist_childIcon), category);
+
                 return view;
             }
 
