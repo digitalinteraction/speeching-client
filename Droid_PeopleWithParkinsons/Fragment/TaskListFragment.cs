@@ -205,7 +205,7 @@ namespace DroidSpeeching
 
                 view.FindViewById<TextView>(Resource.Id.tasklist_parentTitle).Text = category.title;
 
-                AndroidUtils.PrepareIcon(view.FindViewById<ImageView>(Resource.Id.tasklist_childIcon), category);
+                AndroidUtils.PrepareIcon(view.FindViewById<ImageView>(Resource.Id.tasklist_parentIcon), category);
 
                 return view;
             }

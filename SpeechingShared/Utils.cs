@@ -91,25 +91,21 @@ namespace SpeechingShared
 
                     using (HttpClient client = new HttpClient()) // TODO get ModernHttpClient working
                     {
-                        Uri baseAddress = new Uri(remoteUrl);
-                        client.BaseAddress = new Uri(baseAddress.Scheme + "://" + baseAddress.Authority);
+                        Uri address = new Uri(remoteUrl);
                         client.Timeout = TimeSpan.FromSeconds(30);
 
-                        HttpResponseMessage response = await client.GetAsync(baseAddress);
-                        if (response.IsSuccessStatusCode)
-                        {
+                        await client.GetAsync(address).ContinueWith(async (requestTask) =>
+                            {
+                                HttpResponseMessage response = requestTask.Result;
+                                response.EnsureSuccessStatusCode();
 
-                            Stream fileStream = await file.OpenAsync(FileAccess.ReadAndWrite);
-                            Stream contentStream = await response.Content.ReadAsStreamAsync();
-                            contentStream.CopyTo(fileStream);
+                                Stream fileStream = await file.OpenAsync(FileAccess.ReadAndWrite);
+                                await response.Content.CopyToAsync(fileStream);
+                                fileStream.Dispose();
+                            });
 
-                            return file.Path;
-                        }
-                        else
-                        {
-                            string msg = await response.Content.ReadAsStringAsync();
-                            throw new Exception(msg);
-                        }
+                        return file.Path;
+                        
                     }
                 }
             }
