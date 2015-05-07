@@ -81,7 +81,7 @@ namespace DroidSpeeching
 
         private async void LoadData()
         {
-            results = await ServerData.FetchSubmittedList();
+            results = null;//await ServerData.FetchSubmittedList();
 
             if(results != null)
                 exportList.Adapter = new ExportedListAdapter(Activity, Resource.Id.submitted_list, results);

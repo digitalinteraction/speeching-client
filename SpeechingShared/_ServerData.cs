@@ -207,20 +207,7 @@ namespace SpeechingShared
                     }
                 }
 
-                // More efficient to await them all collectively than one at a time
-                //int timeout = 10000;
-                //int waited = 0;
-                //int interval = 100;
-                /*while (waited < timeout)
-                {
-                    if (SessionData.scenariosProcessing == 0 && ActivityCategory.runningDLs == 0)
-                    {
-                        break;
-                    }
-                    waited += interval;
-                    await Task.Delay(interval);
-                }*/
-
+                // Set them all off at once, deal with them finishing one at a time
                 bool allSuccess = true;
 
                 while(allSuccess && allTasks.Count > 0)
@@ -623,140 +610,6 @@ namespace SpeechingShared
         }
 
         /// <summary>
-        /// Filtered version of the friends list showing only users who have accepted a friend request
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<User[]> FetchAcceptedFriends()
-        {
-            if (!AppData.CheckNetwork()) return null;
-
-            List<User> toRet = new List<User>();
-            User[] allFriends = await ServerData.FetchUsers(AppData.session.currentUser.friends);
-
-            foreach (User friend in allFriends)
-            {
-                if (friend.id != AppData.session.currentUser.id && friend.status == User.FriendStatus.Accepted)
-                {
-                    toRet.Add(friend);
-                }
-            }
-
-            return toRet.ToArray();
-        }
-
-        /// <summary>
-        /// Sends a friend request to the server
-        /// </summary>
-        /// <param name="username">The unique username of the friend</param>
-        /// <returns>User found true / not recognised false</returns>
-        public static bool PushFriendRequest(string username)
-        {
-            if (!AppData.CheckNetwork()) return false;
-
-            // TODO push friend request to the server, which will return user details if successful
-            User added = new User();
-            added.name = username;
-            added.status = User.FriendStatus.Sent;
-            added.id = AppData.rand.Next(0, 10000).ToString();
-
-            // TODO Check if the server returns an error saying they're already friends, or the user doesn't exist etc
-
-            // If the user has already been cached, update the object. Else, just add it
-            bool cached = false;
-            for (int i = 0; i < AppData.session.userCache.Count; i++)
-            {
-                if (AppData.session.userCache[i].id == added.id)
-                {
-                    AppData.session.userCache[i] = added;
-                    cached = true;
-                    break;
-                }
-            }
-            if (!cached) AppData.session.userCache.Add(added);
-
-            AppData.session.currentUser.friends.Add(added.id);
-
-            AppData.SaveCurrentData();
-            return true;
-        }
-
-        /// <summary>
-        /// TODO Prepares all of the submission's data, including audio recordings
-        /// </summary>
-        /// <param name="resultId"></param>
-        /// <returns></returns>
-        public static async Task<ResultPackage> FetchResultItemWithResources(int resultId)
-        {
-            ResultPackage ret = null;
-
-            // TO TEST
-
-            string extractPath = "DL_" + resultId;
-
-            ret.resources = new Dictionary<string, string>();
-            //ret.activity = ISpeechingActivityItem.GetWithId(session.categories, ret.resultItem.activityId);
-
-            // No need to download + unpack zip if this folder already exists
-            if(await AppData.cache.CheckExistsAsync(extractPath) == ExistenceCheckResult.FileExists)
-            {
-                IFolder folder = await AppData.cache.GetFolderAsync(extractPath);
-                IList<IFile> files = await folder.GetFilesAsync();
-                foreach (IFile file in files)
-                {
-                    ret.resources.Add(Path.GetFileName(file.Path), file.Path);
-                }
-
-                return ret;
-            }
-
-            // Data isn't already present - download the zip and extract it!
-            // TODO zip needs to download
-            ZipFile zip = null;
-            IFile zipFile = null;
-            try
-            {
-                //Unzip the downloaded file and add references to its contents in the resources dictionary
-                zipFile = await AppData.cache.GetFileAsync(Path.GetFileName(ret.resultItem.ResourceUrl));
-                zip = new ZipFile(await zipFile.OpenAsync(FileAccess.ReadAndWrite));
-
-                foreach (ZipEntry entry in zip)
-                {
-                    /*string filename = Path.Combine(extractPath, entry.Name);
-                    byte[] buffer = new byte[4096];
-                    Stream zipStream = zip.GetInputStream(entry);
-                    using (Stream streamWriter = AppData.IO.CreateFile(filename))
-                    {
-                        StreamUtils.Copy(zipStream, streamWriter, buffer);
-                    }
-                    ret.resources.Add(entry.Name, filename);*/
-                }
-            }
-            finally
-            {
-                if (zip != null)
-                {
-                    zip.IsStreamOwner = true;
-                    zip.Close();
-                    zipFile.DeleteAsync();
-                }
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Get a list of submissions from the server
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<IResultItem[]> FetchSubmittedList()
-        {
-            if (!AppData.CheckNetwork()) return null;
-
-            return AppData.session.resultsToUpload.ToArray();
-            //return await GetRequest<IResultItem[]>("GetSubmissions", "");
-        }
-
-        /// <summary>
         /// Polls the server for all available feedback for the given activity
         /// </summary>
         /// <param name="resultId"></param>
@@ -953,20 +806,6 @@ namespace SpeechingShared
             }
 
             return results;
-        }
-    }
-
-    public class ResultPackage
-    {
-        // Includes addresses for unzipped recordings and scenario for easy access
-        public Dictionary<string, string> resources;
-        public ISpeechingActivityItem activity;
-        public IResultItem resultItem;
-
-        public ResultPackage(IResultItem result)
-        {
-            resultItem = result;
-            resources = new Dictionary<string, string>();
         }
     }
 

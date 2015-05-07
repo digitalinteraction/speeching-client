@@ -54,7 +54,7 @@ namespace DroidSpeeching
 
         private async void FetchFeedbackDataInit()
         {
-            submissions = await ServerData.FetchSubmittedList();
+            submissions = null;//await ServerData.FetchSubmittedList();
 
             if(submissions == null || submissions.Length == 0)
             {
