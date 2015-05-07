@@ -6,7 +6,7 @@ Droid_PeopleWithParkinsons/obj
 *.dll
 Droid_PeopleWithParkinsons/Bin/Debug
 Droid_PeopleWithParkinsons/Bin/Release
-SpeechingCommon/Bin/Debug
-SpeechingCommon/Obj/Debug
-SpeechingCommon/Bin/Release
-SpeechingCommon/ConfidentialData.cs
+SpeechingShared/Bin/Debug
+SpeechingShared/Obj/Debug
+SpeechingShared/Bin/Release
+SpeechingShared/ConfidentialData.cs
