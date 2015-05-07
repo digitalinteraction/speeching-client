@@ -37,6 +37,8 @@ namespace DroidSpeeching
         {
             await AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
 
+            AppData.IO = new AndroidPCLHelper();
+
             AppData.checkForConnection = () =>
             {
                 ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);

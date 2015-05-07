@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using PCLStorage;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SpeechingShared
@@ -9,6 +10,6 @@ namespace SpeechingShared
     /// </summary>
     public interface IPlatformSpecifics
     {
-        Task CleanDirectory(string path, int maxMb);
+        void CleanDirectory(IFolder path, float maxMb);
     }
 }

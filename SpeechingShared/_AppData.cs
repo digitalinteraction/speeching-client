@@ -58,7 +58,7 @@ namespace SpeechingShared
             {
                 success = await TryLoadExistingData();
 
-                CleanupPlaces(cache.Path, 10);
+                TrimCacheDirectory();
             }
 
             return success;
@@ -114,64 +114,9 @@ namespace SpeechingShared
         /// Check the size of the places cache and clean it up if necessary
         /// Get the biggest files and delete them by ascending order of last date accessed until under the limit
         /// </summary>
-        private static async void CleanupPlaces(string path, int maxMb)
+        private static void TrimCacheDirectory()
         {
-            //await IO.CleanDirectory(path, maxMb);
-            /*long size = Utils.DirSize(placesImageCache);
-            long max = 1000000;// 1Mb
-
-            if(size >= max)
-            {
-                DirectoryInfo di = new DirectoryInfo(placesImageCache);
-                FileInfo[] allFiles = di.GetFiles();
-
-                // Sort by file size
-                Array.Sort<FileInfo>(allFiles, delegate(FileInfo a, FileInfo b)
-                {
-                    return b.Length.CompareTo(a.Length);
-                });
-
-                FileInfo[] biggest = new FileInfo[allFiles.Length / 2];
-
-                for (int i = 0; i < biggest.Length; i++ )
-                {
-                    biggest[i] = allFiles[i];
-                }
-
-                // Sort by last accessed
-                Array.Sort<FileInfo>(biggest, delegate(FileInfo a, FileInfo b)
-                {
-                    return a.LastAccessTime.CompareTo(b.LastAccessTime);
-                });
-
-                // Array should now be the biggest files, in order of date last accessed (earliest first)
-                // Delete one by one until under the limit
-                int count = 0;
-                while (size >= max && count < biggest.Length)
-                {
-                    try
-                    {
-                        // Remove reference 
-                        string thisKey = session.placesPhotos.FirstOrDefault(x => x.Value == biggest[count].FullName).Key;
-
-                        if (thisKey != null)
-                            session.placesPhotos.Remove(thisKey);
-
-                        size -= biggest[count].Length;
-
-                        File.Delete(biggest[count].FullName);
-                        count++;
-                    }
-                    catch(Exception e)
-                    {
-                        throw e;
-                        break;
-                    }
-                }
-                AppData.SaveCurrentData();
-            }*/
-
-            
+            IO.CleanDirectory(cache, 8);
         }
 
         /// <summary>

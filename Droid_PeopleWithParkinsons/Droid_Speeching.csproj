@@ -169,6 +169,7 @@
     <Compile Include="Fragment\SettingsFragment.cs" />
     <Compile Include="Activity\LoginActivity.cs" />
     <Compile Include="Activity\UploadsActivity.cs" />
+    <Compile Include="MiscClasses\AndroidPCLHelper.cs" />
     <Compile Include="MiscClasses\AndroidUtils.cs" />
     <Compile Include="MiscClasses\AssessmentFragment.cs" />
     <Compile Include="MiscClasses\AudioRecorder.cs" />
