@@ -12,9 +12,33 @@
         app:indicatorColor="@color/appHighlight"
         android:background="@color/appDark"
         android:textColor="@color/white" />
+    <RelativeLayout
+        android:id="@+id/offlineWarning"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/appDarkest"
+        android:padding="5dp"
+        android:layout_below="@id/tabs"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/offlineIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/offline" />
+        <TextView
+            android:layout_below="@id/offlineIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You are offline! Some features may be unavailable :("
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tabs" />
+        android:layout_below="@id/offlineWarning" />
 </RelativeLayout>

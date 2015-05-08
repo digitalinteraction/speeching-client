@@ -44,7 +44,7 @@ namespace DroidSpeeching
             refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
             refresher.Refresh += async delegate
             {
-                if (!AppData.CheckNetwork())
+                if (!AndroidUtils.IsConnected())
                 {
                     AndroidUtils.OfflineAlert(Activity);
                     refresher.Refreshing = false;
@@ -90,7 +90,7 @@ namespace DroidSpeeching
             int itemId = thisItem.Id;
             intent.PutExtra("ActivityId", itemId);
 
-            if (!AppData.CheckNetwork() && !GetActivityPrefs(itemId).GetBoolean("DOWNLOADED", false))
+            if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(thisItem.Id, Activity))
             {
                 AndroidUtils.OfflineAlert(Activity, "This activity has not been downloaded yet and requires an Internet connection to prepare!");
                 return;
@@ -114,7 +114,7 @@ namespace DroidSpeeching
 
         void viewFeedbackBtn_Click(object sender, System.EventArgs e)
         {
-            if (AppData.CheckNetwork())
+            if (AndroidUtils.IsConnected())
                 this.Activity.StartActivity(typeof(AssessmentActivity)); //FeedbackActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);
@@ -122,7 +122,7 @@ namespace DroidSpeeching
 
         void practiceButton_Click(object sender, System.EventArgs e)
         {
-            if (AppData.CheckNetwork())
+            if (AndroidUtils.IsConnected())
                 this.Activity.StartActivity(typeof(WikiPracticeActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);

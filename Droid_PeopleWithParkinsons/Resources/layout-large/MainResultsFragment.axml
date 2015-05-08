@@ -8,6 +8,6 @@
         android:id="@+id/mainResults_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp" />
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" />
 </DroidSpeeching.CustomSwipeToRefresh>

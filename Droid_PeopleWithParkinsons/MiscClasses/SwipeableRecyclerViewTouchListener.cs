@@ -224,7 +224,7 @@ namespace DroidSpeeching
                                     .Alpha(mAlpha)
                                     .SetDuration(mAnimationTime)
                                     .SetListener(null);
-                            if(!mSwipeListener.CanSwipe(mDownPosition))
+                            if(!mSwipeListener.CanSwipe(mDownPosition) && System.Math.Abs(mFinalDelta) > 10)
                             {
                                 Animation shake = AnimationUtils.LoadAnimation(context, Resource.Animation.shake);
                                 mDownView.StartAnimation(shake);

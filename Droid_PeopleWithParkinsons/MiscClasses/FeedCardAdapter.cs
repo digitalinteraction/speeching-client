@@ -149,8 +149,16 @@ namespace DroidSpeeching
             {
                 (viewHolder as CardBaseViewHolder).interact.Click += delegate
                 {
+                    int actId = int.Parse(interaction.value);
+
+                    if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
+                    {
+                        AndroidUtils.OfflineAlert(context, "This activity has not been downloaded yet and requires an Internet connection to prepare!");
+                        return;
+                    }
+
                     Intent intent = new Intent(context, typeof(ScenarioActivity));
-                    intent.PutExtra("ActivityId", int.Parse(interaction.value));
+                    intent.PutExtra("ActivityId", actId);
                     context.StartActivity(intent);
                 };
             }

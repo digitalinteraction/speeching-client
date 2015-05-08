@@ -318,11 +318,18 @@ namespace DroidSpeeching
             wikiText.Text = finalText;
 
             // If it's longer than expected, reduce the text size!
-            if (finalText.Length > 520 &&
-                ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <= Android.Content.Res.ScreenLayout.SizeNormal))
+            if (finalText.Length > 520)
             {
-                wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
+                if((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <= Android.Content.Res.ScreenLayout.SizeNormal)
+                {
+                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
+                }
+                else
+                {
+                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 20);
+                }
             }
+                
 
             SwitchMode(PracticeMode.Loudness);
 

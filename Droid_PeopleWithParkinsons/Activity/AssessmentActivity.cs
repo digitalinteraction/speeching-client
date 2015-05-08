@@ -92,6 +92,16 @@ namespace DroidSpeeching
 
             Assessment assess = await ServerData.FetchAssessment();
 
+            if(assess == null)
+            {
+                RunOnUiThread(() =>
+                {
+                    dialog.Hide();
+                    SelfDestruct("It looks like you're offline...", "Oops! We couldn't download your assessment - check your internet connection and try again later!");
+                });
+                return;
+            }
+
             FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assess.description;
 
             tasks = assess.tasks;
@@ -120,6 +130,20 @@ namespace DroidSpeeching
             {
                 dialog.Hide();
             });
+        }
+
+        /// <summary>
+        /// Unrecoverable error - show a dialog and return to the previous activity. Can be called by child fragments
+        /// </summary>
+        public void SelfDestruct(string title = "Fatal error", string message = "Oops! Something terrible has happened - sorry about that. Closing the assessment.")
+        {
+            AlertDialog errDialog = new AlertDialog.Builder(this)
+                .SetTitle(title)
+                .SetMessage(message)
+                .SetCancelable(false)
+                .SetPositiveButton("Ok", (arg1, arg2) => { Finish(); })
+                .Create();
+            errDialog.Show();
         }
 
         protected override void OnSaveInstanceState(Bundle outState)

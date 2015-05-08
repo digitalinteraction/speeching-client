@@ -28,6 +28,25 @@ namespace DroidSpeeching
         public static GoogleCloudMessaging gcm;
         public static string GooglePlayRegId;
         public static NotificationManager notificationManager;
+        public static MainActivity mainActivity;
+
+        public static bool IsConnected()
+        {
+            bool connected = AppData.CheckNetwork();
+            
+            if(mainActivity != null)
+            {
+                mainActivity.ShowOfflineWarning(!connected);
+            }
+            return connected;
+        }
+
+        public static bool IsActivityAvailableOffline(int id, Context context)
+        {
+            ISharedPreferences prefs = context.GetSharedPreferences("ACT_" + id, FileCreationMode.MultiProcess);
+
+            return prefs.GetBoolean("DOWNLOADED", false);
+        }
 
         /// <summary>
         /// Set up Android specific variables and get the session loaded/created

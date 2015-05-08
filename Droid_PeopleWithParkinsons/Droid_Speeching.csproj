@@ -426,6 +426,7 @@
     <AndroidResource Include="Resources\drawable\info.png" />
     <AndroidResource Include="Resources\anim\shake.xml" />
     <AndroidResource Include="Resources\menu\scenarioActivityActions.xml" />
+    <AndroidResource Include="Resources\drawable\offline.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">

@@ -25,7 +25,8 @@ namespace DroidSpeeching
         private ViewPager pager;
         private PagerSlidingTabStrip.PagerSlidingTabStrip _tabs;
         private MyPagerAdapter _adapter;
-        
+        private RelativeLayout offlineNotice;
+
         protected override void OnCreate(Bundle bundle)
         {
             RequestWindowFeature(WindowFeatures.ActionBar);
@@ -39,12 +40,23 @@ namespace DroidSpeeching
 
             _tabs = FindViewById<PagerSlidingTabStrip.PagerSlidingTabStrip>(Resource.Id.tabs);
             pager = FindViewById<ViewPager>(Resource.Id.viewPager);
+            offlineNotice = FindViewById<RelativeLayout>(Resource.Id.offlineWarning);
 
             int pageMargin = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Resources.DisplayMetrics);
             pager.PageMargin = pageMargin;
             InitAdapter();
 
+            AndroidUtils.mainActivity = this;
+            AndroidUtils.IsConnected();
+
             this.SupportActionBar.Show();
+        }
+
+        public void ShowOfflineWarning(bool show)
+        {
+            if (offlineNotice == null) return;
+
+            offlineNotice.Visibility = (show)? ViewStates.Visible : ViewStates.Gone;
         }
 
         private void InitAdapter()

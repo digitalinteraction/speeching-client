@@ -34,7 +34,7 @@ namespace DroidSpeeching
             refresher.SetSlop(Activity);
             refresher.Refresh += async delegate
             {
-                if (!AppData.CheckNetwork() || adapter == null)
+                if (!AndroidUtils.IsConnected() || adapter == null)
                 {
                     AndroidUtils.OfflineAlert(Activity);
                     refresher.Refreshing = false;

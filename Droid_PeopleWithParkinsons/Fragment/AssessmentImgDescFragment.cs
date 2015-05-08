@@ -1,7 +1,9 @@
+using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using SpeechingShared;
+using System;
 
 namespace DroidSpeeching
 {
@@ -70,7 +72,14 @@ namespace DroidSpeeching
 
             finishedCreating = true;
 
-            imageView.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(data.Image)));
+            try
+            {
+                imageView.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(data.Image)));
+            }
+            catch(Exception e)
+            {
+                (Activity as AssessmentActivity).SelfDestruct();
+            }
         }
 
         public override bool IsFinished()

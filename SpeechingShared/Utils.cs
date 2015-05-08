@@ -38,7 +38,7 @@ namespace SpeechingShared
             }
             // Add subdirectory sizes.
             IList<IFolder> fols = await d.GetFoldersAsync();
-            foreach (IFile fo in fols)
+            foreach (IFolder fo in fols)
             {
                 Size += GetFolderSize(fo.Path);
             }
@@ -52,8 +52,6 @@ namespace SpeechingShared
         /// <returns></returns>
         public static async Task<string> FetchLocalCopy(string remoteUrl, Type ownerType = null)
         {
-            if (!AppData.CheckNetwork()) return null;
-
             string localIconPath;
             bool exists = false;
 
@@ -86,6 +84,8 @@ namespace SpeechingShared
                 // Download the file if it isn't already stored locally
                 if (!exists)
                 {
+                    if (!AppData.CheckNetwork()) return null;
+
                     file = await AppData.cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
                     using (HttpClient client = new HttpClient()) // TODO get ModernHttpClient working
