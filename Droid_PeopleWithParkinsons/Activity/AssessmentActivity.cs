@@ -35,6 +35,9 @@ namespace DroidSpeeching
         IAssessmentTask[] tasks;
         ISharedPreferences prefs;
 
+        DateTime timeRecStarted;
+        int minimumMillis = 500; //Mediarecorder has a minimum record time
+
         AssessmentFragment currentFragment;
 
         AndroidUtils.RecordAudioManager audioManager;
@@ -259,6 +262,7 @@ namespace DroidSpeeching
 
         private void StartRecording()
         {
+            timeRecStarted = DateTime.Now;
             recording = true;
             string fileAdd = System.IO.Path.Combine(localTempDirectory,
                     currentFragment.GetRecordingId() + ".mp4");
@@ -324,6 +328,10 @@ namespace DroidSpeeching
 
             if(recording)
             {
+                TimeSpan recTime = DateTime.Now - timeRecStarted;
+
+                if (recTime.TotalMilliseconds < minimumMillis) return;
+
                 // Stop recording and move onto next task/finish
                 StopRecording();
 

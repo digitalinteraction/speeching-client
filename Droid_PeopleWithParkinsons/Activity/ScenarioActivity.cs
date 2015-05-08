@@ -69,6 +69,9 @@ namespace DroidSpeeching
         private AndroidUtils.RecordAudioManager audioManager;
         private bool recording = false;
 
+        DateTime timeRecStarted;
+        int minimumMillis = 500; //Mediarecorder has a minimum record time
+
         private TTSManager tts;
         private bool canSpeak = false;
         private bool autoSpeak = true;
@@ -568,6 +571,9 @@ namespace DroidSpeeching
             }
             else if(recording)
             {
+                TimeSpan recTime = DateTime.Now - timeRecStarted;
+                if (recTime.TotalMilliseconds < minimumMillis) return;
+
                 recording = false;
                 audioManager.StopRecording();
                 results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".mp4");
@@ -575,6 +581,7 @@ namespace DroidSpeeching
             }
             else
             {
+                timeRecStarted = DateTime.Now;
                 mainButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
                 if(mediaPlayer != null)
                 {
