@@ -73,6 +73,8 @@ namespace DroidSpeeching
         {
             if (requestCode == RC_SIGN_IN)
             {
+                apiClient.Disconnect();
+
                 if (resultCode != Result.Ok)
                 {
                     signInClicked = false;
