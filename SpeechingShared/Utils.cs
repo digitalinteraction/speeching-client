@@ -110,9 +110,10 @@ namespace SpeechingShared
             }
             catch (Exception e)
             {
+                AppData.IO.PrintToConsole(e.Message);
                 if(file != null)
                 {
-                    file.DeleteAsync();
+                    file.DeleteAsync().Start();
                 }
                 return null;
             }

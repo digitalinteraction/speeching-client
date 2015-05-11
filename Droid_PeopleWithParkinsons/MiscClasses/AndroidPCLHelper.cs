@@ -90,11 +90,15 @@ namespace DroidSpeeching
                 catch (Exception e)
                 {
                     throw e;
-                    break;
                 }
             }
             AppData.SaveCurrentData();
 
+        }
+
+        public void PrintToConsole(string message)
+        {
+            Console.WriteLine(message);
         }
     } 
 }

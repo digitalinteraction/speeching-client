@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Support.V7.App;
 using SpeechingShared;
 using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace DroidSpeeching
 {
@@ -29,6 +30,9 @@ namespace DroidSpeeching
         LinearLayout loadingContainer;
         FrameLayout fragmentContainer;
 
+        Assessment assessment;
+        string zipPath;
+        ScenarioResult results;
         bool recording = false;
         int taskIndex = 0;
         string localTempDirectory;
@@ -93,9 +97,9 @@ namespace DroidSpeeching
                 dialog.Show();
             });
 
-            Assessment assess = await ServerData.FetchAssessment();
-
-            if(assess == null)
+            assessment = await ServerData.FetchAssessment();
+            
+            if(assessment == null)
             {
                 RunOnUiThread(() =>
                 {
@@ -105,9 +109,12 @@ namespace DroidSpeeching
                 return;
             }
 
-            FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assess.description;
+            FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assessment.description;
 
-            tasks = assess.tasks;
+            tasks = assessment.tasks;
+            zipPath = Path.Combine(AppData.exports.Path, assessment.id + "_assessmentRes.zip");
+            results = new ScenarioResult(assessment.id, zipPath, AppData.session.currentUser.id);
+            results.isAssessment = true;
 
             int previous = -1;
             
@@ -255,16 +262,43 @@ namespace DroidSpeeching
 
         private void FinishAssessment()
         {
-            // TODO
-            Toast.MakeText(this, "Assessment complete!", ToastLength.Long).Show();
             currentStage = AssessmentStage.Finished;
+
+            ProgressDialog progress = null;
+
+            RunOnUiThread(() => 
+            {
+                progress = new ProgressDialog(this);
+                progress.SetTitle("Assessment Complete!");
+                progress.SetMessage("Getting your recordings ready to upload...");
+                progress.Show();
+            });
+
+            try
+            {
+                FastZip fastZip = new FastZip();
+                bool recurse = true;
+                fastZip.CreateZip(zipPath, localTempDirectory, recurse, null);
+
+                results.CompletionDate = DateTime.Now;
+                AppData.session.resultsToUpload.Add(results);
+                AppData.SaveCurrentData();
+
+                Directory.Delete(localTempDirectory, true);
+                StartActivity(typeof(UploadsActivity));
+                this.Finish();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void StartRecording()
         {
             timeRecStarted = DateTime.Now;
             recording = true;
-            string fileAdd = System.IO.Path.Combine(localTempDirectory,
+            string fileAdd = Path.Combine(localTempDirectory,
                     currentFragment.GetRecordingId() + ".mp4");
             audioManager.StartRecording(fileAdd);
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
@@ -274,6 +308,7 @@ namespace DroidSpeeching
         private void StopRecording()
         {
             audioManager.StopRecording();
+            results.ParticipantTaskIdResults.Add(currentFragment.GetRecordingId(), currentFragment.GetRecordingId() + ".mp4");
             recording = false;
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
             recButton.Text = "Record";

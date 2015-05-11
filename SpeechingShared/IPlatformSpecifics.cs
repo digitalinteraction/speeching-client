@@ -11,5 +11,6 @@ namespace SpeechingShared
     public interface IPlatformSpecifics
     {
         void CleanDirectory(IFolder path, float maxMb);
+        void PrintToConsole(string message);
     }
 }

@@ -17,7 +17,7 @@ namespace DroidSpeeching
             runOnceCreated = new Stack<Action>();
         }
 
-        public abstract string GetRecordingId();
+        public abstract int GetRecordingId();
         public abstract bool IsFinished();
         public abstract void NextAction();
         public abstract int GetCurrentStage();

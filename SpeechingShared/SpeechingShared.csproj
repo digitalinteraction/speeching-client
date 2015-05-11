@@ -51,7 +51,7 @@
     <Compile Include="BiDictionary.cs" />
     <Compile Include="ConfidentialData.cs" />
     <Compile Include="GooglePlacesResult.cs" />
-    <Compile Include="IFileManager.cs" />
+    <Compile Include="IPlatformSpecifics.cs" />
     <Compile Include="JsonCreationConverter.cs" />
     <Compile Include="MainFeedStructs\FeedItemActivity.cs" />
     <Compile Include="MainFeedStructs\FeedItemBase.cs" />

@@ -17,6 +17,8 @@ namespace SpeechingShared
         private Utils.UploadStage state;
         private DateTime completedAt;
 
+        public bool isAssessment = false;
+
         public ScenarioResult(int activityId, string dataLoc, string userId)
         {
             this.id = AppData.rand.Next(0, 100000); // TEMP

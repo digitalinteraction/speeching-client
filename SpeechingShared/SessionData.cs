@@ -130,6 +130,7 @@ namespace SpeechingShared
             }
             catch (Exception e)
             {
+                AppData.IO.PrintToConsole(e.Message);
                 return false;
             }
 

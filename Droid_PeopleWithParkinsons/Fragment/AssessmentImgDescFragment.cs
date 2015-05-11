@@ -2,6 +2,7 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 using SpeechingShared;
 using System;
 
@@ -24,7 +25,7 @@ namespace DroidSpeeching
             args.PutInt("ID", task.Id);
             args.PutString("TITLE", task.Title);
             args.PutString("INSTRUCTIONS", task.Instructions);
-            args.PutStringArray("PROMPTS", task.Prompts);
+            args.PutString("PROMPTS", JsonConvert.SerializeObject(task.Prompts));
             args.PutString("IMAGE", task.Image);
             fragment.Arguments = args;
 
@@ -39,7 +40,7 @@ namespace DroidSpeeching
             data.Id = Arguments.GetInt("ID");
             data.Title = Arguments.GetString("TITLE");
             data.Instructions = Arguments.GetString("INSTRUCTIONS");
-            data.Prompts = Arguments.GetStringArray("PROMPTS");
+            data.Prompts = JsonConvert.DeserializeObject<AssessmentRecordingPrompt[]>(Arguments.GetString("PROMPTS"));
             data.Image = Arguments.GetString("IMAGE");
         }
 
@@ -61,7 +62,7 @@ namespace DroidSpeeching
             }
             else
             {
-                instructionView.Text = data.Prompts[instructionIndex];
+                instructionView.Text = data.Prompts[instructionIndex].Value;
                 if (instructionIndex + 1 == data.Prompts.Length) finished = true;
             }
 
@@ -78,6 +79,7 @@ namespace DroidSpeeching
             }
             catch(Exception e)
             {
+                AppData.IO.PrintToConsole(e.Message);
                 (Activity as AssessmentActivity).SelfDestruct();
             }
         }
@@ -102,16 +104,15 @@ namespace DroidSpeeching
             instructionIndex++;
             if (instructionIndex < data.Prompts.Length)
             {
-                instructionView.Text = data.Prompts[instructionIndex];
+                instructionView.Text = data.Prompts[instructionIndex].Value;
 
                 if (instructionIndex + 1 == data.Prompts.Length) finished = true;
             }
         }
 
-        public override string GetRecordingId()
+        public override int GetRecordingId()
         {
-            // TODO
-            return data.Id.ToString() + instructionIndex;
+            return data.Prompts[instructionIndex].Id;
         }
 
         public override int GetCurrentStage()

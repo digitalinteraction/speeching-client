@@ -184,7 +184,7 @@ namespace DroidSpeeching
         /// <summary>
         /// Create the list using the found nearby locations
         /// </summary>
-        public async Task PopulateList()
+        public async void PopulateList()
         {
             await AndroidUtils.InitSession(this);
             mainList.Adapter = new PlacesListAdapter(this, Resource.Id.placesList, nearby);
@@ -308,7 +308,7 @@ namespace DroidSpeeching
                 return view;
             }
 
-            private async Task LoadImage(ImageView image, GooglePlace place)
+            private async void LoadImage(ImageView image, GooglePlace place)
             {
                 string imageLoc = await ServerData.FetchPlacePhoto(place, 140, 140);
 

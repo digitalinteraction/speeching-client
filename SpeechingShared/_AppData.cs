@@ -145,7 +145,7 @@ namespace SpeechingShared
             }
             catch (Exception e)
             {
-                
+                AppData.IO.PrintToConsole(e.Message);
             }
 
             session = new SessionData();

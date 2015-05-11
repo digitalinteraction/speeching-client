@@ -38,7 +38,7 @@ namespace DroidSpeeching
             get { return results.Length; }
         }
 
-        private async void PopulateView(int activityId, View view)
+        private async void PopulateActivityResultView(int activityId, View view)
         {
             ISpeechingActivityItem thisItem = await AppData.session.FetchActivityWithId(activityId);
 
@@ -58,9 +58,13 @@ namespace DroidSpeeching
             {
                 view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = "Log about " + ((LocationRecordingResult)results[position]).GooglePlaceName;
             }
+            else if(results[position].GetType() == typeof(ScenarioResult) && (results[position] as ScenarioResult).isAssessment)
+            {
+                view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = "Assessment Results";
+            }
             else
             {
-                PopulateView(results[position].ParticipantActivityId, view);
+                PopulateActivityResultView(results[position].ParticipantActivityId, view);
             }
 
             view.FindViewById<TextView>(Resource.Id.uploadsList_completedAt).Text = "Completed on: " + results[position].CompletionDate.ToString();

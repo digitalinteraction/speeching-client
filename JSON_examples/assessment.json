@@ -1,20 +1,62 @@
 {
-	"id" : 8675309,
-	"title"	: "Your First Assessment!",
-	"description" : "Doing this short assessment will help us determine which parts of your speech might need some practice!",
-	"tasks" : [
-		{
-			"Id"	: 12513612,
-			"Title" : "Quickfire Speaking",
-			"Instructions" : "Press the record button and say the shown word as clearly as you can, then press stop.",
-			"Prompts" : ["first", "second", "third", "last"]
-		},
-		{
-			"Id"	: 363473321,
-			"Title" : "Image Description",
-			"Instructions" : "Press the 'Record' button and follow the instruction in the image's caption",
-			"Prompts" : ["What does the image show?", "Describe the colours of the image", "Describe an object within the image"],
-			"Image" : "http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg"
-		}
-	]
+    "id": 8675309,
+    "title": "Your First Assessment!",
+    "description": "Doing this short assessment will help us determine which parts of your speech might need some practice!",
+    "tasks": [
+        {
+            "Id": 12513612,
+            "Title": "Quickfire Speaking",
+            "Instructions": "Press the record button and say the shown word as clearly as you can, then press stop.",
+            "Prompts": [
+                {
+                    "Id": 1256226,
+                    "Value": "Easy"
+                },
+                {
+                    "Id": 12564236,
+                    "Value": "Trickier"
+                },
+                {
+                    "Id": 12566786,
+                    "Value": "Simple"
+                },
+                {
+                    "Id": 13516246,
+                    "Value": "More Difficult"
+                },
+                {
+                    "Id": 645856226,
+                    "Value": "Exquisite"
+                },
+                {
+                    "Id": 34262246,
+                    "Value": "Borderline"
+                }
+            ]
+        },
+        {
+            "Id": 363473321,
+            "Title": "Image Description",
+            "Instructions": "Press the 'Record' button and follow the instruction in the image's caption",
+            "Prompts": [
+                {
+                    "Id": 776562246,
+                    "Value": "What does the image show?"
+                },
+                {
+                    "Id": 415356246,
+                    "Value": "Describe the colours in the image."
+                },
+                {
+                    "Id": 74262246,
+                    "Value": "Describe the dominant feature of the image."
+                },
+                { 
+                    "Id": 73860303,
+                    "Value" :  "What does the image make you think of?"
+                }
+            ],
+            "Image": "http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg"
+        }
+    ]
 }

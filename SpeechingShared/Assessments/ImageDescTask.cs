@@ -12,7 +12,7 @@ namespace SpeechingShared
         private string instructions;
 
         public string Image;
-        public string[] Prompts;
+        public AssessmentRecordingPrompt[] Prompts;
 
         public int Id
         {

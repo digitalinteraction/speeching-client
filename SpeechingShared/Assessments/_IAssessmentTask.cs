@@ -11,4 +11,10 @@ namespace SpeechingShared
         string Title { get; set; }
         string Instructions { get; set; }
     }
+
+    public class AssessmentRecordingPrompt
+    {
+        public int Id;
+        public string Value;
+    }
 }

@@ -246,6 +246,7 @@ namespace SpeechingShared
             }
             catch(Exception except)
             {
+                AppData.IO.PrintToConsole(except.Message);
                 return false;
             }
         }
@@ -258,9 +259,13 @@ namespace SpeechingShared
         /// <param name="radius">The radius of the search area, in metres</param>
         /// <param name="callback">Optional method to call upon completion</param>
         /// <returns></returns>
-        public static async Task<GooglePlace[]> FetchPlaces(string lat, string lng, int radius, Action<GooglePlace[]> callback = null, bool includeLocalities = false)
+        public static async void FetchPlaces(string lat, string lng, int radius, Action<GooglePlace[]> callback = null, bool includeLocalities = false)
         {
-            if (!AppData.CheckNetwork()) return null;
+            if (!AppData.CheckNetwork())
+            {
+                callback(null);
+                return;
+            }
 
             string basePlaces = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
 
@@ -299,8 +304,6 @@ namespace SpeechingShared
                         {
                             callback(places.results);
                         }
-
-                        return places.results;
                     }
                     catch(Exception except)
                     {
@@ -460,6 +463,7 @@ namespace SpeechingShared
             }
             catch(Exception except)
             {
+                AppData.IO.PrintToConsole(except.Message);
                 success = false;
                 toUpload.UploadState = Utils.UploadStage.Ready;
                 if (onUpdate != null) onUpdate();
@@ -500,7 +504,7 @@ namespace SpeechingShared
         /// </summary>
         /// <param name="onFinish">The function to get called on an item finishing. Is called as true when all items have been processed.</param>
         /// <returns></returns>
-        public static async Task PushAllResults(Action onUpdate, Action<bool> onFinish, CancellationToken cancelToken)
+        public static async void PushAllResults(Action onUpdate, Action<bool> onFinish, CancellationToken cancelToken)
         {
             if (!AppData.CheckNetwork())
             {
@@ -547,6 +551,7 @@ namespace SpeechingShared
             }
             catch(Exception ex)
             {
+                AppData.IO.PrintToConsole(ex.Message);
                 return false;
             }
 
@@ -622,6 +627,7 @@ namespace SpeechingShared
             data.Add("submissionId", resultId);
 
             //return await GetRequest<IFeedbackItem[]>("GetFeedback", data);
+            await Task.Delay(1000);
 
             // TEMP
             List<IFeedItem> arr = new List<IFeedItem>();
@@ -770,22 +776,23 @@ namespace SpeechingShared
 
             await Task.Delay(1000); // Network simulation TODO
 
-            string jsonString = "{\r\n\t\"id\" : 8675309,\r\n\t\"title\"\t: \"Your First Assessment!\",\r\n\t\"description\" : \"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\r\n\t\"tasks\" : [\r\n\t\t{\r\n\t\t\t\"Id\"\t: 12513612,\r\n\t\t\t\"Title\" : \"Quickfire Speaking\",\r\n\t\t\t\"Instructions\" : \"Press the record button and say the shown word as clearly as you can, then press stop.\",\r\n\t\t\t\"Prompts\" : [\"first\", \"second\", \"third\", \"last\"]\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"Id\"\t: 363473321,\r\n\t\t\t\"Title\" : \"Image Description\",\r\n\t\t\t\"Instructions\" : \"Press the 'Record' button and follow the instruction in the image's caption\",\r\n\t\t\t\"Prompts\" : [\"What does the image show?\", \"Describe the colours of the image\", \"Describe an object within the image\"],\r\n\t\t\t\"Image\" : \"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"\r\n\t\t}\r\n\t]\r\n}";
+            string jsonString = "{\r\n    \"id\": 8675309,\r\n    \"title\": \"Your First Assessment!\",\r\n    \"description\": \"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\r\n    \"tasks\": [\r\n        {\r\n            \"Id\": 12513612,\r\n            \"Title\": \"Quickfire Speaking\",\r\n            \"Instructions\": \"Press the record button and say the shown word as clearly as you can, then press stop.\",\r\n            \"Prompts\": [\r\n                {\r\n                    \"Id\": 1256226,\r\n                    \"Value\": \"Easy\"\r\n                },\r\n                {\r\n                    \"Id\": 12564236,\r\n                    \"Value\": \"Trickier\"\r\n                },\r\n                {\r\n                    \"Id\": 12566786,\r\n                    \"Value\": \"Simple\"\r\n                },\r\n                {\r\n                    \"Id\": 13516246,\r\n                    \"Value\": \"More Difficult\"\r\n                },\r\n                {\r\n                    \"Id\": 645856226,\r\n                    \"Value\": \"Exquisite\"\r\n                },\r\n                {\r\n                    \"Id\": 34262246,\r\n                    \"Value\": \"Borderline\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"Id\": 363473321,\r\n            \"Title\": \"Image Description\",\r\n            \"Instructions\": \"Press the 'Record' button and follow the instruction in the image's caption\",\r\n            \"Prompts\": [\r\n                {\r\n                    \"Id\": 776562246,\r\n                    \"Value\": \"What does the image show?\"\r\n                },\r\n                {\r\n                    \"Id\": 415356246,\r\n                    \"Value\": \"Describe the colours in the image.\"\r\n                },\r\n                {\r\n                    \"Id\": 74262246,\r\n                    \"Value\": \"Describe the dominant feature of the image.\"\r\n                },\r\n                { \r\n                    \"Id\": 73860303,\r\n                    \"Value\" :  \"What does the image make you think of?\"\r\n                }\r\n            ],\r\n            \"Image\": \"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"\r\n        }\r\n    ]\r\n}";
             try
             {
                 Assessment toRet = JsonConvert.DeserializeObject<Assessment>(jsonString, new AssessmentConverter());
 
-                foreach(IAssessmentTask task in toRet.tasks)
+                foreach (IAssessmentTask task in toRet.tasks)
                 {
-                    if(task.GetType() == typeof(ImageDescTask))
+                    if (task.GetType() == typeof(ImageDescTask))
                     {
                         (task as ImageDescTask).Image = await Utils.FetchLocalCopy((task as ImageDescTask).Image);
                     }
                 }
                 return toRet;
             }
-            catch(Exception ex)
+            catch (Exception except)
             {
+                AppData.IO.PrintToConsole(except.Message);
                 return null;
             }
         }

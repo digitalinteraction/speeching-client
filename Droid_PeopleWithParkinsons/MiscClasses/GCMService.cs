@@ -125,7 +125,7 @@ namespace DroidSpeeching
             return apiClient;
         }
 
-        private async Task FetchNewContent()
+        private async void FetchNewContent()
         {
             await AndroidUtils.InitSession();
             await ServerData.FetchCategories();

@@ -213,6 +213,7 @@ namespace DroidSpeeching
 
             if(!success)
             {
+                needLogin = true;
                 this.RunOnUiThread(() =>
                 {
                     AlertDialog errorDialog = new AlertDialog.Builder(this)

@@ -1,6 +1,7 @@
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 using SpeechingShared;
 
 namespace DroidSpeeching
@@ -21,7 +22,7 @@ namespace DroidSpeeching
             args.PutInt("ID", task.Id);
             args.PutString("TITLE", task.Title);
             args.PutString("INSTRUCTIONS", task.Instructions);
-            args.PutStringArray("PROMPTS", task.Prompts);
+            args.PutString("PROMPTS", JsonConvert.SerializeObject(task.Prompts));
             fragment.Arguments = args;
 
             return fragment;
@@ -35,7 +36,7 @@ namespace DroidSpeeching
             data.Id = Arguments.GetInt("ID");
             data.Title = Arguments.GetString("TITLE");
             data.Instructions = Arguments.GetString("INSTRUCTIONS");
-            data.Prompts = Arguments.GetStringArray("PROMPTS");
+            data.Prompts = JsonConvert.DeserializeObject<AssessmentRecordingPrompt[]>(Arguments.GetString("PROMPTS"));
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -47,7 +48,7 @@ namespace DroidSpeeching
         {
             quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
 
-            quickFireText.Text = "\"" + data.Prompts[index] + "\"";
+            quickFireText.Text = "\"" + data.Prompts[index].Value + "\"";
             if (index + 1 == data.Prompts.Length) finished = true;
 
             while (runOnceCreated.Count > 0)
@@ -65,7 +66,7 @@ namespace DroidSpeeching
             index++;
             if (index < data.Prompts.Length)
             {
-                quickFireText.Text = "\"" + data.Prompts[index] + "\"";
+                quickFireText.Text = "\"" + data.Prompts[index].Value + "\"";
                 
                 if (index + 1 == data.Prompts.Length) finished = true;
             }
@@ -86,9 +87,9 @@ namespace DroidSpeeching
             return data.Title;
         }
 
-        public override string GetRecordingId()
+        public override int GetRecordingId()
         {
-            return data.Id.ToString() + index;
+            return data.Prompts[index].Id;
         }
 
         public override int GetCurrentStage()
