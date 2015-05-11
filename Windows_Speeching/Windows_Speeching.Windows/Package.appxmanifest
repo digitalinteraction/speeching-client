@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
 
-  <Identity Name="7278e2a1-01ba-46ac-beec-f0b30fcef606"
-            Publisher="CN=tgs03_000"
+  <Identity Name="2480378d-2075-4a7b-bc4c-3a55e3f45df7"
+            Publisher="CN=tgs_003"
             Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>Windows_Speeching.Windows</DisplayName>
-    <PublisherDisplayName>tgs03_000</PublisherDisplayName>
+    <PublisherDisplayName>tgs_003</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

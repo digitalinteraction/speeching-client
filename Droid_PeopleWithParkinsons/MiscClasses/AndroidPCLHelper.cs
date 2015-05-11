@@ -25,7 +25,7 @@ namespace DroidSpeeching
             long totalBytes = 0;
             foreach (string name in allFiles)
             {
-                GetFileSize(name);
+                totalBytes += GetFileSize(name);
             }
 
             return totalBytes;

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>4400d1b0-a0ec-48b9-ab0f-0f2fd27513ad</SharedGUID>
+    <SharedGUID>ed60037d-88ae-468e-86df-bca8ad8e545e</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Windows_Speeching</Import_RootNamespace>

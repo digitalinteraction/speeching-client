@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{b38b56ca-f114-4c22-b727-13bdb85d5840}</ProjectGuid>
+    <ProjectGuid>{ce12a567-9138-4ba3-afff-a04986b0cf7e}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Windows_Speeching</RootNamespace>

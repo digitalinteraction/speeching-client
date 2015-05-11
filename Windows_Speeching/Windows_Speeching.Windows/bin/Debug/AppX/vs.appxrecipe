@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>15COMPSCI217</Machine>
+    <WindowsUser>tgs_003</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>2480378d-2075-4a7b-bc4c-3a55e3f45df7</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\obj\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>03B957CF57FBF30ADA42A00035DD7D3206B6F4D338441A0E4CEFD1F2FBFAB9DD</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>2480378d-2075-4a7b-bc4c-3a55e3f45df7_1.0.0.0_neutral__hv0v74jh7nvgy</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>2480378d-2075-4a7b-bc4c-3a55e3f45df7_hv0v74jh7nvgy!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>2480378d-2075-4a7b-bc4c-3a55e3f45df7</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=tgs_003</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-05-11T14:43:35.430</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\Windows_Speeching.Windows.exe">
+      <PackagePath>Windows_Speeching.Windows.exe</PackagePath>
+      <Modified>2015-05-11T14:45:36.317</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\Newtonsoft.Json.7.0.1-beta3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll">
+      <PackagePath>Newtonsoft.Json.dll</PackagePath>
+      <Modified>2015-05-11T14:17:10.026</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\PCLStorage.1.0.2\lib\portable-win8+wpa81\PCLStorage.Abstractions.dll">
+      <PackagePath>PCLStorage.Abstractions.dll</PackagePath>
+      <Modified>2015-05-01T13:17:21.178</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\PCLStorage.1.0.2\lib\portable-win8+wpa81\PCLStorage.dll">
+      <PackagePath>PCLStorage.dll</PackagePath>
+      <Modified>2015-05-01T13:17:21.206</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.dll">
+      <PackagePath>SpeechingShared.dll</PackagePath>
+      <Modified>2015-05-11T13:39:26.486</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.dll">
+      <PackagePath>OxyPlot.dll</PackagePath>
+      <Modified>2015-05-05T08:58:20.624</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\HtmlAgilityPack.dll">
+      <PackagePath>HtmlAgilityPack.dll</PackagePath>
+      <Modified>2015-04-24T15:52:43.698</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\WideLogo.scale-100.png">
+      <PackagePath>Assets\WideLogo.scale-100.png</PackagePath>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\Assets\LightGray.png">
+      <PackagePath>Assets\LightGray.png</PackagePath>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\Assets\MediumGray.png">
+      <PackagePath>Assets\MediumGray.png</PackagePath>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\Assets\DarkGray.png">
+      <PackagePath>Assets\DarkGray.png</PackagePath>
+      <Modified>2014-03-14T09:55:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\DataModel\SampleData.json">
+      <PackagePath>DataModel\SampleData.json</PackagePath>
+      <Modified>2015-05-11T14:03:17.068</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+      <Modified>2015-05-11T14:17:23.240</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\HubPage.xbf">
+      <PackagePath>HubPage.xbf</PackagePath>
+      <Modified>2015-05-11T14:17:23.243</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\SectionPage.xbf">
+      <PackagePath>SectionPage.xbf</PackagePath>
+      <Modified>2015-05-11T14:17:23.245</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\ItemPage.xbf">
+      <PackagePath>ItemPage.xbf</PackagePath>
+      <Modified>2015-05-11T14:17:23.248</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\Windows_Speeching.Windows.xr.xml">
+      <PackagePath>Windows_Speeching.Windows.xr.xml</PackagePath>
+      <Modified>2015-05-11T14:17:23.175</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2015-05-11T14:43:35.176</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

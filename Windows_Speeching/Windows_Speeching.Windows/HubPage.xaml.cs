@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows_Speeching.Data;
 using Windows_Speeching.Common;
+using SpeechingShared;
+using Windows.Networking.Connectivity;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -48,6 +50,29 @@ namespace Windows_Speeching
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            Prepare();
+        }
+
+        public async void Prepare()
+        {
+            AppData.checkForConnection = () =>
+            {
+                ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
+                bool internet = connections != null && connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
+                return internet;
+            };
+
+            AppData.onConnectionSuccess = () =>
+            {
+                
+            };
+
+            AppData.IO = new Win8PCLHelper();
+
+            await AppData.AssignCacheLocations();
+            await AppData.InitializeIfNeeded();
+
+            await ServerData.FetchCategories(); 
         }
 
         /// <summary>
@@ -64,8 +89,13 @@ namespace Windows_Speeching
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-4");
-            this.DefaultViewModel["Section3Items"] = sampleDataGroup;
+            bool success = false;//await ServerData.FetchCategories(); 
+
+            if(success)
+            {
+                var sampleDataGroup = AppData.session.categories;
+                this.DefaultViewModel["Section3Items"] = sampleDataGroup;
+            }
         }
 
         /// <summary>

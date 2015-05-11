@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="88c923ca-5cf7-47f4-803a-54b2f4ae26fc"
-            Publisher="CN=tgs03_000"
+  <Identity Name="ad429217-2e79-4045-bdc2-1c01c9823965"
+            Publisher="CN=tgs_003"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="88c923ca-5cf7-47f4-803a-54b2f4ae26fc" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ad429217-2e79-4045-bdc2-1c01c9823965" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Windows_Speeching.WindowsPhone</DisplayName>
-    <PublisherDisplayName>tgs03_000</PublisherDisplayName>
+    <PublisherDisplayName>tgs_003</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

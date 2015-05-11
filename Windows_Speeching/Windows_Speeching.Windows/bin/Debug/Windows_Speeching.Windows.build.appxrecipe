@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>15COMPSCI217</Machine>
+    <WindowsUser>tgs_003</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>2480378d-2075-4a7b-bc4c-3a55e3f45df7</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\obj\Debug\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\Windows_Speeching.Windows.exe">
+      <PackagePath>Windows_Speeching.Windows.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\Newtonsoft.Json.7.0.1-beta3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll">
+      <PackagePath>Newtonsoft.Json.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\PCLStorage.1.0.2\lib\portable-win8+wpa81\PCLStorage.Abstractions.dll">
+      <PackagePath>PCLStorage.Abstractions.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\PCLStorage.1.0.2\lib\portable-win8+wpa81\PCLStorage.dll">
+      <PackagePath>PCLStorage.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.dll">
+      <PackagePath>SpeechingShared.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.dll">
+      <PackagePath>OxyPlot.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\HtmlAgilityPack.dll">
+      <PackagePath>HtmlAgilityPack.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Assets\WideLogo.scale-100.png">
+      <PackagePath>Assets\WideLogo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\Assets\LightGray.png">
+      <PackagePath>Assets\LightGray.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\Assets\MediumGray.png">
+      <PackagePath>Assets\MediumGray.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\Assets\DarkGray.png">
+      <PackagePath>Assets\DarkGray.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Shared\DataModel\SampleData.json">
+      <PackagePath>DataModel\SampleData.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\HubPage.xbf">
+      <PackagePath>HubPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\SectionPage.xbf">
+      <PackagePath>SectionPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\ItemPage.xbf">
+      <PackagePath>ItemPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\Windows_Speeching.Windows.xr.xml">
+      <PackagePath>Windows_Speeching.Windows.xr.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
