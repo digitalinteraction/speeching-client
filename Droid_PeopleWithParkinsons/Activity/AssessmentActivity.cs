@@ -147,7 +147,7 @@ namespace DroidSpeeching
         /// </summary>
         public void SelfDestruct(string title = "Fatal error", string message = "Oops! Something terrible has happened - sorry about that. Closing the assessment.")
         {
-            AlertDialog errDialog = new AlertDialog.Builder(this)
+            Android.Support.V7.App.AlertDialog errDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle(title)
                 .SetMessage(message)
                 .SetCancelable(false)
@@ -201,7 +201,7 @@ namespace DroidSpeeching
             string message = (currentStage == AssessmentStage.Running) ? currentFragment.GetInstructions() :
                 "If you need help during the assessment, this will show information about how to complete the current task!";
 
-            AlertDialog alert = new AlertDialog.Builder(this)
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle(title)
                 .SetMessage(message)
                 .SetPositiveButton("Got it", (args1, args2) => { })

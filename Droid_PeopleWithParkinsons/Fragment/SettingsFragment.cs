@@ -28,7 +28,7 @@ namespace DroidSpeeching
 
         private void button_PreferenceClick(object sender, Preference.PreferenceClickEventArgs e)
         {
-            AlertDialog alert = new AlertDialog.Builder(Activity)
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(Activity)
                 .SetTitle("Revoke access to your Google account?")
                 .SetMessage("This will result in the deletion of some of your user data. Are you really sure?")
                 .SetNegativeButton("Cancel", (arg1, arg2) => { })

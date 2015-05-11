@@ -58,7 +58,7 @@ namespace DroidSpeeching
 
             if(submissions == null || submissions.Length == 0)
             {
-                AlertDialog alert = new AlertDialog.Builder(this)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("No feedback to display")
                     .SetMessage("You haven't submitted any results yet! Come back here once you have completed some activities and uploaded your results to the server!")
                     .SetCancelable(false)

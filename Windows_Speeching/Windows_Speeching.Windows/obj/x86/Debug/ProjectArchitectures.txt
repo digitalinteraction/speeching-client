@@ -1,0 +1,1 @@
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\Windows_Speeching.Windows.csproj;x86

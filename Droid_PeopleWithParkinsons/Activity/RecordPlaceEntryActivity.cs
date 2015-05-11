@@ -100,7 +100,7 @@ namespace DroidSpeeching
                 audioManager.StopRecording();
                 recordButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
-                AlertDialog alert = new AlertDialog.Builder(this)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Recording complete!")
                     .SetMessage("You completed a new voice entry about " + placeName + ". Would you like to try again or export this recording?")
                     .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>)null)
@@ -113,7 +113,7 @@ namespace DroidSpeeching
                 Button negative = alert.GetButton((int)DialogButtonType.Negative);
                 negative.Click += delegate(object s, EventArgs ev)
                 {
-                    AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+                    Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(this);
                     confirm.SetTitle("Are you sure?");
                     confirm.SetMessage("Restarting will wipe your current progress. Restart the scenario?");
                     confirm.SetPositiveButton("Restart", (senderAlert, confArgs) =>

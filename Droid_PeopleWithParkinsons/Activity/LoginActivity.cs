@@ -40,6 +40,7 @@ namespace DroidSpeeching
 
             signInBtn = FindViewById<SignInButton>(Resource.Id.splash_signIn);
             signInBtn.SetOnClickListener(this);
+            signInBtn.Enabled = false;
 
             loadingText = FindViewById<TextView>(Resource.Id.splash_loading);
 
@@ -86,6 +87,8 @@ namespace DroidSpeeching
                 {
                     apiClient.Connect();
                 }
+
+                RunOnUiThread(() => signInBtn.Enabled = false);
             }
         }
 
@@ -109,6 +112,7 @@ namespace DroidSpeeching
                     // state and attempt to connect to get an updated ConnectionResult.
                     intentInProgress = false;
                     apiClient.Connect();
+                    RunOnUiThread(() => signInBtn.Enabled = true);
                 }
             }
         }
@@ -119,6 +123,8 @@ namespace DroidSpeeching
 
             if (successfulLoad && !signOut)
             {
+                RunOnUiThread(() => signInBtn.Enabled = false);
+
                 if (AppData.session == null || AppData.session.categories == null || AppData.session.categories.Count == 0)
                 {
                     // Loaded the user fine, but we need to pull from the server
@@ -142,6 +148,7 @@ namespace DroidSpeeching
                 // Unable to load previous session! Allow the user to log in
                 RunOnUiThread(() =>
                 {
+                    signInBtn.Enabled = true;
                     signInBtn.Visibility = ViewStates.Visible;
                     loadingText.Visibility = ViewStates.Gone;
                 });
@@ -173,6 +180,7 @@ namespace DroidSpeeching
                 PlusClass.AccountApi.ClearDefaultAccount(apiClient);
                 apiClient.Disconnect();
                 apiClient.Connect();
+                RunOnUiThread(() => signInBtn.Enabled = true);
                 return;
             }
 
@@ -214,9 +222,11 @@ namespace DroidSpeeching
             if(!success)
             {
                 needLogin = true;
+                RunOnUiThread(() => signInBtn.Enabled = true);
+
                 this.RunOnUiThread(() =>
                 {
-                    AlertDialog errorDialog = new AlertDialog.Builder(this)
+                    Android.Support.V7.App.AlertDialog errorDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
                         .SetTitle("Network error")
                         .SetMessage("Failed to download all of the necessary files. Please check your Internet connection and try again later!")
                         .SetPositiveButton("Got it", (par1, par2) => { })

@@ -240,7 +240,7 @@ namespace DroidSpeeching
             }
             if (item.ItemId == Resource.Id.action_help)
             {
-                AlertDialog alert = new AlertDialog.Builder(this)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Help")
                     .SetMessage(helpText)
                     .SetPositiveButton("Confirm", (arg1, arg2) => { })
@@ -660,7 +660,7 @@ namespace DroidSpeeching
         /// </summary>
         private void FinishScenario()
         {
-            AlertDialog alert = new AlertDialog.Builder(this)
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
             .SetTitle("Scenario Complete!")
             .SetMessage("Well done! You've completed this scenario and we're ready to export your recordings. Would you like to export now or retry the scenario?")
             .SetCancelable(false)
@@ -674,7 +674,7 @@ namespace DroidSpeeching
             Button negative = alert.GetButton((int)DialogButtonType.Negative);
             negative.Click += delegate(object sender, EventArgs e)
             {
-                AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+                Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(this);
                 confirm.SetTitle("Are you sure?");
                 confirm.SetMessage("Restarting will wipe your current progress. Restart the scenario?");
                 confirm.SetPositiveButton("Restart", (senderAlert, confArgs) =>

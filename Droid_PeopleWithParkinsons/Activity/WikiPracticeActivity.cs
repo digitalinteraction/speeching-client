@@ -211,7 +211,7 @@ namespace DroidSpeeching
             {
                 Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.tempRecording.Path));
 
-                AlertDialog alert = new AlertDialog.Builder(this)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Session complete!")
                     .SetMessage("Would you like to listen to your speech?")
                     .SetPositiveButton("Listen", (EventHandler<DialogClickEventArgs>)null)
@@ -344,7 +344,7 @@ namespace DroidSpeeching
                 StopAction(true);
             }
 
-            AlertDialog choice = new AlertDialog.Builder(this)
+            Android.Support.V7.App.AlertDialog choice = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle("Choose a mode!")
                 .SetItems(names.ToArray(), this)
                 .Create();
@@ -446,7 +446,7 @@ namespace DroidSpeeching
 
         private void loud_targetButton_Click(object sender, EventArgs e)
         {
-            AlertDialog alert = new AlertDialog.Builder(this)
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle("Set new target volume?")
                 .SetMessage("Press start and then talk as loud as you can until the timer finishes to set a new target volume!")
                 .SetNegativeButton("Cancel", (arg1, arg2) => { })

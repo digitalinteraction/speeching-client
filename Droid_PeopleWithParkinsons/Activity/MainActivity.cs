@@ -93,7 +93,7 @@ namespace DroidSpeeching
             }
             if(item.ItemId == Resource.Id.action_logOut)
             {
-                AlertDialog alert = new AlertDialog.Builder(this)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Sign out?")
                     .SetMessage("This will erase your current session data!")
                     .SetPositiveButton("Confirm", (arg1, arg2) => {

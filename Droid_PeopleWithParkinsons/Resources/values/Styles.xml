@@ -1,7 +1,7 @@
 ﻿<resources>
   <style name="Theme.Splash" parent="@style/Theme.AppCompat.Light.DarkActionBar">
     <item name="android:windowBackground">@color/appMain</item>
-    <item name="android:colorBackground">@color/appMain</item>
+    <item name="android:colorBackground">@color/appDark</item>
     <item name="android:windowNoTitle">true</item>
     <item name="android:navigationBarColor">@color/appMain</item>
     <item name="colorPrimaryDark">@color/appMain</item>
@@ -11,7 +11,6 @@
     <item name="colorPrimary">@color/appMain</item>
     <item name="colorPrimaryDark">@color/appDark</item>
     <item name="colorAccent">@color/appMain</item>
-    <item name="colorButtonNormal">@color/appHighlight</item>
     <item name="actionButtonStyle">@style/Speeching.ActionButton</item>
   </style>
 

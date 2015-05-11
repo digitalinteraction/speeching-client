@@ -86,7 +86,7 @@ namespace DroidSpeeching
             string message = (success) ? "Upload successful!" : "Unable to upload your content. Please try again later.";
             RefreshList();
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(this);
             alert.SetMessage(message);
             alert.SetPositiveButton("Continue", (s, a) =>
             {
@@ -104,7 +104,7 @@ namespace DroidSpeeching
                 progressDialog.Indeterminate = true;
             }
 
-            AlertDialog alert = new AlertDialog.Builder(this)
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
             .SetTitle("Scenario Complete!")
             .SetMessage("What would you like to do with the results of this scenario?")
             .SetCancelable(true)
@@ -124,7 +124,7 @@ namespace DroidSpeeching
             Button negative = alert.GetButton((int)DialogButtonType.Negative);
             negative.Click += delegate(object s, EventArgs e)
             {
-                AlertDialog.Builder confirm = new AlertDialog.Builder(this);
+                Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(this);
                 confirm.SetTitle("Are you sure?");
                 confirm.SetMessage("The recorded data will be irrecoverably lost.");
                 confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>

@@ -4,7 +4,7 @@ using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
-using SnackbarSharp;
+using com.dbeattie;
 using SpeechingShared;
 using System.Collections.Generic;
 

@@ -103,7 +103,7 @@ namespace DroidSpeeching
         {
             if (message == null) message = "This feature requires access to the Internet. Please check your connection and try again.";
 
-            AlertDialog alert = new AlertDialog.Builder(context)
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(context)
                 .SetTitle("You are offline!")
                 .SetMessage(message)
                 .SetPositiveButton("Ok", (s, a) => { })
@@ -199,7 +199,7 @@ namespace DroidSpeeching
                 }
                 else
                 {
-                    AlertDialog alert = new AlertDialog.Builder(context)
+                    Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(context)
                         .SetTitle("Fatal Error")
                         .SetMessage("Speeching was unable to connect to Google Play Services - your device may not be supported.")
                         .SetCancelable(false)
@@ -418,12 +418,12 @@ namespace DroidSpeeching
         /// <summary>
         /// Helper function for creating alert dialogues
         /// </summary>
-        public static AlertDialog.Builder CreateAlert(Activity context, string title, string message, 
+        public static Android.Support.V7.App.AlertDialog.Builder CreateAlert(Activity context, string title, string message, 
                                         string posLabel = null, EventHandler<DialogClickEventArgs> posAction = null,
                                         string negLabel = null, EventHandler<DialogClickEventArgs> negAction = null,
                                         string neuLabel = null, EventHandler<DialogClickEventArgs> neuAction = null, bool cancelable = true)
         {
-            AlertDialog.Builder alert = new AlertDialog.Builder(context)
+            Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(context)
                 .SetTitle(title)
                 .SetMessage(message);
 

@@ -54,7 +54,7 @@ namespace DroidSpeeching
                 GooglePlace thisPlace = nearby[args.Position - 1];
                 ZoomToLoc(thisPlace.geometry.location.lat, thisPlace.geometry.location.lng, 17);
 
-                AlertDialog alert = new AlertDialog.Builder(this)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Record an entry?")
                     .SetMessage("Would you like to record a new voice entry about " + thisPlace.name + "?")
                     .SetCancelable(true)

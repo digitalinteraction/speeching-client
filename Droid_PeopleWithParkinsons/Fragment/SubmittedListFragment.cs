@@ -45,7 +45,7 @@ namespace DroidSpeeching
                 Button permissionsBtn = alertView.FindViewById<Button>(Resource.Id.submittedAlert_permission);
                 permissionsBtn.Click += permissionsBtn_Click;
 
-                AlertDialog alert = new AlertDialog.Builder(Activity)
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(Activity)
                 .SetTitle("What would you like to do with this submission?")
                 .SetView(alertView)
                 .SetCancelable(true)
@@ -59,7 +59,7 @@ namespace DroidSpeeching
                 Button deleteBtn = alert.GetButton((int)DialogButtonType.Negative);
                 deleteBtn.Click += delegate(object s, EventArgs e)
                 {
-                    AlertDialog.Builder confirm = new AlertDialog.Builder(Activity);
+                    Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(Activity);
                     confirm.SetTitle("Are you sure?");
                     confirm.SetMessage("The recorded data will be deleted from the server and irrecoverably lost. Continue?");
                     confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>
