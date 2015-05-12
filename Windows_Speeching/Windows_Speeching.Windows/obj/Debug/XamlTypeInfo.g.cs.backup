@@ -128,24 +128,24 @@ namespace Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo
             _typeNameTable[0] = "Windows_Speeching.HubPage";
             _typeNameTable[1] = "Windows.UI.Xaml.Controls.Page";
             _typeNameTable[2] = "Windows.UI.Xaml.Controls.UserControl";
-            _typeNameTable[3] = "Windows_Speeching.Common.NavigationHelper";
-            _typeNameTable[4] = "Windows.UI.Xaml.DependencyObject";
-            _typeNameTable[5] = "Windows_Speeching.Common.ObservableDictionary";
-            _typeNameTable[6] = "Object";
-            _typeNameTable[7] = "String";
-            _typeNameTable[8] = "Windows_Speeching.SectionPage";
+            _typeNameTable[3] = "Windows_Speeching.SectionPage";
+            _typeNameTable[4] = "Windows_Speeching.Common.NavigationHelper";
+            _typeNameTable[5] = "Windows.UI.Xaml.DependencyObject";
+            _typeNameTable[6] = "Windows_Speeching.Common.ObservableDictionary";
+            _typeNameTable[7] = "Object";
+            _typeNameTable[8] = "String";
             _typeNameTable[9] = "Windows_Speeching.ItemPage";
 
             _typeTable = new global::System.Type[10];
             _typeTable[0] = typeof(global::Windows_Speeching.HubPage);
             _typeTable[1] = typeof(global::Windows.UI.Xaml.Controls.Page);
             _typeTable[2] = typeof(global::Windows.UI.Xaml.Controls.UserControl);
-            _typeTable[3] = typeof(global::Windows_Speeching.Common.NavigationHelper);
-            _typeTable[4] = typeof(global::Windows.UI.Xaml.DependencyObject);
-            _typeTable[5] = typeof(global::Windows_Speeching.Common.ObservableDictionary);
-            _typeTable[6] = typeof(global::System.Object);
-            _typeTable[7] = typeof(global::System.String);
-            _typeTable[8] = typeof(global::Windows_Speeching.SectionPage);
+            _typeTable[3] = typeof(global::Windows_Speeching.SectionPage);
+            _typeTable[4] = typeof(global::Windows_Speeching.Common.NavigationHelper);
+            _typeTable[5] = typeof(global::Windows.UI.Xaml.DependencyObject);
+            _typeTable[6] = typeof(global::Windows_Speeching.Common.ObservableDictionary);
+            _typeTable[7] = typeof(global::System.Object);
+            _typeTable[8] = typeof(global::System.String);
             _typeTable[9] = typeof(global::Windows_Speeching.ItemPage);
         }
 
@@ -182,10 +182,10 @@ namespace Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo
         }
 
         private object Activate_0_HubPage() { return new global::Windows_Speeching.HubPage(); }
-        private object Activate_5_ObservableDictionary() { return new global::Windows_Speeching.Common.ObservableDictionary(); }
-        private object Activate_8_SectionPage() { return new global::Windows_Speeching.SectionPage(); }
+        private object Activate_3_SectionPage() { return new global::Windows_Speeching.SectionPage(); }
+        private object Activate_6_ObservableDictionary() { return new global::Windows_Speeching.Common.ObservableDictionary(); }
         private object Activate_9_ItemPage() { return new global::Windows_Speeching.ItemPage(); }
-        private void MapAdd_5_ObservableDictionary(object instance, object key, object item)
+        private void MapAdd_6_ObservableDictionary(object instance, object key, object item)
         {
             var collection = (global::System.Collections.Generic.IDictionary<global::System.String, global::System.Object>)instance;
             var newKey = (global::System.String)key;
@@ -206,8 +206,6 @@ namespace Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo
             case 0:   //  Windows_Speeching.HubPage
                 userType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
                 userType.Activator = Activate_0_HubPage;
-                userType.AddMemberName("NavigationHelper");
-                userType.AddMemberName("DefaultViewModel");
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
@@ -220,40 +218,40 @@ namespace Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo
                 xamlType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 3:   //  Windows_Speeching.Common.NavigationHelper
+            case 3:   //  Windows_Speeching.SectionPage
+                userType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
+                userType.Activator = Activate_3_SectionPage;
+                userType.AddMemberName("NavigationHelper");
+                userType.AddMemberName("DefaultViewModel");
+                userType.SetIsLocalType();
+                xamlType = userType;
+                break;
+
+            case 4:   //  Windows_Speeching.Common.NavigationHelper
                 userType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.DependencyObject"));
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 4:   //  Windows.UI.Xaml.DependencyObject
+            case 5:   //  Windows.UI.Xaml.DependencyObject
                 xamlType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 5:   //  Windows_Speeching.Common.ObservableDictionary
+            case 6:   //  Windows_Speeching.Common.ObservableDictionary
                 userType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Object"));
-                userType.DictionaryAdd = MapAdd_5_ObservableDictionary;
+                userType.DictionaryAdd = MapAdd_6_ObservableDictionary;
                 userType.SetIsReturnTypeStub();
                 userType.SetIsLocalType();
                 xamlType = userType;
                 break;
 
-            case 6:   //  Object
+            case 7:   //  Object
                 xamlType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlSystemBaseType(typeName, type);
                 break;
 
-            case 7:   //  String
+            case 8:   //  String
                 xamlType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlSystemBaseType(typeName, type);
-                break;
-
-            case 8:   //  Windows_Speeching.SectionPage
-                userType = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType(this, typeName, type, GetXamlTypeByName("Windows.UI.Xaml.Controls.Page"));
-                userType.Activator = Activate_8_SectionPage;
-                userType.AddMemberName("NavigationHelper");
-                userType.AddMemberName("DefaultViewModel");
-                userType.SetIsLocalType();
-                xamlType = userType;
                 break;
 
             case 9:   //  Windows_Speeching.ItemPage
@@ -269,32 +267,22 @@ namespace Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo
         }
 
 
-        private object get_0_HubPage_NavigationHelper(object instance)
-        {
-            var that = (global::Windows_Speeching.HubPage)instance;
-            return that.NavigationHelper;
-        }
-        private object get_1_HubPage_DefaultViewModel(object instance)
-        {
-            var that = (global::Windows_Speeching.HubPage)instance;
-            return that.DefaultViewModel;
-        }
-        private object get_2_SectionPage_NavigationHelper(object instance)
+        private object get_0_SectionPage_NavigationHelper(object instance)
         {
             var that = (global::Windows_Speeching.SectionPage)instance;
             return that.NavigationHelper;
         }
-        private object get_3_SectionPage_DefaultViewModel(object instance)
+        private object get_1_SectionPage_DefaultViewModel(object instance)
         {
             var that = (global::Windows_Speeching.SectionPage)instance;
             return that.DefaultViewModel;
         }
-        private object get_4_ItemPage_NavigationHelper(object instance)
+        private object get_2_ItemPage_NavigationHelper(object instance)
         {
             var that = (global::Windows_Speeching.ItemPage)instance;
             return that.NavigationHelper;
         }
-        private object get_5_ItemPage_DefaultViewModel(object instance)
+        private object get_3_ItemPage_DefaultViewModel(object instance)
         {
             var that = (global::Windows_Speeching.ItemPage)instance;
             return that.DefaultViewModel;
@@ -307,40 +295,28 @@ namespace Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo
 
             switch (longMemberName)
             {
-            case "Windows_Speeching.HubPage.NavigationHelper":
-                userType = (global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows_Speeching.HubPage");
-                xamlMember = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlMember(this, "NavigationHelper", "Windows_Speeching.Common.NavigationHelper");
-                xamlMember.Getter = get_0_HubPage_NavigationHelper;
-                xamlMember.SetIsReadOnly();
-                break;
-            case "Windows_Speeching.HubPage.DefaultViewModel":
-                userType = (global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows_Speeching.HubPage");
-                xamlMember = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlMember(this, "DefaultViewModel", "Windows_Speeching.Common.ObservableDictionary");
-                xamlMember.Getter = get_1_HubPage_DefaultViewModel;
-                xamlMember.SetIsReadOnly();
-                break;
             case "Windows_Speeching.SectionPage.NavigationHelper":
                 userType = (global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows_Speeching.SectionPage");
                 xamlMember = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlMember(this, "NavigationHelper", "Windows_Speeching.Common.NavigationHelper");
-                xamlMember.Getter = get_2_SectionPage_NavigationHelper;
+                xamlMember.Getter = get_0_SectionPage_NavigationHelper;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Windows_Speeching.SectionPage.DefaultViewModel":
                 userType = (global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows_Speeching.SectionPage");
                 xamlMember = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlMember(this, "DefaultViewModel", "Windows_Speeching.Common.ObservableDictionary");
-                xamlMember.Getter = get_3_SectionPage_DefaultViewModel;
+                xamlMember.Getter = get_1_SectionPage_DefaultViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Windows_Speeching.ItemPage.NavigationHelper":
                 userType = (global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows_Speeching.ItemPage");
                 xamlMember = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlMember(this, "NavigationHelper", "Windows_Speeching.Common.NavigationHelper");
-                xamlMember.Getter = get_4_ItemPage_NavigationHelper;
+                xamlMember.Getter = get_2_ItemPage_NavigationHelper;
                 xamlMember.SetIsReadOnly();
                 break;
             case "Windows_Speeching.ItemPage.DefaultViewModel":
                 userType = (global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlUserType)GetXamlTypeByName("Windows_Speeching.ItemPage");
                 xamlMember = new global::Windows_Speeching.Windows_Speeching_Windows_XamlTypeInfo.XamlMember(this, "DefaultViewModel", "Windows_Speeching.Common.ObservableDictionary");
-                xamlMember.Getter = get_5_ItemPage_DefaultViewModel;
+                xamlMember.Getter = get_3_ItemPage_DefaultViewModel;
                 xamlMember.SetIsReadOnly();
                 break;
             }
