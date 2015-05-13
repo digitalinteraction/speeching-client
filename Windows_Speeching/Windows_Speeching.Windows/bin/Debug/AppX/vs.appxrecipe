@@ -20,13 +20,13 @@
     <AppXManifest Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2015-05-12T09:54:30.665</Modified>
+      <Modified>2015-05-12T15:43:10.354</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\Windows_Speeching.Windows.exe">
       <PackagePath>Windows_Speeching.Windows.exe</PackagePath>
-      <Modified>2015-05-12T10:53:19.619</Modified>
+      <Modified>2015-05-13T13:56:51.235</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\packages\Newtonsoft.Json.7.0.1-beta3\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll">
       <PackagePath>Newtonsoft.Json.dll</PackagePath>
@@ -42,7 +42,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\SpeechingShared.dll">
       <PackagePath>SpeechingShared.dll</PackagePath>
-      <Modified>2015-05-11T13:39:26.486</Modified>
+      <Modified>2015-05-13T13:56:49.810</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\OxyPlot.dll">
       <PackagePath>OxyPlot.dll</PackagePath>
@@ -102,7 +102,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\HubPage.xbf">
       <PackagePath>HubPage.xbf</PackagePath>
-      <Modified>2015-05-12T10:53:19.373</Modified>
+      <Modified>2015-05-13T09:30:14.428</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\SectionPage.xbf">
       <PackagePath>SectionPage.xbf</PackagePath>
@@ -114,11 +114,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\Windows_Speeching.Windows.xr.xml">
       <PackagePath>Windows_Speeching.Windows.xr.xml</PackagePath>
-      <Modified>2015-05-12T10:53:19.357</Modified>
+      <Modified>2015-05-13T09:30:14.371</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\Windows_Speeching\Windows_Speeching.Windows\bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2015-05-12T09:54:30.420</Modified>
+      <Modified>2015-05-12T15:43:10.175</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

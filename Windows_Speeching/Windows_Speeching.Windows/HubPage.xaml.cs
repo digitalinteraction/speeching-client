@@ -43,22 +43,7 @@ namespace Windows_Speeching
 
         public async void Prepare()
         {
-            AppData.checkForConnection = () =>
-            {
-                ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
-                bool internet = connections != null && connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
-                return internet;
-            };
-
-            AppData.onConnectionSuccess = () =>
-            {
-                
-            };
-
-            AppData.IO = new Win8PCLHelper();
-
-            await AppData.AssignCacheLocations();
-            await AppData.InitializeIfNeeded();
+            await WindowsUtils.PrepareApp();
 
             LoadMainFeed();
             LoadActivities();

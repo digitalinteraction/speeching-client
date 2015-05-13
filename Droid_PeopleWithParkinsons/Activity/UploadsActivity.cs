@@ -113,7 +113,7 @@ namespace DroidSpeeching
                 IResultItem toUpload = AppData.session.resultsToUpload[args.Position - 1];
                 progressDialog.Show();
                 cancelTokenSource = new CancellationTokenSource();
-                ThreadPool.QueueUserWorkItem(o => ServerData.PushResult(toUpload, RefreshList, OnUploadComplete, cancelTokenSource.Token).Start());
+                ServerData.PushResult(toUpload, RefreshList, OnUploadComplete, cancelTokenSource.Token);
             })
             .SetNeutralButton("Cancel", (s, a) => { })
             .Create();

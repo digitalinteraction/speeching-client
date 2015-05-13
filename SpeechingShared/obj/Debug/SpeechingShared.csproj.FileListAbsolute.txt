@@ -53,3 +53,4 @@ C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\bin\Debug\Xamarin.Forms.Xaml.xml
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.dll
 C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.pdb
+C:\Users\tgs03_000\Documents\Dev\Uni\speeching-client\SpeechingShared\obj\Debug\SpeechingShared.csprojResolveAssemblyReference.cache
