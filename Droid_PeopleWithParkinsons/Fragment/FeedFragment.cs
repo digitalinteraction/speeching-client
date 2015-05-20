@@ -52,8 +52,7 @@ namespace DroidSpeeching
 
             feedList.HasFixedSize = true;
 
-            LinearLayoutManager llm = new LinearLayoutManager(Activity);
-            llm.Orientation = LinearLayoutManager.Vertical;
+            LinearLayoutManager llm = new LinearLayoutManager(Activity) {Orientation = LinearLayoutManager.Vertical};
             feedList.SetLayoutManager(llm);
         }
 

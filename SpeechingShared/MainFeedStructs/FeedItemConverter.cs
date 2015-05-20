@@ -18,14 +18,19 @@ namespace SpeechingShared
             {
                 return new FeedItemUser();
             }
-            else if(FieldExists("Activity", jObject))
+            if(FieldExists("Activity", jObject))
             {
                 return new FeedItemActivity();
             }
-            else
+            if (FieldExists("Rating", jObject))
             {
-                return new FeedItemBase();
+                return new FeedItemStarRating();
             }
+            if (FieldExists("DataPoints", jObject))
+            {
+                return new FeedItemGraph();
+            }
+            return new FeedItemBase();
         }
 
         private bool FieldExists(string fieldName, JObject jObject)

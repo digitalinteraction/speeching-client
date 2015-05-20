@@ -32,10 +32,12 @@ namespace SpeechingShared
         /// <returns></returns>
         public PlotModel CreatePlotModel()
         {
+            if(plotModel != null) return plotModel;
+
             PlotModel model = new PlotModel();
 
             model.Axes.Add(new DateTimeAxis { IntervalType = DateTimeIntervalType.Days, StringFormat = "dd MMM"});
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Key = LeftAxisLabel, Maximum = LeftAxisLength });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Key = LeftAxisLabel });
 
             LineSeries series = new LineSeries
             {
@@ -45,14 +47,11 @@ namespace SpeechingShared
                 MarkerFill = OxyColors.Red,
                 Color = OxyColors.DarkRed,
                 Smooth = true
-
             };
 
-            DateTime now = DateTime.Now;
-
-            for (int i = 0; i < DataPoints.Length; i++)
+            foreach (TimeGraphPoint t in DataPoints)
             {
-                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(DataPoints[i].XVal), DataPoints[i].YVal));
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(t.XVal), t.YVal));
             }
 
             model.Series.Add(series);

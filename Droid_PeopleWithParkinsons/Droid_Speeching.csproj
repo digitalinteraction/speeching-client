@@ -361,6 +361,9 @@
     <AndroidResource Include="Resources\layout-large\MainResultsFragment.axml" />
     <AndroidResource Include="Resources\layout-large-land\MainResultsFragment.axml" />
     <AndroidResource Include="Resources\layout-land\FeedCardImage.axml" />
+    <AndroidResource Include="Resources\layout\FeedCardStarRating.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

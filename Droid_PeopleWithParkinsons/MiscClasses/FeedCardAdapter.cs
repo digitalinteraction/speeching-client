@@ -26,16 +26,18 @@ namespace DroidSpeeching
             this.data = feedData;
             this.context = context;
 
-            viewTypes = new Dictionary<Type, int>();
-            viewTypes.Add(typeof(FeedItemBase), 0);
-            viewTypes.Add(typeof(FeedItemImage), 1);
-            viewTypes.Add(typeof(FeedItemPercentage), 2);
-            viewTypes.Add(typeof(FeedItemGraph), 3);
-            viewTypes.Add(typeof(FeedItemUser), 4);
-            viewTypes.Add(typeof(FeedItemActivity), 5);
-            viewTypes.Add(typeof(FeedbackSubmissionButton), 6);
-            viewTypes.Add(typeof(FeedItemStarRating), 7);
-            
+            viewTypes = new Dictionary<Type, int>
+            {
+                {typeof (FeedItemBase), 0},
+                {typeof (FeedItemImage), 1},
+                {typeof (FeedItemPercentage), 2},
+                {typeof (FeedItemGraph), 3},
+                {typeof (FeedItemUser), 4},
+                {typeof (FeedItemActivity), 5},
+                {typeof (FeedbackSubmissionButton), 6},
+                {typeof (FeedItemStarRating), 7}
+            };
+
         }
 
         public override int GetItemViewType(int position)
@@ -77,6 +79,10 @@ namespace DroidSpeeching
                     View activityView = inflater.Inflate(Resource.Layout.FeedCardActivity, viewGroup, false);
                     CardActivityViewHolder activityHolder = new CardActivityViewHolder(activityView);
                     return activityHolder;
+                case 7:
+                    View starView = inflater.Inflate(Resource.Layout.FeedCardStarRating, viewGroup, false);
+                    CardRatingViewHolder starHolder = new CardRatingViewHolder(starView);
+                    return starHolder;
                 default:
                     View v = inflater.Inflate(Resource.Layout.FeedCardText, viewGroup, false);
                     CardBaseViewHolder vh = new CardBaseViewHolder(v);
@@ -116,6 +122,10 @@ namespace DroidSpeeching
             else if(viewHolder.GetType() == typeof(CardActivityViewHolder))
             {
                 (viewHolder as CardActivityViewHolder).LoadData((FeedItemActivity)data[position], context);
+            }
+            else if (viewHolder.GetType() == typeof (CardRatingViewHolder))
+            {
+                (viewHolder as CardRatingViewHolder).ratingBar.Rating = ((FeedItemStarRating) data[position]).Rating;
             }
 
             if (data[position].Interaction == null)
@@ -274,6 +284,16 @@ namespace DroidSpeeching
             LoadImageIntoCircle(user.avatar, avatarView, context);
         }
         
+    }
+
+    public class CardRatingViewHolder : CardBaseViewHolder
+    {
+        public RatingBar ratingBar;
+
+        public CardRatingViewHolder(View v) : base(v)
+        {
+            ratingBar = v.FindViewById<RatingBar>(Resource.Id.resultCard_ratingBar);
+        }
     }
 
     public class CardActivityViewHolder : CardBaseViewHolder
