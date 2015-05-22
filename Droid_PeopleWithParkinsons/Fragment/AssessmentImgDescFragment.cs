@@ -79,7 +79,7 @@ namespace DroidSpeeching
             }
             catch(Exception e)
             {
-                AppData.IO.PrintToConsole(e.Message);
+                AppData.Io.PrintToConsole(e.Message);
                 (Activity as AssessmentActivity).SelfDestruct();
             }
         }

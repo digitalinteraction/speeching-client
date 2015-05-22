@@ -1,8 +1,3 @@
-using HtmlAgilityPack;
-using ICSharpCode.SharpZipLib.Core;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
-using PCLStorage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
+using Newtonsoft.Json;
+using PCLStorage;
 
 namespace SpeechingShared
 {
@@ -19,12 +17,15 @@ namespace SpeechingShared
     /// </summary>
     public static class ServerData
     {
-        public enum ActivityType { Scenario, Guide };
+        public enum ActivityType
+        {
+            Scenario,
+            Guide
+        };
 
-        public static string storageServer = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
-        public static string storageRemoteDir;
-
-        public static string serviceUrl = "http://api.opescode.com/api/";
+        public static string StorageServer = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
+        public static string StorageRemoteDir;
+        public static string ServiceUrl = "http://api.opescode.com/api/";
 
         /// <summary>
         /// Send a POST request to the server and return an Object of type T in response
@@ -35,33 +36,23 @@ namespace SpeechingShared
         /// <returns>The response's JSON in type T</returns>
         public static async Task<T> PostRequest<T>(string route, string jsonData = null)
         {
-            try
-            {
-                if (!AppData.CheckNetwork()) return default(T);
+            if (!AppData.CheckNetwork()) return default(T);
 
-                using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient())
+            {
+                Uri baseAddress = new Uri(ServiceUrl);
+                client.BaseAddress = baseAddress;
+
+                HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(route, content);
+                if (response.IsSuccessStatusCode)
                 {
-                    Uri baseAddress = new Uri(serviceUrl);
-                    client.BaseAddress = baseAddress;
-
-                    HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-
-                    HttpResponseMessage response = await client.PostAsync(route, content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string toReturn = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<T>(toReturn);
-                    }
-                    else
-                    {
-                        string msg = await response.Content.ReadAsStringAsync();
-                        throw new Exception(msg);
-                    }
+                    string toReturn = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(toReturn);
                 }
-            }
-            catch(Exception except)
-            {
-                throw except;
+                string msg = await response.Content.ReadAsStringAsync();
+                throw new Exception(msg);
             }
         }
 
@@ -71,6 +62,7 @@ namespace SpeechingShared
         /// <typeparam name="T"></typeparam>
         /// <param name="route"></param>
         /// <param name="data"></param>
+        /// <param name="converter"></param>
         /// <returns></returns>
         public static async Task<T> GetRequest<T>(string route, string data = "", JsonConverter converter = null)
         {
@@ -88,14 +80,7 @@ namespace SpeechingShared
 
             if (result == null) return default(T);
 
-            if (converter != null)
-            {
-                return JsonConvert.DeserializeObject<T>(result, converter);
-            }
-            else
-            {
-                return JsonConvert.DeserializeObject<T>(result);
-            }
+            return converter != null ? JsonConvert.DeserializeObject<T>(result, converter) : JsonConvert.DeserializeObject<T>(result);
         }
 
         /// <summary>
@@ -104,20 +89,22 @@ namespace SpeechingShared
         /// <typeparam name="T">The expected object type to return from JSON</typeparam>
         /// <param name="route">The route on the server to query</param>
         /// <param name="data">Keys + values to include in the sent URL</param>
+        /// <param name="converter"></param>
         /// <returns>The response's JSON as a type T</returns>
-        public static async Task<T> GetRequest<T>(string route,  Dictionary<string, string> data, JsonConverter converter = null)
+        public static async Task<T> GetRequest<T>(string route, Dictionary<string, string> data,
+            JsonConverter converter = null)
         {
             if (!AppData.CheckNetwork()) return default(T);
             string url = route;
 
-            if(data != null && data.Count > 0)
+            if (data != null && data.Count > 0)
             {
                 url += "?";
                 int i = 0;
-                foreach(KeyValuePair<string, string> entry in data)
+                foreach (KeyValuePair<string, string> entry in data)
                 {
                     url += entry.Key + "=" + entry.Value;
-                    if(++i != data.Count) url += "&";
+                    if (++i != data.Count) url += "&";
                 }
             }
 
@@ -125,52 +112,32 @@ namespace SpeechingShared
 
             if (result == null) return default(T);
 
-            if (converter != null)
-            {
-                return JsonConvert.DeserializeObject<T>(result, converter);
-            }
-            else
-            {
-                return JsonConvert.DeserializeObject<T>(result);
-            }
+            return converter != null ? JsonConvert.DeserializeObject<T>(result, converter) : JsonConvert.DeserializeObject<T>(result);
         }
 
         /// <summary>
         /// Sends a get request to the given URL
         /// </summary>
-        /// <param name="url"></param>
         /// <returns></returns>
         private static async Task<string> SendGetRequest(string request)
         {
             if (!AppData.CheckNetwork()) return null;
 
-            using (HttpClient client = new HttpClient())//new NativeMessageHandler()))
+            using (HttpClient client = new HttpClient()) //new NativeMessageHandler()))
             {
-                Uri baseAddress = new Uri(serviceUrl);
+                Uri baseAddress = new Uri(ServiceUrl);
                 client.BaseAddress = baseAddress;
-                
-                try
+
+                HttpResponseMessage response = await client.GetAsync(request);
+                if (response.IsSuccessStatusCode)
                 {
-                    HttpResponseMessage response = await client.GetAsync(request);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string toReturn = await response.Content.ReadAsStringAsync();
-                        return toReturn;
-                    }
-                    else
-                    {
-                        string msg = await response.Content.ReadAsStringAsync();
-                        throw new Exception(msg);
-                    }
+                    string toReturn = await response.Content.ReadAsStringAsync();
+                    return toReturn;
                 }
-                catch(Exception except)
-                {
-                    throw except;
-                }
+                string msg = await response.Content.ReadAsStringAsync();
+                throw new Exception(msg);
             }
         }
-
-
 
         /// <summary>
         /// Get the most recent categories from the server. If a category has been removed, make sure its local contents are deleted
@@ -182,71 +149,68 @@ namespace SpeechingShared
                 if (!AppData.CheckNetwork()) return false;
 
                 List<ISpeechingActivityItem> currentActs = new List<ISpeechingActivityItem>();
-                if (AppData.session.categories != null)
+                if (AppData.Session.categories != null)
                 {
-                    foreach(ActivityCategory cat in AppData.session.categories)
+                    foreach (ActivityCategory cat in AppData.Session.categories)
                     {
-                        foreach(ISpeechingActivityItem act in cat.activities)
+                        foreach (ISpeechingActivityItem act in cat.activities)
                         {
                             currentActs.Add(act);
                         }
                     }
                 }
 
-                AppData.session.categories = await ServerData.GetRequest<List<ActivityCategory>>("category", "", new ActivityConverter());
+                AppData.Session.categories =
+                    await GetRequest<List<ActivityCategory>>("category", "", new ActivityConverter());
                 List<Task<bool>> allTasks = new List<Task<bool>>();
 
                 // Loop over all categories, downloading icons as needed for them and their scenarios
-                for (int i = 0; i < AppData.session.categories.Count; i++)
+                for (int i = 0; i < AppData.Session.categories.Count; i++)
                 {
-                    allTasks.Add(AppData.session.categories[i].PrepareIcon());
+                    allTasks.Add(AppData.Session.categories[i].PrepareIcon());
 
-                    for (int j = 0; j < AppData.session.categories[i].activities.Length; j++)
+                    for (int j = 0; j < AppData.Session.categories[i].activities.Length; j++)
                     {
-                        allTasks.Add(AppData.session.ProcessScenario(i, j, true));
+                        allTasks.Add(AppData.Session.ProcessScenario(i, j));
                     }
                 }
 
                 // Set them all off at once, deal with them finishing one at a time
-                bool allSuccess = true;
-
-                while(allSuccess && allTasks.Count > 0)
+                while (allTasks.Count > 0)
                 {
                     Task<bool> firstFinished = await Task.WhenAny(allTasks);
                     allTasks.Remove(firstFinished);
-                    allSuccess = await firstFinished;
 
-                    if (!allSuccess)
+                    if (!await firstFinished)
                     {
                         return false;
                     }
                 }
 
                 // See if any activities have been removed and delete their local content if necessary
-                foreach(ISpeechingActivityItem act in currentActs)
+                foreach (ISpeechingActivityItem act in currentActs)
                 {
-                    foreach (ActivityCategory cat in AppData.session.categories)
+                    foreach (ActivityCategory cat in AppData.Session.categories)
                     {
-                        if(Array.IndexOf(cat.activities, act) == -1)
-                        {
-                            string titleFormatted = act.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
+                        if (Array.IndexOf(cat.activities, act) != -1) continue;
 
-                            if(await AppData.root.CheckExistsAsync(titleFormatted) == ExistenceCheckResult.FileExists)
-                            {
-                                IFolder folder = await AppData.root.GetFolderAsync(titleFormatted);
-                                await folder.DeleteAsync();
-                            }
-                            break;
+                        string titleFormatted = act.Title.Replace(" ", string.Empty).Replace("/", string.Empty);
+
+                        if (await AppData.Root.CheckExistsAsync(titleFormatted) == ExistenceCheckResult.FileExists)
+                        {
+                            IFolder folder = await AppData.Root.GetFolderAsync(titleFormatted);
+                            await folder.DeleteAsync();
                         }
+                        break;
                     }
                 }
                 AppData.SaveCurrentData();
 
                 return true;
             }
-            catch(Exception except)
+            catch (Exception except)
             {
-                AppData.IO.PrintToConsole(except.Message);
+                AppData.Io.PrintToConsole(except.Message);
                 return false;
             }
         }
@@ -258,12 +222,14 @@ namespace SpeechingShared
         /// <param name="lng"></param>
         /// <param name="radius">The radius of the search area, in metres</param>
         /// <param name="callback">Optional method to call upon completion</param>
+        /// <param name="includeLocalities"></param>
         /// <returns></returns>
-        public static async void FetchPlaces(string lat, string lng, int radius, Action<GooglePlace[]> callback = null, bool includeLocalities = false)
+        public static async void FetchPlaces(string lat, string lng, int radius, Action<GooglePlace[]> callback = null,
+            bool includeLocalities = false)
         {
             if (!AppData.CheckNetwork())
             {
-                callback(null);
+                if (callback != null) callback(null);
                 return;
             }
 
@@ -282,32 +248,25 @@ namespace SpeechingShared
                 HttpResponseMessage response = await client.GetAsync(placesParams);
                 if (response.IsSuccessStatusCode)
                 {
-                    try
+                    string toReturn = await response.Content.ReadAsStringAsync();
+                    PlacesQueryResult places = JsonConvert.DeserializeObject<PlacesQueryResult>(toReturn);
+
+                    // Remove cities from the list unless otherwise requested
+                    if (!includeLocalities)
                     {
-                        string toReturn = await response.Content.ReadAsStringAsync();
-                        PlacesQueryResult places = JsonConvert.DeserializeObject<PlacesQueryResult>(toReturn);
+                        List<GooglePlace> trimmed = new List<GooglePlace>();
 
-                        // Remove cities from the list unless otherwise requested
-                        if(!includeLocalities)
+                        foreach (GooglePlace place in places.results)
                         {
-                            List<GooglePlace> trimmed = new List<GooglePlace>();
-
-                            foreach (GooglePlace place in places.results)
-                            {
-                                if (Array.IndexOf(place.types, "locality") == -1) trimmed.Add(place);
-                            }
-
-                            places.results = trimmed.ToArray();
+                            if (Array.IndexOf(place.types, "locality") == -1) trimmed.Add(place);
                         }
 
-                        if (callback != null)
-                        {
-                            callback(places.results);
-                        }
+                        places.results = trimmed.ToArray();
                     }
-                    catch(Exception except)
+
+                    if (callback != null)
                     {
-                        throw except;
+                        callback(places.results);
                     }
                 }
                 else
@@ -344,20 +303,19 @@ namespace SpeechingShared
             return await FetchPlacePhoto(place.place_id, place.photos[0].photo_reference, maxHeight, maxWidth);
         }
 
-
         private static async Task<string> FetchPlacePhoto(string placeId, string photoRef, int maxHeight, int maxWidth)
         {
             if (!AppData.CheckNetwork()) return null;
 
             string localRef = placeId + "_" + maxWidth + "_" + maxHeight;
 
-            if (AppData.session.placesPhotos.ContainsKey(localRef))
+            if (AppData.Session.placesPhotos.ContainsKey(localRef))
             {
                 // We already have this locally!
-                return AppData.session.placesPhotos[localRef];
+                return AppData.Session.placesPhotos[localRef];
             }
 
-            string basePlaces = "https://maps.googleapis.com/maps/api/place/";
+            const string basePlaces = "https://maps.googleapis.com/maps/api/place/";
 
             Uri baseAddress = new Uri(basePlaces);
 
@@ -374,45 +332,36 @@ namespace SpeechingShared
                 HttpResponseMessage response = await client.GetAsync(placesParams);
                 if (response.IsSuccessStatusCode)
                 {
-                    try
+                    byte[] data = await response.Content.ReadAsByteArrayAsync();
+                    string localFileName = localRef + ".png";
+
+                    IFile file =
+                        await AppData.Cache.CreateFileAsync(localFileName, CreationCollisionOption.ReplaceExisting);
+                    using (Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
                     {
-                        Byte[] data = await response.Content.ReadAsByteArrayAsync();
-                        string localFileName = localRef + ".png";
-
-                        IFile file = await AppData.cache.CreateFileAsync(localFileName, CreationCollisionOption.ReplaceExisting);
-                        using(Stream stream = await file.OpenAsync(FileAccess.ReadAndWrite))
-                        {
-                            stream.Write(data, 0, data.Length);
-                        }
-
-                        AppData.session.placesPhotos.Add(localRef, file.Path);
-
-                        return file.Path;
+                        stream.Write(data, 0, data.Length);
                     }
-                    catch (Exception except)
-                    {
-                        throw except;
-                    }
+
+                    AppData.Session.placesPhotos.Add(localRef, file.Path);
+
+                    return file.Path;
                 }
-                else
-                {
-                    string msg = await response.Content.ReadAsStringAsync();
-                    throw new Exception(msg);
-                }
+                string msg = await response.Content.ReadAsStringAsync();
+                throw new Exception(msg);
             }
         }
 
         private static async Task<string> UploadFile(string toUrl, IFile file, HttpClientHandler credentials)
         {
-            using(HttpClient client = new HttpClient(credentials))
+            using (HttpClient client = new HttpClient(credentials))
             {
                 using (StreamContent content = new StreamContent(await file.OpenAsync(FileAccess.Read)))
                 {
-                    using(HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Put, toUrl))
+                    using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Put, toUrl))
                     {
                         req.Content = content;
 
-                        using(HttpResponseMessage res = await client.SendAsync(req))
+                        using (HttpResponseMessage res = await client.SendAsync(req))
                         {
                             res.EnsureSuccessStatusCode();
 
@@ -427,7 +376,11 @@ namespace SpeechingShared
         /// Uploads a single result package to the storage server
         /// </summary>
         /// <param name="toUpload">The item to upload</param>
-        public static async Task PushResult(IResultItem toUpload, Action onUpdate, Action<bool> callback, CancellationToken cancelToken)
+        /// <param name="onUpdate"></param>
+        /// <param name="callback"></param>
+        /// <param name="cancelToken"></param>
+        public static async Task PushResult(IResultItem toUpload, Action onUpdate, Action<bool> callback,
+            CancellationToken cancelToken)
         {
             if (!AppData.CheckNetwork())
             {
@@ -441,7 +394,7 @@ namespace SpeechingShared
 
             try
             {
-                if(toUpload.UploadState < Utils.UploadStage.OnStorage)
+                if (toUpload.UploadState < Utils.UploadStage.OnStorage)
                 {
                     toUpload.UploadState = Utils.UploadStage.Uploading;
                     if (onUpdate != null)
@@ -449,49 +402,49 @@ namespace SpeechingShared
                         onUpdate();
                     }
 
-                    using (HttpClientHandler handler = new HttpClientHandler { 
-                                                            Credentials = new NetworkCredential(
-                                                                ConfidentialData.storageUsername, 
-                                                                ConfidentialData.storagePassword) })
+                    using (HttpClientHandler handler = new HttpClientHandler
                     {
-                        await UploadFile(storageServer + storageRemoteDir + filename, 
-                            await AppData.exports.GetFileAsync(Path.GetFileName(toUpload.ResourceUrl)), handler);
+                        Credentials = new NetworkCredential(
+                            ConfidentialData.storageUsername,
+                            ConfidentialData.storagePassword)
+                    })
+                    {
+                        await UploadFile(StorageServer + StorageRemoteDir + filename,
+                            await AppData.Exports.GetFileAsync(Path.GetFileName(toUpload.ResourceUrl)), handler);
                     }
-
-                    
                 }
             }
-            catch(Exception except)
+            catch (Exception except)
             {
-                AppData.IO.PrintToConsole(except.Message);
+                AppData.Io.PrintToConsole(except.Message);
                 success = false;
                 toUpload.UploadState = Utils.UploadStage.Ready;
                 if (onUpdate != null) onUpdate();
             }
 
-            if(success)
+            if (success)
             {
                 // We've uploaded the file
                 string original = toUpload.ResourceUrl;
 
-                toUpload.ResourceUrl = storageServer + storageRemoteDir + filename;
+                toUpload.ResourceUrl = StorageServer + StorageRemoteDir + filename;
                 toUpload.UploadState = Utils.UploadStage.OnStorage;
                 if (onUpdate != null) onUpdate();
 
                 AppData.SaveCurrentData();
 
                 success = await PushResultToDatabase(toUpload);
-                if(success)
+                if (success)
                 {
                     // The web service knows about the file!
-                    AppData.session.resultsToUpload.Remove(toUpload);
+                    AppData.Session.resultsToUpload.Remove(toUpload);
                     toUpload.UploadState = Utils.UploadStage.Finished;
                     if (onUpdate != null) onUpdate();
                     AppData.SaveCurrentData();
 
                     // Delete the local zip file now that it isn't needed
-                    IFile toDel = await AppData.exports.GetFileAsync(Path.GetFileName(original));
-                    await toDel.DeleteAsync();
+                    IFile toDel = await AppData.Exports.GetFileAsync(Path.GetFileName(original), cancelToken);
+                    await toDel.DeleteAsync(cancelToken);
                 }
             }
 
@@ -501,7 +454,9 @@ namespace SpeechingShared
         /// <summary>
         /// Uploads all items in the queue
         /// </summary>
+        /// <param name="onUpdate"></param>
         /// <param name="onFinish">The function to get called on an item finishing. Is called as true when all items have been processed.</param>
+        /// <param name="cancelToken"></param>
         /// <returns></returns>
         public static async void PushAllResults(Action onUpdate, Action<bool> onFinish, CancellationToken cancelToken)
         {
@@ -510,25 +465,24 @@ namespace SpeechingShared
                 if (onFinish != null) onFinish(false);
                 return;
             }
-           
-            DateTime old = DateTime.MinValue.AddYears(1969);
-            IResultItem[] toUpload = AppData.session.resultsToUpload.ToArray();
+
+            IResultItem[] toUpload = AppData.Session.resultsToUpload.ToArray();
             int completed = 0;
 
-            Action<bool> onUpload = (bool success) =>
-                {
-                    completed++;
-                    onFinish(completed >= toUpload.Length);
-                };
+            Action<bool> onUpload = success =>
+            {
+                completed++;
+                onFinish(completed >= toUpload.Length);
+            };
 
-            for(int i = 0; i < toUpload.Length; i++)
+            foreach (IResultItem resultItem in toUpload)
             {
                 if (cancelToken.IsCancellationRequested)
                 {
                     onFinish(false);
                     return;
                 }
-                await PushResult(toUpload[i], onUpdate, onUpload, cancelToken);
+                await PushResult(resultItem, onUpdate, onUpload, cancelToken);
             }
         }
 
@@ -547,15 +501,32 @@ namespace SpeechingShared
             try
             {
                 string serialized = JsonConvert.SerializeObject(toUpload);
-                await ServerData.PostRequest<ServerError>("ActivityResult", serialized);
+                await PostRequest<ServerError>("ActivityResult", serialized);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                AppData.IO.PrintToConsole(ex.Message);
+                AppData.Io.PrintToConsole(ex.Message);
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Sends the server a user account. The server will create/update the account in its database
+        /// and send back a key for authorization with this account in future requests.
+        /// </summary>
+        /// <param name="user">Basic user details including email and name</param>
+        /// <returns>A User object complete with a secret key</returns>
+        public static async Task<User> PostUserAccount(User user)
+        {
+            if (!AppData.CheckNetwork())
+            {
+                return null;
+            }
+
+            string serializedAccount = JsonConvert.SerializeObject(user);
+            return await PostRequest<User>("Account", serializedAccount);
         }
 
         /// <summary>
@@ -572,15 +543,15 @@ namespace SpeechingShared
         /// <summary>
         /// Fetch a single user using the given id - TEMP will search by email
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="username"></param>
         /// <returns></returns>
         public static User FetchUser(string username)
         {
             if (!AppData.CheckNetwork()) return null;
 
-            foreach (User user in AppData.session.userCache)
+            foreach (User user in AppData.Session.userCache)
             {
-                if (user.name == username)
+                if (user.Name == username)
                 {
                     return user;
                 }
@@ -602,13 +573,12 @@ namespace SpeechingShared
             List<User> users = new List<User>();
 
             //TEMP - will be polling the server (although checking the cache would be useful...)
-            foreach (User user in AppData.session.userCache)
+            foreach (User user in AppData.Session.userCache)
             {
-                if(userIds.Contains(user.id))
-                {
-                    users.Add(user);
-                    if (users.Count >= userIds.Count) break; //Found all of them! :)
-                }
+                if (!userIds.Contains(user.Id)) continue;
+
+                users.Add(user);
+                if (users.Count >= userIds.Count) break; //Found all of them! :)
             }
 
             return users.ToArray();
@@ -623,8 +593,7 @@ namespace SpeechingShared
         {
             if (!AppData.CheckNetwork()) return null;
 
-            Dictionary<string, int> data = new Dictionary<string, int>();
-            data.Add("submissionId", resultId);
+            //Dictionary<string, int> data = new Dictionary<string, int> {{"submissionId", resultId}};
 
             //return await GetRequest<IFeedbackItem[]>("GetFeedback", data);
             await Task.Delay(1000);
@@ -632,53 +601,66 @@ namespace SpeechingShared
             // TEMP
             List<IFeedItem> arr = new List<IFeedItem>();
 
-            for(int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
             {
-                int thisRand = AppData.rand.Next(0, 150);
-                if(thisRand < 60)
+                int thisRand = AppData.Rand.Next(0, 150);
+                if (thisRand < 60)
                 {
-                    FeedItemPercentage fb = new FeedItemPercentage();
-                    fb.Id = AppData.rand.Next(1000000);
-                    fb.Title = "Stammering";
-                    fb.Percentage = AppData.rand.Next(0, 100);
-                    fb.Description = (int)fb.Percentage + "% of users thought you stammered over the word \"sausage\"";
+                    FeedItemPercentage fb = new FeedItemPercentage
+                    {
+                        Id = AppData.Rand.Next(1000000),
+                        Title = "Stammering",
+                        Percentage = AppData.Rand.Next(0, 100)
+                    };
+                    fb.Description = (int) fb.Percentage + "% of users thought you stammered over the word \"sausage\"";
                     arr.Add(fb);
                 }
-                else if(thisRand < 80)
+                else if (thisRand < 80)
                 {
-                    FeedItemStarRating fb = new FeedItemStarRating();
-                    fb.Id = AppData.rand.Next(1000000);
-                    fb.Title = "Your Rating";
-                    fb.Description = "This is your rating for something you did. Hopefully it's meaningful!";
-                    fb.Rating = (float)AppData.rand.Next(0, 10) / 2;
+                    FeedItemStarRating fb = new FeedItemStarRating
+                    {
+                        Id = AppData.Rand.Next(1000000),
+                        Title = "Your Rating",
+                        Description = "This is your rating for something you did. Hopefully it's meaningful!",
+                        Rating = (float) AppData.Rand.Next(0, 10)/2
+                    };
                     arr.Add(fb);
                 }
-                else if(thisRand < 110)
+                else if (thisRand < 110)
                 {
-                    FeedItemUser fb = new FeedItemUser();
-                    fb.Id = AppData.rand.Next(1000000);
-                    fb.Title = "A comment on a recording";
-                    fb.Description = "I really liked this recording - you should try to do it more like this in the future. Excellent work!";
-                    fb.UserAccount = new User();
-                    fb.UserAccount.name = "Tom Hanks";
-                    fb.UserAccount.avatar = "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg";
+                    FeedItemUser fb = new FeedItemUser
+                    {
+                        Id = AppData.Rand.Next(1000000),
+                        Title = "A comment on a recording",
+                        Description =
+                            "I really liked this recording - you should try to do it more like this in the future. Excellent work!",
+                        UserAccount = new User
+                        {
+                            Name = "Tom Hanks",
+                            Avatar =
+                                "http://media.nu.nl/m/m1mxjewa2jvj_sqr256.jpg/tom-hanks-produceert-filmversie-van-carole-king-musical.jpg"
+                        }
+                    };
                     arr.Add(fb);
                 }
                 else
                 {
-                    FeedItemGraph fb = new FeedItemGraph();
-                    fb.Id = AppData.rand.Next(1000000);
-                    fb.Title = "Your progress";
-                    fb.Description = "This is a graph showing some data!";
-                    fb.BottomAxisLength = 12;
-                    fb.LeftAxisLength = 100;
-                    fb.DataPoints = new TimeGraphPoint[12];
+                    FeedItemGraph fb = new FeedItemGraph
+                    {
+                        Id = AppData.Rand.Next(1000000),
+                        Title = "Your progress",
+                        Description = "This is a graph showing some data!",
+                        BottomAxisLength = 12,
+                        LeftAxisLength = 100,
+                        DataPoints = new TimeGraphPoint[12]
+                    };
 
                     for (int j = 0; j < fb.DataPoints.Length; j++)
                     {
-                        fb.DataPoints[j] = new TimeGraphPoint { 
+                        fb.DataPoints[j] = new TimeGraphPoint
+                        {
                             XVal = DateTime.Now.AddDays(-j),
-                            YVal = (Double)AppData.rand.Next(100)
+                            YVal = AppData.Rand.Next(100)
                         };
                     }
 
@@ -693,16 +675,20 @@ namespace SpeechingShared
         /// Pull today's featured article from Wikipedia
         /// </summary>
         /// <returns></returns>
-        public static async Task<WikipediaResult> FetchWikiData(Func<string, string> HTMLDecode)
+        public static async Task<WikipediaResult> FetchWikiData(Func<string, string> htmlDecode)
         {
             try
             {
                 string dateString = DateTime.Now.ToString("MMMM_d,_yyyy");
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=parse&&prop=text|images&page=Wikipedia:Today%27s_featured_article/" + dateString + "&format=json");
+                HttpWebRequest request =
+                    (HttpWebRequest)
+                        WebRequest.Create(
+                            "http://en.wikipedia.org/w/api.php?action=parse&&prop=text|images&page=Wikipedia:Today%27s_featured_article/" +
+                            dateString + "&format=json");
 
-                string pageText = null;
-                using (HttpWebResponse resp = (HttpWebResponse)(await request.GetResponseAsync()))
+                string pageText;
+                using (HttpWebResponse resp = (HttpWebResponse) (await request.GetResponseAsync()))
                 {
                     using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
                     {
@@ -712,12 +698,16 @@ namespace SpeechingShared
 
                 WikipediaResult res = JsonConvert.DeserializeObject<WikipediaResult>(pageText);
 
-                if(res.parse.images != null && res.parse.images.Length > 0)
+                if (res.parse.images != null && res.parse.images.Length > 0)
                 {
                     // There's an image available from this page! Unfortunately we have to request the actual URL of the file separately (limit to 600px to avoid HUGE files being pulled)
-                    HttpWebRequest imgReq = (HttpWebRequest)WebRequest.Create("http://en.wikipedia.org/w/api.php?action=query&continue=&titles=Image:" + res.parse.images[0] + "&prop=imageinfo&iiprop=url&iiurlwidth=600&format=json");
-                    string imgText = null;
-                    using (HttpWebResponse resp = (HttpWebResponse)(await imgReq.GetResponseAsync()))
+                    HttpWebRequest imgReq =
+                        (HttpWebRequest)
+                            WebRequest.Create("http://en.wikipedia.org/w/api.php?action=query&continue=&titles=Image:" +
+                                              res.parse.images[0] +
+                                              "&prop=imageinfo&iiprop=url&iiurlwidth=600&format=json");
+                    string imgText;
+                    using (HttpWebResponse resp = (HttpWebResponse) (await imgReq.GetResponseAsync()))
                     {
                         using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
                         {
@@ -725,37 +715,36 @@ namespace SpeechingShared
                         }
                     }
 
-                    dynamic json = JsonConvert.DeserializeObject<dynamic>(imgText);
-
                     WikipediaResult imgRes = JsonConvert.DeserializeObject<WikipediaResult>(imgText);
 
                     // Store the image location in the main wiki result obj
                     foreach (KeyValuePair<string, QueryWikiInfo> info in imgRes.query.pages)
                     {
-                        string imageUrl = (String.IsNullOrEmpty(info.Value.imageInfo[0].thumbUrl)) ? info.Value.imageInfo[0].url : info.Value.imageInfo[0].thumbUrl;
+                        string imageUrl = (string.IsNullOrEmpty(info.Value.imageInfo[0].thumbUrl))
+                            ? info.Value.imageInfo[0].url
+                            : info.Value.imageInfo[0].thumbUrl;
 
-                        res.imageURL = await Utils.FetchLocalCopy(imageUrl, typeof(WikipediaResult));
+                        res.imageURL = await Utils.FetchLocalCopy(imageUrl, typeof (WikipediaResult));
                         break;
                     }
-                    
                 }
 
-                HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                HtmlDocument htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(res.parse.text.HTML);
 
                 pageText = "";
 
                 // Scrape the HTML for all content text
-                foreach(HtmlNode node in htmlDoc.DocumentNode.ChildNodes)
+                foreach (HtmlNode node in htmlDoc.DocumentNode.ChildNodes)
                 {
-                    if(node.Name == "p")
+                    if (node.Name == "p")
                     {
-                        pageText += HTMLDecode(node.InnerText) + "\n";
+                        pageText += htmlDecode(node.InnerText) + "\n";
                     }
                 }
 
                 //Remove the (Full article...) text and all following it
-                int index = pageText.IndexOf("(Full article...)");
+                int index = pageText.IndexOf("(Full article...)", StringComparison.Ordinal);
                 if (index > 0) pageText = pageText.Substring(0, index);
 
                 res.parse = null;
@@ -763,11 +752,10 @@ namespace SpeechingShared
 
                 return res;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
-            
         }
 
         public static async Task<Assessment> FetchAssessment()
@@ -776,23 +764,24 @@ namespace SpeechingShared
 
             await Task.Delay(1000); // Network simulation TODO
 
-            string jsonString = "{\r\n    \"id\": 8675309,\r\n    \"title\": \"Your First Assessment!\",\r\n    \"description\": \"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\r\n    \"tasks\": [\r\n        {\r\n            \"Id\": 12513612,\r\n            \"Title\": \"Quickfire Speaking\",\r\n            \"Instructions\": \"Press the record button and say the shown word as clearly as you can, then press stop.\",\r\n            \"Prompts\": [\r\n                {\r\n                    \"Id\": 1256226,\r\n                    \"Value\": \"Easy\"\r\n                },\r\n                {\r\n                    \"Id\": 12564236,\r\n                    \"Value\": \"Trickier\"\r\n                },\r\n                {\r\n                    \"Id\": 12566786,\r\n                    \"Value\": \"Simple\"\r\n                },\r\n                {\r\n                    \"Id\": 13516246,\r\n                    \"Value\": \"More Difficult\"\r\n                },\r\n                {\r\n                    \"Id\": 645856226,\r\n                    \"Value\": \"Exquisite\"\r\n                },\r\n                {\r\n                    \"Id\": 34262246,\r\n                    \"Value\": \"Borderline\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"Id\": 363473321,\r\n            \"Title\": \"Image Description\",\r\n            \"Instructions\": \"Press the 'Record' button and follow the instruction in the image's caption\",\r\n            \"Prompts\": [\r\n                {\r\n                    \"Id\": 776562246,\r\n                    \"Value\": \"What does the image show?\"\r\n                },\r\n                {\r\n                    \"Id\": 415356246,\r\n                    \"Value\": \"Describe the colours in the image.\"\r\n                },\r\n                {\r\n                    \"Id\": 74262246,\r\n                    \"Value\": \"Describe the dominant feature of the image.\"\r\n                },\r\n                { \r\n                    \"Id\": 73860303,\r\n                    \"Value\" :  \"What does the image make you think of?\"\r\n                }\r\n            ],\r\n            \"Image\": \"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"\r\n        }\r\n    ]\r\n}";
+            const string jsonString = "{\r\n    \"id\": 8675309,\r\n    \"title\": \"Your First Assessment!\",\r\n    \"description\": \"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\r\n    \"tasks\": [\r\n        {\r\n            \"Id\": 12513612,\r\n            \"Title\": \"Quickfire Speaking\",\r\n            \"Instructions\": \"Press the record button and say the shown word as clearly as you can, then press stop.\",\r\n            \"Prompts\": [\r\n                {\r\n                    \"Id\": 1256226,\r\n                    \"Value\": \"Easy\"\r\n                },\r\n                {\r\n                    \"Id\": 12564236,\r\n                    \"Value\": \"Trickier\"\r\n                },\r\n                {\r\n                    \"Id\": 12566786,\r\n                    \"Value\": \"Simple\"\r\n                },\r\n                {\r\n                    \"Id\": 13516246,\r\n                    \"Value\": \"More Difficult\"\r\n                },\r\n                {\r\n                    \"Id\": 645856226,\r\n                    \"Value\": \"Exquisite\"\r\n                },\r\n                {\r\n                    \"Id\": 34262246,\r\n                    \"Value\": \"Borderline\"\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"Id\": 363473321,\r\n            \"Title\": \"Image Description\",\r\n            \"Instructions\": \"Press the 'Record' button and follow the instruction in the image's caption\",\r\n            \"Prompts\": [\r\n                {\r\n                    \"Id\": 776562246,\r\n                    \"Value\": \"What does the image show?\"\r\n                },\r\n                {\r\n                    \"Id\": 415356246,\r\n                    \"Value\": \"Describe the colours in the image.\"\r\n                },\r\n                {\r\n                    \"Id\": 74262246,\r\n                    \"Value\": \"Describe the dominant feature of the image.\"\r\n                },\r\n                { \r\n                    \"Id\": 73860303,\r\n                    \"Value\" :  \"What does the image make you think of?\"\r\n                }\r\n            ],\r\n            \"Image\": \"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"\r\n        }\r\n    ]\r\n}";
+            
             try
             {
                 Assessment toRet = JsonConvert.DeserializeObject<Assessment>(jsonString, new AssessmentConverter());
 
                 foreach (IAssessmentTask task in toRet.tasks)
                 {
-                    if (task.GetType() == typeof(ImageDescTask))
-                    {
-                        (task as ImageDescTask).Image = await Utils.FetchLocalCopy((task as ImageDescTask).Image);
-                    }
+                    if (task.GetType() != typeof (ImageDescTask)) continue;
+                    var imageDescTask = task as ImageDescTask;
+                    if (imageDescTask != null)
+                        imageDescTask.Image = await Utils.FetchLocalCopy(imageDescTask.Image);
                 }
                 return toRet;
             }
             catch (Exception except)
             {
-                AppData.IO.PrintToConsole(except.Message);
+                AppData.Io.PrintToConsole(except.Message);
                 return null;
             }
         }
@@ -805,25 +794,15 @@ namespace SpeechingShared
 
             string jsonString =
                 "[{\"Rating\":3.33333325,\"Id\":0,\"Title\":\"Accent Influence\",\"Description\":\"This rating shows how much your accent affected listeners' understanding of your speech.\",\"Date\":\"2015-05-20T09:41:57.9391882+01:00\",\"Dismissable\":false,\"Importance\":10},{\"Rating\":3.0,\"Id\":0,\"Title\":\"Difficulty of Understanding\",\"Description\":\"This rating shows how difficult listeners find understanding what you say.\",\"Date\":\"2015-05-20T09:41:57.9631727+01:00\",\"Dismissable\":false,\"Importance\":10},{\"DataPoints\":[{\"YVal\":3.0,\"XVal\":\"2015-05-01T16:32:45\"},{\"YVal\":5.0,\"XVal\":\"2015-05-16T16:32:44\"},{\"YVal\":1.0,\"XVal\":\"2015-06-01T16:32:45\"}],\"Id\":0,\"Title\":\"Understanding Progress\",\"Description\":\"How understandable people have found you over time.\",\"Date\":\"2015-05-20T09:41:57.9631727+01:00\",\"Dismissable\":false,\"Importance\":8}]";
-            List<IFeedItem> results;
 
-            try
-            {
-                results = JsonConvert.DeserializeObject<List<IFeedItem>>(jsonString, new FeedItemConverter());
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-
-            return results;
+            return JsonConvert.DeserializeObject<List<IFeedItem>>(jsonString, new FeedItemConverter());
         }
     }
 
     public class ServerError
     {
-        public string id;
-        public string title;
-        public string message;
+        public string Id;
+        public string Message;
+        public string Title;
     }
 }

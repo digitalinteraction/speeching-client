@@ -209,7 +209,7 @@ namespace DroidSpeeching
 
             if(popup)
             {
-                Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.tempRecording.Path));
+                Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.TempRecording.Path));
 
                 Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Session complete!")
@@ -244,7 +244,7 @@ namespace DroidSpeeching
             startBtn.Text = "Stop!";
 
             SetupRecorder();
-            audioManager.StartRecording(AppData.tempRecording.Path, 300);
+            audioManager.StartRecording(AppData.TempRecording.Path, 300);
 
             StartModeFunc();
         }
@@ -483,7 +483,7 @@ namespace DroidSpeeching
                 countDialog.Show();
             });
 
-            audioManager.StartRecording(AppData.tempRecording.Path, 300);
+            audioManager.StartRecording(AppData.TempRecording.Path, 300);
             double[] vols = new double[startNum * 5];
 
             while(remaining > 0)

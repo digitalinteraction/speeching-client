@@ -115,7 +115,7 @@ namespace DroidSpeeching
             // Fetch the data after making the drawer
             for(int i = 0; i < submissions.Length; i++)
             {
-                ISpeechingActivityItem act = await AppData.session.FetchActivityWithId(submissions[i].ParticipantActivityId);
+                ISpeechingActivityItem act = await AppData.Session.FetchActivityWithId(submissions[i].ParticipantActivityId);
                 FeedbackData newData = new FeedbackData();
                 newData.activity = act;
                 newData.submission = submissions[i];

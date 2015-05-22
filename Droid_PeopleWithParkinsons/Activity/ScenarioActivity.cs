@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -14,67 +18,68 @@ using Android.Widget;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using SpeechingShared;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Scenario", ParentActivity=typeof(MainActivity), LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
+    [Activity(Label = "Scenario", ParentActivity = typeof (MainActivity),
+        LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class ScenarioActivity : ActionBarActivity, Palette.IPaletteAsyncListener
     {
-        private Scenario scenario;
-
-        // Scenario title screen
-        private RelativeLayout titleLayout;
-        private TextView scenarioTitle;
+        private readonly int minimumMillis = 500; //Mediarecorder has a minimum record time
+        private AndroidUtils.RecordAudioManager audioManager;
         private TextView authorName;
-        private Button startButton;
-
-        // Scenario event screen
-        private LinearLayout eventLayout;
-        private ImageView eventImage;
-        private VideoView eventVideo;
-        private TextView eventTranscript;
-        private MediaPlayer mediaPlayer;
-
-        private TextView inputHint;
-
-        // Event main layout
-        private RelativeLayout mainLayout;
-        private TextView eventPrompt;
-        private Button mainButton;
+        private bool autoSpeak = true;
         private View breakerView;
-
+        private bool canSpeak;
+        private ImageView choiceImage1;
+        private ImageView choiceImage2;
         // Event choice layout
         private LinearLayout choiceLayout;
         private TextView choicePrompt;
-        private ImageView choiceImage1;
-        private ImageView choiceImage2;
-
-        private string resultsZipPath;
-        private ScenarioResult results;
-
-        private Dictionary<string, string> resources;
-        private ProgressDialog progress;
+        private int currIndex = -1;
+        private ImageView eventImage;
+        // Scenario event screen
+        private LinearLayout eventLayout;
+        private TextView eventPrompt;
+        private TextView eventTranscript;
+        private VideoView eventVideo;
+        private string helpText;
+        private TextView inputHint;
         private string localResourcesDirectory;
         private string localTempDirectory;
         private string localZipPath;
+        private Button mainButton;
+        // Event main layout
+        private RelativeLayout mainLayout;
+        private MediaPlayer mediaPlayer;
         private ISharedPreferences prefs;
-        private string helpText;
-
-        private int currIndex = -1;
-        private AndroidUtils.RecordAudioManager audioManager;
-        private bool recording = false;
-
-        DateTime timeRecStarted;
-        int minimumMillis = 500; //Mediarecorder has a minimum record time
-
+        private ProgressDialog progress;
+        private bool recording;
+        private Dictionary<string, string> resources;
+        private ScenarioResult results;
+        private string resultsZipPath;
+        private Scenario scenario;
+        private TextView scenarioTitle;
+        private Button startButton;
+        private DateTime timeRecStarted;
+        // Scenario title screen
+        private RelativeLayout titleLayout;
         private TTSManager tts;
-        private bool canSpeak = false;
-        private bool autoSpeak = true;
+
+        /// <summary>
+        /// Change the actionbar/window colour to reflect the colours in the main image
+        /// </summary>
+        /// <param name="palette"></param>
+        public void OnGenerated(Palette palette)
+        {
+            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appMain));
+
+            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+            SupportActionBar.SetDisplayShowTitleEnabled(true);
+            breakerView.SetBackgroundColor(vibrantDark);
+            Window.SetStatusBarColor(vibrantDark);
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -108,7 +113,7 @@ namespace DroidSpeeching
             scenarioTitle = FindViewById<TextView>(Resource.Id.scenarioTitle);
             authorName = FindViewById<TextView>(Resource.Id.scenarioAuthor);
             startButton = FindViewById<Button>(Resource.Id.scenarioStartBtn);
-            startButton.Click += delegate(object sender, EventArgs e)
+            startButton.Click += delegate
             {
                 titleLayout.Visibility = ViewStates.Gone;
                 eventLayout.Visibility = ViewStates.Visible;
@@ -121,8 +126,8 @@ namespace DroidSpeeching
             eventLayout.Visibility = ViewStates.Gone;
 
             helpText = "This is a short activity which may require you to perform multiple simple tasks." +
-            "\nOnce you have completed it, you'll be given the chance to upload your results for others to analyse and give you feedback." + 
-            "\nPress the Start button to begin!";
+                       "\nOnce you have completed it, you'll be given the chance to upload your results for others to analyse and give you feedback." +
+                       "\nPress the Start button to begin!";
 
             InitialiseData(savedInstanceState);
         }
@@ -136,19 +141,20 @@ namespace DroidSpeeching
         private void SpeakableText_Click(object sender, EventArgs e)
         {
             if (!canSpeak) return;
-            tts.SayLine((sender as TextView).Text, null, true);
+            TextView textView = sender as TextView;
+            if (textView != null) tts.SayLine(textView.Text, null, true);
         }
 
         private async void InitialiseData(Bundle savedInstanceState)
         {
             // Load the scenario with the id that was given inside the current intent
-            scenario = (Scenario)await AppData.session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
+            scenario = (Scenario) await AppData.Session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
 
-            this.SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
-            string scenarioFormatted = scenario.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
+            string scenarioFormatted = scenario.Title.Replace(" ", string.Empty).Replace("/", string.Empty);
 
-            localResourcesDirectory = AppData.cache.Path + scenarioFormatted;
+            localResourcesDirectory = AppData.Cache.Path + scenarioFormatted;
             localTempDirectory = localResourcesDirectory + "/temp";
 
             // If the scenario folder doesn't exist we need to download the additional files
@@ -160,7 +166,7 @@ namespace DroidSpeeching
                     Directory.CreateDirectory(localTempDirectory);
                 }
 
-                localZipPath = System.IO.Path.Combine(AppData.exports.Path, scenarioFormatted + ".zip");
+                localZipPath = System.IO.Path.Combine(AppData.Exports.Path, scenarioFormatted + ".zip");
                 try
                 {
                     PrepareData();
@@ -183,15 +189,15 @@ namespace DroidSpeeching
                 }
 
                 //Remove existing data from the upload queue
-                AppData.session.DeleteAllPendingForScenario(scenario.Id);
+                AppData.Session.DeleteAllPendingForScenario(scenario.Id);
             }
 
             scenarioTitle.Text = scenario.Title;
 
-            if (scenario.Creator != null) authorName.Text = scenario.Creator.name;
+            if (scenario.Creator != null) authorName.Text = scenario.Creator.Name;
 
-            resultsZipPath = System.IO.Path.Combine(AppData.exports.Path, scenario.Id + "_final.zip");
-            results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.session.currentUser.id);
+            resultsZipPath = System.IO.Path.Combine(AppData.Exports.Path, scenario.Id + "_final.zip");
+            results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.Session.currentUser.Id);
 
             if (savedInstanceState != null)
             {
@@ -202,7 +208,7 @@ namespace DroidSpeeching
             {
                 titleLayout.Visibility = ViewStates.Visible;
                 eventLayout.Visibility = ViewStates.Gone;
-                this.Title = scenario.Title;
+                Title = scenario.Title;
             }
             else
             {
@@ -228,14 +234,14 @@ namespace DroidSpeeching
         // For the home button in top left
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if(item.ItemId == Android.Resource.Id.Home)
+            if (item.ItemId == Android.Resource.Id.Home)
             {
                 NavUtils.NavigateUpFromSameTask(this);
                 return true;
             }
             if (item.ItemId == Resource.Id.action_settings)
             {
-                StartActivity(typeof(SettingsActivity));
+                StartActivity(typeof (SettingsActivity));
                 return true;
             }
             if (item.ItemId == Resource.Id.action_help)
@@ -260,11 +266,11 @@ namespace DroidSpeeching
             RunOnUiThread(() => progress = ProgressDialog.Show(this, "Please Wait", "Downloading data!", true));
 
             // Ask the server for the scenario's tasks if they aren't present
-            if(scenario.Tasks == null) await scenario.FetchTasks();
+            if (scenario.Tasks == null) await scenario.FetchTasks();
 
             resources = new Dictionary<string, string>();
 
-            if(!File.Exists(localZipPath))
+            if (!File.Exists(localZipPath))
             {
                 // Download the scenario's resource zip
                 WebClient request = new WebClient();
@@ -273,29 +279,27 @@ namespace DroidSpeeching
                     localZipPath
                     );
                 request.Dispose();
-                request = null;
             }
-        
+
             RunOnUiThread(() => progress.SetMessage("Unpacking data at " + localZipPath));
 
-            ZipFile zip = null; 
+            ZipFile zip = null;
             try
             {
                 //Unzip the downloaded file and add references to its contents in the resources dictionary
                 zip = new ZipFile(File.OpenRead(localZipPath));
 
-                foreach(ZipEntry entry in zip)
+                foreach (ZipEntry entry in zip)
                 {
                     string filename = System.IO.Path.Combine(localResourcesDirectory, entry.Name);
                     byte[] buffer = new byte[4096];
                     System.IO.Stream zipStream = zip.GetInputStream(entry);
-                    using(FileStream streamWriter = File.Create(filename))
+                    using (FileStream streamWriter = File.Create(filename))
                     {
                         StreamUtils.Copy(zipStream, streamWriter, buffer);
                     }
                     resources.Add(entry.Name, filename);
                 }
-                
             }
             catch (Exception e)
             {
@@ -303,7 +307,7 @@ namespace DroidSpeeching
             }
             finally
             {
-                if(zip != null)
+                if (zip != null)
                 {
                     zip.IsStreamOwner = true;
                     zip.Close();
@@ -322,10 +326,10 @@ namespace DroidSpeeching
             RunOnUiThread(() => progress.Hide());
         }
 
-        protected override void OnResume ()
+        protected override void OnResume()
         {
             base.OnResume();
-            audioManager = new AndroidUtils.RecordAudioManager(this, null);
+            audioManager = new AndroidUtils.RecordAudioManager(this);
 
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
@@ -335,7 +339,7 @@ namespace DroidSpeeching
             autoSpeak = userPrefs.GetBoolean("autoTTS", true);
 
             // Reload the resources for this stage of the scenario, incase they were lost (e.g. audio, video)
-            if(currIndex >= 0)
+            if (currIndex >= 0)
             {
                 currIndex--;
                 ShowNextEvent();
@@ -348,24 +352,24 @@ namespace DroidSpeeching
         }
 
         // Make sure that the recorder + player are unallocated when the app goes into the background
-        protected override void OnPause ()
+        protected override void OnPause()
         {
             base.OnPause();
-            if(audioManager != null)
+            if (audioManager != null)
             {
                 audioManager.CleanUp();
                 audioManager = null;
             }
-            if(mediaPlayer != null)
+            if (mediaPlayer != null)
             {
                 mediaPlayer.Release();
                 mediaPlayer = null;
             }
-            if(eventVideo.IsPlaying)
+            if (eventVideo.IsPlaying)
             {
                 eventVideo.StopPlayback();
             }
-            if(tts != null)
+            if (tts != null)
             {
                 tts.Clean();
                 tts = null;
@@ -392,7 +396,7 @@ namespace DroidSpeeching
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
             canSpeak = true;
-            if(tts.IsSpeaking())
+            if (tts.IsSpeaking())
             {
                 tts.StopSpeaking();
             }
@@ -404,7 +408,7 @@ namespace DroidSpeeching
                 return;
             }
 
-            this.Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.Tasks.Length;
+            Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.Tasks.Length;
             inputHint.Visibility = ViewStates.Visible;
 
             // Use the alternative layout for giving the user a choice between 2 items
@@ -425,7 +429,7 @@ namespace DroidSpeeching
                     }
                 }
 
-                if(scenario.Tasks[currIndex].TaskResponse.Related != null)
+                if (scenario.Tasks[currIndex].TaskResponse.Related != null)
                 {
                     string choice2Key = scenario.Tasks[currIndex].TaskResponse.Related[1];
                     if (resources.ContainsKey(choice2Key))
@@ -434,7 +438,8 @@ namespace DroidSpeeching
                     }
                 }
 
-                helpText = ttsHelp + "\nRead or listen to the prompt and decide which image is most likely the solution. Tap the image to make your choice!";
+                helpText = ttsHelp +
+                           "\nRead or listen to the prompt and decide which image is most likely the solution. Tap the image to make your choice!";
             }
             else
             {
@@ -461,27 +466,29 @@ namespace DroidSpeeching
                     eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
                     eventPrompt.Text = (given != null) ? given : "";
                     inputHint.Text = "Your response:";
-                    helpText = ttsHelp + "\nPress the record button follow the instruction below \"Your Response\". Speak as clearly and loud as you can!";
+                    helpText = ttsHelp +
+                               "\nPress the record button follow the instruction below \"Your Response\". Speak as clearly and loud as you can!";
                 }
                 else
                 {
                     eventPrompt.Text = scenario.Tasks[currIndex].TaskResponse.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     inputHint.Text = "Please say this:";
-                    helpText = ttsHelp + "\nPress the record button read the text below \"Please say this\". Speak as clearly and loud as you can, trying to be as accurate to the text as possible!";
+                    helpText = ttsHelp +
+                               "\nPress the record button read the text below \"Please say this\". Speak as clearly and loud as you can, trying to be as accurate to the text as possible!";
                 }
             }
 
             eventTranscript.Text = scenario.Tasks[currIndex].TaskContent.Text;
 
-            if(scenario.Tasks[currIndex].TaskContent.Type == TaskContent.ContentType.Video)
+            if (scenario.Tasks[currIndex].TaskContent.Type == TaskContent.ContentType.Video)
             {
                 // load video instead of audio + image
                 SetDefaultWindowColours();
                 eventVideo.Visibility = ViewStates.Visible;
                 eventImage.Visibility = ViewStates.Gone;
                 string vidKey = scenario.Tasks[currIndex].TaskContent.Visual;
-                var vidUri = Android.Net.Uri.Parse( resources[vidKey]);
+                var vidUri = Android.Net.Uri.Parse(resources[vidKey]);
                 eventVideo.SetVideoURI(vidUri);
                 eventVideo.Start();
             }
@@ -492,7 +499,7 @@ namespace DroidSpeeching
 
                 // Load the image if it exists
                 string visualKey = scenario.Tasks[currIndex].TaskContent.Visual;
-                if(visualKey != null && resources.ContainsKey(visualKey))
+                if (visualKey != null && resources.ContainsKey(visualKey))
                 {
                     Android.Net.Uri imageUri = Android.Net.Uri.FromFile(new Java.IO.File(resources[visualKey]));
                     Bitmap bitmap = MediaStore.Images.Media.GetBitmap(ContentResolver, imageUri);
@@ -525,12 +532,12 @@ namespace DroidSpeeching
                         mediaPlayer.Looping = false;
                         mediaPlayer.Start();
                     }
-                    else if(autoSpeak)
+                    else if (autoSpeak)
                     {
                         tts.SayLine(eventTranscript.Text, null, true);
                     }
                 }
-                else if(autoSpeak)
+                else if (autoSpeak)
                 {
                     tts.SayLine(eventTranscript.Text, null, true);
                 }
@@ -542,13 +549,15 @@ namespace DroidSpeeching
         /// </summary>
         private void ChoiceImageClicked(object sender, EventArgs e)
         {
-            if(sender == choiceImage1)
+            if (sender == choiceImage1)
             {
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponse.Related[0]);
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id,
+                    scenario.Tasks[currIndex].TaskResponse.Related[0]);
             }
-            else if(sender == choiceImage2)
+            else if (sender == choiceImage2)
             {
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].TaskResponse.Related[1]);
+                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id,
+                    scenario.Tasks[currIndex].TaskResponse.Related[1]);
             }
             ShowNextEvent();
         }
@@ -569,7 +578,7 @@ namespace DroidSpeeching
                 // No need to record
                 ShowNextEvent();
             }
-            else if(recording)
+            else if (recording)
             {
                 TimeSpan recTime = DateTime.Now - timeRecStarted;
                 if (recTime.TotalMilliseconds < minimumMillis) return;
@@ -583,7 +592,7 @@ namespace DroidSpeeching
             {
                 timeRecStarted = DateTime.Now;
                 mainButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
-                if(mediaPlayer != null)
+                if (mediaPlayer != null)
                 {
                     mediaPlayer.Stop();
                 }
@@ -596,7 +605,6 @@ namespace DroidSpeeching
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }
-            
         }
 
         /// <summary>
@@ -629,27 +637,26 @@ namespace DroidSpeeching
             try
             {
                 FastZip fastZip = new FastZip();
-                bool recurse = true;
-                fastZip.CreateZip(resultsZipPath, localTempDirectory, recurse, null);
+                fastZip.CreateZip(resultsZipPath, localTempDirectory, true, null);
 
                 results.CompletionDate = DateTime.Now;
 
-                AppData.session.resultsToUpload.Add(results);
+                AppData.Session.resultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 // Clean up zipped files
                 string[] toDel = Directory.GetFiles(localTempDirectory);
 
-                for (int i = 0; i < toDel.Length; i++ )
+                foreach (string path in toDel)
                 {
-                    if (toDel[i] == resultsZipPath) continue;
-                    File.Delete(toDel[i]);
+                    if (path == resultsZipPath) continue;
+                    File.Delete(path);
                 }
-                    
-                StartActivity(typeof(UploadsActivity));
-                this.Finish();
+
+                StartActivity(typeof (UploadsActivity));
+                Finish();
             }
-            catch(Exception except)
+            catch (Exception except)
             {
                 Console.Write(except.Message);
             }
@@ -661,18 +668,19 @@ namespace DroidSpeeching
         private void FinishScenario()
         {
             Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
-            .SetTitle("Scenario Complete!")
-            .SetMessage("Well done! You've completed this scenario and we're ready to export your recordings. Would you like to export now or retry the scenario?")
-            .SetCancelable(false)
-            .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>)null)
-            .SetPositiveButton("Export Results", (s, args) => { ExportRecordings(); })
-            .Create();
+                .SetTitle("Scenario Complete!")
+                .SetMessage(
+                    "Well done! You've completed this scenario and we're ready to export your recordings. Would you like to export now or retry the scenario?")
+                .SetCancelable(false)
+                .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>) null)
+                .SetPositiveButton("Export Results", (s, args) => { ExportRecordings(); })
+                .Create();
 
             alert.Show();
 
             // A second alert dialogue, confirming the decision to restart
-            Button negative = alert.GetButton((int)DialogButtonType.Negative);
-            negative.Click += delegate(object sender, EventArgs e)
+            Button negative = alert.GetButton((int) DialogButtonType.Negative);
+            negative.Click += delegate
             {
                 Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(this);
                 confirm.SetTitle("Are you sure?");
@@ -684,22 +692,7 @@ namespace DroidSpeeching
                 });
                 confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
                 confirm.Show();
-            };      
-        }
-
-        /// <summary>
-        /// Change the actionbar/window colour to reflect the colours in the main image
-        /// </summary>
-        /// <param name="palette"></param>
-        public void OnGenerated(Palette palette)
-        {
-            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appMain));
-
-            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            SupportActionBar.SetDisplayShowTitleEnabled(true);
-            breakerView.SetBackgroundColor(vibrantDark);
-            Window.SetStatusBarColor(vibrantDark);
+            };
         }
 
         /// <summary>

@@ -1,50 +1,38 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PCLStorage;
+using System.IO;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.App;
-using SpeechingShared;
-using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
+using SpeechingShared;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Assessment Activity", ParentActivity = typeof(MainActivity))]
+    [Activity(Label = "Assessment Activity", ParentActivity = typeof (MainActivity))]
     public class AssessmentActivity : ActionBarActivity
     {
-        private enum AssessmentStage { Preparing, Preamble, Running, Finished }
-
-        AssessmentStage currentStage = AssessmentStage.Preamble;
-
-        Button recButton;
-        ImageView helpButton;
-        TextView assessmentType;
-        LinearLayout preambleContainer;
-        LinearLayout loadingContainer;
-        FrameLayout fragmentContainer;
-
-        Assessment assessment;
-        string zipPath;
-        ScenarioResult results;
-        bool recording = false;
-        int taskIndex = 0;
-        string localTempDirectory;
-        IAssessmentTask[] tasks;
-        ISharedPreferences prefs;
-
-        DateTime timeRecStarted;
-        int minimumMillis = 500; //Mediarecorder has a minimum record time
-
-        AssessmentFragment currentFragment;
-
-        AndroidUtils.RecordAudioManager audioManager;
+        private readonly int minimumMillis = 500; //Mediarecorder has a minimum record time
+        private Assessment assessment;
+        private TextView assessmentType;
+        private AndroidUtils.RecordAudioManager audioManager;
+        private AssessmentFragment currentFragment;
+        private AssessmentStage currentStage = AssessmentStage.Preamble;
+        private FrameLayout fragmentContainer;
+        private ImageView helpButton;
+        private LinearLayout loadingContainer;
+        private string localTempDirectory;
+        private LinearLayout preambleContainer;
+        private ISharedPreferences prefs;
+        private Button recButton;
+        private bool recording;
+        private ScenarioResult results;
+        private int taskIndex;
+        private IAssessmentTask[] tasks;
+        private DateTime timeRecStarted;
+        private string zipPath;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -64,9 +52,9 @@ namespace DroidSpeeching
             assessmentType = FindViewById<TextView>(Resource.Id.assessment_type);
             assessmentType.Text = "";
 
-            localTempDirectory = AppData.cache.Path + "/assessment";
+            localTempDirectory = AppData.Cache.Path + "/assessment";
 
-            if(!Directory.Exists(localTempDirectory)) Directory.CreateDirectory(localTempDirectory);
+            if (!Directory.Exists(localTempDirectory)) Directory.CreateDirectory(localTempDirectory);
 
             preambleContainer = FindViewById<LinearLayout>(Resource.Id.preamble_container);
             preambleContainer.Visibility = ViewStates.Gone;
@@ -98,13 +86,14 @@ namespace DroidSpeeching
             });
 
             assessment = await ServerData.FetchAssessment();
-            
-            if(assessment == null)
+
+            if (assessment == null)
             {
                 RunOnUiThread(() =>
                 {
                     dialog.Hide();
-                    SelfDestruct("It looks like you're offline...", "Oops! We couldn't download your assessment - check your internet connection and try again later!");
+                    SelfDestruct("It looks like you're offline...",
+                        "Oops! We couldn't download your assessment - check your internet connection and try again later!");
                 });
                 return;
             }
@@ -112,40 +101,35 @@ namespace DroidSpeeching
             FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assessment.description;
 
             tasks = assessment.tasks;
-            zipPath = Path.Combine(AppData.exports.Path, assessment.id + "_assessmentRes.zip");
-            results = new ScenarioResult(assessment.id, zipPath, AppData.session.currentUser.id);
-            results.isAssessment = true;
+            zipPath = Path.Combine(AppData.Exports.Path, assessment.id + "_assessmentRes.zip");
+            results = new ScenarioResult(assessment.id, zipPath, AppData.Session.currentUser.Id) {isAssessment = true};
 
-            int previous = -1;
-            
-            if(bundle != null)
+            if (bundle != null)
             {
-                previous = bundle.GetInt("ASSESSMENT_PROGRESS", -1);
+                var previous = bundle.GetInt("ASSESSMENT_PROGRESS", -1);
+
+                if (previous >= 0 && previous < tasks.Length)
+                {
+                    taskIndex = previous;
+                    StartAssessment(bundle.GetInt("TASK_PROGRESS", -1));
+                }
+                else
+                {
+                    currentStage = AssessmentStage.Preamble;
+                    preambleContainer.Visibility = ViewStates.Visible;
+                    recButton.Visibility = ViewStates.Visible;
+                    helpButton.Visibility = ViewStates.Visible;
+                }
             }
 
-            if(previous >= 0 && previous < tasks.Length)
-            {
-                taskIndex = previous;
-                StartAssessment(bundle.GetInt("TASK_PROGRESS", -1));
-            }
-            else
-            {
-                currentStage = AssessmentStage.Preamble;
-                preambleContainer.Visibility = ViewStates.Visible;
-                recButton.Visibility = ViewStates.Visible;
-                helpButton.Visibility = ViewStates.Visible;
-            }
-
-            RunOnUiThread(() =>
-            {
-                dialog.Hide();
-            });
+            RunOnUiThread(() => { dialog.Hide(); });
         }
 
         /// <summary>
         /// Unrecoverable error - show a dialog and return to the previous activity. Can be called by child fragments
         /// </summary>
-        public void SelfDestruct(string title = "Fatal error", string message = "Oops! Something terrible has happened - sorry about that. Closing the assessment.")
+        public void SelfDestruct(string title = "Fatal error",
+            string message = "Oops! Something terrible has happened - sorry about that. Closing the assessment.")
         {
             Android.Support.V7.App.AlertDialog errDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle(title)
@@ -158,39 +142,38 @@ namespace DroidSpeeching
 
         protected override void OnSaveInstanceState(Bundle outState)
         {
-            if(currentStage == AssessmentStage.Running)
+            if (currentStage == AssessmentStage.Running)
             {
                 outState.PutInt("ASSESSMENT_PROGRESS", taskIndex);
                 outState.PutInt("TASK_PROGRESS", currentFragment.GetCurrentStage());
             }
-            
+
             base.OnSaveInstanceState(outState);
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            if(currentStage == AssessmentStage.Running)
+            if (currentStage == AssessmentStage.Running)
             {
                 FragmentManager.BeginTransaction().Remove(currentFragment);
             }
             tasks = null;
 
-            if(audioManager != null)
+            if (audioManager == null) return;
+
+            if (recording)
             {
-                if(recording)
-                {
-                    StopRecording();
-                }
-                audioManager.CleanUp();
-                audioManager = null;
+                StopRecording();
             }
+            audioManager.CleanUp();
+            audioManager = null;
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            audioManager = new AndroidUtils.RecordAudioManager(this, null);
+            audioManager = new AndroidUtils.RecordAudioManager(this);
             recording = false;
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
         }
@@ -198,8 +181,9 @@ namespace DroidSpeeching
         private void ShowInfo()
         {
             string title = (currentStage == AssessmentStage.Running) ? currentFragment.GetTitle() : "Information";
-            string message = (currentStage == AssessmentStage.Running) ? currentFragment.GetInstructions() :
-                "If you need help during the assessment, this will show information about how to complete the current task!";
+            string message = (currentStage == AssessmentStage.Running)
+                ? currentFragment.GetInstructions()
+                : "If you need help during the assessment, this will show information about how to complete the current task!";
 
             Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle(title)
@@ -207,10 +191,7 @@ namespace DroidSpeeching
                 .SetPositiveButton("Got it", (args1, args2) => { })
                 .Create();
 
-            RunOnUiThread(() =>
-            {
-                alert.Show();
-            }); 
+            RunOnUiThread(() => { alert.Show(); });
         }
 
         private void helpButton_Click(object sender, EventArgs e)
@@ -220,8 +201,10 @@ namespace DroidSpeeching
 
         private void StartAssessment(int startPosition = -1)
         {
-            preambleContainer.Visibility = 
-                (Resources.Configuration.Orientation == Android.Content.Res.Orientation.Landscape)? ViewStates.Invisible : ViewStates.Gone;
+            preambleContainer.Visibility =
+                (Resources.Configuration.Orientation == Android.Content.Res.Orientation.Landscape)
+                    ? ViewStates.Invisible
+                    : ViewStates.Gone;
             recButton.Visibility = ViewStates.Visible;
             helpButton.Visibility = ViewStates.Visible;
 
@@ -235,26 +218,23 @@ namespace DroidSpeeching
             else
             {
                 SetNewFragment();
-                FragmentManager.BeginTransaction().Add(Resource.Id.fragment_container, currentFragment, "ASSESSMENT_TASK").Commit();
+                FragmentManager.BeginTransaction()
+                    .Add(Resource.Id.fragment_container, currentFragment, "ASSESSMENT_TASK")
+                    .Commit();
             }
-            
+
             fragmentContainer.Visibility = ViewStates.Visible;
 
             // If the device was rotated, the fragment might already exist and the data will be ready
-            if(currentFragment.finishedCreating)
+            if (currentFragment.finishedCreating)
             {
                 assessmentType.Text = currentFragment.GetTitle();
             }
             // Otherwise, the fragment's data is currently waiting to be unbundled and so actions should be queued
             else
             {
-                currentFragment.runOnceCreated.Push(delegate
-                {
-                    RunOnUiThread(() =>
-                    {
-                        assessmentType.Text = currentFragment.GetTitle();
-                    });
-                });
+                currentFragment.runOnceCreated.Push(
+                    delegate { RunOnUiThread(() => { assessmentType.Text = currentFragment.GetTitle(); }); });
             }
 
             recButton.Text = "Record";
@@ -264,9 +244,9 @@ namespace DroidSpeeching
         {
             currentStage = AssessmentStage.Finished;
 
-            ProgressDialog progress = null;
+            ProgressDialog progress;
 
-            RunOnUiThread(() => 
+            RunOnUiThread(() =>
             {
                 progress = new ProgressDialog(this);
                 progress.SetTitle("Assessment Complete!");
@@ -277,18 +257,17 @@ namespace DroidSpeeching
             try
             {
                 FastZip fastZip = new FastZip();
-                bool recurse = true;
-                fastZip.CreateZip(zipPath, localTempDirectory, recurse, null);
+                fastZip.CreateZip(zipPath, localTempDirectory, true, null);
 
                 results.CompletionDate = DateTime.Now;
-                AppData.session.resultsToUpload.Add(results);
+                AppData.Session.resultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 Directory.Delete(localTempDirectory, true);
-                StartActivity(typeof(UploadsActivity));
-                this.Finish();
+                StartActivity(typeof (UploadsActivity));
+                Finish();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -299,7 +278,7 @@ namespace DroidSpeeching
             timeRecStarted = DateTime.Now;
             recording = true;
             string fileAdd = Path.Combine(localTempDirectory,
-                    currentFragment.GetRecordingId() + ".mp4");
+                currentFragment.GetRecordingId() + ".mp4");
             audioManager.StartRecording(fileAdd);
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
             recButton.Text = "Stop Recording";
@@ -308,7 +287,8 @@ namespace DroidSpeeching
         private void StopRecording()
         {
             audioManager.StopRecording();
-            results.ParticipantTaskIdResults.Add(currentFragment.GetRecordingId(), currentFragment.GetRecordingId() + ".mp4");
+            results.ParticipantTaskIdResults.Add(currentFragment.GetRecordingId(),
+                currentFragment.GetRecordingId() + ".mp4");
             recording = false;
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
             recButton.Text = "Record";
@@ -318,11 +298,11 @@ namespace DroidSpeeching
         {
             Type thisType = tasks[taskIndex].GetType();
 
-            if(thisType == typeof(QuickFireTask))
+            if (thisType == typeof (QuickFireTask))
             {
                 currentFragment = QuickFireFragment.NewInstance(tasks[taskIndex]);
             }
-            else if(thisType == typeof(ImageDescTask))
+            else if (thisType == typeof (ImageDescTask))
             {
                 currentFragment = ImageDescFragment.NewInstance(tasks[taskIndex]);
             }
@@ -355,13 +335,13 @@ namespace DroidSpeeching
         {
             if (currentStage == AssessmentStage.Preparing) return;
 
-            if(currentStage == AssessmentStage.Preamble)
+            if (currentStage == AssessmentStage.Preamble)
             {
                 StartAssessment();
                 return;
             }
 
-            if(recording)
+            if (recording)
             {
                 TimeSpan recTime = DateTime.Now - timeRecStarted;
 
@@ -386,18 +366,15 @@ namespace DroidSpeeching
                         currentFragment = null;
                         SetNewFragment();
 
-                        if(currentFragment != null)
+                        if (currentFragment != null)
                         {
-                            FragmentManager.BeginTransaction().Replace(Resource.Id.fragment_container, currentFragment, "ASSESSMENT_TASK").Commit();
-                        }
+                            FragmentManager.BeginTransaction()
+                                .Replace(Resource.Id.fragment_container, currentFragment, "ASSESSMENT_TASK")
+                                .Commit();
 
-                        currentFragment.runOnceCreated.Push(delegate
-                        {
-                            RunOnUiThread(() =>
-                            {
-                                assessmentType.Text = currentFragment.GetTitle();
-                            });
-                        });
+                            currentFragment.runOnceCreated.Push(
+                            delegate { RunOnUiThread(() => { assessmentType.Text = currentFragment.GetTitle(); }); });
+                        }
 
                         loadingContainer.Visibility = ViewStates.Gone;
                         fragmentContainer.Visibility = ViewStates.Visible;
@@ -412,7 +389,14 @@ namespace DroidSpeeching
             {
                 StartRecording();
             }
-            
+        }
+
+        private enum AssessmentStage
+        {
+            Preparing,
+            Preamble,
+            Running,
+            Finished
         }
     }
 }

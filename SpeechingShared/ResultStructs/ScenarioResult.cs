@@ -21,7 +21,7 @@ namespace SpeechingShared
 
         public ScenarioResult(int activityId, string dataLoc, string userId)
         {
-            this.id = AppData.rand.Next(0, 100000); // TEMP
+            this.id = AppData.Rand.Next(0, 100000); // TEMP
             this.activityId = activityId;
             this.resource = dataLoc;
             this.state = Utils.UploadStage.Ready;

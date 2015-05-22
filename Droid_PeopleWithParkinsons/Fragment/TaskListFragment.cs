@@ -37,7 +37,7 @@ namespace DroidSpeeching
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainTaskListHeader, null);
             mainList = view.FindViewById<ExpandableListView>(Resource.Id.mainActivitiesList);
             mainList.AddHeaderView(header, null, false);
-            mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.session.categories.ToArray()));
+            mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.Session.categories.ToArray()));
             mainList.ChildClick += mainList_ChildClick;  
 
             // When the pull to refresh is activated, pull new data from the server and refresh the list with the new data
@@ -54,12 +54,12 @@ namespace DroidSpeeching
                 await ServerData.FetchCategories();
                 refresher.Refreshing = false;
 
-                ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.session.categories.ToArray();
+                ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.Session.categories.ToArray();
                 Activity.RunOnUiThread(() => ((ScenarioListAdapter)mainList.ExpandableListAdapter).NotifyDataSetChanged());
             };
 
             // If there's only one category, it makes sense to expand it by default
-            if (AppData.session.categories.Count == 1)
+            if (AppData.Session.categories.Count == 1)
             {
                 mainList.ExpandGroup(0, true);
             }
@@ -78,7 +78,7 @@ namespace DroidSpeeching
         /// </summary>
         void mainList_ChildClick(object sender, ExpandableListView.ChildClickEventArgs e)
         {
-            ISpeechingActivityItem thisItem = AppData.session.categories[e.GroupPosition].activities[e.ChildPosition];
+            ISpeechingActivityItem thisItem = AppData.Session.categories[e.GroupPosition].activities[e.ChildPosition];
 
             System.Type objectType = thisItem.GetType();
             System.Type targetActivity = typeof(MainActivity);

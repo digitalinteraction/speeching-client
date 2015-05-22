@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Provider;
@@ -8,22 +12,18 @@ using OxyPlot;
 using OxyPlot.Xamarin.Android;
 using RadialProgress;
 using SpeechingShared;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace DroidSpeeching
 {
     public class FeedCardAdapter : RecyclerView.Adapter
     {
-        public List<IFeedItem> data;
-        private Dictionary<Type, int> viewTypes;
-        private Context context;
+        private readonly Context context;
+        private readonly Dictionary<Type, int> viewTypes;
+        public List<IFeedItem> Data;
 
         public FeedCardAdapter(List<IFeedItem> feedData, Context context)
         {
-            this.data = feedData;
+            Data = feedData;
             this.context = context;
 
             viewTypes = new Dictionary<Type, int>
@@ -37,20 +37,18 @@ namespace DroidSpeeching
                 {typeof (FeedbackSubmissionButton), 6},
                 {typeof (FeedItemStarRating), 7}
             };
-
-        }
-
-        public override int GetItemViewType(int position)
-        {
-            if (viewTypes.ContainsKey(data[position].GetType()))
-                return viewTypes[data[position].GetType()];
-            else
-                return 0; // Default to base layout (All types will populate this correctly)
         }
 
         public override int ItemCount
         {
-            get { return data.Count; }
+            get { return Data.Count; }
+        }
+
+        public override int GetItemViewType(int position)
+        {
+            if (viewTypes.ContainsKey(Data[position].GetType()))
+                return viewTypes[Data[position].GetType()];
+            return 0; // Default to base layout (All types will populate this correctly)
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup viewGroup, int viewType)
@@ -92,119 +90,115 @@ namespace DroidSpeeching
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder viewHolder, int position)
         {
-            (viewHolder as CardBaseViewHolder).title.SetText(data[position].Title, TextView.BufferType.Normal);
-            (viewHolder as CardBaseViewHolder).description.SetText(data[position].Description, TextView.BufferType.Normal);
+            ((CardBaseViewHolder) viewHolder).Title.SetText(Data[position].Title, TextView.BufferType.Normal);
+            ((CardBaseViewHolder) viewHolder).Description.SetText(Data[position].Description,
+                TextView.BufferType.Normal);
 
-            if(viewHolder.GetType() == typeof(CardImageViewHolder))
+            if (viewHolder.GetType() == typeof (CardImageViewHolder))
             {
-                (viewHolder as CardImageViewHolder).LoadImage(((FeedItemImage)data[position]).Image, context);
+                ((CardImageViewHolder) viewHolder).LoadImage(((FeedItemImage) Data[position]).Image, context);
             }
-            else if (viewHolder.GetType() == typeof(CardPercentViewHolder))
+            else if (viewHolder.GetType() == typeof (CardPercentViewHolder))
             {
-                (viewHolder as CardPercentViewHolder).AnimatePercentage(((FeedItemPercentage)data[position]).Percentage, 1200);
+                ((CardPercentViewHolder) viewHolder).AnimatePercentage(
+                    ((FeedItemPercentage) Data[position]).Percentage, 1200);
             }
-            else if (viewHolder.GetType() == typeof(CardGraphViewHolder))
+            else if (viewHolder.GetType() == typeof (CardGraphViewHolder))
             {
-                try
-                {
-                    PlotModel model = ((FeedItemGraph)data[position]).CreatePlotModel();
-                    (viewHolder as CardGraphViewHolder).PlotGraph(model);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                PlotModel model = ((FeedItemGraph) Data[position]).CreatePlotModel();
+                ((CardGraphViewHolder) viewHolder).PlotGraph(model);
             }
-            else if (viewHolder.GetType() == typeof(CardPersonViewHolder))
+            else if (viewHolder.GetType() == typeof (CardPersonViewHolder))
             {
-                (viewHolder as CardPersonViewHolder).LoadData(((FeedItemUser)data[position]).UserAccount, context);
+                ((CardPersonViewHolder) viewHolder).LoadData(((FeedItemUser) Data[position]).UserAccount, context);
             }
-            else if(viewHolder.GetType() == typeof(CardActivityViewHolder))
+            else if (viewHolder.GetType() == typeof (CardActivityViewHolder))
             {
-                (viewHolder as CardActivityViewHolder).LoadData((FeedItemActivity)data[position], context);
+                ((CardActivityViewHolder) viewHolder).LoadData((FeedItemActivity) Data[position], context);
             }
             else if (viewHolder.GetType() == typeof (CardRatingViewHolder))
             {
-                (viewHolder as CardRatingViewHolder).ratingBar.Rating = ((FeedItemStarRating) data[position]).Rating;
+                ((CardRatingViewHolder) viewHolder).RatingBar.Rating = ((FeedItemStarRating) Data[position]).Rating;
             }
 
-            if (data[position].Interaction == null)
+            if (Data[position].Interaction == null)
             {
-                (viewHolder as CardBaseViewHolder).interact.Visibility = ViewStates.Gone;
+                ((CardBaseViewHolder) viewHolder).Interact.Visibility = ViewStates.Gone;
                 return;
             }
 
-            (viewHolder as CardBaseViewHolder).interact.Visibility = ViewStates.Visible;
-            (viewHolder as CardBaseViewHolder).interact.Text = data[position].Interaction.label;
+            ((CardBaseViewHolder) viewHolder).Interact.Visibility = ViewStates.Visible;
+            ((CardBaseViewHolder) viewHolder).Interact.Text = Data[position].Interaction.label;
 
-            FeedItemInteraction interaction = data[position].Interaction;
+            FeedItemInteraction interaction = Data[position].Interaction;
 
-            if (interaction.type == FeedItemInteraction.InteractionType.URL)
+            switch (interaction.type)
             {
-                (viewHolder as CardBaseViewHolder).interact.Click += delegate
-                {
-                    Intent i = new Intent(Intent.ActionView,
-                        Android.Net.Uri.Parse(interaction.value));
-                    context.StartActivity(i);
-                };
-            }
-            else if(interaction.type == FeedItemInteraction.InteractionType.ASSESSMENT)
-            {
-                (viewHolder as CardBaseViewHolder).interact.Click += delegate
-                {
-                    context.StartActivity(typeof(AssessmentActivity));
-                };
-            }
-            else if(interaction.type == FeedItemInteraction.InteractionType.ACTIVITY)
-            {
-                (viewHolder as CardBaseViewHolder).interact.Click += delegate
-                {
-                    int actId = int.Parse(interaction.value);
-
-                    if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
+                case FeedItemInteraction.InteractionType.URL:
+                    ((CardBaseViewHolder) viewHolder).Interact.Click += delegate
                     {
-                        AndroidUtils.OfflineAlert(context, "This activity has not been downloaded yet and requires an Internet connection to prepare!");
-                        return;
-                    }
+                        Intent i = new Intent(Intent.ActionView,
+                            Android.Net.Uri.Parse(interaction.value));
+                        context.StartActivity(i);
+                    };
+                    break;
 
-                    Intent intent = new Intent(context, typeof(ScenarioActivity));
-                    intent.PutExtra("ActivityId", actId);
-                    context.StartActivity(intent);
-                };
+                case FeedItemInteraction.InteractionType.ASSESSMENT:
+                    ((CardBaseViewHolder) viewHolder).Interact.Click +=
+                        delegate { context.StartActivity(typeof (AssessmentActivity)); };
+                    break;
+
+                case FeedItemInteraction.InteractionType.ACTIVITY:
+                    ((CardBaseViewHolder) viewHolder).Interact.Click += delegate
+                    {
+                        int actId = int.Parse(interaction.value);
+
+                        if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
+                        {
+                            AndroidUtils.OfflineAlert(context,
+                                "This activity has not been downloaded yet and requires an Internet connection to prepare!");
+                            return;
+                        }
+
+                        Intent intent = new Intent(context, typeof (ScenarioActivity));
+                        intent.PutExtra("ActivityId", actId);
+                        context.StartActivity(intent);
+                    };
+                    break;
             }
         }
     }
 
     public class CardBaseViewHolder : RecyclerView.ViewHolder
     {
-        public TextView title;
-        public TextView description;
-        public Button interact;
+        public TextView Description;
+        public Button Interact;
+        public TextView Title;
 
         public CardBaseViewHolder(View v)
             : base(v)
         {
-            title = v.FindViewById<TextView>(Resource.Id.resultCard_title);
-            description = v.FindViewById<TextView>(Resource.Id.resultCard_caption);
-            interact = v.FindViewById<Button>(Resource.Id.resultCard_interaction);
+            Title = v.FindViewById<TextView>(Resource.Id.resultCard_title);
+            Description = v.FindViewById<TextView>(Resource.Id.resultCard_caption);
+            Interact = v.FindViewById<Button>(Resource.Id.resultCard_interaction);
         }
 
-        public static async void LoadImageIntoCircle( string imageUrl, ImageView imageView, Context context)
+        public static async void LoadImageIntoCircle(string imageUrl, ImageView imageView, Context context)
         {
             try
             {
-                string imageLoc = await Utils.FetchLocalCopy(imageUrl, typeof(User));
+                string imageLoc = await Utils.FetchLocalCopy(imageUrl, typeof (User));
 
                 if (string.IsNullOrEmpty(imageLoc)) return;
 
                 Bitmap thisBitmap = MediaStore.Images.Media.GetBitmap(
-                            context.ContentResolver,
-                            Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
+                    context.ContentResolver,
+                    Android.Net.Uri.FromFile(new Java.IO.File(imageLoc)));
 
                 RoundedDrawable avatar = new RoundedDrawable(thisBitmap);
                 imageView.SetImageDrawable(avatar);
             }
-            catch(Exception except)
+            catch (Exception except)
             {
                 Console.WriteLine(except);
             }
@@ -213,11 +207,11 @@ namespace DroidSpeeching
 
     public class CardImageViewHolder : CardBaseViewHolder
     {
-        public ImageView image;
+        public ImageView Image;
 
         public CardImageViewHolder(View v) : base(v)
         {
-            image = v.FindViewById<ImageView>(Resource.Id.resultCard_image);
+            Image = v.FindViewById<ImageView>(Resource.Id.resultCard_image);
         }
 
         public async void LoadImage(string imageLoc, Context context)
@@ -230,13 +224,13 @@ namespace DroidSpeeching
 
                 if (string.IsNullOrEmpty(localLoc)) throw new Exception("Failed to load local copy of image file");
 
-                image.SetImageBitmap(BitmapFactory.DecodeFile(localLoc));
+                Image.SetImageBitmap(BitmapFactory.DecodeFile(localLoc));
             }
-            catch(Exception except)
+            catch (Exception except)
             {
-                if(File.Exists(localLoc))
+                if (File.Exists(localLoc))
                 {
-                    File.Delete(localLoc);
+                    if (localLoc != null) File.Delete(localLoc);
                 }
                 Console.WriteLine(except);
             }
@@ -245,22 +239,22 @@ namespace DroidSpeeching
 
     public class CardPercentViewHolder : CardBaseViewHolder
     {
-        public RadialProgressView percent;
+        public RadialProgressView Percent;
 
         public CardPercentViewHolder(View v)
             : base(v)
         {
-            percent = v.FindViewById<RadialProgressView>(Resource.Id.resultCard_percent);
+            Percent = v.FindViewById<RadialProgressView>(Resource.Id.resultCard_percent);
         }
 
         public async void AnimatePercentage(float toVal, float millis)
         {
-            int waitTime = (int)(millis / toVal);
+            int waitTime = (int) (millis/toVal);
             float current = 0;
             while (current < toVal)
             {
                 current++;
-                percent.Value = current;
+                Percent.Value = current;
                 await Task.Delay(waitTime);
             }
         }
@@ -268,41 +262,39 @@ namespace DroidSpeeching
 
     public class CardPersonViewHolder : CardBaseViewHolder
     {
-        private ImageView avatarView;
-        public TextView username;
+        private readonly ImageView avatarView;
+        public TextView Username;
 
         public CardPersonViewHolder(View v)
             : base(v)
         {
             avatarView = v.FindViewById<ImageView>(Resource.Id.resultCard_avatar);
-            username = v.FindViewById<TextView>(Resource.Id.resultCard_username);
+            Username = v.FindViewById<TextView>(Resource.Id.resultCard_username);
         }
 
         public void LoadData(User user, Context context)
         {
-            username.Text = user.name;
-            LoadImageIntoCircle(user.avatar, avatarView, context);
+            Username.Text = user.Name;
+            LoadImageIntoCircle(user.Avatar, avatarView, context);
         }
-        
     }
 
     public class CardRatingViewHolder : CardBaseViewHolder
     {
-        public RatingBar ratingBar;
+        public RatingBar RatingBar;
 
         public CardRatingViewHolder(View v) : base(v)
         {
-            ratingBar = v.FindViewById<RatingBar>(Resource.Id.resultCard_ratingBar);
+            RatingBar = v.FindViewById<RatingBar>(Resource.Id.resultCard_ratingBar);
         }
     }
 
     public class CardActivityViewHolder : CardBaseViewHolder
     {
-        private ImageView icon;
-        private TextView activityName;
-
-        private TextView rationaleView;
-        private TextView rationaleTease;
+        private readonly TextView activityName;
+        private readonly ImageView icon;
+        private readonly TextView rationaleTease;
+        private readonly TextView rationaleView;
 
         public CardActivityViewHolder(View v)
             : base(v)
@@ -325,7 +317,7 @@ namespace DroidSpeeching
 
             rationaleView.Text = reasons[0];
 
-            for(int i = 1; i < reasons.Length; i++)
+            for (int i = 1; i < reasons.Length; i++)
             {
                 rationaleView.Text += "\n" + reasons[i];
             }
@@ -344,26 +336,26 @@ namespace DroidSpeeching
                 success = false;
             }
 
-            if(success)
+            if (success)
             {
                 LoadImageIntoCircle(data.Activity.LocalIcon, icon, context);
-            }  
+            }
         }
     }
 
     public class CardGraphViewHolder : CardBaseViewHolder
     {
-        public PlotView plotView;
+        public PlotView PlotView;
 
         public CardGraphViewHolder(View v)
             : base(v)
         {
-            plotView = v.FindViewById<PlotView>(Resource.Id.resultCard_graph);
+            PlotView = v.FindViewById<PlotView>(Resource.Id.resultCard_graph);
         }
 
         public void PlotGraph(PlotModel plotModel)
         {
-            plotView.Model = plotModel;
+            PlotView.Model = plotModel;
         }
     }
 }

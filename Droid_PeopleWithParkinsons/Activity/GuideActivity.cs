@@ -53,7 +53,7 @@ namespace DroidSpeeching
         /// </summary>
         private async void InitialiseData()
         {
-            guide = (Guide)await AppData.session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
+            guide = (Guide)await AppData.Session.FetchActivityWithId(Intent.GetIntExtra("ActivityId", 0));
             string scenarioFormatted = guide.Title.Replace(" ", String.Empty).Replace("/", String.Empty);
 
             string documentsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching";

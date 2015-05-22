@@ -98,7 +98,7 @@ namespace DroidSpeeching
                     .SetMessage("This will erase your current session data!")
                     .SetPositiveButton("Confirm", (arg1, arg2) => {
 
-                        AppData.session = null;
+                        AppData.Session = null;
                         AppData.SaveCurrentData();
 
                         Intent intent = new Intent(this, typeof(LoginActivity));

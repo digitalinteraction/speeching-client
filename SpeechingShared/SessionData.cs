@@ -71,9 +71,9 @@ namespace SpeechingShared
         {
             resultsToUpload.Remove(result);
 
-            if(await AppData.exports.CheckExistsAsync(Path.GetFileName(result.ResourceUrl)) == ExistenceCheckResult.FileExists)
+            if(await AppData.Exports.CheckExistsAsync(Path.GetFileName(result.ResourceUrl)) == ExistenceCheckResult.FileExists)
             {
-                IFile toDel = await AppData.exports.GetFileAsync(Path.GetFileName(result.ResourceUrl));
+                IFile toDel = await AppData.Exports.GetFileAsync(Path.GetFileName(result.ResourceUrl));
 
                 await toDel.DeleteAsync();
             }
@@ -113,7 +113,7 @@ namespace SpeechingShared
                 scenariosProcessing++;
 
                 ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
-                if (activity.Id == null) activity.Id = AppData.rand.Next(0, 10000);
+                if (activity.Id == null) activity.Id = AppData.Rand.Next(0, 10000);
 
                 string result = await Utils.FetchLocalCopy(activity.Icon);
 
@@ -130,7 +130,7 @@ namespace SpeechingShared
             }
             catch (Exception e)
             {
-                AppData.IO.PrintToConsole(e.Message);
+                AppData.Io.PrintToConsole(e.Message);
                 return false;
             }
 

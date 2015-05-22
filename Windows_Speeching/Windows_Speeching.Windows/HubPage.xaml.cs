@@ -62,7 +62,7 @@ namespace Windows_Speeching
         private async void LoadActivities()
         {
             await ServerData.FetchCategories();
-            foreach (ActivityCategory cat in AppData.session.categories)
+            foreach (ActivityCategory cat in AppData.Session.categories)
             {
                 foreach (ISpeechingActivityItem act in cat.activities)
                 {
@@ -73,7 +73,7 @@ namespace Windows_Speeching
 
         private void Feed_ItemClick(object sender, ItemClickEventArgs e)
         {
-            AppData.IO.PrintToConsole("Click from " + (e.ClickedItem as ISpeechingActivityItem).Title);
+            AppData.Io.PrintToConsole("Click from " + (e.ClickedItem as ISpeechingActivityItem).Title);
         }
     }
 }

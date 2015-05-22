@@ -34,7 +34,7 @@ namespace DroidSpeeching
                 .SetNegativeButton("Cancel", (arg1, arg2) => { })
                 .SetPositiveButton("Delete Data", (arg1, arg2) =>
                 {
-                    AppData.session = null;
+                    AppData.Session = null;
                     AppData.SaveCurrentData();
 
                     Intent intent = new Intent(Activity, typeof(LoginActivity));

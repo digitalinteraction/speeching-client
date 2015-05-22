@@ -75,11 +75,11 @@ namespace DroidSpeeching
                 try
                 {
                     // Remove reference 
-                    string thisKey = AppData.session.placesPhotos.FirstOrDefault(x => x.Value == biggest[count].FullName).Key;
+                    string thisKey = AppData.Session.placesPhotos.FirstOrDefault(x => x.Value == biggest[count].FullName).Key;
 
                     if (thisKey != null)
                     {
-                        AppData.session.placesPhotos.Remove(thisKey);
+                        AppData.Session.placesPhotos.Remove(thisKey);
                     }
 
                     size -= biggest[count].Length;

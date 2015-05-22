@@ -56,9 +56,9 @@ namespace DroidSpeeching
         {
             await AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
 
-            AppData.IO = new AndroidPCLHelper();
+            AppData.Io = new AndroidPCLHelper();
 
-            AppData.checkForConnection = () =>
+            AppData.CheckForConnection = () =>
             {
                 ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
                 NetworkInfo activeNetworkInfo = connectivityManager.ActiveNetworkInfo;
@@ -66,7 +66,7 @@ namespace DroidSpeeching
                 return activeNetworkInfo != null && activeNetworkInfo.IsConnected;
             };
 
-            AppData.onConnectionSuccess = () =>
+            AppData.OnConnectionSuccess = () =>
             {
                 AndroidUtils.gcm = GoogleCloudMessaging.GetInstance(context);
                 AndroidUtils.GooglePlayRegId = AndroidUtils.GetGoogleRegId(context);
@@ -481,7 +481,7 @@ namespace DroidSpeeching
             public void StartBackgroundCheck()
             {
                 backgroundAudioRecorder = new AudioRecorder();
-                backgroundAudioRecorder.PrepareAudioRecorder(AppData.cache.Path + "bgnoise.3gpp", false);
+                backgroundAudioRecorder.PrepareAudioRecorder(AppData.Cache.Path + "bgnoise.3gpp", false);
                 bgRunning = true;
                 bgShouldToggle = true;
 

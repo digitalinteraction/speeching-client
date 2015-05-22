@@ -1,41 +1,46 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PCLStorage;
+using System.IO;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Runtime;
+using Android.Provider;
+using Android.Support.V7.App;
+using Android.Support.V7.Graphics;
 using Android.Views;
 using Android.Widget;
-using SpeechingShared;
-using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
-using Android.Support.V7.App;
-using Android.Graphics;
-using Android.Support.V7.Graphics;
-using Android.Graphics.Drawables;
-using Android.Provider;
+using SpeechingShared;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Make a new recording", ParentActivity=typeof(LocationActivity) )]
+    [Activity(Label = "Make a new recording", ParentActivity = typeof (LocationActivity))]
     public class RecordPlaceEntryActivity : ActionBarActivity, Palette.IPaletteAsyncListener
     {
-        string placeId;
-        string placeName;
-        string imageLoc;
-        long lat;
-        long lng;
+        private AndroidUtils.RecordAudioManager audioManager;
+        private string imageLoc;
+        private long lat;
+        private long lng;
+        private string placeId;
+        private string placeName;
+        private string recFile;
+        private string recFolder;
+        private Button recordButton;
+        private bool recording;
+        private string resultsZipPath;
+        private TextView titleText;
 
-        TextView titleText;
-        Button recordButton;
-        AndroidUtils.RecordAudioManager audioManager;
-        bool recording = false;
-        string recFolder;
-        string recFile;
-        string resultsZipPath;
+        public void OnGenerated(Palette palette)
+        {
+            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appMain));
+            Color dullDark = new Color(palette.GetDarkMutedColor(Resource.Color.appDark));
+
+            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
+            SupportActionBar.SetDisplayShowTitleEnabled(false);
+            SupportActionBar.SetDisplayShowTitleEnabled(true);
+            Window.SetStatusBarColor(dullDark);
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -45,22 +50,22 @@ namespace DroidSpeeching
             placeId = Intent.GetStringExtra("PlaceID");
             placeName = Intent.GetStringExtra("PlaceName");
             imageLoc = Intent.GetStringExtra("PlaceImage");
-            lat = Intent.GetLongExtra("PlaceLat", (long)54.9787659);
-            lng = Intent.GetLongExtra("PlaceLng", (long)-1.6140803);
+            lat = Intent.GetLongExtra("PlaceLat", (long) 54.9787659);
+            lng = Intent.GetLongExtra("PlaceLng", (long) -1.6140803);
 
             SetContentView(Resource.Layout.PlacesRecordEntry);
 
-            recFolder = System.IO.Path.Combine(AppData.cache.Path, placeId);
+            recFolder = System.IO.Path.Combine(AppData.Cache.Path, placeId);
 
-            if(!Directory.Exists(recFolder))
+            if (!Directory.Exists(recFolder))
             {
                 Directory.CreateDirectory(recFolder);
             }
 
             recFile = System.IO.Path.Combine(recFolder, "entry.mp4");
-            resultsZipPath = System.IO.Path.Combine(AppData.exports.Path, placeId + ".zip");
+            resultsZipPath = System.IO.Path.Combine(AppData.Exports.Path, placeId + ".zip");
 
-            if(imageLoc != null)
+            if (imageLoc != null)
             {
                 // Load the location's photo if there is one (already downloaded)
                 Android.Net.Uri imageUri = Android.Net.Uri.FromFile(new Java.IO.File(imageLoc));
@@ -68,7 +73,7 @@ namespace DroidSpeeching
 
                 ImageView headerImage = FindViewById<ImageView>(Resource.Id.placesRecord_photo);
                 headerImage.SetImageBitmap(bitmap);
-                
+
                 Palette.GenerateAsync(bitmap, this);
             }
             else
@@ -83,12 +88,14 @@ namespace DroidSpeeching
             recordButton = FindViewById<Button>(Resource.Id.placesRecord_button);
             recordButton.Click += recordButton_Click;
 
+            recording = false;
+
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
         }
 
         private void recordButton_Click(object sender, EventArgs e)
         {
-            if(!recording)
+            if (!recording)
             {
                 recordButton.Text = "Stop recording!";
                 audioManager.StartRecording(recFile);
@@ -102,18 +109,20 @@ namespace DroidSpeeching
 
                 Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Recording complete!")
-                    .SetMessage("You completed a new voice entry about " + placeName + ". Would you like to try again or export this recording?")
-                    .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>)null)
+                    .SetMessage("You completed a new voice entry about " + placeName +
+                                ". Would you like to try again or export this recording?")
+                    .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>) null)
                     .SetPositiveButton("Export", (s, args) => { ExportRecordings(); })
                     .Create();
 
                 alert.Show();
 
                 // A second alert dialogue, confirming the decision to restart
-                Button negative = alert.GetButton((int)DialogButtonType.Negative);
-                negative.Click += delegate(object s, EventArgs ev)
+                Button negative = alert.GetButton((int) DialogButtonType.Negative);
+                negative.Click += delegate
                 {
-                    Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    Android.Support.V7.App.AlertDialog.Builder confirm =
+                        new Android.Support.V7.App.AlertDialog.Builder(this);
                     confirm.SetTitle("Are you sure?");
                     confirm.SetMessage("Restarting will wipe your current progress. Restart the scenario?");
                     confirm.SetPositiveButton("Restart", (senderAlert, confArgs) =>
@@ -123,7 +132,7 @@ namespace DroidSpeeching
                     });
                     confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
                     confirm.Show();
-                };      
+                };
             }
 
             recording = !recording;
@@ -141,27 +150,28 @@ namespace DroidSpeeching
             try
             {
                 FastZip fastZip = new FastZip();
-                bool recurse = true;
-                fastZip.CreateZip(resultsZipPath, recFolder, recurse, "");
+                fastZip.CreateZip(resultsZipPath, recFolder, true, "");
 
-                LocationRecordingResult results = new LocationRecordingResult();
-                results.CompletionDate = DateTime.Now;
-                results.ParticipantActivityId = 8675309;
-                results.ResourceUrl = resultsZipPath;
-                results.UploadState = SpeechingShared.Utils.UploadStage.Ready;
-                results.UserId = AppData.session.currentUser.id;
-                results.GooglePlaceID = placeId;
-                results.GooglePlaceName = placeName;
-                results.Lat = lat;
-                results.Lng = lng;
+                LocationRecordingResult results = new LocationRecordingResult
+                {
+                    CompletionDate = DateTime.Now,
+                    ParticipantActivityId = 8675309,
+                    ResourceUrl = resultsZipPath,
+                    UploadState = Utils.UploadStage.Ready,
+                    UserId = AppData.Session.currentUser.Id,
+                    GooglePlaceID = placeId,
+                    GooglePlaceName = placeName,
+                    Lat = lat,
+                    Lng = lng
+                };
 
-                AppData.session.resultsToUpload.Add(results);
+                AppData.Session.resultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 Directory.Delete(recFolder, true);
 
-                StartActivity(typeof(UploadsActivity));
-                this.Finish();
+                StartActivity(typeof (UploadsActivity));
+                Finish();
             }
             catch (Exception except)
             {
@@ -172,28 +182,16 @@ namespace DroidSpeeching
         protected override void OnResume()
         {
             base.OnResume();
-            audioManager = new AndroidUtils.RecordAudioManager(this, null);
+            audioManager = new AndroidUtils.RecordAudioManager(this);
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            if (audioManager != null)
-            {
-                audioManager.CleanUp();
-                audioManager = null;
-            }
-        }
+            if (audioManager == null) return;
 
-        public void OnGenerated(Palette palette)
-        {
-            Color vibrantDark = new Color(palette.GetDarkVibrantColor(Resource.Color.appMain));
-            Color dullDark = new Color(palette.GetDarkMutedColor(Resource.Color.appDark));
-
-            SupportActionBar.SetBackgroundDrawable(new ColorDrawable(vibrantDark));
-            SupportActionBar.SetDisplayShowTitleEnabled(false);
-            SupportActionBar.SetDisplayShowTitleEnabled(true);
-            Window.SetStatusBarColor(dullDark);
+            audioManager.CleanUp();
+            audioManager = null;
         }
     }
 }

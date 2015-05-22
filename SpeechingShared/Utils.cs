@@ -57,21 +57,21 @@ namespace SpeechingShared
 
             string filename = (ownerType == typeof(WikipediaResult))? "wikiImage.jpg" : Path.GetFileName(remoteUrl);
 
-            localIconPath = AppData.cache.Path + "/" + filename;
+            localIconPath = AppData.Cache.Path + "/" + filename;
             IFile file = null;
 
             await Utils.GetSemaphore(filename).WaitAsync();
 
             try
             {
-                ExistenceCheckResult checkRes = await AppData.cache.CheckExistsAsync(filename);
+                ExistenceCheckResult checkRes = await AppData.Cache.CheckExistsAsync(filename);
                 exists =  (checkRes == ExistenceCheckResult.FileExists);
 
                 if (ownerType == typeof(WikipediaResult) && exists)
                 {
                     try
                     {
-                        IFile existing = await AppData.cache.GetFileAsync(filename);
+                        IFile existing = await AppData.Cache.GetFileAsync(filename);
                         await existing.DeleteAsync();
                         exists = false;
                     }
@@ -86,7 +86,7 @@ namespace SpeechingShared
                 {
                     if (!AppData.CheckNetwork()) return null;
 
-                    file = await AppData.cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+                    file = await AppData.Cache.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
                     using (HttpClient client = new HttpClient()) // TODO get ModernHttpClient working
                     {
@@ -110,7 +110,7 @@ namespace SpeechingShared
             }
             catch (Exception e)
             {
-                AppData.IO.PrintToConsole(e.Message);
+                AppData.Io.PrintToConsole(e.Message);
                 if(file != null)
                 {
                     file.DeleteAsync().Start();

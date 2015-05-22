@@ -1,30 +1,25 @@
-using Newtonsoft.Json;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using PCLStorage;
-using System.Threading;
 
 namespace SpeechingShared
 {
     public static class AppData
     {
         // Account related data
-        public static SessionData session;
+        public static SessionData Session;
         // System data
-        public static Random rand;
-        public static IFolder root;
-        public static IFolder cache;
-        public static IFolder exports;
-        public static IFile tempRecording;
-        public static IPlatformSpecifics IO;
-        private static IFile saveFile;
-
-        public static Func<bool> checkForConnection;
-        public static Action onConnectionSuccess;
-        public static bool connectionInitialized = false;
+        public static Random Rand;
+        public static IFolder Root;
+        public static IFolder Cache;
+        public static IFolder Exports;
+        public static IFile TempRecording;
+        public static IPlatformSpecifics Io;
+        private static IFile _saveFile;
+        public static Func<bool> CheckForConnection;
+        public static Action OnConnectionSuccess;
+        public static bool ConnectionInitialized;
 
         /// <summary>
         /// Checks that the app is connected to the network, performing first time inits if necessary
@@ -32,17 +27,17 @@ namespace SpeechingShared
         /// <returns>Connection successful?</returns>
         public static bool CheckNetwork()
         {
-            if(checkForConnection())
+            if (CheckForConnection())
             {
-                if(!connectionInitialized)
+                if (!ConnectionInitialized)
                 {
-                    connectionInitialized = true;
-                    onConnectionSuccess();
+                    ConnectionInitialized = true;
+                    OnConnectionSuccess();
                 }
                 return true;
             }
 
-            connectionInitialized = false;
+            ConnectionInitialized = false;
             return false;
         }
 
@@ -52,9 +47,9 @@ namespace SpeechingShared
         /// <returns></returns>
         public static async Task<bool> InitializeIfNeeded()
         {
-            bool success = session != null;
+            bool success = Session != null;
 
-            if(!success)
+            if (!success)
             {
                 success = await TryLoadExistingData();
 
@@ -72,41 +67,41 @@ namespace SpeechingShared
         {
             if (rootFolder != null)
             {
-                root = await FileSystem.Current.GetFolderFromPathAsync(rootFolder);
+                Root = await FileSystem.Current.GetFolderFromPathAsync(rootFolder);
             }
             else
             {
-                root = FileSystem.Current.LocalStorage;
+                Root = FileSystem.Current.LocalStorage;
             }
 
-            ExistenceCheckResult cacheExists = await root.CheckExistsAsync("cache");
-            if(cacheExists == ExistenceCheckResult.NotFound)
+            ExistenceCheckResult cacheExists = await Root.CheckExistsAsync("cache");
+            if (cacheExists == ExistenceCheckResult.NotFound)
             {
-                cache = await root.CreateFolderAsync("cache", CreationCollisionOption.ReplaceExisting);
+                Cache = await Root.CreateFolderAsync("cache", CreationCollisionOption.ReplaceExisting);
             }
             else
             {
-                cache = await root.GetFolderAsync("cache");
+                Cache = await Root.GetFolderAsync("cache");
             }
 
-            ExistenceCheckResult exportExists = await root.CheckExistsAsync("exports");
+            ExistenceCheckResult exportExists = await Root.CheckExistsAsync("exports");
             if (exportExists == ExistenceCheckResult.NotFound)
             {
-                exports = await root.CreateFolderAsync("exports", CreationCollisionOption.FailIfExists);
+                Exports = await Root.CreateFolderAsync("exports", CreationCollisionOption.FailIfExists);
             }
             else
             {
-                exports = await root.GetFolderAsync("exports");
+                Exports = await Root.GetFolderAsync("exports");
             }
 
-            ExistenceCheckResult tempFileExists = await root.CheckExistsAsync("tempRec.mp4");
+            ExistenceCheckResult tempFileExists = await Root.CheckExistsAsync("tempRec.mp4");
             if (tempFileExists == ExistenceCheckResult.NotFound)
             {
-                tempRecording = await root.CreateFileAsync("tempRec.mp4", CreationCollisionOption.FailIfExists);
+                TempRecording = await Root.CreateFileAsync("tempRec.mp4", CreationCollisionOption.FailIfExists);
             }
             else
             {
-                tempRecording = await root.GetFileAsync("tempRec.mp4");
+                TempRecording = await Root.GetFileAsync("tempRec.mp4");
             }
         }
 
@@ -116,7 +111,7 @@ namespace SpeechingShared
         /// </summary>
         private static void TrimCacheDirectory()
         {
-            IO.CleanDirectory(cache, 8);
+            Io.CleanDirectory(Cache, 8);
         }
 
         /// <summary>
@@ -125,30 +120,31 @@ namespace SpeechingShared
         /// <returns>true if successful, false if a request to the server is needed</returns>
         public static async Task<bool> TryLoadExistingData()
         {
-            if (rand == null) rand = new Random();
+            if (Rand == null) Rand = new Random();
 
             try
             {
-                if ((await root.CheckExistsAsync("offline.json")) == ExistenceCheckResult.FileExists)
+                if ((await Root.CheckExistsAsync("offline.json")) == ExistenceCheckResult.FileExists)
                 {
-                    IFile json = await root.GetFileAsync("offline.json");
+                    IFile json = await Root.GetFileAsync("offline.json");
 
                     var binder = new TypeNameSerializationBinder("SpeechingShared.{0}, SpeechingShared");
-                    session = JsonConvert.DeserializeObject<SessionData>(await json.ReadAllTextAsync(), new JsonSerializerSettings
-                    {
-                        TypeNameHandling = TypeNameHandling.Auto,
-                        Binder = binder
-                    });
-                    ServerData.storageRemoteDir = "uploads/" + session.currentUser.id + "/";
+                    Session = JsonConvert.DeserializeObject<SessionData>(await json.ReadAllTextAsync(),
+                        new JsonSerializerSettings
+                        {
+                            TypeNameHandling = TypeNameHandling.Auto,
+                            Binder = binder
+                        });
+                    ServerData.StorageRemoteDir = "uploads/" + Session.currentUser.Id + "/";
                     return true;
                 }
             }
             catch (Exception e)
             {
-                AppData.IO.PrintToConsole(e.Message);
+                Io.PrintToConsole(e.Message);
             }
 
-            session = new SessionData();
+            Session = new SessionData();
             return false;
         }
 
@@ -157,9 +153,9 @@ namespace SpeechingShared
         /// </summary>
         public static void AssignCurrentUser(User thisUser)
         {
-            if (session == null) session = new SessionData();
-            session.currentUser = thisUser;
-            ServerData.storageRemoteDir = "uploads/" + thisUser.id + "/";
+            if (Session == null) Session = new SessionData();
+            Session.currentUser = thisUser;
+            ServerData.StorageRemoteDir = "uploads/" + thisUser.Id + "/";
 
             SaveCurrentData();
         }
@@ -170,38 +166,30 @@ namespace SpeechingShared
         public static async void SaveCurrentData()
         {
             var binder = new TypeNameSerializationBinder("SpeechingShared.{0}, SpeechingShared");
-            string dataString = JsonConvert.SerializeObject(session, Formatting.Indented, new JsonSerializerSettings
+            string dataString = JsonConvert.SerializeObject(Session, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto,
                 Binder = binder
             });
 
+            if (_saveFile == null)
+            {
+                if (await Root.CheckExistsAsync("offline.json") != ExistenceCheckResult.FileExists)
+                {
+                    await Root.CreateFileAsync("offline.json", CreationCollisionOption.ReplaceExisting);
+                }
+                _saveFile = await Root.GetFileAsync("offline.json");
+            }
+
+            await Utils.GetSemaphore("offline.json").WaitAsync();
             try
             {
-                if(saveFile == null)
-                {
-                    if (await root.CheckExistsAsync("offline.json") != ExistenceCheckResult.FileExists)
-                    {
-                        await root.CreateFileAsync("offline.json", CreationCollisionOption.ReplaceExisting);
-                    }
-                    saveFile = await root.GetFileAsync("offline.json");
-                }
-
-                await Utils.GetSemaphore("offline.json").WaitAsync();
-                try
-                {
-                    // Make sure only 1 thread is allowed here at a time :)
-                    await saveFile.WriteAllTextAsync(dataString);
-                }
-                finally
-                {
-                    Utils.GetSemaphore("offline.json").Release();
-                }
-                
+                // Make sure only 1 thread is allowed here at a time :)
+                await _saveFile.WriteAllTextAsync(dataString);
             }
-            catch (Exception e)
+            finally
             {
-                throw e;
+                Utils.GetSemaphore("offline.json").Release();
             }
         }
 
@@ -212,9 +200,9 @@ namespace SpeechingShared
         /// <returns>Is Completed? bool</returns>
         public static bool CheckForActivityResultData(int id)
         {
-            for (int i = 0; i < session.resultsToUpload.Count; i++)
+            foreach (IResultItem result in Session.resultsToUpload)
             {
-                if (session.resultsToUpload[i].ParticipantActivityId == id) return true;
+                if (result.ParticipantActivityId == id) return true;
             }
 
             return false;

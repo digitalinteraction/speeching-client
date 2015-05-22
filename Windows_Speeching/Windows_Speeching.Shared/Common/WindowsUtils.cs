@@ -13,19 +13,19 @@ namespace Windows_Speeching.Common
     {
         public static async Task PrepareApp()
         {
-            AppData.checkForConnection = () =>
+            AppData.CheckForConnection = () =>
             {
                 ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
                 bool internet = connections != null && connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
                 return internet;
             };
 
-            AppData.onConnectionSuccess = () =>
+            AppData.OnConnectionSuccess = () =>
             {
 
             };
 
-            AppData.IO = new Win8PCLHelper();
+            AppData.Io = new Win8PCLHelper();
 
             await AppData.AssignCacheLocations();
             await AppData.InitializeIfNeeded();
