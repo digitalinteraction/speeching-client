@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpeechingShared
 {
-    public class Guide : ISpeechingActivityItem
+    public class Guide : ISpeechingPracticeActivity
     {
         public struct Page
         {

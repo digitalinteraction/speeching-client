@@ -73,26 +73,26 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// A child in the list (an activity) has been selected. Check to see if existing data for this activity
+        /// A child in the list (an practiceActivity) has been selected. Check to see if existing data for this practiceActivity
         /// already exists before launching it.
         /// </summary>
         void mainList_ChildClick(object sender, ExpandableListView.ChildClickEventArgs e)
         {
-            ISpeechingActivityItem thisItem = AppData.Session.categories[e.GroupPosition].activities[e.ChildPosition];
+            ISpeechingPracticeActivity @this = AppData.Session.categories[e.GroupPosition].Activities[e.ChildPosition];
 
-            System.Type objectType = thisItem.GetType();
+            System.Type objectType = @this.GetType();
             System.Type targetActivity = typeof(MainActivity);
 
             if (objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
             else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
 
             Intent intent = new Intent(Activity, targetActivity);
-            int itemId = thisItem.Id;
+            int itemId = @this.Id;
             intent.PutExtra("ActivityId", itemId);
 
-            if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(thisItem.Id, Activity))
+            if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(@this.Id, Activity))
             {
-                AndroidUtils.OfflineAlert(Activity, "This activity has not been downloaded yet and requires an Internet connection to prepare!");
+                AndroidUtils.OfflineAlert(Activity, "This practiceActivity has not been downloaded yet and requires an Internet connection to prepare!");
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// An expandable list adapter which displays the available categories and the activities under them
+        /// An expandable list adapter which displays the available categories and the Activities under them
         /// </summary>
         public class ScenarioListAdapter : BaseExpandableListAdapter
         {
@@ -160,7 +160,7 @@ namespace DroidSpeeching
 
             public override int GetChildrenCount(int groupPosition)
             {
-                return categories[groupPosition].activities.Length;
+                return categories[groupPosition].Activities.Length;
             }
 
             public override Java.Lang.Object GetGroup(int groupPosition)
@@ -181,7 +181,7 @@ namespace DroidSpeeching
             public override View GetChildView(int groupPosition, int childPosition, bool isLastChild, View convertView, ViewGroup parent)
             {
                 View view = convertView;
-                ISpeechingActivityItem scenario = categories[groupPosition].activities[childPosition];
+                ISpeechingPracticeActivity scenario = categories[groupPosition].Activities[childPosition];
                 if (view == null)
                 {
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListChild, null);
@@ -203,7 +203,7 @@ namespace DroidSpeeching
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListParent, null);
                 }
 
-                view.FindViewById<TextView>(Resource.Id.tasklist_parentTitle).Text = category.title;
+                view.FindViewById<TextView>(Resource.Id.tasklist_parentTitle).Text = category.Title;
 
                 AndroidUtils.PrepareIcon(view.FindViewById<ImageView>(Resource.Id.tasklist_parentIcon), category);
 

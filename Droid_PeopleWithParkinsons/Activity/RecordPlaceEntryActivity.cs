@@ -159,7 +159,7 @@ namespace DroidSpeeching
                     ResourceUrl = resultsZipPath,
                     UploadState = Utils.UploadStage.Ready,
                     UserId = AppData.Session.currentUser.Id,
-                    GooglePlaceID = placeId,
+                    GooglePlaceId = placeId,
                     GooglePlaceName = placeName,
                     Lat = lat,
                     Lng = lng

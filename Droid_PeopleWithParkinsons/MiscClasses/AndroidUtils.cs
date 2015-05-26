@@ -252,15 +252,15 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Prepare an activity's icon within a given imageview
+        /// Prepare an practiceActivity's icon within a given imageview
         /// </summary>
         /// <param name="icon"></param>
-        /// <param name="activity"></param>
-        public static async void PrepareIcon(ImageView icon, ISpeechingActivityItem activity)
+        /// <param name="practiceActivity"></param>
+        public static async void PrepareIcon(ImageView icon, ISpeechingPracticeActivity practiceActivity)
         {
             bool success = true;
 
-            if (activity.LocalIcon == null && !(await activity.PrepareIcon()))
+            if (practiceActivity.LocalIcon == null && !(await practiceActivity.PrepareIcon()))
             {
                 // Icon download attempt failed...
                 success = false;
@@ -268,7 +268,7 @@ namespace DroidSpeeching
 
             if (success && icon != null)
             {
-                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(activity.LocalIcon)));
+                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(practiceActivity.LocalIcon)));
             }
         }
 
@@ -276,7 +276,7 @@ namespace DroidSpeeching
         {
             bool success = true;
 
-            if (category.localIcon == null && !(await category.PrepareIcon()))
+            if (category.LocalIcon == null && !(await category.PrepareIcon()))
             {
                 // Icon download attempt failed...
                 success = false;
@@ -284,7 +284,7 @@ namespace DroidSpeeching
 
             if (success && icon != null)
             {
-                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(category.localIcon)));
+                icon.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(category.LocalIcon)));
             }
         }
 
@@ -372,7 +372,7 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Add a tab to the given activity's ActionBar
+        /// Add a tab to the given practiceActivity's ActionBar
         /// </summary>
         /// <param name="tabName">The label to display on the tab</param>
         /// <param name="currentBundle">Intent data</param>
@@ -468,7 +468,7 @@ namespace DroidSpeeching
             /// <summary>
             /// Class to help record and export audio
             /// </summary>
-            /// <param name="context">The current activity</param>
+            /// <param name="context">The current practiceActivity</param>
             /// <param name="onMaxDurtion">Action performed when the max duration of the recording has been reached</param>
             /// <param name="backgroundNoise">TextView to display background noise level information</param>
             public RecordAudioManager(Activity context, Action onMaxDuration = null, TextView backgroundNoise = null)

@@ -125,7 +125,7 @@ namespace DroidSpeeching
             titleLayout.Visibility = ViewStates.Visible;
             eventLayout.Visibility = ViewStates.Gone;
 
-            helpText = "This is a short activity which may require you to perform multiple simple tasks." +
+            helpText = "This is a short practiceActivity which may require you to perform multiple simple tasks." +
                        "\nOnce you have completed it, you'll be given the chance to upload your results for others to analyse and give you feedback." +
                        "\nPress the Start button to begin!";
 
@@ -455,7 +455,7 @@ namespace DroidSpeeching
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     mainButton.Text = "Continue";
 
-                    helpText = ttsHelp + "\nPress the Continue button to advance the activity.";
+                    helpText = ttsHelp + "\nPress the Continue button to advance the practiceActivity.";
                 }
 
                 // Load text
@@ -696,7 +696,7 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Restore the default app colours to this activity
+        /// Restore the default app colours to this practiceActivity
         /// </summary>
         private void SetDefaultWindowColours()
         {

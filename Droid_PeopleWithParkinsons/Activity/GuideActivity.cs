@@ -18,7 +18,7 @@ namespace DroidSpeeching
     /// <summary>
     /// Acts as a slideshow, creating fragments for each page/slide of information which can be swiped between
     /// </summary>
-    [Activity(Label = "Guide Activity", ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorLandscape)]
+    [Activity(Label = "Guide practiceActivity", ScreenOrientation = Android.Content.PM.ScreenOrientation.SensorLandscape)]
     public class GuideActivity : FragmentActivity
     {
         GuideAdapter adapter;

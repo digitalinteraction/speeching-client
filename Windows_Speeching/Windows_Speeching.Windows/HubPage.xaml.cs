@@ -28,7 +28,7 @@ namespace Windows_Speeching
     /// </summary>
     public sealed partial class HubPage : Page
     {
-        private ObservableCollection<ISpeechingActivityItem> activities = new ObservableCollection<ISpeechingActivityItem>();
+        private ObservableCollection<ISpeechingPracticeActivity> activities = new ObservableCollection<ISpeechingPracticeActivity>();
         private ObservableCollection<IFeedItem> feedItems = new ObservableCollection<IFeedItem>();
 
         public HubPage()
@@ -64,7 +64,7 @@ namespace Windows_Speeching
             await ServerData.FetchCategories();
             foreach (ActivityCategory cat in AppData.Session.categories)
             {
-                foreach (ISpeechingActivityItem act in cat.activities)
+                foreach (ISpeechingPracticeActivity act in cat.Activities)
                 {
                     activities.Add(act);
                 }
@@ -73,7 +73,7 @@ namespace Windows_Speeching
 
         private void Feed_ItemClick(object sender, ItemClickEventArgs e)
         {
-            AppData.Io.PrintToConsole("Click from " + (e.ClickedItem as ISpeechingActivityItem).Title);
+            AppData.Io.PrintToConsole("Click from " + (e.ClickedItem as ISpeechingPracticeActivity).Title);
         }
     }
 }

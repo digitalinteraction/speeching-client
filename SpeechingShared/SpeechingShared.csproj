@@ -42,7 +42,7 @@
     <Compile Include="ActivityStructs\ActivityConverter.cs" />
     <Compile Include="ActivityStructs\Guide.cs" />
     <Compile Include="ActivityStructs\Scenario.cs" />
-    <Compile Include="ActivityStructs\_ActivityInterface.cs" />
+    <Compile Include="ActivityStructs\_ISpeechingPracticeActivity.cs" />
     <Compile Include="Assessments\Assessment.cs" />
     <Compile Include="Assessments\AssessmentConverter.cs" />
     <Compile Include="Assessments\ImageDescTask.cs" />

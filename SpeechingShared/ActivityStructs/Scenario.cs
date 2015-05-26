@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SpeechingShared
 {
-    public class Scenario : ISpeechingActivityItem
+    public class Scenario : ISpeechingPracticeActivity
     {
         private int id;
         private User creator;

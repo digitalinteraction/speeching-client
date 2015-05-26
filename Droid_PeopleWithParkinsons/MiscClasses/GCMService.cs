@@ -132,7 +132,7 @@ namespace DroidSpeeching
 
             if (userPrefs.GetBoolean("prefNotifNewContent", true))
             {
-                AndroidUtils.SendNotification("New content available!", "You have new Speeching activities available - take a look!", typeof(LoginActivity), this);
+                AndroidUtils.SendNotification("New content available!", "You have new Speeching Activities available - take a look!", typeof(LoginActivity), this);
             }
         }
 

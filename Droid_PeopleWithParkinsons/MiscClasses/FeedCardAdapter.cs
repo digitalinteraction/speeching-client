@@ -156,7 +156,7 @@ namespace DroidSpeeching
                         if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
                         {
                             AndroidUtils.OfflineAlert(context,
-                                "This activity has not been downloaded yet and requires an Internet connection to prepare!");
+                                "This practiceActivity has not been downloaded yet and requires an Internet connection to prepare!");
                             return;
                         }
 
@@ -325,12 +325,12 @@ namespace DroidSpeeching
 
         public async void LoadData(FeedItemActivity data, Context context)
         {
-            activityName.Text = data.Activity.Title;
+            activityName.Text = data.PracticeActivity.Title;
             SetRationale(data.Rationale);
 
             bool success = true;
 
-            if (data.Activity.LocalIcon == null && !(await data.Activity.PrepareIcon()))
+            if (data.PracticeActivity.LocalIcon == null && !(await data.PracticeActivity.PrepareIcon()))
             {
                 // Icon download attempt failed...
                 success = false;
@@ -338,7 +338,7 @@ namespace DroidSpeeching
 
             if (success)
             {
-                LoadImageIntoCircle(data.Activity.LocalIcon, icon, context);
+                LoadImageIntoCircle(data.PracticeActivity.LocalIcon, icon, context);
             }
         }
     }

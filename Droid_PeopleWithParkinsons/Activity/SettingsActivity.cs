@@ -15,7 +15,7 @@ using Android.Support.V4.App;
 namespace DroidSpeeching
 {
     /// <summary>
-    /// Wrap settings in an Activity to allow for actionbar up navigation
+    /// Wrap settings in an practiceActivity to allow for actionbar up navigation
     /// </summary>
     [Activity(Label = "Settings", ParentActivity = typeof(MainActivity))]
     public class SettingsActivity : ActionBarActivity

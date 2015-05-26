@@ -7,10 +7,10 @@ namespace SpeechingShared
 {
     public class Assessment
     {
-        public int id;
-        public string title;
-        public string description;
-        public DateTime dateSet;
-        public IAssessmentTask[] tasks;
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime DateSet { get; set; }
+        public IAssessmentTask[] AssessmentTasks { get; set; }
     }
 }

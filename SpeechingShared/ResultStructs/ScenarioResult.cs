@@ -17,7 +17,7 @@ namespace SpeechingShared
         private Utils.UploadStage state;
         private DateTime completedAt;
 
-        public bool isAssessment = false;
+        public bool IsAssessment { get; set; }
 
         public ScenarioResult(int activityId, string dataLoc, string userId)
         {

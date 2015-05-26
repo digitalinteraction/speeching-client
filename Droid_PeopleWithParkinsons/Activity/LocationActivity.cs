@@ -226,7 +226,7 @@ namespace DroidSpeeching
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            //As this Activity can be called from notfications, it's possible that the parent activity isn't in the back stack
+            //As this practiceActivity can be called from notfications, it's possible that the parent practiceActivity isn't in the back stack
             //http://developer.android.com/training/implementing-navigation/ancestral.html
             switch(item.ItemId)
             {
@@ -234,18 +234,18 @@ namespace DroidSpeeching
                     Intent upIntent = NavUtils.GetParentActivityIntent(this);
                     if(NavUtils.ShouldUpRecreateTask(this, upIntent))
                     {
-                        // This activity is NOT part of this app's task, so create a new task
+                        // This practiceActivity is NOT part of this app's task, so create a new task
                         // when navigating up, with a synthesized back stack.
                         Android.Support.V4.App.TaskStackBuilder.Create(this)
-                            // Add all of this activity's parents to the back stack
+                            // Add all of this practiceActivity's parents to the back stack
                             .AddNextIntentWithParentStack(upIntent)
                             // Navigate up to the closest parent
                             .StartActivities();
                     }
                     else
                     {
-                        // This activity is part of this app's task, so simply
-                        // navigate up to the logical parent activity.
+                        // This practiceActivity is part of this app's task, so simply
+                        // navigate up to the logical parent practiceActivity.
                         NavUtils.NavigateUpTo(this, upIntent);
                     }
                     return true;

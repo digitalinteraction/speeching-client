@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SpeechingShared
 {
-    public interface ISpeechingActivityItem
+    public interface ISpeechingPracticeActivity
     {
         int Id { get; set; }
         User Creator { get; set; }

@@ -5,7 +5,7 @@ using Android.Widget;
 namespace DroidSpeeching
 {
     /// <summary>
-    /// A simple fragment which acts as a page in a guide activity. 
+    /// A simple fragment which acts as a page in a guide practiceActivity. 
     /// The layout changes depending on the page's position (first, last etc) in the guide.
     /// This and the page's content is determined by the data passed in the passed Bundle
     /// </summary>

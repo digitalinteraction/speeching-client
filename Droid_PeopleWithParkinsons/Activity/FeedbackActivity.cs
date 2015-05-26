@@ -23,7 +23,7 @@ namespace DroidSpeeching
         private TextView completionDate;
 
         private IResultItem[] submissions;
-        private ISpeechingActivityItem thisActivity;
+        private ISpeechingPracticeActivity thisPracticeActivity;
         private int selectedIndex;
 
         protected override void OnCreate(Bundle bundle)
@@ -60,7 +60,7 @@ namespace DroidSpeeching
             {
                 Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("No feedback to display")
-                    .SetMessage("You haven't submitted any results yet! Come back here once you have completed some activities and uploaded your results to the server!")
+                    .SetMessage("You haven't submitted any results yet! Come back here once you have completed some Activities and uploaded your results to the server!")
                     .SetCancelable(false)
                     .SetPositiveButton("Ok", (arg1, arg2) => { this.Finish(); })
                     .Create();
@@ -115,9 +115,9 @@ namespace DroidSpeeching
             // Fetch the data after making the drawer
             for(int i = 0; i < submissions.Length; i++)
             {
-                ISpeechingActivityItem act = await AppData.Session.FetchActivityWithId(submissions[i].ParticipantActivityId);
+                ISpeechingPracticeActivity act = await AppData.Session.FetchActivityWithId(submissions[i].ParticipantActivityId);
                 FeedbackData newData = new FeedbackData();
-                newData.activity = act;
+                newData.practiceActivity = act;
                 newData.submission = submissions[i];
                 adapter.Add(newData);
 
@@ -131,9 +131,9 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Make the main view about the given activity
+        /// Make the main view about the given practiceActivity
         /// </summary>
-        /// <param name="actId">The ID fo the activity to show feedback for</param>
+        /// <param name="actId">The ID fo the practiceActivity to show feedback for</param>
         /// <returns></returns>
         private async void LoadFeedbackForActivity(FeedbackData data)
         {
@@ -150,10 +150,10 @@ namespace DroidSpeeching
             // Add button to front of list
             //data.feedback.Insert(0, new FeedbackSubmissionButton());
 
-            thisActivity = data.activity;
+            thisPracticeActivity = data.practiceActivity;
             bool success = true;
 
-            if(thisActivity.LocalIcon == null && !(await thisActivity.PrepareIcon()))
+            if(thisPracticeActivity.LocalIcon == null && !(await thisPracticeActivity.PrepareIcon()))
             {
                 // Icon download attempt failed...
                 success = false;
@@ -161,10 +161,10 @@ namespace DroidSpeeching
 
             if(success)
             {
-                FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(thisActivity.LocalIcon)));
+                FindViewById<ImageView>(Resource.Id.feedback_icon).SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(thisPracticeActivity.LocalIcon)));
             }
             
-            activityTitle.Text = thisActivity.Title;
+            activityTitle.Text = thisPracticeActivity.Title;
             completionDate.Text = "Completed on " + data.submission.CompletionDate.ToShortDateString();
 
             if (feedbackList.GetAdapter() == null)
@@ -214,7 +214,7 @@ namespace DroidSpeeching
     /// </summary>
     public class FeedbackData
     {
-        public ISpeechingActivityItem activity;
+        public ISpeechingPracticeActivity practiceActivity;
         public IResultItem submission;
         public List<IFeedItem> feedback;
     }
@@ -259,7 +259,7 @@ namespace DroidSpeeching
             {
                 convertView = context.LayoutInflater.Inflate(Resource.Layout.FeedbackListItem, null);
             }
-            convertView.FindViewById<TextView>(Resource.Id.feedbackList_title).Text = thisItem.activity.Title;
+            convertView.FindViewById<TextView>(Resource.Id.feedbackList_title).Text = thisItem.practiceActivity.Title;
             convertView.FindViewById<TextView>(Resource.Id.feedbackList_date).Text = "Submitted on " + thisItem.submission.CompletionDate.ToShortDateString();
 
             return convertView;

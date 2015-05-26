@@ -13,5 +13,6 @@ namespace SpeechingShared
         string ResourceUrl { get; set; }
         int ParticipantActivityId { get; set; }
         DateTime CompletionDate { get; set; }
+        bool IsAssessment { get; set; }
     }
 }

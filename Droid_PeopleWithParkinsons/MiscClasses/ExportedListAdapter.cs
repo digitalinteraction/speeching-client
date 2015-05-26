@@ -40,9 +40,9 @@ namespace DroidSpeeching
 
         private async void PopulateActivityResultView(int activityId, View view)
         {
-            ISpeechingActivityItem thisItem = await AppData.Session.FetchActivityWithId(activityId);
+            ISpeechingPracticeActivity @this = await AppData.Session.FetchActivityWithId(activityId);
 
-            view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = thisItem.Title;
+            view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = @this.Title;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -58,7 +58,7 @@ namespace DroidSpeeching
             {
                 view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = "Log about " + ((LocationRecordingResult)results[position]).GooglePlaceName;
             }
-            else if(results[position].GetType() == typeof(ScenarioResult) && (results[position] as ScenarioResult).isAssessment)
+            else if(results[position].GetType() == typeof(ScenarioResult) && (results[position] as ScenarioResult).IsAssessment)
             {
                 view.FindViewById<TextView>(Resource.Id.uploadsList_scenarioTitle).Text = "Assessment Results";
             }

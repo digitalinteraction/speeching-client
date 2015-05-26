@@ -11,7 +11,7 @@ using SpeechingShared;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Assessment Activity", ParentActivity = typeof (MainActivity))]
+    [Activity(Label = "Assessment practiceActivity", ParentActivity = typeof (MainActivity))]
     public class AssessmentActivity : ActionBarActivity
     {
         private readonly int minimumMillis = 500; //Mediarecorder has a minimum record time
@@ -98,11 +98,11 @@ namespace DroidSpeeching
                 return;
             }
 
-            FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assessment.description;
+            FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assessment.Description;
 
-            tasks = assessment.tasks;
-            zipPath = Path.Combine(AppData.Exports.Path, assessment.id + "_assessmentRes.zip");
-            results = new ScenarioResult(assessment.id, zipPath, AppData.Session.currentUser.Id) {isAssessment = true};
+            tasks = assessment.AssessmentTasks;
+            zipPath = Path.Combine(AppData.Exports.Path, assessment.Id + "_assessmentRes.zip");
+            results = new ScenarioResult(assessment.Id, zipPath, AppData.Session.currentUser.Id) { IsAssessment = true };
 
             if (bundle != null)
             {
@@ -121,12 +121,19 @@ namespace DroidSpeeching
                     helpButton.Visibility = ViewStates.Visible;
                 }
             }
+            else
+            {
+                currentStage = AssessmentStage.Preamble;
+                preambleContainer.Visibility = ViewStates.Visible;
+                recButton.Visibility = ViewStates.Visible;
+                helpButton.Visibility = ViewStates.Visible;
+            }
 
             RunOnUiThread(() => { dialog.Hide(); });
         }
 
         /// <summary>
-        /// Unrecoverable error - show a dialog and return to the previous activity. Can be called by child fragments
+        /// Unrecoverable error - show a dialog and return to the previous practiceActivity. Can be called by child fragments
         /// </summary>
         public void SelfDestruct(string title = "Fatal error",
             string message = "Oops! Something terrible has happened - sorry about that. Closing the assessment.")

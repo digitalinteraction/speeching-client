@@ -6,11 +6,11 @@ using Newtonsoft.Json.Linq;
 
 namespace SpeechingShared
 {
-    class ActivityConverter : JsonCreationConverter<ISpeechingActivityItem>
+    class ActivityConverter : JsonCreationConverter<ISpeechingPracticeActivity>
     {
-        protected override ISpeechingActivityItem Create(Type objectType, JObject jObject)
+        protected override ISpeechingPracticeActivity Create(Type objectType, JObject jObject)
         {
-            if (FieldExists("Tasks", jObject))
+            if (FieldExists("AssessmentTasks", jObject))
             {
                 return new Scenario();
             }

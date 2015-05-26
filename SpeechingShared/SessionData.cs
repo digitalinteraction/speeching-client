@@ -13,7 +13,7 @@ namespace SpeechingShared
         public List<ActivityCategory> categories;
         public List<IResultItem> resultsToUpload;
         public List<User> userCache;
-        public List<ISpeechingActivityItem> activityCache;
+        public List<ISpeechingPracticeActivity> activityCache;
         public bool serverFolderExists = false;
         public Dictionary<string, string> placesPhotos;
 
@@ -30,36 +30,36 @@ namespace SpeechingShared
         }
 
         /// <summary>
-        /// Attempt to find an activity with the given id. Poll the server if it isn't found
+        /// Attempt to find an practiceActivity with the given id. Poll the server if it isn't found
         /// </summary>
         /// <param name="activityId"></param>
         /// <returns></returns>
-        public async Task<ISpeechingActivityItem> FetchActivityWithId(int activityId)
+        public async Task<ISpeechingPracticeActivity> FetchActivityWithId(int activityId)
         {
             // See if it is in one of the categories already in memory
             for (int i = 0; i < categories.Count; i++)
             {
-                for (int j = 0; j < categories[i].activities.Length; j++)
+                for (int j = 0; j < categories[i].Activities.Length; j++)
                 {
-                    if (categories[i].activities[j].Id == activityId) return categories[i].activities[j];
+                    if (categories[i].Activities[j].Id == activityId) return categories[i].Activities[j];
                 }
             }
 
-            if (activityCache == null) activityCache = new List<ISpeechingActivityItem>();
+            if (activityCache == null) activityCache = new List<ISpeechingPracticeActivity>();
 
             // Check if it's already been downloaded and exists in the cache
-            foreach(ISpeechingActivityItem activity in activityCache)
+            foreach(ISpeechingPracticeActivity activity in activityCache)
             {
                 if (activity.Id == activityId) return activity;
             }
 
             // We don't have it locally - check the server and add to the cache for next time!
-            ISpeechingActivityItem newActivity = await ServerData.GetRequest<ISpeechingActivityItem>("activity", activityId.ToString(), new ActivityConverter());
-            activityCache.Add(newActivity);
+            ISpeechingPracticeActivity newPracticeActivity = await ServerData.GetRequest<ISpeechingPracticeActivity>("practiceActivity", activityId.ToString(), new ActivityConverter());
+            activityCache.Add(newPracticeActivity);
 
             AppData.SaveCurrentData();
 
-            return newActivity;
+            return newPracticeActivity;
 
         }
 
@@ -112,15 +112,15 @@ namespace SpeechingShared
             {
                 scenariosProcessing++;
 
-                ISpeechingActivityItem activity = categories[catIndex].activities[scenIndex];
-                if (activity.Id == null) activity.Id = AppData.Rand.Next(0, 10000);
+                ISpeechingPracticeActivity practiceActivity = categories[catIndex].Activities[scenIndex];
+                if (practiceActivity.Id == null) practiceActivity.Id = AppData.Rand.Next(0, 10000);
 
-                string result = await Utils.FetchLocalCopy(activity.Icon);
+                string result = await Utils.FetchLocalCopy(practiceActivity.Icon);
 
                 if (result != null)
                 {
-                    activity.LocalIcon = result;
-                    categories[catIndex].activities[scenIndex] = activity;
+                    practiceActivity.LocalIcon = result;
+                    categories[catIndex].Activities[scenIndex] = practiceActivity;
                     scenariosProcessing--;
                     if (shouldSave) AppData.SaveCurrentData();
                     return true;

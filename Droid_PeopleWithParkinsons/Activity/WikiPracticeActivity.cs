@@ -362,7 +362,7 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Switch the functionality of the activity
+        /// Switch the functionality of the practiceActivity
         /// </summary>
         private void SwitchMode(PracticeMode newMode)
         {

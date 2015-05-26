@@ -1,21 +1,18 @@
-using System;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace SpeechingShared
 {
     /// <summary>
-    /// An object which holds activities of a given type or genre, as decided by the server
+    /// An object which holds Activities of a given type or genre, as decided by the server
     /// </summary>
     public class ActivityCategory
     {
-        public string id;
-        public string title;
-        public string icon;
-        public string localIcon;
-        public bool recommended;
-        public ISpeechingActivityItem[] activities;
+        public ISpeechingPracticeActivity[] Activities;
+        public string Icon;
+        public string Id;
+        public string LocalIcon;
+        public bool Recommended;
+        public string Title;
 
         /// <summary>
         /// Download the icon for this category
@@ -23,9 +20,9 @@ namespace SpeechingShared
         /// <returns></returns>
         public async Task<bool> PrepareIcon()
         {
-            localIcon = await Utils.FetchLocalCopy(icon);
+            LocalIcon = await Utils.FetchLocalCopy(Icon);
 
-            return localIcon != null;
+            return LocalIcon != null;
         }
     }
 }
