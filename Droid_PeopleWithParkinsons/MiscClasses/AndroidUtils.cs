@@ -54,7 +54,16 @@ namespace DroidSpeeching
         /// <returns>If a previous session was actively loaded</returns>
         public static async Task<bool> InitSession(Activity context = null)
         {
-            await AppData.AssignCacheLocations(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath + "/speeching");
+            //DEBUG
+            string downloadFolderPath =
+                Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)
+                    .AbsolutePath + "/speeching";
+            if (!Directory.Exists(downloadFolderPath))
+            {
+                Directory.CreateDirectory(downloadFolderPath);
+            }
+
+            await AppData.AssignCacheLocations(downloadFolderPath);
 
             AppData.Io = new AndroidPCLHelper();
 

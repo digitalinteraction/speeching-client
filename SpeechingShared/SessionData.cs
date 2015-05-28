@@ -37,11 +37,11 @@ namespace SpeechingShared
         public async Task<ISpeechingPracticeActivity> FetchActivityWithId(int activityId)
         {
             // See if it is in one of the categories already in memory
-            for (int i = 0; i < categories.Count; i++)
+            foreach (ActivityCategory cat in categories)
             {
-                for (int j = 0; j < categories[i].Activities.Length; j++)
+                foreach (ISpeechingPracticeActivity act in cat.Activities)
                 {
-                    if (categories[i].Activities[j].Id == activityId) return categories[i].Activities[j];
+                    if (act.Id == activityId) return act;
                 }
             }
 

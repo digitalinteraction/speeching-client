@@ -81,7 +81,20 @@ namespace DroidSpeeching
         /// <param name="thisUser">The user created from 3rd party systems</param>
         private async void SetupUserAccount(User thisUser)
         {
+            ProgressDialog dialog = null;
+
+            RunOnUiThread(() =>
+            {
+                dialog = new ProgressDialog(this);
+                dialog.SetTitle("Signing in...");
+                dialog.SetMessage("Please wait...");
+                dialog.SetCancelable(false);
+                dialog.Show();
+            });
+
             User serverUser = await ServerData.PostUserAccount(thisUser);
+
+            dialog.Hide();
 
             if (serverUser == null)
             {
@@ -262,6 +275,8 @@ namespace DroidSpeeching
             RunOnUiThread(() =>
             {
                 signInBtn.Enabled = true;
+                signInBtn.Visibility = ViewStates.Visible;
+                loadingText.Visibility = ViewStates.Gone;
 
                 Android.Support.V7.App.AlertDialog errorDialog =
                     new Android.Support.V7.App.AlertDialog.Builder(this)

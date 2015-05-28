@@ -80,11 +80,12 @@ namespace DroidSpeeching
         {
             ISpeechingPracticeActivity @this = AppData.Session.categories[e.GroupPosition].Activities[e.ChildPosition];
 
-            System.Type objectType = @this.GetType();
-            System.Type targetActivity = typeof(MainActivity);
+            Type objectType = @this.GetType();
+            Type targetActivity = typeof(MainActivity);
 
             if (objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
             else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
+            else if (objectType == typeof (Assessment)) targetActivity = typeof (AssessmentActivity);
 
             Intent intent = new Intent(Activity, targetActivity);
             int itemId = @this.Id;

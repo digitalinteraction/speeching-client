@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PCLStorage;
@@ -51,6 +52,12 @@ namespace SpeechingShared
 
             if (!success)
             {
+                JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+                {
+                    Converters = new List<JsonConverter> { new AssessmentConverter(), new ActivityConverter() },
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
+
                 success = await TryLoadExistingData();
 
                 TrimCacheDirectory();
@@ -135,7 +142,7 @@ namespace SpeechingShared
                             TypeNameHandling = TypeNameHandling.Auto,
                             Binder = binder
                         });
-                    ServerData.StorageRemoteDir = "uploads/" + Session.currentUser.Id + "/";
+                    ServerData.StorageRemoteDir = "uploads/" + Session.currentUser.Key + "/";
                     return true;
                 }
             }

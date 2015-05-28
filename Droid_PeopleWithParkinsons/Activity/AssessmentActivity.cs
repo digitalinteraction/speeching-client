@@ -85,7 +85,16 @@ namespace DroidSpeeching
                 dialog.Show();
             });
 
-            assessment = await ServerData.FetchAssessment();
+            int id = Intent.GetIntExtra("ActivityId", -1);
+
+            if (id >= 0)
+            {
+                assessment = (Assessment)await AppData.Session.FetchActivityWithId(id);
+            }
+            else
+            {
+                assessment = await ServerData.FetchAssessment();
+            }
 
             if (assessment == null)
             {
@@ -97,6 +106,8 @@ namespace DroidSpeeching
                 });
                 return;
             }
+
+            await assessment.PrepareTasks();
 
             FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assessment.Description;
 

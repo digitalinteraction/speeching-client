@@ -25,7 +25,7 @@ namespace SpeechingShared
 
         public static string StorageServer = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
         public static string StorageRemoteDir;
-        public static string ServiceUrl = "http://api.opescode.com/api/";
+        public static string ServiceUrl = "https://speeching.azurewebsites.net/api/";
 
         /// <summary>
         /// Send a POST request to the server and return an Object of type T in response
@@ -80,7 +80,16 @@ namespace SpeechingShared
 
             if (result == null) return default(T);
 
-            return converter != null ? JsonConvert.DeserializeObject<T>(result, converter) : JsonConvert.DeserializeObject<T>(result);
+            try
+            {
+                return converter != null ? JsonConvert.DeserializeObject<T>(result, converter) : JsonConvert.DeserializeObject<T>(result);
+            }
+            catch (Exception exception)
+            {
+
+                return default(T);
+            }
+            
         }
 
         /// <summary>
@@ -128,7 +137,15 @@ namespace SpeechingShared
                 Uri baseAddress = new Uri(ServiceUrl);
                 client.BaseAddress = baseAddress;
 
-                HttpResponseMessage response = await client.GetAsync(request);
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, baseAddress + request);
+
+                if (AppData.Session != null && AppData.Session.currentUser != null)
+                {
+                    requestMessage.Headers.Add("Email", AppData.Session.currentUser.Email);
+                    requestMessage.Headers.Add("Key", AppData.Session.currentUser.Key.ToString());
+                }
+                
+                HttpResponseMessage response = await client.SendAsync(requestMessage);
                 if (response.IsSuccessStatusCode)
                 {
                     string toReturn = await response.Content.ReadAsStringAsync();
@@ -161,8 +178,10 @@ namespace SpeechingShared
                 }
 
                 AppData.Session.categories =
-                    await GetRequest<List<ActivityCategory>>("category", "", new ActivityConverter());
+                    await GetRequest<List<ActivityCategory>>("category");
                 List<Task<bool>> allTasks = new List<Task<bool>>();
+
+                AppData.SaveCurrentData();
 
                 // Loop over all categories, downloading icons as needed for them and their scenarios
                 for (int i = 0; i < AppData.Session.categories.Count; i++)
@@ -768,16 +787,7 @@ namespace SpeechingShared
                 "{\"AssessmentTasks\":[{\"Prompts\":[{\"Id\":1,\"Value\":\"Easy\"},{\"Id\":2,\"Value\":\"Trickier\"},{\"Id\":3,\"Value\":\"Simple\"},{\"Id\":4,\"Value\":\"More Difficult\"},{\"Id\":5,\"Value\":\"Exquisite\"},{\"Id\":6,\"Value\":\"Borderline\"}],\"TaskType\":1,\"Id\":1,\"Title\":\"QuickFire Speaking!\",\"Instructions\":\"Press the record button and say the shown word as clearly as you can, then press stop.\"},{\"Prompts\":[{\"Id\":7,\"Value\":\"What does the image show?\"},{\"Id\":8,\"Value\":\"Describe the colours in the image.\"},{\"Id\":9,\"Value\":\"Describe the dominant feature of the image.\"},{\"Id\":10,\"Value\":\"What does the image make you think of?\"}],\"TaskType\":0,\"Id\":2,\"Title\":\"Image Description\",\"Instructions\":\"Press the 'Record' button and follow the instruction in the image's caption\",\"Image\":\"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"}],\"CrowdCategory\":{\"Activities\":[],\"Id\":4,\"ExternalId\":\"Assessments\",\"Title\":\"Progress Assessments\",\"Icon\":\"https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png\",\"Recommended\":false,\"DefaultSubscription\":true},\"CrowdPages\":[],\"ParticipantResults\":[],\"ParticipantTasks\":[],\"Id\":5,\"ExternalId\":\"assess1\",\"Title\":\"Your first assessment!\",\"Icon\":\"http://www.pursuittraining.co.uk/images/care-icon.gif\",\"CrowdCategoryId\":4,\"Description\":\"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\"DateSet\":\"2015-05-26T10:32:02.807\"}";
             try
             {
-                Assessment toRet = JsonConvert.DeserializeObject<Assessment>(jsonString, new AssessmentConverter());
-
-                foreach (IAssessmentTask task in toRet.AssessmentTasks)
-                {
-                    if (task.GetType() != typeof (ImageDescTask)) continue;
-                    var imageDescTask = task as ImageDescTask;
-                    if (imageDescTask != null)
-                        imageDescTask.Image = await Utils.FetchLocalCopy(imageDescTask.Image);
-                }
-                return toRet;
+                return JsonConvert.DeserializeObject<Assessment>(jsonString);
             }
             catch (Exception except)
             {

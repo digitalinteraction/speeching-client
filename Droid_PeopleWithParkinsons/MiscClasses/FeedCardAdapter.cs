@@ -145,7 +145,21 @@ namespace DroidSpeeching
 
                 case FeedItemInteraction.InteractionType.ASSESSMENT:
                     ((CardBaseViewHolder) viewHolder).Interact.Click +=
-                        delegate { context.StartActivity(typeof (AssessmentActivity)); };
+                        delegate
+                        {
+                            int actId = int.Parse(interaction.value);
+
+                            if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
+                            {
+                                AndroidUtils.OfflineAlert(context,
+                                    "This practiceActivity has not been downloaded yet and requires an Internet connection to prepare!");
+                                return;
+                            }
+
+                            Intent intent = new Intent(context, typeof(AssessmentActivity));
+                            intent.PutExtra("ActivityId", actId);
+                            context.StartActivity(intent);
+                        };
                     break;
 
                 case FeedItemInteraction.InteractionType.ACTIVITY:

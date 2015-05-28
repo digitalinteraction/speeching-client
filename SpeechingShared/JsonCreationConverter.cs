@@ -31,17 +31,29 @@ namespace SpeechingShared
                                          object existingValue,
                                          JsonSerializer serializer)
         {
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+
             // Load JObject from stream
             JObject jObject = JObject.Load(reader);
 
             // Create target object based on JObject
             T target = Create(objectType, jObject);
 
+            //Create a new reader for this jObject, and set all properties to match the original reader.
+            JsonReader jObjectReader = jObject.CreateReader();
+            jObjectReader.Culture = reader.Culture;
+            jObjectReader.DateParseHandling = reader.DateParseHandling;
+            jObjectReader.DateTimeZoneHandling = reader.DateTimeZoneHandling;
+            jObjectReader.FloatParseHandling = reader.FloatParseHandling;
+
             // Populate the object properties
-            serializer.Populate(jObject.CreateReader(), target);
+            serializer.Populate(jObjectReader, target);
 
             return target;
         }
+
+        public override bool CanWrite { get { return false; } }
 
         public override void WriteJson(JsonWriter writer,
                                        object value,

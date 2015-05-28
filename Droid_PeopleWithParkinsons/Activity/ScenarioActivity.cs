@@ -266,7 +266,7 @@ namespace DroidSpeeching
             RunOnUiThread(() => progress = ProgressDialog.Show(this, "Please Wait", "Downloading data!", true));
 
             // Ask the server for the scenario's tasks if they aren't present
-            if (scenario.Tasks == null) await scenario.FetchTasks();
+            if (scenario.ParticipantTasks == null) await scenario.FetchTasks();
 
             resources = new Dictionary<string, string>();
 
@@ -402,36 +402,36 @@ namespace DroidSpeeching
             }
 
             // Check if the scenario is complete
-            if (currIndex >= scenario.Tasks.Length)
+            if (currIndex >= scenario.ParticipantTasks.Length)
             {
                 FinishScenario();
                 return;
             }
 
-            Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.Tasks.Length;
+            Title = scenario.Title + " | " + (currIndex + 1) + " of " + scenario.ParticipantTasks.Length;
             inputHint.Visibility = ViewStates.Visible;
 
             // Use the alternative layout for giving the user a choice between 2 items
-            if (scenario.Tasks[currIndex].TaskResponse.Type == TaskResponse.ResponseType.Choice)
+            if (scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Type == TaskResponse.ResponseType.Choice)
             {
                 mainLayout.Visibility = ViewStates.Gone;
                 choiceLayout.Visibility = ViewStates.Visible;
 
-                choicePrompt.Text = scenario.Tasks[currIndex].TaskResponse.Prompt;
+                choicePrompt.Text = scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Prompt;
 
                 // Load the choice images // TODO allow for more choices
-                if (scenario.Tasks[currIndex].TaskResponse.Related != null)
+                if (scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related != null)
                 {
-                    string choice1Key = scenario.Tasks[currIndex].TaskResponse.Related[0];
+                    string choice1Key = scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[0];
                     if (resources.ContainsKey(choice1Key))
                     {
                         choiceImage1.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice1Key])));
                     }
                 }
 
-                if (scenario.Tasks[currIndex].TaskResponse.Related != null)
+                if (scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related != null)
                 {
-                    string choice2Key = scenario.Tasks[currIndex].TaskResponse.Related[1];
+                    string choice2Key = scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[1];
                     if (resources.ContainsKey(choice2Key))
                     {
                         choiceImage2.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(resources[choice2Key])));
@@ -447,7 +447,7 @@ namespace DroidSpeeching
                 mainLayout.Visibility = ViewStates.Visible;
                 choiceLayout.Visibility = ViewStates.Gone;
 
-                if (scenario.Tasks[currIndex].TaskResponse.Type == TaskResponse.ResponseType.None)
+                if (scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Type == TaskResponse.ResponseType.None)
                 {
                     canSpeak = false;
                     inputHint.Visibility = ViewStates.Gone;
@@ -459,10 +459,10 @@ namespace DroidSpeeching
                 }
 
                 // Load text
-                else if (scenario.Tasks[currIndex].TaskResponse.Type == TaskResponse.ResponseType.Freeform)
+                else if (scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Type == TaskResponse.ResponseType.Freeform)
                 {
                     // Make freeform prompts italic
-                    string given = scenario.Tasks[currIndex].TaskResponse.Prompt;
+                    string given = scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.BoldItalic);
                     eventPrompt.Text = (given != null) ? given : "";
                     inputHint.Text = "Your response:";
@@ -471,7 +471,7 @@ namespace DroidSpeeching
                 }
                 else
                 {
-                    eventPrompt.Text = scenario.Tasks[currIndex].TaskResponse.Prompt;
+                    eventPrompt.Text = scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Prompt;
                     eventPrompt.SetTypeface(null, TypefaceStyle.Normal);
                     inputHint.Text = "Please say this:";
                     helpText = ttsHelp +
@@ -479,15 +479,15 @@ namespace DroidSpeeching
                 }
             }
 
-            eventTranscript.Text = scenario.Tasks[currIndex].TaskContent.Text;
+            eventTranscript.Text = scenario.ParticipantTasks[currIndex].ParticipantTaskContent.Text;
 
-            if (scenario.Tasks[currIndex].TaskContent.Type == TaskContent.ContentType.Video)
+            if (scenario.ParticipantTasks[currIndex].ParticipantTaskContent.Type == TaskContent.ContentType.Video)
             {
                 // load video instead of audio + image
                 SetDefaultWindowColours();
                 eventVideo.Visibility = ViewStates.Visible;
                 eventImage.Visibility = ViewStates.Gone;
-                string vidKey = scenario.Tasks[currIndex].TaskContent.Visual;
+                string vidKey = scenario.ParticipantTasks[currIndex].ParticipantTaskContent.Visual;
                 var vidUri = Android.Net.Uri.Parse(resources[vidKey]);
                 eventVideo.SetVideoURI(vidUri);
                 eventVideo.Start();
@@ -498,7 +498,7 @@ namespace DroidSpeeching
                 eventImage.Visibility = ViewStates.Visible;
 
                 // Load the image if it exists
-                string visualKey = scenario.Tasks[currIndex].TaskContent.Visual;
+                string visualKey = scenario.ParticipantTasks[currIndex].ParticipantTaskContent.Visual;
                 if (visualKey != null && resources.ContainsKey(visualKey))
                 {
                     Android.Net.Uri imageUri = Android.Net.Uri.FromFile(new Java.IO.File(resources[visualKey]));
@@ -513,10 +513,10 @@ namespace DroidSpeeching
                     SetDefaultWindowColours();
                 }
 
-                if (scenario.Tasks[currIndex].TaskContent.Type == TaskContent.ContentType.Audio)
+                if (scenario.ParticipantTasks[currIndex].ParticipantTaskContent.Type == TaskContent.ContentType.Audio)
                 {
                     // Load audio
-                    string audioKey = scenario.Tasks[currIndex].TaskContent.Audio;
+                    string audioKey = scenario.ParticipantTasks[currIndex].ParticipantTaskContent.Audio;
                     if (audioKey != null && resources.ContainsKey(audioKey))
                     {
                         if (mediaPlayer == null)
@@ -551,13 +551,13 @@ namespace DroidSpeeching
         {
             if (sender == choiceImage1)
             {
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id,
-                    scenario.Tasks[currIndex].TaskResponse.Related[0]);
+                results.ParticipantTaskIdResults.Add(scenario.ParticipantTasks[currIndex].Id,
+                    scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[0]);
             }
             else if (sender == choiceImage2)
             {
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id,
-                    scenario.Tasks[currIndex].TaskResponse.Related[1]);
+                results.ParticipantTaskIdResults.Add(scenario.ParticipantTasks[currIndex].Id,
+                    scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[1]);
             }
             ShowNextEvent();
         }
@@ -567,13 +567,13 @@ namespace DroidSpeeching
         /// </summary>
         private void MainButtonClicked(object sender, EventArgs e)
         {
-            if (currIndex >= scenario.Tasks.Length)
+            if (currIndex >= scenario.ParticipantTasks.Length)
             {
                 FinishScenario();
                 return;
             }
 
-            if (scenario.Tasks[currIndex].TaskResponse.Type == TaskResponse.ResponseType.None)
+            if (scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Type == TaskResponse.ResponseType.None)
             {
                 // No need to record
                 ShowNextEvent();
@@ -585,7 +585,7 @@ namespace DroidSpeeching
 
                 recording = false;
                 audioManager.StopRecording();
-                results.ParticipantTaskIdResults.Add(scenario.Tasks[currIndex].Id, scenario.Tasks[currIndex].Id + ".mp4");
+                results.ParticipantTaskIdResults.Add(scenario.ParticipantTasks[currIndex].Id, scenario.ParticipantTasks[currIndex].Id + ".mp4");
                 ShowNextEvent();
             }
             else
@@ -601,7 +601,7 @@ namespace DroidSpeeching
                 canSpeak = false;
 
                 recording = true;
-                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.Tasks[currIndex].Id + ".mp4");
+                string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.ParticipantTasks[currIndex].Id + ".mp4");
                 audioManager.StartRecording(fileAdd);
                 mainButton.Text = "Stop";
             }

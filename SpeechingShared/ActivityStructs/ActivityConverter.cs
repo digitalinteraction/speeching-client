@@ -12,7 +12,7 @@ namespace SpeechingShared
         {
             if (FieldExists("AssessmentTasks", jObject))
             {
-                return new Scenario();
+                return new Assessment();
             }
             else if (FieldExists("Guides", jObject))
             {

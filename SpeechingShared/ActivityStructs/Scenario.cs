@@ -9,73 +9,20 @@ namespace SpeechingShared
 {
     public class Scenario : ISpeechingPracticeActivity
     {
-        private int id;
-        private User creator;
-        private string title;
-        private string resources;
-        private string icon;
-        private string localIcon;
+        public SpeechingTask[] ParticipantTasks;
 
-        public SpeechingTask[] Tasks;
+        public int Id { get; set; }
+        public User Creator { get; set; }
+        public string Title { get; set; }
+        public string Resource { get; set; }
+        public string Icon { get; set; }
+        public string LocalIcon { get; set; }
 
-        public int Id
+        public async Task<bool> PrepareIcon()
         {
-            get
-            {
-                return this.id;
-            }
-            set
-            {
-                this.id = value;
-            }
-        }
+            LocalIcon = await Utils.FetchLocalCopy(Icon);
 
-        public User Creator
-        {
-            get
-            {
-                return this.creator;
-            }
-            set
-            {
-                this.creator = value;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return this.title;
-            }
-            set
-            {
-                this.title = value;
-            }
-        }
-
-        public string Resource
-        {
-            get
-            {
-                return this.resources;
-            }
-            set
-            {
-                this.resources = value;
-            }
-        }
-
-        public string Icon
-        {
-            get
-            {
-                return this.icon;
-            }
-            set
-            {
-                this.icon = value;
-            }
+            return LocalIcon != null;
         }
 
         /// <summary>
@@ -85,33 +32,13 @@ namespace SpeechingShared
         /// <returns></returns>
         public async Task<SpeechingTask[]> FetchTasks(bool force = false)
         {
-            if (!force && (Tasks != null && Tasks.Length > 0)) return Tasks;
+            if (!force && (ParticipantTasks != null && ParticipantTasks.Length > 0)) return ParticipantTasks;
 
-            Tasks = await ServerData.GetRequest<SpeechingTask[]>("task", id.ToString());
+            ParticipantTasks = await ServerData.GetRequest<SpeechingTask[]>("task", Id.ToString());
 
             AppData.SaveCurrentData();
 
-            return Tasks;
-        }
-
-
-        public string LocalIcon
-        {
-            get
-            {
-                return localIcon;
-            }
-            set
-            {
-                localIcon = value;
-            }
-        }
-
-        public async Task<bool> PrepareIcon()
-        {
-            LocalIcon = await Utils.FetchLocalCopy(Icon);
-
-            return LocalIcon != null;
+            return ParticipantTasks;
         }
     }
 
@@ -135,8 +62,8 @@ namespace SpeechingShared
     public class SpeechingTask
     {
         public int Id;
-        public TaskContent TaskContent;
-        public TaskResponse TaskResponse;
+        public TaskContent ParticipantTaskContent;
+        public TaskResponse ParticipantTaskResponse;
     }
 
 }
