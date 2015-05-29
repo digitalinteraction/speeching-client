@@ -121,33 +121,33 @@ namespace DroidSpeeching
                 ((CardRatingViewHolder) viewHolder).RatingBar.Rating = ((FeedItemStarRating) Data[position]).Rating;
             }
 
-            if (Data[position].Interaction == null)
+            if (Data[position].Interaction == null || Data[position].Interaction.Type == FeedItemInteraction.InteractionType.None)
             {
                 ((CardBaseViewHolder) viewHolder).Interact.Visibility = ViewStates.Gone;
                 return;
             }
 
             ((CardBaseViewHolder) viewHolder).Interact.Visibility = ViewStates.Visible;
-            ((CardBaseViewHolder) viewHolder).Interact.Text = Data[position].Interaction.label;
+            ((CardBaseViewHolder) viewHolder).Interact.Text = Data[position].Interaction.Label;
 
             FeedItemInteraction interaction = Data[position].Interaction;
 
-            switch (interaction.type)
+            switch (interaction.Type)
             {
-                case FeedItemInteraction.InteractionType.URL:
+                case FeedItemInteraction.InteractionType.Url:
                     ((CardBaseViewHolder) viewHolder).Interact.Click += delegate
                     {
                         Intent i = new Intent(Intent.ActionView,
-                            Android.Net.Uri.Parse(interaction.value));
+                            Android.Net.Uri.Parse(interaction.Value));
                         context.StartActivity(i);
                     };
                     break;
 
-                case FeedItemInteraction.InteractionType.ASSESSMENT:
+                case FeedItemInteraction.InteractionType.Assessment:
                     ((CardBaseViewHolder) viewHolder).Interact.Click +=
                         delegate
                         {
-                            int actId = int.Parse(interaction.value);
+                            int actId = int.Parse(interaction.Value);
 
                             if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
                             {
@@ -162,10 +162,10 @@ namespace DroidSpeeching
                         };
                     break;
 
-                case FeedItemInteraction.InteractionType.ACTIVITY:
+                case FeedItemInteraction.InteractionType.Activity:
                     ((CardBaseViewHolder) viewHolder).Interact.Click += delegate
                     {
-                        int actId = int.Parse(interaction.value);
+                        int actId = int.Parse(interaction.Value);
 
                         if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
                         {

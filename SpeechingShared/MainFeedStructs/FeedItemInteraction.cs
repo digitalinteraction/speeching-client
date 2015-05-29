@@ -8,10 +8,10 @@ namespace SpeechingShared
 {
     public class FeedItemInteraction
     {
-        public enum InteractionType { URL, ASSESSMENT, ACTIVITY }
+        public enum InteractionType { None, Url, Assessment, Activity }
 
-        public InteractionType type;
-        public string value;
-        public string label;
+        public InteractionType Type;
+        public string Value;
+        public string Label;
     }
 }
