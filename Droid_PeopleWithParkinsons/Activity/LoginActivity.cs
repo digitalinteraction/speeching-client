@@ -209,15 +209,15 @@ namespace DroidSpeeching
             {
                 RunOnUiThread(() => signInBtn.Enabled = false);
 
-                if (AppData.Session == null || AppData.Session.categories == null ||
-                    AppData.Session.categories.Count == 0)
+                if (AppData.Session == null || AppData.Session.Categories == null ||
+                    AppData.Session.Categories.Count == 0)
                 {
                     // Loaded the user fine, but we need to pull from the server
                     ReadyMainMenu();
                 }
                 else
                 {
-                    string name = AppData.Session.currentUser.Nickname;
+                    string name = AppData.Session.CurrentUser.Nickname;
 
                     RunOnUiThread(() => Toast.MakeText(this, "Welcome back, " + name + "!", ToastLength.Long).Show());
 
@@ -247,7 +247,7 @@ namespace DroidSpeeching
             RunOnUiThread(() =>
             {
                 dialog = new ProgressDialog(this);
-                dialog.SetTitle("Welcome, " + AppData.Session.currentUser.Nickname + "!");
+                dialog.SetTitle("Welcome, " + AppData.Session.CurrentUser.Nickname + "!");
                 dialog.SetMessage("Downloading data. Please wait...");
                 dialog.SetCancelable(false);
                 dialog.Show();

@@ -197,7 +197,7 @@ namespace DroidSpeeching
             if (scenario.Creator != null) authorName.Text = scenario.Creator.Name;
 
             resultsZipPath = System.IO.Path.Combine(AppData.Exports.Path, scenario.Id + "_final.zip");
-            results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.Session.currentUser.Id);
+            results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.Session.CurrentUser.Id);
 
             if (savedInstanceState != null)
             {
@@ -549,16 +549,14 @@ namespace DroidSpeeching
         /// </summary>
         private void ChoiceImageClicked(object sender, EventArgs e)
         {
-            if (sender == choiceImage1)
+            int index = (sender == choiceImage1) ? 0 : 1; // TODO support more images
+
+            results.Data.Add(new ParticipantResultData
             {
-                results.ParticipantTaskIdResults.Add(scenario.ParticipantTasks[currIndex].Id,
-                    scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[0]);
-            }
-            else if (sender == choiceImage2)
-            {
-                results.ParticipantTaskIdResults.Add(scenario.ParticipantTasks[currIndex].Id,
-                    scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[1]);
-            }
+                ParticipantTaskId = scenario.ParticipantTasks[currIndex].Id,
+                FilePath = scenario.ParticipantTasks[currIndex].ParticipantTaskResponse.Related[index]
+            });
+
             ShowNextEvent();
         }
 
@@ -585,7 +583,11 @@ namespace DroidSpeeching
 
                 recording = false;
                 audioManager.StopRecording();
-                results.ParticipantTaskIdResults.Add(scenario.ParticipantTasks[currIndex].Id, scenario.ParticipantTasks[currIndex].Id + ".mp4");
+                results.Data.Add(new ParticipantResultData
+                {
+                    ParticipantTaskId = scenario.ParticipantTasks[currIndex].Id,
+                    FilePath = scenario.ParticipantTasks[currIndex].Id + ".mp4"
+                });
                 ShowNextEvent();
             }
             else
@@ -641,7 +643,7 @@ namespace DroidSpeeching
 
                 results.CompletionDate = DateTime.Now;
 
-                AppData.Session.resultsToUpload.Add(results);
+                AppData.Session.ResultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 // Clean up zipped files

@@ -30,7 +30,7 @@ namespace DroidSpeeching
             View header = LayoutInflater.Inflate(Resource.Layout.UploadsListHead, null);
             uploadsList = FindViewById<ListView>(Resource.Id.uploads_list);
             uploadsList.AddHeaderView(header, null, false);
-            uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.Session.resultsToUpload.ToArray());
+            uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.Session.ResultsToUpload.ToArray());
             uploadsList.ItemClick += OnItemTap;
 
             uploadAllButton = FindViewById<ToggleButton>(Resource.Id.uploads_start);
@@ -73,7 +73,7 @@ namespace DroidSpeeching
             this.RunOnUiThread(() => {
 
                 uploadsList.Adapter = null;
-                uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.Session.resultsToUpload.ToArray());
+                uploadsList.Adapter = new ExportedListAdapter(this, Resource.Id.uploads_list, AppData.Session.ResultsToUpload.ToArray());
             
             });
            
@@ -110,7 +110,7 @@ namespace DroidSpeeching
             .SetCancelable(true)
             .SetNegativeButton("Delete", (EventHandler<DialogClickEventArgs>)null)
             .SetPositiveButton("Upload", (s, a) => {
-                IResultItem toUpload = AppData.Session.resultsToUpload[args.Position - 1];
+                IResultItem toUpload = AppData.Session.ResultsToUpload[args.Position - 1];
                 progressDialog.Show();
                 cancelTokenSource = new CancellationTokenSource();
                 ServerData.PushResult(toUpload, RefreshList, OnUploadComplete, cancelTokenSource.Token);
@@ -129,7 +129,7 @@ namespace DroidSpeeching
                 confirm.SetMessage("The recorded data will be irrecoverably lost.");
                 confirm.SetPositiveButton("Delete", (senderAlert, confArgs) =>
                 {
-                    AppData.Session.DeleteResult(AppData.Session.resultsToUpload[args.Position - 1]);
+                    AppData.Session.DeleteResult(AppData.Session.ResultsToUpload[args.Position - 1]);
                     RefreshList();
 
                     alert.Dismiss();

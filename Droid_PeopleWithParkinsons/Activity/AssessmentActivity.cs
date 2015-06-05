@@ -113,7 +113,7 @@ namespace DroidSpeeching
 
             tasks = assessment.AssessmentTasks;
             zipPath = Path.Combine(AppData.Exports.Path, assessment.Id + "_assessmentRes.zip");
-            results = new ScenarioResult(assessment.Id, zipPath, AppData.Session.currentUser.Id) { IsAssessment = true };
+            results = new ScenarioResult(assessment.Id, zipPath, AppData.Session.CurrentUser.Id) { IsAssessment = true };
 
             if (bundle != null)
             {
@@ -278,7 +278,7 @@ namespace DroidSpeeching
                 fastZip.CreateZip(zipPath, localTempDirectory, true, null);
 
                 results.CompletionDate = DateTime.Now;
-                AppData.Session.resultsToUpload.Add(results);
+                AppData.Session.ResultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 Directory.Delete(localTempDirectory, true);
@@ -296,7 +296,7 @@ namespace DroidSpeeching
             timeRecStarted = DateTime.Now;
             recording = true;
             string fileAdd = Path.Combine(localTempDirectory,
-                currentFragment.GetRecordingId() + ".mp4");
+                currentFragment.GetRecordingPath() + ".mp4");
             audioManager.StartRecording(fileAdd);
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonRed);
             recButton.Text = "Stop Recording";
@@ -305,8 +305,13 @@ namespace DroidSpeeching
         private void StopRecording()
         {
             audioManager.StopRecording();
-            results.ParticipantTaskIdResults.Add(currentFragment.GetRecordingId(),
-                currentFragment.GetRecordingId() + ".mp4");
+            results.Data.Add(new ParticipantResultData
+            {
+                FilePath = currentFragment.GetRecordingPath() + ".mp4",
+                ParticipantAssessmentTaskId = tasks[taskIndex].Id,
+                ParticipantAssessmentTaskPromptId =
+                    currentFragment.GetTask().PromptCol.Prompts[currentFragment.GetCurrentStage()].Id
+            });
             recording = false;
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
             recButton.Text = "Record";

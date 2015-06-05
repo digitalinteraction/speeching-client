@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SpeechingShared
 {
-    public interface IFeedItem
+    public interface IFeedItem : IEquatable<IFeedItem>
     {
         int Id { get; set; }
         string Title { get; set; }

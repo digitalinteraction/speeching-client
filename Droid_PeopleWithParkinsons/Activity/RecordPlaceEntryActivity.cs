@@ -158,14 +158,14 @@ namespace DroidSpeeching
                     ParticipantActivityId = 8675309,
                     ResourceUrl = resultsZipPath,
                     UploadState = Utils.UploadStage.Ready,
-                    UserId = AppData.Session.currentUser.Id,
+                    UserId = AppData.Session.CurrentUser.Id,
                     GooglePlaceId = placeId,
                     GooglePlaceName = placeName,
                     Lat = lat,
                     Lng = lng
                 };
 
-                AppData.Session.resultsToUpload.Add(results);
+                AppData.Session.ResultsToUpload.Add(results);
                 AppData.SaveCurrentData();
 
                 Directory.Delete(recFolder, true);

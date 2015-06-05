@@ -142,7 +142,7 @@ namespace SpeechingShared
                             TypeNameHandling = TypeNameHandling.Auto,
                             Binder = binder
                         });
-                    ServerData.StorageRemoteDir = "uploads/" + Session.currentUser.Key + "/";
+                    ServerData.StorageRemoteDir = "uploads/" + Session.CurrentUser.Key + "/";
                     return true;
                 }
             }
@@ -161,7 +161,7 @@ namespace SpeechingShared
         public static void AssignCurrentUser(User thisUser)
         {
             if (Session == null) Session = new SessionData();
-            Session.currentUser = thisUser;
+            Session.CurrentUser = thisUser;
             ServerData.StorageRemoteDir = "uploads/" + thisUser.Id + "/";
 
             SaveCurrentData();
@@ -207,7 +207,7 @@ namespace SpeechingShared
         /// <returns>Is Completed? bool</returns>
         public static bool CheckForActivityResultData(int id)
         {
-            foreach (IResultItem result in Session.resultsToUpload)
+            foreach (IResultItem result in Session.ResultsToUpload)
             {
                 if (result.ParticipantActivityId == id) return true;
             }

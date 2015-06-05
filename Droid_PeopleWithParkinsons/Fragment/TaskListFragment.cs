@@ -1,14 +1,11 @@
+using System;
 using Android.App;
 using Android.Content;
-using Android.Graphics;
-using Android.Net;
 using Android.OS;
-using Android.Provider;
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
 using SpeechingShared;
-using System;
 
 namespace DroidSpeeching
 {
@@ -17,10 +14,10 @@ namespace DroidSpeeching
     /// </summary>
     public class TaskListFragment : Android.Support.V4.App.Fragment
     {
-        private SwipeRefreshLayout refresher;
         private ExpandableListView mainList;
-        private Button viewFeedbackBtn;
         private Button practiceBtn;
+        private SwipeRefreshLayout refresher;
+        private Button viewFeedbackBtn;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -33,12 +30,13 @@ namespace DroidSpeeching
             base.OnCreateView(inflater, container, savedInstanceState);
 
             var view = inflater.Inflate(Resource.Layout.MainTaskListFragment, container, false);
-                
+
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainTaskListHeader, null);
             mainList = view.FindViewById<ExpandableListView>(Resource.Id.mainActivitiesList);
             mainList.AddHeaderView(header, null, false);
-            mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList, AppData.Session.categories.ToArray()));
-            mainList.ChildClick += mainList_ChildClick;  
+            mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList,
+                AppData.Session.Categories.ToArray()));
+            mainList.ChildClick += mainList_ChildClick;
 
             // When the pull to refresh is activated, pull new data from the server and refresh the list with the new data
             refresher = view.FindViewById<SwipeRefreshLayout>(Resource.Id.refresher);
@@ -54,12 +52,13 @@ namespace DroidSpeeching
                 await ServerData.FetchCategories();
                 refresher.Refreshing = false;
 
-                ((ScenarioListAdapter)mainList.ExpandableListAdapter).categories = AppData.Session.categories.ToArray();
-                Activity.RunOnUiThread(() => ((ScenarioListAdapter)mainList.ExpandableListAdapter).NotifyDataSetChanged());
+                ((ScenarioListAdapter) mainList.ExpandableListAdapter).categories = AppData.Session.Categories.ToArray();
+                Activity.RunOnUiThread(
+                    () => ((ScenarioListAdapter) mainList.ExpandableListAdapter).NotifyDataSetChanged());
             };
 
             // If there's only one category, it makes sense to expand it by default
-            if (AppData.Session.categories.Count == 1)
+            if (AppData.Session.Categories.Count == 1)
             {
                 mainList.ExpandGroup(0, true);
             }
@@ -76,15 +75,15 @@ namespace DroidSpeeching
         /// A child in the list (an practiceActivity) has been selected. Check to see if existing data for this practiceActivity
         /// already exists before launching it.
         /// </summary>
-        void mainList_ChildClick(object sender, ExpandableListView.ChildClickEventArgs e)
+        private void mainList_ChildClick(object sender, ExpandableListView.ChildClickEventArgs e)
         {
-            ISpeechingPracticeActivity @this = AppData.Session.categories[e.GroupPosition].Activities[e.ChildPosition];
+            ISpeechingPracticeActivity @this = AppData.Session.Categories[e.GroupPosition].Activities[e.ChildPosition];
 
             Type objectType = @this.GetType();
-            Type targetActivity = typeof(MainActivity);
+            Type targetActivity = typeof (MainActivity);
 
-            if (objectType == typeof(Scenario)) targetActivity = typeof(ScenarioActivity);
-            else if (objectType == typeof(Guide)) targetActivity = typeof(GuideActivity);
+            if (objectType == typeof (Scenario)) targetActivity = typeof (ScenarioActivity);
+            else if (objectType == typeof (Guide)) targetActivity = typeof (GuideActivity);
             else if (objectType == typeof (Assessment)) targetActivity = typeof (AssessmentActivity);
 
             Intent intent = new Intent(Activity, targetActivity);
@@ -93,18 +92,21 @@ namespace DroidSpeeching
 
             if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(@this.Id, Activity))
             {
-                AndroidUtils.OfflineAlert(Activity, "This practiceActivity has not been downloaded yet and requires an Internet connection to prepare!");
+                AndroidUtils.OfflineAlert(Activity,
+                    "This practiceActivity has not been downloaded yet and requires an Internet connection to prepare!");
                 return;
             }
 
             if (AppData.CheckForActivityResultData(itemId))
             {
-                Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(Activity)
-                .SetTitle("Existing results found...")
-                .SetMessage("Re-doing this scenario will wipe any progress for it which hasn't been uploaded. Are you sure you want to do this?")
-                .SetPositiveButton("Continue", (senderAlert, confArgs) => { StartActivity(intent); })
-                .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
-                .SetCancelable(true);
+                Android.Support.V7.App.AlertDialog.Builder alert = new Android.Support.V7.App.AlertDialog.Builder(
+                    Activity)
+                    .SetTitle("Existing results found...")
+                    .SetMessage(
+                        "Re-doing this scenario will wipe any progress for it which hasn't been uploaded. Are you sure you want to do this?")
+                    .SetPositiveButton("Continue", (senderAlert, confArgs) => { StartActivity(intent); })
+                    .SetNegativeButton("Cancel", (senderAlert, confArgs) => { })
+                    .SetCancelable(true);
                 alert.Show();
             }
             else
@@ -113,18 +115,18 @@ namespace DroidSpeeching
             }
         }
 
-        void viewFeedbackBtn_Click(object sender, System.EventArgs e)
+        private void viewFeedbackBtn_Click(object sender, EventArgs e)
         {
             if (AndroidUtils.IsConnected())
-                this.Activity.StartActivity(typeof(AssessmentActivity)); //FeedbackActivity));
+                Activity.StartActivity(typeof (AssessmentActivity)); //FeedbackActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);
         }
 
-        void practiceButton_Click(object sender, System.EventArgs e)
+        private void practiceButton_Click(object sender, EventArgs e)
         {
             if (AndroidUtils.IsConnected())
-                this.Activity.StartActivity(typeof(WikiPracticeActivity));
+                Activity.StartActivity(typeof (WikiPracticeActivity));
             else
                 AndroidUtils.OfflineAlert(Activity);
         }
@@ -139,14 +141,23 @@ namespace DroidSpeeching
         /// </summary>
         public class ScenarioListAdapter : BaseExpandableListAdapter
         {
-            Activity context;
-
+            private readonly Activity context;
             public ActivityCategory[] categories;
 
             public ScenarioListAdapter(Activity context, int resource, ActivityCategory[] data)
             {
                 this.context = context;
-                this.categories = data;
+                categories = data;
+            }
+
+            public override int GroupCount
+            {
+                get { return categories.Length; }
+            }
+
+            public override bool HasStableIds
+            {
+                get { return false; }
             }
 
             public override Java.Lang.Object GetChild(int groupPosition, int childPosition)
@@ -169,17 +180,13 @@ namespace DroidSpeeching
                 return null;
             }
 
-            public override int GroupCount
-            {
-                get { return categories.Length; }
-            }
-
             public override long GetGroupId(int groupPosition)
             {
                 return groupPosition;
             }
 
-            public override View GetChildView(int groupPosition, int childPosition, bool isLastChild, View convertView, ViewGroup parent)
+            public override View GetChildView(int groupPosition, int childPosition, bool isLastChild, View convertView,
+                ViewGroup parent)
             {
                 View view = convertView;
                 ISpeechingPracticeActivity scenario = categories[groupPosition].Activities[childPosition];
@@ -209,11 +216,6 @@ namespace DroidSpeeching
                 AndroidUtils.PrepareIcon(view.FindViewById<ImageView>(Resource.Id.tasklist_parentIcon), category);
 
                 return view;
-            }
-
-            public override bool HasStableIds
-            {
-                get { return false; }
             }
 
             public override bool IsChildSelectable(int groupPosition, int childPosition)

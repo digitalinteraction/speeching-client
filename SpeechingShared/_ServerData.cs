@@ -23,7 +23,7 @@ namespace SpeechingShared
             Guide
         };
 
-        public static string StorageServer = @"https://di.ncl.ac.uk/owncloud/remote.php/webdav/";
+        public static string StorageServer = @"https://openlab.ncl.ac.uk/owncloud/remote.php/webdav/";
         public static string StorageRemoteDir;
         public static string ServiceUrl = "https://speeching.azurewebsites.net/api/";
 
@@ -43,9 +43,18 @@ namespace SpeechingShared
                 Uri baseAddress = new Uri(ServiceUrl);
                 client.BaseAddress = baseAddress;
 
-                HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, ServiceUrl + route);
 
-                HttpResponseMessage response = await client.PostAsync(route, content);
+                if (AppData.Session != null && AppData.Session.CurrentUser != null)
+                {
+                    requestMessage.Headers.Add("Email", AppData.Session.CurrentUser.Email);
+                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key.ToString());
+                }
+
+                HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                requestMessage.Content = content;
+
+                HttpResponseMessage response = await client.SendAsync(requestMessage);
                 if (response.IsSuccessStatusCode)
                 {
                     string toReturn = await response.Content.ReadAsStringAsync();
@@ -139,10 +148,10 @@ namespace SpeechingShared
 
                 HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, baseAddress + request);
 
-                if (AppData.Session != null && AppData.Session.currentUser != null)
+                if (AppData.Session != null && AppData.Session.CurrentUser != null)
                 {
-                    requestMessage.Headers.Add("Email", AppData.Session.currentUser.Email);
-                    requestMessage.Headers.Add("Key", AppData.Session.currentUser.Key.ToString());
+                    requestMessage.Headers.Add("Email", AppData.Session.CurrentUser.Email);
+                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key.ToString());
                 }
                 
                 HttpResponseMessage response = await client.SendAsync(requestMessage);
@@ -152,7 +161,7 @@ namespace SpeechingShared
                     return toReturn;
                 }
                 string msg = await response.Content.ReadAsStringAsync();
-                throw new Exception(msg);
+                return null;
             }
         }
 
@@ -166,9 +175,9 @@ namespace SpeechingShared
                 if (!AppData.CheckNetwork()) return false;
 
                 List<ISpeechingPracticeActivity> currentActs = new List<ISpeechingPracticeActivity>();
-                if (AppData.Session.categories != null)
+                if (AppData.Session.Categories != null)
                 {
-                    foreach (ActivityCategory cat in AppData.Session.categories)
+                    foreach (ActivityCategory cat in AppData.Session.Categories)
                     {
                         foreach (ISpeechingPracticeActivity act in cat.Activities)
                         {
@@ -177,18 +186,18 @@ namespace SpeechingShared
                     }
                 }
 
-                AppData.Session.categories =
+                AppData.Session.Categories =
                     await GetRequest<List<ActivityCategory>>("category");
                 List<Task<bool>> allTasks = new List<Task<bool>>();
 
                 AppData.SaveCurrentData();
 
                 // Loop over all categories, downloading icons as needed for them and their scenarios
-                for (int i = 0; i < AppData.Session.categories.Count; i++)
+                for (int i = 0; i < AppData.Session.Categories.Count; i++)
                 {
-                    allTasks.Add(AppData.Session.categories[i].PrepareIcon());
+                    allTasks.Add(AppData.Session.Categories[i].PrepareIcon());
 
-                    for (int j = 0; j < AppData.Session.categories[i].Activities.Length; j++)
+                    for (int j = 0; j < AppData.Session.Categories[i].Activities.Length; j++)
                     {
                         allTasks.Add(AppData.Session.ProcessScenario(i, j));
                     }
@@ -209,7 +218,7 @@ namespace SpeechingShared
                 // See if any activities have been removed and delete their local content if necessary
                 foreach (ISpeechingPracticeActivity act in currentActs)
                 {
-                    foreach (ActivityCategory cat in AppData.Session.categories)
+                    foreach (ActivityCategory cat in AppData.Session.Categories)
                     {
                         if (Array.IndexOf(cat.Activities, act) != -1) continue;
 
@@ -328,10 +337,10 @@ namespace SpeechingShared
 
             string localRef = placeId + "_" + maxWidth + "_" + maxHeight;
 
-            if (AppData.Session.placesPhotos.ContainsKey(localRef))
+            if (AppData.Session.PlacesPhotos.ContainsKey(localRef))
             {
                 // We already have this locally!
-                return AppData.Session.placesPhotos[localRef];
+                return AppData.Session.PlacesPhotos[localRef];
             }
 
             const string basePlaces = "https://maps.googleapis.com/maps/api/place/";
@@ -361,7 +370,7 @@ namespace SpeechingShared
                         stream.Write(data, 0, data.Length);
                     }
 
-                    AppData.Session.placesPhotos.Add(localRef, file.Path);
+                    AppData.Session.PlacesPhotos.Add(localRef, file.Path);
 
                     return file.Path;
                 }
@@ -376,6 +385,7 @@ namespace SpeechingShared
             {
                 using (StreamContent content = new StreamContent(await file.OpenAsync(FileAccess.Read)))
                 {
+
                     using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Put, toUrl))
                     {
                         req.Content = content;
@@ -428,8 +438,35 @@ namespace SpeechingShared
                             ConfidentialData.storagePassword)
                     })
                     {
+                        if (!AppData.Session.ServerFolderExists)
+                        {
+                            // Try to create the remote dir
+                            try
+                            {
+                                // Create the HttpWebRequest object.
+                                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(StorageServer + StorageRemoteDir);
+
+                                // Add the network credentials to the request.
+                                request.Credentials = handler.Credentials;
+
+                                // Specify the MKCOL method.
+                                request.Method = "MKCOL";
+
+                                // Send the MKCOL method request, get the
+                                // method response from the server.
+                                HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
+
+                                AppData.Session.ServerFolderExists = true;
+                            }
+                            catch (Exception e)
+                            {
+                                AppData.Io.PrintToConsole(e.Message);
+                                AppData.Session.ServerFolderExists = true;
+                            }
+                        }
+
                         await UploadFile(StorageServer + StorageRemoteDir + filename,
-                            await AppData.Exports.GetFileAsync(Path.GetFileName(toUpload.ResourceUrl)), handler);
+                            await AppData.Exports.GetFileAsync(Path.GetFileName(toUpload.ResourceUrl), cancelToken), handler);
                     }
                 }
             }
@@ -456,7 +493,7 @@ namespace SpeechingShared
                 if (success)
                 {
                     // The web service knows about the file!
-                    AppData.Session.resultsToUpload.Remove(toUpload);
+                    AppData.Session.ResultsToUpload.Remove(toUpload);
                     toUpload.UploadState = Utils.UploadStage.Finished;
                     if (onUpdate != null) onUpdate();
                     AppData.SaveCurrentData();
@@ -485,7 +522,7 @@ namespace SpeechingShared
                 return;
             }
 
-            IResultItem[] toUpload = AppData.Session.resultsToUpload.ToArray();
+            IResultItem[] toUpload = AppData.Session.ResultsToUpload.ToArray();
             int completed = 0;
 
             Action<bool> onUpload = success =>
@@ -568,7 +605,7 @@ namespace SpeechingShared
         {
             if (!AppData.CheckNetwork()) return null;
 
-            foreach (User user in AppData.Session.userCache)
+            foreach (User user in AppData.Session.UserCache)
             {
                 if (user.Name == username)
                 {
@@ -592,7 +629,7 @@ namespace SpeechingShared
             List<User> users = new List<User>();
 
             //TEMP - will be polling the server (although checking the cache would be useful...)
-            foreach (User user in AppData.Session.userCache)
+            foreach (User user in AppData.Session.UserCache)
             {
                 if (!userIds.Contains(user.Id)) continue;
 
@@ -784,7 +821,7 @@ namespace SpeechingShared
             await Task.Delay(1000); // Network simulation TODO
 
             const string jsonString =
-                "{\"AssessmentTasks\":[{\"Prompts\":[{\"Id\":1,\"Value\":\"Easy\"},{\"Id\":2,\"Value\":\"Trickier\"},{\"Id\":3,\"Value\":\"Simple\"},{\"Id\":4,\"Value\":\"More Difficult\"},{\"Id\":5,\"Value\":\"Exquisite\"},{\"Id\":6,\"Value\":\"Borderline\"}],\"TaskType\":1,\"Id\":1,\"Title\":\"QuickFire Speaking!\",\"Instructions\":\"Press the record button and say the shown word as clearly as you can, then press stop.\"},{\"Prompts\":[{\"Id\":7,\"Value\":\"What does the image show?\"},{\"Id\":8,\"Value\":\"Describe the colours in the image.\"},{\"Id\":9,\"Value\":\"Describe the dominant feature of the image.\"},{\"Id\":10,\"Value\":\"What does the image make you think of?\"}],\"TaskType\":0,\"Id\":2,\"Title\":\"Image Description\",\"Instructions\":\"Press the 'Record' button and follow the instruction in the image's caption\",\"Image\":\"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"}],\"CrowdCategory\":{\"Activities\":[],\"Id\":4,\"ExternalId\":\"Assessments\",\"Title\":\"Progress Assessments\",\"Icon\":\"https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png\",\"Recommended\":false,\"DefaultSubscription\":true},\"CrowdPages\":[],\"ParticipantResults\":[],\"ParticipantTasks\":[],\"Id\":5,\"ExternalId\":\"assess1\",\"Title\":\"Your first assessment!\",\"Icon\":\"http://www.pursuittraining.co.uk/images/care-icon.gif\",\"CrowdCategoryId\":4,\"Description\":\"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\"DateSet\":\"2015-05-26T10:32:02.807\"}";
+                "{\"AssessmentTasks\":[{\"PromptCol\":[{\"Id\":1,\"Value\":\"Easy\"},{\"Id\":2,\"Value\":\"Trickier\"},{\"Id\":3,\"Value\":\"Simple\"},{\"Id\":4,\"Value\":\"More Difficult\"},{\"Id\":5,\"Value\":\"Exquisite\"},{\"Id\":6,\"Value\":\"Borderline\"}],\"TaskType\":1,\"Id\":1,\"Title\":\"QuickFire Speaking!\",\"Instructions\":\"Press the record button and say the shown word as clearly as you can, then press stop.\"},{\"PromptCol\":[{\"Id\":7,\"Value\":\"What does the image show?\"},{\"Id\":8,\"Value\":\"Describe the colours in the image.\"},{\"Id\":9,\"Value\":\"Describe the dominant feature of the image.\"},{\"Id\":10,\"Value\":\"What does the image make you think of?\"}],\"TaskType\":0,\"Id\":2,\"Title\":\"Image Description\",\"Instructions\":\"Press the 'Record' button and follow the instruction in the image's caption\",\"Image\":\"http://th00.deviantart.net/fs71/PRE/i/2013/015/d/c/a_hobbit_hole_by_uberpicklemonkey-d5rmn8n.jpg\"}],\"CrowdCategory\":{\"Activities\":[],\"Id\":4,\"ExternalId\":\"Assessments\",\"Title\":\"Progress Assessments\",\"Icon\":\"https://cdn1.iconfinder.com/data/icons/MetroStation-PNG/128/MB__help.png\",\"Recommended\":false,\"DefaultSubscription\":true},\"CrowdPages\":[],\"ParticipantResults\":[],\"ParticipantTasks\":[],\"Id\":5,\"ExternalId\":\"assess1\",\"Title\":\"Your first assessment!\",\"Icon\":\"http://www.pursuittraining.co.uk/images/care-icon.gif\",\"CrowdCategoryId\":4,\"Description\":\"Doing this short assessment will help us determine which parts of your speech might need some practice!\",\"DateSet\":\"2015-05-26T10:32:02.807\"}";
             try
             {
                 return JsonConvert.DeserializeObject<Assessment>(jsonString);
@@ -801,6 +838,8 @@ namespace SpeechingShared
             if (!AppData.CheckNetwork()) return null;
 
             List<IFeedItem> items = await GetRequest<List<IFeedItem>>("Feed", "", new FeedItemConverter());
+
+            if (items != null) AppData.Session.CurrentFeed = items;
 
             return items;
 

@@ -25,7 +25,7 @@ namespace DroidSpeeching
             args.PutInt("ID", task.Id);
             args.PutString("TITLE", task.Title);
             args.PutString("INSTRUCTIONS", task.Instructions);
-            args.PutString("PROMPTS", JsonConvert.SerializeObject(task.Prompts));
+            args.PutString("PROMPTS", JsonConvert.SerializeObject(task.PromptCol));
             args.PutString("IMAGE", task.Image);
             fragment.Arguments = args;
 
@@ -36,12 +36,14 @@ namespace DroidSpeeching
         {
             base.OnCreate(bundle);
 
-            data = new ImageDescTask();
-            data.Id = Arguments.GetInt("ID");
-            data.Title = Arguments.GetString("TITLE");
-            data.Instructions = Arguments.GetString("INSTRUCTIONS");
-            data.Prompts = JsonConvert.DeserializeObject<AssessmentRecordingPrompt[]>(Arguments.GetString("PROMPTS"));
-            data.Image = Arguments.GetString("IMAGE");
+            data = new ImageDescTask
+            {
+                Id = Arguments.GetInt("ID"),
+                Title = Arguments.GetString("TITLE"),
+                Instructions = Arguments.GetString("INSTRUCTIONS"),
+                PromptCol = JsonConvert.DeserializeObject<AssessmentRecordingPromptCol>(Arguments.GetString("PROMPTS")),
+                Image = Arguments.GetString("IMAGE")
+            };
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -56,14 +58,14 @@ namespace DroidSpeeching
             imageView = view.FindViewById<ImageView>(Resource.Id.describe_image);
             instructionView = view.FindViewById<TextView>(Resource.Id.describe_text);
 
-            if (data.Prompts == null || data.Prompts.Length == 0)
+            if (data.PromptCol == null || data.PromptCol.Prompts.Length == 0)
             {
                 instructionView.Text = "Please describe the image.";
             }
             else
             {
-                instructionView.Text = data.Prompts[instructionIndex].Value;
-                if (instructionIndex + 1 == data.Prompts.Length) finished = true;
+                instructionView.Text = data.PromptCol.Prompts[instructionIndex].Value;
+                if (instructionIndex + 1 == data.PromptCol.Prompts.Length) finished = true;
             }
 
             while (runOnceCreated.Count > 0)
@@ -102,17 +104,22 @@ namespace DroidSpeeching
         public override void NextAction()
         {
             instructionIndex++;
-            if (instructionIndex < data.Prompts.Length)
+            if (instructionIndex < data.PromptCol.Prompts.Length)
             {
-                instructionView.Text = data.Prompts[instructionIndex].Value;
+                instructionView.Text = data.PromptCol.Prompts[instructionIndex].Value;
 
-                if (instructionIndex + 1 == data.Prompts.Length) finished = true;
+                if (instructionIndex + 1 == data.PromptCol.Prompts.Length) finished = true;
             }
         }
 
         public override int GetRecordingId()
         {
-            return data.Prompts[instructionIndex].Id;
+            return data.PromptCol.Prompts[instructionIndex].Id;
+        }
+
+        public override string GetRecordingPath()
+        {
+            return "imgDesc_" + data.Id + "-" + data.PromptCol.Prompts[instructionIndex].Id;
         }
 
         public override int GetCurrentStage()
@@ -124,6 +131,11 @@ namespace DroidSpeeching
         {
             instructionIndex = stage - 1;
             NextAction();
+        }
+
+        public override IAssessmentTask GetTask()
+        {
+            return data;
         }
     }
 }

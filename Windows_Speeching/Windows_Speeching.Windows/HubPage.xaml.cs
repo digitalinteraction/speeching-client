@@ -1,23 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows_Speeching.Data;
 using Windows_Speeching.Common;
 using SpeechingShared;
-using Windows.Networking.Connectivity;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 
 // The Universal Hub Application project template is documented at http://go.microsoft.com/fwlink/?LinkID=391955
 
@@ -28,12 +13,14 @@ namespace Windows_Speeching
     /// </summary>
     public sealed partial class HubPage : Page
     {
-        private ObservableCollection<ISpeechingPracticeActivity> activities = new ObservableCollection<ISpeechingPracticeActivity>();
-        private ObservableCollection<IFeedItem> feedItems = new ObservableCollection<IFeedItem>();
+        private readonly ObservableCollection<ISpeechingPracticeActivity> activities =
+            new ObservableCollection<ISpeechingPracticeActivity>();
+
+        private readonly ObservableCollection<IFeedItem> feedItems = new ObservableCollection<IFeedItem>();
 
         public HubPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             SpeechingCategories.Source = activities;
             MainFeed.Source = feedItems;
@@ -53,7 +40,7 @@ namespace Windows_Speeching
         {
             List<IFeedItem> loaded = await ServerData.FetchMainFeed();
 
-            foreach(IFeedItem item in loaded)
+            foreach (IFeedItem item in loaded)
             {
                 feedItems.Add(item);
             }
@@ -62,7 +49,7 @@ namespace Windows_Speeching
         private async void LoadActivities()
         {
             await ServerData.FetchCategories();
-            foreach (ActivityCategory cat in AppData.Session.categories)
+            foreach (ActivityCategory cat in AppData.Session.Categories)
             {
                 foreach (ISpeechingPracticeActivity act in cat.Activities)
                 {

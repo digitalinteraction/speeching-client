@@ -8,9 +8,9 @@ namespace DroidSpeeching
 {
     public class QuickFireFragment : AssessmentFragment
     {
-        private QuickFireTask data;
+        public QuickFireTask Data;
+        public int Index = 0;
         private TextView quickFireText;
-        private int index = 0;
         private bool finished = false;
 
         public static QuickFireFragment NewInstance(IAssessmentTask passed)
@@ -22,7 +22,7 @@ namespace DroidSpeeching
             args.PutInt("ID", task.Id);
             args.PutString("TITLE", task.Title);
             args.PutString("INSTRUCTIONS", task.Instructions);
-            args.PutString("PROMPTS", JsonConvert.SerializeObject(task.Prompts));
+            args.PutString("PROMPTS", JsonConvert.SerializeObject(task.PromptCol));
             fragment.Arguments = args;
 
             return fragment;
@@ -32,11 +32,13 @@ namespace DroidSpeeching
         {
             base.OnCreate(bundle);
 
-            data = new QuickFireTask();
-            data.Id = Arguments.GetInt("ID");
-            data.Title = Arguments.GetString("TITLE");
-            data.Instructions = Arguments.GetString("INSTRUCTIONS");
-            data.Prompts = JsonConvert.DeserializeObject<AssessmentRecordingPrompt[]>(Arguments.GetString("PROMPTS"));
+            Data = new QuickFireTask
+            {
+                Id = Arguments.GetInt("ID"),
+                Title = Arguments.GetString("TITLE"),
+                Instructions = Arguments.GetString("INSTRUCTIONS"),
+                PromptCol = JsonConvert.DeserializeObject<AssessmentRecordingPromptCol>(Arguments.GetString("PROMPTS"))
+            };
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -48,8 +50,8 @@ namespace DroidSpeeching
         {
             quickFireText = view.FindViewById<TextView>(Resource.Id.quickfire_text);
 
-            quickFireText.Text = "\"" + data.Prompts[index].Value + "\"";
-            if (index + 1 == data.Prompts.Length) finished = true;
+            quickFireText.Text = "\"" + Data.PromptCol.Prompts[Index].Value + "\"";
+            if (Index + 1 == Data.PromptCol.Prompts.Length) finished = true;
 
             while (runOnceCreated.Count > 0)
             {
@@ -63,12 +65,12 @@ namespace DroidSpeeching
 
         public override void NextAction()
         {
-            index++;
-            if (index < data.Prompts.Length)
+            Index++;
+            if (Index < Data.PromptCol.Prompts.Length)
             {
-                quickFireText.Text = "\"" + data.Prompts[index].Value + "\"";
+                quickFireText.Text = "\"" + Data.PromptCol.Prompts[Index].Value + "\"";
                 
-                if (index + 1 == data.Prompts.Length) finished = true;
+                if (Index + 1 == Data.PromptCol.Prompts.Length) finished = true;
             }
         }
 
@@ -79,28 +81,38 @@ namespace DroidSpeeching
 
         public override string GetInstructions()
         {
-            return data.Instructions;
+            return Data.Instructions;
         }
 
         public override string GetTitle()
         {
-            return data.Title;
+            return Data.Title;
         }
 
         public override int GetRecordingId()
         {
-            return data.Prompts[index].Id;
+            return Data.PromptCol.Prompts[Index].Id;
+        }
+
+        public override string GetRecordingPath()
+        {
+            return "quickfire_" + Data.Id + "-" + Data.PromptCol.Prompts[Index].Id;
         }
 
         public override int GetCurrentStage()
         {
-            return index;
+            return Index;
         }
 
         public override void GoToStage(int stage)
         {
-            index = stage - 1;
+            Index = stage - 1;
             NextAction();
+        }
+
+        public override IAssessmentTask GetTask()
+        {
+            return Data;
         }
     }
 }

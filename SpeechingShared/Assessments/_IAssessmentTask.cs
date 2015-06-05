@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SpeechingShared
 {
@@ -10,11 +6,6 @@ namespace SpeechingShared
         int Id { get; set; }
         string Title { get; set; }
         string Instructions { get; set; }
-    }
-
-    public class AssessmentRecordingPrompt
-    {
-        public int Id;
-        public string Value;
+        AssessmentRecordingPromptCol PromptCol { get; set; }
     }
 }

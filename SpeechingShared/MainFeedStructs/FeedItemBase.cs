@@ -1,103 +1,33 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SpeechingShared
 {
     public class FeedItemBase : IFeedItem
     {
-        protected int id;
-        protected string title;
-        protected string description;
-        protected DateTime date;
-        protected bool dismissable;
-        protected int importance;
-        protected FeedItemInteraction interaction;
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime Date { get; set; }
+        public bool Dismissable { get; set; }
+        public int Importance { get; set; }
+        public int Id { get; set; }
+        public FeedItemInteraction Interaction { get; set; }
 
-        public string Title
+        public bool Equals(IFeedItem other)
         {
-            get
+            if (other == null)
             {
-                return title;
+                return false;
             }
-            set
-            {
-                title = value;
-            }
-        }
 
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-            set
-            {
-                description = value;
-            }
-        }
+            if (other.GetType() != GetType()) return false;
+            if (Id != other.Id) return false;
+            if (Title != other.Title) return false;
+            if (Description != other.Description) return false;
+            if (Interaction != other.Interaction) return false;
+            if (Dismissable != other.Dismissable) return false;
+            if (Importance != other.Importance) return false;
 
-        public DateTime Date
-        {
-            get
-            {
-                return date;
-            }
-            set
-            {
-                date = value;
-            }
-        }
-
-        public bool Dismissable
-        {
-            get
-            {
-                return dismissable;
-            }
-            set
-            {
-                dismissable = value;
-            }
-        }
-
-        public int Importance
-        {
-            get
-            {
-                return importance;
-            }
-            set
-            {
-                importance = value;
-            }
-        }
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-
-
-        public FeedItemInteraction Interaction
-        {
-            get
-            {
-                return interaction;
-            }
-            set
-            {
-                interaction = value;
-            }
+            return true;
         }
     }
 }

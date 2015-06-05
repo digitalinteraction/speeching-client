@@ -104,5 +104,10 @@ namespace DroidSpeeching
                 throw new NotImplementedException();
             }
         }
+
+        public bool Equals(IFeedItem other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

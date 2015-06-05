@@ -38,7 +38,7 @@ namespace DroidSpeeching
 
         private async void InsertData()
         {
-            List<IResultItem> uploads = AppData.Session.resultsToUpload;
+            List<IResultItem> uploads = AppData.Session.ResultsToUpload;
 
             if (uploads == null || uploads.Count == 0) return;
 

@@ -12,17 +12,19 @@ namespace DroidSpeeching
         public Stack<Action> runOnceCreated;
         public bool finishedCreating = false;
 
-        public AssessmentFragment()
+        protected AssessmentFragment()
         {
             runOnceCreated = new Stack<Action>();
         }
 
         public abstract int GetRecordingId();
+        public abstract string GetRecordingPath();
         public abstract bool IsFinished();
         public abstract void NextAction();
         public abstract int GetCurrentStage();
         public abstract void GoToStage(int stage);
         public abstract string GetTitle();
         public abstract string GetInstructions();
+        public abstract IAssessmentTask GetTask();
     }
 }

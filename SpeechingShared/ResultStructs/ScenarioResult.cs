@@ -8,98 +8,34 @@ namespace SpeechingShared
     /// </summary>
     public class ScenarioResult : IResultItem
     {
-        public Dictionary<int, string> ParticipantTaskIdResults;
-
-        private int id;
-        private string userId;
-        private string resource;
-        private int activityId;
-        private Utils.UploadStage state;
-        private DateTime completedAt;
+        public int Id { get; set; }
+        public string ResourceUrl { get; set; }
+        public int ParticipantActivityId { get; set; }
+        public Utils.UploadStage UploadState { get; set; }
+        public string UserId { get; set; }
+        public DateTime CompletionDate { get; set; }
+        public List<ParticipantResultData> Data { get; set; }
 
         public bool IsAssessment { get; set; }
 
         public ScenarioResult(int activityId, string dataLoc, string userId)
         {
-            this.id = AppData.Rand.Next(0, 100000); // TEMP
-            this.activityId = activityId;
-            this.resource = dataLoc;
-            this.state = Utils.UploadStage.Ready;
-            this.ParticipantTaskIdResults = new Dictionary<int, string>();
-            this.userId = userId;
+            Id = AppData.Rand.Next(0, 100000); // TEMP
+            ParticipantActivityId = activityId;
+            ResourceUrl = dataLoc;
+            UploadState = Utils.UploadStage.Ready;
+            Data = new List<ParticipantResultData>();
+            UserId = userId;
         }
+    }
 
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
+    public class ParticipantResultData
+    {
+        public int? ParticipantTaskId { get; set; }
+        public int? ParticipantAssessmentTaskId { get; set; }
+        public int? ParticipantAssessmentTaskPromptId { get; set; }
 
-        public string ResourceUrl
-        {
-            get
-            {
-                return resource;
-            }
-            set
-            {
-                resource = value;
-            }
-        }
-
-        public int ParticipantActivityId
-        {
-            get
-            {
-                return activityId;
-            }
-            set
-            {
-                activityId = value;
-            }
-        }
-
-        public Utils.UploadStage UploadState
-        {
-            get
-            {
-                return state;
-            }
-            set
-            {
-                state = value;
-            }
-        }
-
-        public string UserId
-        {
-            get
-            {
-                return userId;
-            }
-            set
-            {
-                userId = value;
-            }
-        }
-
-
-        public DateTime CompletionDate
-        {
-            get
-            {
-                return completedAt;
-            }
-            set
-            {
-                completedAt = value;
-            }
-        }
+        public string FilePath { get; set; }
+        public string ExtraData { get; set; }
     }
 }

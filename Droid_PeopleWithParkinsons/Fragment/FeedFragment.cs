@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.Widget;
@@ -92,8 +94,10 @@ namespace DroidSpeeching
                     return;
                 }
 
-                items = await ServerData.FetchMainFeed();
-                adapter.Data = items;
+                List<IFeedItem> existing = AppData.Session.CurrentFeed;
+
+                await FetchFeed(existing);
+
                 refresher.Refreshing = false;
 
                 Activity.RunOnUiThread(() => adapter.NotifyDataSetChanged());
@@ -113,14 +117,41 @@ namespace DroidSpeeching
             InsertData();
         }
 
+        private async Task FetchFeed(List<IFeedItem> existing)
+        {
+            items = await ServerData.FetchMainFeed();
+
+            if (items != null)
+            {
+                if (items == null) items = new List<IFeedItem>();
+
+                adapter.Data = items;
+                feedList.SetAdapter(adapter);
+
+                AppData.Session.CurrentFeed = items;
+                AppData.SaveCurrentData();
+            }
+            else
+            {
+                items = existing;
+            }
+        }
+
         private async void InsertData()
         {
             Activity.RunOnUiThread(() => { refresher.Post(() => { refresher.Refreshing = true; }); });
 
-            items = await ServerData.FetchMainFeed();
+            List<IFeedItem> existing = AppData.Session.CurrentFeed;
 
-            adapter = new FeedCardAdapter(items, Activity);
-            feedList.SetAdapter(adapter);
+            if (existing != null)
+            {
+                adapter = new FeedCardAdapter(AppData.Session.CurrentFeed, Activity);
+                feedList.SetAdapter(adapter);
+            }
+
+            if(adapter == null) adapter = new FeedCardAdapter(new List<IFeedItem>(), Activity );
+
+            await FetchFeed(existing);
 
             SwipeableRecyclerViewTouchListener swipeTouchListener = new SwipeableRecyclerViewTouchListener(feedList,
                 this, Activity);
