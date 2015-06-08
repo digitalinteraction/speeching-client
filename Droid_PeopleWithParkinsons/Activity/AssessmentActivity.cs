@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V4.View;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -258,37 +260,52 @@ namespace DroidSpeeching
             recButton.Text = "Record";
         }
 
-        private void FinishAssessment()
+        private async void FinishAssessment()
         {
             currentStage = AssessmentStage.Finished;
-
             ProgressDialog progress;
+            AppCompatDialog ratingsDialog = null;
+            bool rated = false;
 
             RunOnUiThread(() =>
             {
                 progress = new ProgressDialog(this);
                 progress.SetTitle("Assessment Complete!");
                 progress.SetMessage("Getting your recordings ready to upload...");
-                progress.Show();
+
+                ratingsDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
+                    .SetTitle("Assessment Complete!")
+                    .SetMessage("How do you feel you did?")
+                    .SetView(Resource.Layout.RatingDialog)
+                    .SetCancelable(false)
+                    .SetPositiveButton("Done", (par1, par2) =>
+                    {
+                        // ReSharper disable once PossibleNullReferenceException
+                        // ReSharper disable once AccessToModifiedClosure
+                        RatingBar rating = ratingsDialog.FindViewById<RatingBar>(Resource.Id.dialogRatingBar);
+                        results.UserRating = rating.Rating;
+                        progress.Show();
+                        rated = true;
+                    })
+                    .Create();
+
+                ratingsDialog.Show();
             });
 
-            try
-            {
-                FastZip fastZip = new FastZip();
-                fastZip.CreateZip(zipPath, localTempDirectory, true, null);
+            FastZip fastZip = new FastZip();
+            fastZip.CreateZip(zipPath, localTempDirectory, true, null);
+            Directory.Delete(localTempDirectory, true);
 
-                results.CompletionDate = DateTime.Now;
-                AppData.Session.ResultsToUpload.Add(results);
-                AppData.SaveCurrentData();
-
-                Directory.Delete(localTempDirectory, true);
-                StartActivity(typeof (UploadsActivity));
-                Finish();
-            }
-            catch (Exception ex)
+            while (!rated)
             {
-                Console.WriteLine(ex.Message);
+                await Task.Delay(200);
             }
+
+            results.CompletionDate = DateTime.Now;
+            AppData.Session.ResultsToUpload.Add(results);
+            AppData.SaveCurrentData();
+            StartActivity(typeof (UploadsActivity));
+            Finish();
         }
 
         private void StartRecording()

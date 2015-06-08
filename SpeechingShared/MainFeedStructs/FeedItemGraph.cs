@@ -1,15 +1,14 @@
+using System;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
 
 namespace SpeechingShared
 {
     public class TimeGraphPoint
     {
-        public double YVal;
         public DateTime XVal;
+        public double YVal;
     }
 
     /// <summary>
@@ -19,12 +18,10 @@ namespace SpeechingShared
     {
         public string BottomAxisLabel;
         public int BottomAxisLength;
+        public TimeGraphPoint[] DataPoints;
         public string LeftAxisLabel;
         public int LeftAxisLength;
-        public TimeGraphPoint[] DataPoints;
-
         private PlotModel plotModel;
-        
 
         /// <summary>
         /// Returns an OxyPlot PlotModel from the current data
@@ -32,7 +29,7 @@ namespace SpeechingShared
         /// <returns></returns>
         public PlotModel CreatePlotModel()
         {
-            if(plotModel != null) return plotModel;
+            if (plotModel != null) return plotModel;
 
             PlotModel model = new PlotModel();
 
@@ -47,14 +44,15 @@ namespace SpeechingShared
             {
                 Position = AxisPosition.Left,
                 TickStyle = TickStyle.Inside,
-                Maximum = 5.4,
+                Maximum = 5.4, // Make sure the whole scale is visible at all times
                 Minimum = -0.4,
-                MajorStep = 1,
-                IsPanEnabled = false,
-                IsZoomEnabled = false,
                 MinimumRange = 5,
+                MajorStep = 1,
+                MinorStep = 0.5,
+                IsPanEnabled = false,
+                IsZoomEnabled = false
             });
-            
+
             LineSeries series = new LineSeries
             {
                 MarkerType = MarkerType.Circle,

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -404,7 +405,7 @@ namespace DroidSpeeching
             // Check if the scenario is complete
             if (currIndex >= scenario.ParticipantTasks.Length)
             {
-                FinishScenario();
+                ExportRecordings();
                 return;
             }
 
@@ -567,7 +568,7 @@ namespace DroidSpeeching
         {
             if (currIndex >= scenario.ParticipantTasks.Length)
             {
-                FinishScenario();
+                ExportRecordings();
                 return;
             }
 
@@ -628,23 +629,46 @@ namespace DroidSpeeching
         }
 
         /// <summary>
-        /// Exports the recordings into a zip and marks them as being ready to upload (TODO)
+        /// Exports the recordings into a zip and marks them as being ready to upload
         /// </summary>
-        private void ExportRecordings()
+        private async void ExportRecordings()
         {
             // Compress exported recordings into zip (Delete existing zip first)
-            // TODO set password? https://github.com/icsharpcode/SharpZipLib/wiki/Zip-Samples#anchorCreate  
             File.Delete(resultsZipPath);
+
+            ProgressDialog progressDialog;
+            AppCompatDialog ratingsDialog = null;
+            bool rated = false;
+
+            RunOnUiThread(() =>
+            {
+                progressDialog = new ProgressDialog(this);
+                progressDialog.SetTitle("Scenario Complete!");
+                progressDialog.SetMessage("Getting your recordings ready to upload...");
+
+                ratingsDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
+                    .SetTitle("Scenario Complete!")
+                    .SetMessage("How do you feel you did?")
+                    .SetView(Resource.Layout.RatingDialog)
+                    .SetCancelable(false)
+                    .SetPositiveButton("Done", (par1, par2) =>
+                    {
+                        // ReSharper disable once PossibleNullReferenceException
+                        // ReSharper disable once AccessToModifiedClosure
+                        RatingBar rating = ratingsDialog.FindViewById<RatingBar>(Resource.Id.dialogRatingBar);
+                        results.UserRating = rating.Rating;
+                        progressDialog.Show();
+                        rated = true;
+                    })
+                    .Create();
+
+                ratingsDialog.Show();
+            });
 
             try
             {
                 FastZip fastZip = new FastZip();
                 fastZip.CreateZip(resultsZipPath, localTempDirectory, true, null);
-
-                results.CompletionDate = DateTime.Now;
-
-                AppData.Session.ResultsToUpload.Add(results);
-                AppData.SaveCurrentData();
 
                 // Clean up zipped files
                 string[] toDel = Directory.GetFiles(localTempDirectory);
@@ -655,6 +679,15 @@ namespace DroidSpeeching
                     File.Delete(path);
                 }
 
+                while (!rated)
+                {
+                    await Task.Delay(200);
+                }
+
+                results.CompletionDate = DateTime.Now;
+                AppData.Session.ResultsToUpload.Add(results);
+                AppData.SaveCurrentData();
+
                 StartActivity(typeof (UploadsActivity));
                 Finish();
             }
@@ -662,39 +695,6 @@ namespace DroidSpeeching
             {
                 Console.Write(except.Message);
             }
-        }
-
-        /// <summary>
-        /// Presents the user with the choice of exporting their recordings or restarting the scenario
-        /// </summary>
-        private void FinishScenario()
-        {
-            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
-                .SetTitle("Scenario Complete!")
-                .SetMessage(
-                    "Well done! You've completed this scenario and we're ready to export your recordings. Would you like to export now or retry the scenario?")
-                .SetCancelable(false)
-                .SetNegativeButton("Restart", (EventHandler<DialogClickEventArgs>) null)
-                .SetPositiveButton("Export Results", (s, args) => { ExportRecordings(); })
-                .Create();
-
-            alert.Show();
-
-            // A second alert dialogue, confirming the decision to restart
-            Button negative = alert.GetButton((int) DialogButtonType.Negative);
-            negative.Click += delegate
-            {
-                Android.Support.V7.App.AlertDialog.Builder confirm = new Android.Support.V7.App.AlertDialog.Builder(this);
-                confirm.SetTitle("Are you sure?");
-                confirm.SetMessage("Restarting will wipe your current progress. Restart the scenario?");
-                confirm.SetPositiveButton("Restart", (senderAlert, confArgs) =>
-                {
-                    RestartScenario();
-                    alert.Dismiss();
-                });
-                confirm.SetNegativeButton("Cancel", (senderAlert, confArgs) => { });
-                confirm.Show();
-            };
         }
 
         /// <summary>
