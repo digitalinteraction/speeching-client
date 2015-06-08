@@ -30,6 +30,10 @@ namespace SpeechingShared
             {
                 return new FeedItemGraph();
             }
+            if (FieldExists("Percentage", jObject))
+            {
+                return new FeedItemPercentage();
+            }
             return new FeedItemBase();
         }
 

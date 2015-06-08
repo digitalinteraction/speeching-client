@@ -36,9 +36,25 @@ namespace SpeechingShared
 
             PlotModel model = new PlotModel();
 
-            model.Axes.Add(new DateTimeAxis { IntervalType = DateTimeIntervalType.Days, StringFormat = "dd MMM"});
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Key = LeftAxisLabel });
-
+            model.Axes.Add(new DateTimeAxis
+            {
+                IntervalType = DateTimeIntervalType.Days,
+                StringFormat = "dd MMM",
+                IsPanEnabled = false,
+                IsZoomEnabled = false
+            });
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                TickStyle = TickStyle.Inside,
+                Maximum = 5.4,
+                Minimum = -0.4,
+                MajorStep = 1,
+                IsPanEnabled = false,
+                IsZoomEnabled = false,
+                MinimumRange = 5,
+            });
+            
             LineSeries series = new LineSeries
             {
                 MarkerType = MarkerType.Circle,
