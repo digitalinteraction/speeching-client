@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -17,10 +18,13 @@ namespace SpeechingShared
     /// </summary>
     public static class ServerData
     {
-        public enum ActivityType
+        public enum TaskType
         {
-            Scenario,
-            Guide
+            None,
+            Loudness, 
+            Pacing, 
+            QuickFire, 
+            ImageDesc
         };
 
         public static string StorageServer = @"https://openlab.ncl.ac.uk/owncloud/remote.php/webdav/";
@@ -34,7 +38,7 @@ namespace SpeechingShared
         /// <param name="route">The route on the server to query</param>
         /// <param name="jsonData">Serialized data to send to the server in the request</param>
         /// <returns>The response's JSON in type T</returns>
-        public static async Task<T> PostRequest<T>(string route, string jsonData = null)
+        public static async Task<T> PostRequest<T>(string route, string jsonData = null, bool login = true)
         {
             if (!AppData.CheckNetwork()) return default(T);
 
@@ -45,19 +49,25 @@ namespace SpeechingShared
 
                 HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, ServiceUrl + route);
 
-                if (AppData.Session != null && AppData.Session.CurrentUser != null)
+                if (AppData.Session != null && AppData.Session.CurrentUser != null && login)
                 {
                     requestMessage.Headers.Add("Email", AppData.Session.CurrentUser.Email);
-                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key.ToString());
+                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key);
                 }
 
-                HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-                requestMessage.Content = content;
+                if (jsonData != null)
+                {
+                    HttpContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+                    requestMessage.Content = content;
+                }
 
                 HttpResponseMessage response = await client.SendAsync(requestMessage);
                 if (response.IsSuccessStatusCode)
                 {
                     string toReturn = await response.Content.ReadAsStringAsync();
+
+                    if (typeof (T) == typeof(bool)) return (T)(object)true;
+
                     return JsonConvert.DeserializeObject<T>(toReturn);
                 }
                 AppData.Io.PrintToConsole(await response.Content.ReadAsStringAsync());
@@ -582,7 +592,7 @@ namespace SpeechingShared
             }
 
             string serializedAccount = JsonConvert.SerializeObject(user);
-            return await PostRequest<User>("Account", serializedAccount);
+            return await PostRequest<User>("Account", serializedAccount, false);
         }
 
         /// <summary>
@@ -613,31 +623,6 @@ namespace SpeechingShared
                 }
             }
             return null;
-        }
-
-        /// <summary>
-        /// Polls the server for the users of the given IDs
-        /// </summary>
-        /// <param name="userIds"></param>
-        /// <returns></returns>
-        public static async Task<User[]> FetchUsers(List<string> userIds)
-        {
-            if (!AppData.CheckNetwork()) return null;
-
-            await Task.Delay(1000);
-
-            List<User> users = new List<User>();
-
-            //TEMP - will be polling the server (although checking the cache would be useful...)
-            foreach (User user in AppData.Session.UserCache)
-            {
-                if (!userIds.Contains(user.Id)) continue;
-
-                users.Add(user);
-                if (users.Count >= userIds.Count) break; //Found all of them! :)
-            }
-
-            return users.ToArray();
         }
 
         /// <summary>
@@ -842,6 +827,24 @@ namespace SpeechingShared
             if (items != null) AppData.Session.CurrentFeed = items;
 
             return items;
+        }
+
+        public static async Task<bool> DismissFeedItem(int id)
+        {
+            try
+            {
+                return await PostRequest<bool>("Feed/Dismiss/" + id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
+        }
+
+        public static async Task<ActivityHelp> FetchHelp(TaskType type)
+        {
+            return await GetRequest<ActivityHelp>("Help", type.ToString());
         }
     }
 

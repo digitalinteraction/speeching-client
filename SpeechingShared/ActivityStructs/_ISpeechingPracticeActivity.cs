@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
 namespace SpeechingShared

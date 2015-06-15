@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.V4.View;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -13,10 +13,10 @@ using SpeechingShared;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Assessment practiceActivity", ParentActivity = typeof (MainActivity))]
+    [Activity(Label = "Speeching Assessment", ParentActivity = typeof (MainActivity))]
     public class AssessmentActivity : ActionBarActivity
     {
-        private readonly int minimumMillis = 500; //Mediarecorder has a minimum record time
+        private const int MinimumMillis = 500; //Mediarecorder has a minimum record time
         private Assessment assessment;
         private TextView assessmentType;
         private AndroidUtils.RecordAudioManager audioManager;
@@ -35,6 +35,7 @@ namespace DroidSpeeching
         private IAssessmentTask[] tasks;
         private DateTime timeRecStarted;
         private string zipPath;
+        private Dictionary<ServerData.TaskType, ActivityHelp> helpers; 
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -109,13 +110,13 @@ namespace DroidSpeeching
                 return;
             }
 
-            await assessment.PrepareTasks();
+            helpers = await assessment.PrepareTasks();
 
             FindViewById<TextView>(Resource.Id.assessment_preamble).Text = assessment.Description;
 
             tasks = assessment.AssessmentTasks;
             zipPath = Path.Combine(AppData.Exports.Path, assessment.Id + "_assessmentRes.zip");
-            results = new ScenarioResult(assessment.Id, zipPath, AppData.Session.CurrentUser.Id) { IsAssessment = true };
+            results = new ScenarioResult(assessment.Id, zipPath) { IsAssessment = true };
 
             if (bundle != null)
             {
@@ -200,18 +201,12 @@ namespace DroidSpeeching
 
         private void ShowInfo()
         {
-            string title = (currentStage == AssessmentStage.Running) ? currentFragment.GetTitle() : "Information";
-            string message = (currentStage == AssessmentStage.Running)
-                ? currentFragment.GetInstructions()
-                : "If you need help during the assessment, this will show information about how to complete the current task!";
+            ActivityHelp help = currentFragment.GetHelp();
 
-            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
-                .SetTitle(title)
-                .SetMessage(message)
-                .SetPositiveButton("Got it", (args1, args2) => { })
-                .Create();
+            VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
+            helpVidFragment.Show(SupportFragmentManager, "video_helper");
 
-            RunOnUiThread(() => { alert.Show(); });
+            helpVidFragment.StartVideo();
         }
 
         private void helpButton_Click(object sender, EventArgs e)
@@ -340,11 +335,11 @@ namespace DroidSpeeching
 
             if (thisType == typeof (QuickFireTask))
             {
-                currentFragment = QuickFireFragment.NewInstance(tasks[taskIndex]);
+                currentFragment = QuickFireFragment.NewInstance(tasks[taskIndex], helpers[tasks[taskIndex].TaskType]);
             }
             else if (thisType == typeof (ImageDescTask))
             {
-                currentFragment = ImageDescFragment.NewInstance(tasks[taskIndex]);
+                currentFragment = ImageDescFragment.NewInstance(tasks[taskIndex], helpers[tasks[taskIndex].TaskType]);
             }
             else
             {
@@ -385,7 +380,7 @@ namespace DroidSpeeching
             {
                 TimeSpan recTime = DateTime.Now - timeRecStarted;
 
-                if (recTime.TotalMilliseconds < minimumMillis) return;
+                if (recTime.TotalMilliseconds < MinimumMillis) return;
 
                 // Stop recording and move onto next task/finish
                 StopRecording();

@@ -11,12 +11,13 @@ namespace DroidSpeeching
     public class ImageDescFragment : AssessmentFragment
     {
         private ImageDescTask data;
+        private ActivityHelp help;
         private bool finished = false;
         private ImageView imageView;
         private TextView instructionView;
         private int instructionIndex = 0;
 
-        public static ImageDescFragment NewInstance(IAssessmentTask passed)
+        public static ImageDescFragment NewInstance(IAssessmentTask passed, ActivityHelp helper)
         {
             ImageDescFragment fragment = new ImageDescFragment();
             ImageDescTask task = passed as ImageDescTask;
@@ -24,7 +25,7 @@ namespace DroidSpeeching
             Bundle args = new Bundle();
             args.PutInt("ID", task.Id);
             args.PutString("TITLE", task.Title);
-            args.PutString("INSTRUCTIONS", task.Instructions);
+            args.PutString("HELPER", JsonConvert.SerializeObject(helper));
             args.PutString("PROMPTS", JsonConvert.SerializeObject(task.PromptCol));
             args.PutString("IMAGE", task.Image);
             fragment.Arguments = args;
@@ -40,10 +41,10 @@ namespace DroidSpeeching
             {
                 Id = Arguments.GetInt("ID"),
                 Title = Arguments.GetString("TITLE"),
-                Instructions = Arguments.GetString("INSTRUCTIONS"),
                 PromptCol = JsonConvert.DeserializeObject<AssessmentRecordingPromptCol>(Arguments.GetString("PROMPTS")),
                 Image = Arguments.GetString("IMAGE")
             };
+            help = JsonConvert.DeserializeObject<ActivityHelp>(Arguments.GetString("HELPER"));
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -96,9 +97,9 @@ namespace DroidSpeeching
             return data.Title;
         }
 
-        public override string GetInstructions()
+        public override ActivityHelp GetHelp()
         {
-            return data.Instructions;
+            return help;
         }
 
         public override void NextAction()

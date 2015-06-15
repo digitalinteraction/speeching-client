@@ -198,7 +198,7 @@ namespace DroidSpeeching
             if (scenario.Creator != null) authorName.Text = scenario.Creator.Name;
 
             resultsZipPath = System.IO.Path.Combine(AppData.Exports.Path, scenario.Id + "_final.zip");
-            results = new ScenarioResult(scenario.Id, resultsZipPath, AppData.Session.CurrentUser.Id);
+            results = new ScenarioResult(scenario.Id, resultsZipPath);
 
             if (savedInstanceState != null)
             {
@@ -334,7 +334,10 @@ namespace DroidSpeeching
 
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
-            tts = new TTSManager(this, null);
+            if (tts == null)
+            {
+                tts = new TTSManager(this, null);
+            }
 
             ISharedPreferences userPrefs = PreferenceManager.GetDefaultSharedPreferences(this);
             autoSpeak = userPrefs.GetBoolean("autoTTS", true);
@@ -395,6 +398,11 @@ namespace DroidSpeeching
 
             mainButton.Text = "Record Response";
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
+
+            if (tts == null)
+            {
+                tts = new TTSManager(this, null);
+            }
 
             canSpeak = true;
             if (tts.IsSpeaking())

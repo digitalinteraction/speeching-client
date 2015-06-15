@@ -1,69 +1,65 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.IO;
+using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
+using Android.Media;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 using SpeechingShared;
-using Android.Support.V7.App;
-using Android.Media;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Threading;
-using Android.Views.Animations;
-using Android.Graphics;
-using Android.Speech.Tts;
-using System.IO;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Wikipedia Practice", ParentActivity = typeof(MainActivity))]
-    public class WikiPracticeActivity : ActionBarActivity, Android.Content.IDialogInterfaceOnClickListener
+    [Activity(Label = "Wikipedia Practice", ParentActivity = typeof (MainActivity), ScreenOrientation = ScreenOrientation.Portrait)]
+    public class WikiPracticeActivity : ActionBarActivity, IDialogInterfaceOnClickListener
     {
-        public enum PracticeMode { None, Loudness, Metronome};
+        private const int MetronMaxBpm = 140;
+        private const int MetronMinBpm = 60;
+        private const string SpeechSpeaking = "Stop Speech Preview";
+        private const string SpeechWaiting = "Start Speech Preview";
+        private AndroidUtils.RecordAudioManager audioManager;
+        private ServerData.TaskType currentMode;
+        private LinearLayout loudControlsLayout;
+        private int loudCurrentVol;
+        private Button loudTargetButton;
+        private TextView loudTargetText;
+        private int loudTargetVol = 45;
+        private TextView loudVolText;
+        private short[] metronAudioBuffer;
+        private AudioTrack metronAudioTrack;
+        private TextView metronBpmText;
+        private int metronBuffSize;
+        private LinearLayout metronControlsLayout;
+        private int metronCurrentBpm = 80;
+        private Button metronDownBtn;
+        private Button metronUpBtn;
+        private Dictionary<ServerData.TaskType, LinearLayout> modeLayouts;
+        private BiDictionary<ServerData.TaskType, string> modeNames;
+        private List<string> names;
+        private Action<string> onSpeechComplete;
+        private bool reading;
+        private Button startBtn;
+        private TTSManager tts;
+        private Button ttsBtn;
+        private WikipediaResult wiki;
+        private ImageView wikiImage;
+        private TextView wikiText;
 
-        PracticeMode currentMode;
-        Dictionary<PracticeMode, LinearLayout> modeLayouts;
-        BiDictionary<PracticeMode, string> modeNames;
-        List<string> names;
+        public void OnClick(IDialogInterface dialog, int which)
+        {
+            string choice = names[which];
 
-        WikipediaResult wiki;
-        TextView wikiText;
-        ImageView wikiImage;
-        Button startBtn;
+            ServerData.TaskType mode;
+            modeNames.TryGetBySecond(choice, out mode);
 
-        // Metronome variables
-        LinearLayout metron_controlsLayout;
-        TextView metron_bpmText;
-        Button metron_downBtn;
-        Button metron_upBtn;
-        int metron_currentBPM = 80;
-        int metron_maxBPM = 140;
-        int metron_minBPM = 60;
-        AudioTrack metron_audioTrack;
-        short[] metron_audioBuffer;
-        int metron_buffSize;
-
-        LinearLayout loud_controlsLayout;
-        TextView loud_volText;
-        TextView loud_targetText;
-        Button loud_targetButton;
-        int loud_currentVol;
-        int loud_targetVol = 45;
-
-        Button ttsBtn;
-        TTSManager tts;
-        AndroidUtils.RecordAudioManager audioManager;
-        bool reading = false;
-
-        Action<string> onSpeechComplete;
-        string speechWaiting = "Start Speech Preview";
-        string speechSpeaking = "Stop Speech Preview";
+            SwitchMode(mode);
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -72,8 +68,8 @@ namespace DroidSpeeching
 
             SetContentView(Resource.Layout.WikiPracticeActivity);
 
-            modeLayouts = new Dictionary<PracticeMode, LinearLayout>();
-            modeNames = new BiDictionary<PracticeMode, string>();
+            modeLayouts = new Dictionary<ServerData.TaskType, LinearLayout>();
+            modeNames = new BiDictionary<ServerData.TaskType, string>();
 
             wikiText = FindViewById<TextView>(Resource.Id.wiki_text);
             wikiImage = FindViewById<ImageView>(Resource.Id.wiki_image);
@@ -82,38 +78,36 @@ namespace DroidSpeeching
             ttsBtn = FindViewById<Button>(Resource.Id.ttsBtn);
             ttsBtn.Click += ttsBtn_Click;
 
-            // Metronome layout
-            metron_bpmText = FindViewById<TextView>(Resource.Id.wiki_bpm);
-            metron_downBtn = FindViewById<Button>(Resource.Id.wiki_downBtn);
-            metron_downBtn.Click += downBtn_Click;
-            metron_upBtn = FindViewById<Button>(Resource.Id.wiki_upBtn);
-            metron_upBtn.Click += upBtn_Click;
-            metron_controlsLayout = FindViewById<LinearLayout>(Resource.Id.wiki_speedControls);
-            modeLayouts.Add(PracticeMode.Metronome, metron_controlsLayout);
-            modeNames.Add(PracticeMode.Metronome, "Speech Pacing");
+            // Pacing layout
+            metronBpmText = FindViewById<TextView>(Resource.Id.wiki_bpm);
+            metronDownBtn = FindViewById<Button>(Resource.Id.wiki_downBtn);
+            metronDownBtn.Click += downBtn_Click;
+            metronUpBtn = FindViewById<Button>(Resource.Id.wiki_upBtn);
+            metronUpBtn.Click += upBtn_Click;
+            metronControlsLayout = FindViewById<LinearLayout>(Resource.Id.wiki_speedControls);
+            modeLayouts.Add(ServerData.TaskType.Pacing, metronControlsLayout);
+            modeNames.Add(ServerData.TaskType.Pacing, "Speech Pacing");
 
             // Loudness layout
-            loud_volText = FindViewById<TextView>(Resource.Id.wiki_volume);
-            loud_targetText = FindViewById<TextView>(Resource.Id.wiki_Targetvolume);
-            loud_targetButton = FindViewById<Button>(Resource.Id.wiki_measureVolBtn);
-            loud_targetButton.Click += loud_targetButton_Click;
-            loud_controlsLayout = FindViewById<LinearLayout>(Resource.Id.wiki_volControls);
-            modeLayouts.Add(PracticeMode.Loudness, loud_controlsLayout);
-            modeNames.Add(PracticeMode.Loudness, "Loudness of Speech");
+            loudVolText = FindViewById<TextView>(Resource.Id.wiki_volume);
+            loudTargetText = FindViewById<TextView>(Resource.Id.wiki_Targetvolume);
+            loudTargetButton = FindViewById<Button>(Resource.Id.wiki_measureVolBtn);
+            loudTargetButton.Click += loud_targetButton_Click;
+            loudControlsLayout = FindViewById<LinearLayout>(Resource.Id.wiki_volControls);
+            modeLayouts.Add(ServerData.TaskType.Loudness, loudControlsLayout);
+            modeNames.Add(ServerData.TaskType.Loudness, "Loudness of Speech");
 
             names = new List<string>();
 
-            foreach (KeyValuePair<PracticeMode, string> entry in (Dictionary<PracticeMode, string>)modeNames.firstToSecond)
+            foreach (
+                KeyValuePair<ServerData.TaskType, string> entry in (Dictionary<ServerData.TaskType, string>)modeNames.firstToSecond)
             {
                 names.Add(entry.Value);
             }
 
-            currentMode = PracticeMode.None;
+            currentMode = ServerData.TaskType.Loudness;
 
-            onSpeechComplete = (string id) => 
-            {
-                RunOnUiThread(()=> ttsBtn.Text = speechWaiting);
-            };
+            onSpeechComplete = id => { RunOnUiThread(() => ttsBtn.Text = SpeechWaiting); };
 
             tts = new TTSManager(this, onSpeechComplete);
 
@@ -122,17 +116,17 @@ namespace DroidSpeeching
             LoadWikiInfo();
         }
 
-        void ttsBtn_Click(object sender, EventArgs e)
+        private void ttsBtn_Click(object sender, EventArgs e)
         {
-            if(tts.IsSpeaking())
+            if (tts.IsSpeaking())
             {
                 tts.StopSpeaking();
-                ttsBtn.Text = speechWaiting;
+                ttsBtn.Text = SpeechWaiting;
             }
             else
             {
                 tts.SayLine(wikiText.Text, "SpeechingWiki");
-                ttsBtn.Text = speechSpeaking;
+                ttsBtn.Text = SpeechSpeaking;
             }
         }
 
@@ -141,15 +135,14 @@ namespace DroidSpeeching
             base.OnResume();
 
             tts = new TTSManager(this, onSpeechComplete);
-            ttsBtn.Text = speechWaiting;
+            ttsBtn.Text = SpeechWaiting;
             audioManager = new AndroidUtils.RecordAudioManager(this, OnRecordingFull);
-
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            if(reading)
+            if (reading)
             {
                 reading = false;
                 audioManager.StopRecording();
@@ -157,18 +150,17 @@ namespace DroidSpeeching
                 startBtn.Text = "Start!";
             }
 
-            if(tts != null)
+            if (tts != null)
             {
                 tts.Clean();
                 tts = null;
             }
 
-            if(audioManager != null)
+            if (audioManager != null)
             {
                 audioManager.CleanUp();
                 audioManager = null;
             }
-            
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -177,13 +169,30 @@ namespace DroidSpeeching
             return base.OnCreateOptionsMenu(menu);
         }
 
+        private async void ShowHelpDialog()
+        {
+            ActivityHelp help = await ServerData.FetchHelp(currentMode);
+
+            VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
+            helpVidFragment.Show(SupportFragmentManager, "video_helper");
+
+            helpVidFragment.StartVideo();
+        }
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             if (item.ItemId == Resource.Id.action_practiceMode)
             {
                 ShowChooseModeDialog();
                 return true;
+                
             }
+            if (item.ItemId == Resource.Id.action_info)
+            {
+                ShowHelpDialog();
+                return true;
+            }
+
             return base.OnOptionsItemSelected(item);
         }
 
@@ -204,30 +213,31 @@ namespace DroidSpeeching
                 startBtn.Text = "Start!";
             });
 
-            if(stopRec)
+            if (stopRec)
                 audioManager.StopRecording();
 
-            if(popup)
+            if (popup)
             {
                 Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.TempRecording.Path));
 
                 Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Session complete!")
                     .SetMessage("Would you like to listen to your speech?")
-                    .SetPositiveButton("Listen", (EventHandler<DialogClickEventArgs>)null)
-                    .SetNeutralButton("Share this recording", (EventHandler<DialogClickEventArgs>)null)
+                    .SetPositiveButton("Listen", (EventHandler<DialogClickEventArgs>) null)
+                    .SetNeutralButton("Share this recording", (EventHandler<DialogClickEventArgs>) null)
                     .SetNegativeButton("Close", (arg1, arg2) => { })
                     .Create();
                 alert.Show();
 
-                alert.GetButton((int)DialogButtonType.Positive).Click += (object sender, EventArgs e)=> {
+                alert.GetButton((int) DialogButtonType.Positive).Click += (sender, e) =>
+                {
                     Intent intent = new Intent();
                     intent.SetAction(Intent.ActionView);
                     intent.SetDataAndType(passedUri, "audio/*");
                     StartActivity(intent);
                 };
 
-                alert.GetButton((int)DialogButtonType.Neutral).Click += (object sender, EventArgs e) =>
+                alert.GetButton((int) DialogButtonType.Neutral).Click += (sender, e) =>
                 {
                     Intent intent = new Intent();
                     intent.SetAction(Intent.ActionSend);
@@ -253,7 +263,7 @@ namespace DroidSpeeching
         {
             reading = !reading;
 
-            if(reading)
+            if (reading)
             {
                 StartAction();
             }
@@ -298,7 +308,7 @@ namespace DroidSpeeching
             }
 
 
-            string[] sentences = wiki.content.Split(new string[] { ". " }, StringSplitOptions.RemoveEmptyEntries);
+            string[] sentences = wiki.content.Split(new[] {". "}, StringSplitOptions.RemoveEmptyEntries);
 
             string finalText = "";
             int charTarget = 400;
@@ -320,7 +330,8 @@ namespace DroidSpeeching
             // If it's longer than expected, reduce the text size!
             if (finalText.Length > 520)
             {
-                if((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <= Android.Content.Res.ScreenLayout.SizeNormal)
+                if ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <=
+                    Android.Content.Res.ScreenLayout.SizeNormal)
                 {
                     wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
                 }
@@ -329,9 +340,9 @@ namespace DroidSpeeching
                     wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 20);
                 }
             }
-                
 
-            SwitchMode(PracticeMode.Loudness);
+
+            SwitchMode(ServerData.TaskType.Loudness);
 
             dialog.Hide();
         }
@@ -341,7 +352,7 @@ namespace DroidSpeeching
             if (reading)
             {
                 reading = false;
-                StopAction(true);
+                StopAction();
             }
 
             Android.Support.V7.App.AlertDialog choice = new Android.Support.V7.App.AlertDialog.Builder(this)
@@ -351,70 +362,61 @@ namespace DroidSpeeching
             choice.Show();
         }
 
-        public void OnClick(IDialogInterface dialog, int which)
-        {
-            string choice = names[which];
-
-            PracticeMode mode;
-            modeNames.TryGetBySecond(choice, out mode);
-
-            SwitchMode(mode);
-        }
-
         /// <summary>
         /// Switch the functionality of the practiceActivity
         /// </summary>
-        private void SwitchMode(PracticeMode newMode)
+        private void SwitchMode(ServerData.TaskType newMode)
         {
             if (newMode == currentMode) return;
 
             // Hide the current mode if needed
-            if(currentMode != PracticeMode.None)
+            if (currentMode != ServerData.TaskType.None)
             {
                 RunOnUiThread(() => { modeLayouts[currentMode].Visibility = ViewStates.Gone; });
             }
-          
+
             currentMode = newMode;
-            string modeName = "";
+            string modeName;
 
             modeNames.TryGetByFirst(newMode, out modeName);
 
-            this.Title = modeName;
+            Title = modeName;
 
-            switch(newMode)
+            switch (newMode)
             {
-                case PracticeMode.Metronome :
-                    ChangeBPM(0);
-                    metron_buffSize = AudioTrack.GetMinBufferSize(44100, ChannelOut.Mono, Android.Media.Encoding.Pcm16bit);
-                    metron_audioBuffer = new short[metron_buffSize];
+                case ServerData.TaskType.Pacing:
+                    ChangeBpm(0);
+                    metronBuffSize = AudioTrack.GetMinBufferSize(44100, ChannelOut.Mono, Encoding.Pcm16bit);
+                    metronAudioBuffer = new short[metronBuffSize];
                     break;
-                case PracticeMode.Loudness :
+                case ServerData.TaskType.Loudness:
                     break;
             }
         }
 
         private void StartModeFunc()
         {
-            switch(currentMode)
+            switch (currentMode)
             {
-                case PracticeMode.Metronome :
+                case ServerData.TaskType.Pacing:
                     ThreadPool.QueueUserWorkItem(o => PlayMetronome());
                     break;
-                case PracticeMode.Loudness :
-                    loud_targetText.Text = loud_targetVol.ToString();
+                case ServerData.TaskType.Loudness:
+                    loudTargetText.Text = loudTargetVol.ToString();
                     ThreadPool.QueueUserWorkItem(o => MeasureVolume());
                     break;
             }
         }
 
         #region Loudness specific code
+
         private void MeasureVolume()
         {
-            double[] vals = new double[15]; 
+            double[] vals = new double[15];
 
-            while(reading)
+            while (reading)
             {
-                for (int i = 0; i < vals.Length; i++ )
+                for (int i = 0; i < vals.Length; i++)
                 {
                     Thread.Sleep(75);
                     if (audioManager == null) return;
@@ -422,23 +424,24 @@ namespace DroidSpeeching
                 }
 
                 double total = 0;
-                foreach(double vol in vals)
+                foreach (double vol in vals)
                 {
                     total += vol;
                 }
 
-                loud_currentVol = (int)(total / vals.Length);
+                loudCurrentVol = (int) (total/vals.Length);
 
-                RunOnUiThread(() => { 
-                    loud_volText.Text = loud_currentVol.ToString(); 
+                RunOnUiThread(() =>
+                {
+                    loudVolText.Text = loudCurrentVol.ToString();
 
-                    if(loud_currentVol >= loud_targetVol)
+                    if (loudCurrentVol >= loudTargetVol)
                     {
-                        loud_volText.SetTextColor(Color.Green);
+                        loudVolText.SetTextColor(Color.Green);
                     }
                     else
                     {
-                        loud_volText.SetTextColor(Color.Red);
+                        loudVolText.SetTextColor(Color.Red);
                     }
                 });
             }
@@ -448,14 +451,11 @@ namespace DroidSpeeching
         {
             Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                 .SetTitle("Set new target volume?")
-                .SetMessage("Press start and then talk as loud as you can until the timer finishes to set a new target volume!")
+                .SetMessage(
+                    "Press start and then talk as loud as you can until the timer finishes to set a new target volume!")
                 .SetNegativeButton("Cancel", (arg1, arg2) => { })
-                .SetPositiveButton("Start!", (arg1, arg2) =>
-                {
-
-                    ThreadPool.QueueUserWorkItem(o => StartVolumeCountdown());
-
-                })
+                .SetPositiveButton("Start!",
+                    (arg1, arg2) => { ThreadPool.QueueUserWorkItem(o => StartVolumeCountdown()); })
                 .Create();
             alert.Show();
         }
@@ -465,8 +465,8 @@ namespace DroidSpeeching
             reading = false;
             StopAction(true);
 
-            string message = " seconds remaining...\nTalk as loudly as possible!";
-            int startNum = 10;
+            const string message = " seconds remaining...\nTalk as loudly as possible!";
+            const int startNum = 10;
             int remaining = startNum;
 
             ProgressDialog countDialog = null;
@@ -474,7 +474,7 @@ namespace DroidSpeeching
             RunOnUiThread(() =>
             {
                 countDialog = new ProgressDialog(this);
-                countDialog.SetMessage(remaining.ToString() + message);
+                countDialog.SetMessage(remaining + message);
                 countDialog.SetProgressStyle(ProgressDialogStyle.Horizontal);
                 countDialog.SetCancelable(false);
                 countDialog.Indeterminate = false;
@@ -484,11 +484,11 @@ namespace DroidSpeeching
             });
 
             audioManager.StartRecording(AppData.TempRecording.Path, 300);
-            double[] vols = new double[startNum * 5];
+            double[] vols = new double[startNum*5];
 
-            while(remaining > 0)
+            while (remaining > 0)
             {
-                if(countDialog == null)
+                if (countDialog == null)
                 {
                     // Wait until the GUI thread has created the dialog window
                     Thread.Sleep(10);
@@ -497,13 +497,13 @@ namespace DroidSpeeching
 
                 RunOnUiThread(() =>
                 {
-                    countDialog.SetMessage(remaining.ToString() + message);
+                    countDialog.SetMessage(remaining + message);
                     countDialog.IncrementProgressBy(1);
                 });
 
-                int countStart = (startNum - remaining) * vols.Length/startNum;
+                int countStart = (startNum - remaining)*vols.Length/startNum;
 
-                for (int i = countStart; i < countStart + vols.Length / startNum; i++)
+                for (int i = countStart; i < countStart + vols.Length/startNum; i++)
                 {
                     Thread.Sleep(200);
                     vols[i] = audioManager.GetAmplitude();
@@ -516,90 +516,93 @@ namespace DroidSpeeching
 
             double total = 0;
 
-            foreach(double vol in vols)
+            foreach (double vol in vols)
             {
                 total += vol;
             }
 
-            loud_targetVol = (int)(total / vols.Length);
+            loudTargetVol = (int) (total/vols.Length);
 
-            RunOnUiThread(() =>{ countDialog.Hide(); });
+            RunOnUiThread(() => { countDialog.Hide(); });
         }
+
         #endregion
 
-        #region Metronome specific code
-        void upBtn_Click(object sender, EventArgs e)
+        #region Pacing specific code
+
+        private void upBtn_Click(object sender, EventArgs e)
         {
-            ChangeBPM(10);
+            ChangeBpm(10);
         }
 
-        void downBtn_Click(object sender, EventArgs e)
+        private void downBtn_Click(object sender, EventArgs e)
         {
-            ChangeBPM(-10);
+            ChangeBpm(-10);
         }
 
-        private void ChangeBPM(int amount)
+        private void ChangeBpm(int amount)
         {
-            metron_currentBPM += amount;
+            metronCurrentBpm += amount;
 
-            metron_currentBPM = Math.Min(metron_maxBPM, metron_currentBPM);
-            metron_currentBPM = Math.Max(metron_minBPM, metron_currentBPM);
+            metronCurrentBpm = Math.Min(MetronMaxBpm, metronCurrentBpm);
+            metronCurrentBpm = Math.Max(MetronMinBpm, metronCurrentBpm);
 
-            metron_bpmText.Text = metron_currentBPM.ToString() + " BPM";
+            metronBpmText.Text = metronCurrentBpm + " BPM";
         }
 
         private void PlayMetronome()
         {
-            int amp = 10000;
-            double twopi = 8 * Math.Atan(1.0);
-            double fr = 440.0;
+            const int amp = 10000;
+            double twopi = 8*Math.Atan(1.0);
+            const double fr = 440.0;
             double ph = 0.0;
 
-            int lastBPM = metron_currentBPM;
+            int lastBpm = metronCurrentBpm;
 
             Animation anim = new AlphaAnimation(0.5f, 1.0f);
-            anim.Duration = (60000 / metron_currentBPM) / 2;
+            anim.Duration = (60000/metronCurrentBpm)/2;
             anim.StartOffset = 0;
             anim.RepeatMode = RepeatMode.Reverse;
             anim.RepeatCount = Animation.Infinite;
-            RunOnUiThread(() => { metron_bpmText.StartAnimation(anim); });
+            RunOnUiThread(() => { metronBpmText.StartAnimation(anim); });
 
-            metron_audioTrack = new AudioTrack(Android.Media.Stream.Music, 44100, ChannelOut.Mono, Android.Media.Encoding.Pcm16bit, metron_buffSize, AudioTrackMode.Stream);
+            metronAudioTrack = new AudioTrack(Android.Media.Stream.Music, 44100, ChannelOut.Mono,
+                Encoding.Pcm16bit, metronBuffSize, AudioTrackMode.Stream);
 
-            metron_audioTrack.Play();
+            metronAudioTrack.Play();
 
             while (reading)
             {
-                Thread.Sleep(60000 / metron_currentBPM);
+                Thread.Sleep(60000/metronCurrentBpm);
 
-                if (lastBPM != metron_currentBPM)
+                if (lastBpm != metronCurrentBpm)
                 {
                     // The BPM has changed - change the animation speed!
-                    lastBPM = metron_currentBPM;
-                    anim.Duration = (60000 / metron_currentBPM) / 2;
+                    lastBpm = metronCurrentBpm;
+                    anim.Duration = (60000/metronCurrentBpm)/2;
 
                     RunOnUiThread(() =>
                     {
-                        metron_bpmText.ClearAnimation();
-                        metron_bpmText.StartAnimation(anim);
+                        metronBpmText.ClearAnimation();
+                        metronBpmText.StartAnimation(anim);
                     });
                 }
 
-                for (int i = 0; i < metron_audioBuffer.Length; i++)
+                for (int i = 0; i < metronAudioBuffer.Length; i++)
                 {
-                    metron_audioBuffer[i] = (short)(amp * Math.Sin(ph));
-                    ph += twopi * fr / 44100;
+                    metronAudioBuffer[i] = (short) (amp*Math.Sin(ph));
+                    ph += twopi*fr/44100;
                 }
 
-                metron_audioTrack.Write(metron_audioBuffer, 0, metron_audioBuffer.Length);
+                metronAudioTrack.Write(metronAudioBuffer, 0, metronAudioBuffer.Length);
             }
 
-            metron_audioTrack.Stop();
-            metron_audioTrack.Release();
+            metronAudioTrack.Stop();
+            metronAudioTrack.Release();
 
-            RunOnUiThread(() => { metron_bpmText.ClearAnimation(); });
+            RunOnUiThread(() => { metronBpmText.ClearAnimation(); });
         }
-        #endregion
 
+        #endregion
     }
 }

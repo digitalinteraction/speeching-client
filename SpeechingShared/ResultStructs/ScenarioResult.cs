@@ -12,7 +12,6 @@ namespace SpeechingShared
         public string ResourceUrl { get; set; }
         public int ParticipantActivityId { get; set; }
         public Utils.UploadStage UploadState { get; set; }
-        public string UserId { get; set; }
         public DateTime CompletionDate { get; set; }
         public List<ParticipantResultData> Data { get; set; }
 
@@ -20,14 +19,13 @@ namespace SpeechingShared
 
         public double UserRating { get; set; } // out of 5
 
-        public ScenarioResult(int activityId, string dataLoc, string userId)
+        public ScenarioResult(int activityId, string dataLoc)
         {
             Id = AppData.Rand.Next(0, 100000); // TEMP
             ParticipantActivityId = activityId;
             ResourceUrl = dataLoc;
             UploadState = Utils.UploadStage.Ready;
             Data = new List<ParticipantResultData>();
-            UserId = userId;
         }
     }
 

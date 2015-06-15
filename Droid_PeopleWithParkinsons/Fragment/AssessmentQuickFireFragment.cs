@@ -9,11 +9,12 @@ namespace DroidSpeeching
     public class QuickFireFragment : AssessmentFragment
     {
         public QuickFireTask Data;
+        private ActivityHelp help;
         public int Index = 0;
         private TextView quickFireText;
         private bool finished = false;
 
-        public static QuickFireFragment NewInstance(IAssessmentTask passed)
+        public static QuickFireFragment NewInstance(IAssessmentTask passed, ActivityHelp helper)
         {
             QuickFireFragment fragment = new QuickFireFragment();
             QuickFireTask task = passed as QuickFireTask;
@@ -21,7 +22,7 @@ namespace DroidSpeeching
             Bundle args = new Bundle();
             args.PutInt("ID", task.Id);
             args.PutString("TITLE", task.Title);
-            args.PutString("INSTRUCTIONS", task.Instructions);
+            args.PutString("HELPER", JsonConvert.SerializeObject(helper));
             args.PutString("PROMPTS", JsonConvert.SerializeObject(task.PromptCol));
             fragment.Arguments = args;
 
@@ -36,9 +37,9 @@ namespace DroidSpeeching
             {
                 Id = Arguments.GetInt("ID"),
                 Title = Arguments.GetString("TITLE"),
-                Instructions = Arguments.GetString("INSTRUCTIONS"),
                 PromptCol = JsonConvert.DeserializeObject<AssessmentRecordingPromptCol>(Arguments.GetString("PROMPTS"))
             };
+            help = JsonConvert.DeserializeObject<ActivityHelp>(Arguments.GetString("HELPER"));
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -79,11 +80,6 @@ namespace DroidSpeeching
             return finished;
         }
 
-        public override string GetInstructions()
-        {
-            return Data.Instructions;
-        }
-
         public override string GetTitle()
         {
             return Data.Title;
@@ -113,6 +109,11 @@ namespace DroidSpeeching
         public override IAssessmentTask GetTask()
         {
             return Data;
+        }
+
+        public override ActivityHelp GetHelp()
+        {
+            return help;
         }
     }
 }

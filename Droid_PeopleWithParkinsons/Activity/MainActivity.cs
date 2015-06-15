@@ -1,31 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Android.App;
 using Android.Content;
-using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V4.App;
+using Android.Support.V4.View;
+using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V4.Widget;
-using Android.Support.V7.App;
-using Android.Support.V4.View;
-using Android.Support.V4.App;
+using com.refractored;
 using SpeechingShared;
 
 namespace DroidSpeeching
 {
-    [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode=Android.Content.PM.LaunchMode.SingleTop)]
+    [Activity(Label = "Speeching", Icon = "@drawable/Icon", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class MainActivity : ActionBarActivity
     {
-        private ViewPager pager;
-        private PagerSlidingTabStrip.PagerSlidingTabStrip _tabs;
-        private MyPagerAdapter _adapter;
+        private MyPagerAdapter adapter;
+        private PagerSlidingTabStrip tabs;
         private RelativeLayout offlineNotice;
+        private ViewPager pager;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -36,36 +31,34 @@ namespace DroidSpeeching
             // Register for tabs
             SetContentView(Resource.Layout.Main);
 
-            string packageName = ApplicationContext.PackageName;
-
-            _tabs = FindViewById<PagerSlidingTabStrip.PagerSlidingTabStrip>(Resource.Id.tabs);
+            tabs = FindViewById<PagerSlidingTabStrip>(Resource.Id.tabs);
             pager = FindViewById<ViewPager>(Resource.Id.viewPager);
             offlineNotice = FindViewById<RelativeLayout>(Resource.Id.offlineWarning);
 
-            int pageMargin = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Resources.DisplayMetrics);
+            int pageMargin = (int) TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Resources.DisplayMetrics);
             pager.PageMargin = pageMargin;
             InitAdapter();
 
             AndroidUtils.mainActivity = this;
             AndroidUtils.IsConnected();
 
-            this.SupportActionBar.Show();
+            SupportActionBar.Show();
         }
 
         public void ShowOfflineWarning(bool show)
         {
             if (offlineNotice == null) return;
 
-            offlineNotice.Visibility = (show)? ViewStates.Visible : ViewStates.Gone;
+            offlineNotice.Visibility = (show) ? ViewStates.Visible : ViewStates.Gone;
         }
 
         private void InitAdapter()
         {
             pager.Adapter = null;
-            var oldAdapter = _adapter;
-            _adapter = new MyPagerAdapter(SupportFragmentManager);
-            pager.Adapter = _adapter;
-            _tabs.SetViewPager(pager);
+            var oldAdapter = adapter;
+            adapter = new MyPagerAdapter(SupportFragmentManager);
+            pager.Adapter = adapter;
+            tabs.SetViewPager(pager);
 
             if (oldAdapter != null)
             {
@@ -81,30 +74,30 @@ namespace DroidSpeeching
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if(item.ItemId == Resource.Id.action_uploads)
+            if (item.ItemId == Resource.Id.action_uploads)
             {
-                StartActivity(typeof(UploadsActivity));
+                StartActivity(typeof (UploadsActivity));
                 return true;
             }
-            if(item.ItemId == Resource.Id.action_settings)
+            if (item.ItemId == Resource.Id.action_settings)
             {
-                StartActivity(typeof(SettingsActivity));
+                StartActivity(typeof (SettingsActivity));
                 return true;
             }
-            if(item.ItemId == Resource.Id.action_logOut)
+            if (item.ItemId == Resource.Id.action_logOut)
             {
                 Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Sign out?")
                     .SetMessage("This will erase your current session data!")
-                    .SetPositiveButton("Confirm", (arg1, arg2) => {
-
+                    .SetPositiveButton("Confirm", (arg1, arg2) =>
+                    {
                         AppData.Session = null;
                         AppData.SaveCurrentData();
 
-                        Intent intent = new Intent(this, typeof(LoginActivity));
+                        Intent intent = new Intent(this, typeof (LoginActivity));
                         intent.PutExtra("signOut", true);
                         StartActivity(intent);
-                        
+
                         Finish();
                     })
                     .SetNegativeButton("Cancel", (arg1, arg2) => { })
@@ -119,29 +112,29 @@ namespace DroidSpeeching
         // Save the selected tab
         protected override void OnSaveInstanceState(Bundle outState)
         {
-            outState.PutInt("selected_tab", this.SupportActionBar.SelectedNavigationIndex);
+            outState.PutInt("selected_tab", SupportActionBar.SelectedNavigationIndex);
             base.OnSaveInstanceState(outState);
         }
 
-
         public class MyPagerAdapter : FragmentPagerAdapter
         {
-            private Android.Support.V4.App.FragmentManager SupportFragmentManager;
+            protected internal static readonly string[] Titles = {"Home", "Practice"};
+            protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
+            private readonly string[] titles;
+            private int count;
 
-            public MyPagerAdapter(Android.Support.V4.App.FragmentManager SupportFragmentManager)
-                : base(SupportFragmentManager)
+            public MyPagerAdapter(Android.Support.V4.App.FragmentManager supportFragmentManager)
+                : base(supportFragmentManager)
             {
-                this.SupportFragmentManager = SupportFragmentManager;
-                _count =  Titles.Length;
-                _titles = new string[Titles.Length];
-                Array.Copy(Titles, _titles, Titles.Length);
+                count = Titles.Length;
+                titles = new string[Titles.Length];
+                Array.Copy(Titles, titles, Titles.Length);
             }
 
-            protected internal static readonly string[] Titles = { "Home", "Practice", "Progress" };
-
-            protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
-
-            protected internal readonly string[] _titles;
+            public override int Count
+            {
+                get { return count; }
+            }
 
             public override Android.Support.V4.App.Fragment GetItem(int position)
             {
@@ -151,53 +144,37 @@ namespace DroidSpeeching
                         return new FeedFragment();
                     case 1:
                         return new TaskListFragment();
-                    case 2:
-                        return new ResultsFragment();
                     default:
                         return null;
                 }
             }
 
-            void toReturn_ChangeTitleRequested(object sender, int e)
-            {
-                ChangeTitle(e);
-            }
-
-            private int _count;
-            public override int Count
-            {
-                get { return _count; }
-            }
-
             public override Java.Lang.ICharSequence GetPageTitleFormatted(int position)
             {
-                return new Java.Lang.String(_titles[position]);
+                return new Java.Lang.String(titles[position]);
             }
 
-            public void SetCount(int count)
+            public void SetCount(int newCount)
             {
-                if (count < 0 || count > Titles.Length)
+                if (newCount < 0 || newCount > Titles.Length)
                     return;
 
-                _count = count;
+                count = newCount;
                 NotifyDataSetChanged();
             }
 
             public virtual void ChangeTitle(int position)
             {
-                if (_titles[position] == Titles[position])
+                if (titles[position] == Titles[position])
                 {
-                    _titles[position] = Titles2[position];
+                    titles[position] = Titles2[position];
                 }
                 else
                 {
-                    _titles[position] = Titles[position];
+                    titles[position] = Titles[position];
                 }
-                //this one has to do it this way because 
                 NotifyDataSetChanged();
             }
-
         }
     }
 }
-

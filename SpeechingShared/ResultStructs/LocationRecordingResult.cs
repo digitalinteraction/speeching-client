@@ -15,7 +15,6 @@ namespace SpeechingShared
         public int Id { get; set; }
         public string ResourceUrl { get; set; }
         public int ParticipantActivityId { get; set; }
-        public string UserId { get; set; }
         public Utils.UploadStage UploadState { get; set; }
         public DateTime CompletionDate { get; set; }
 

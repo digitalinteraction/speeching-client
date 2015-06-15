@@ -63,7 +63,7 @@ namespace DroidSpeeching
             User thisUser = new User
             {
                 Name = currentPerson.DisplayName,
-                Id = currentPerson.Id,
+                Key = currentPerson.Id,
                 Email = PlusClass.AccountApi.GetAccountName(apiClient)
             };
 
@@ -92,18 +92,26 @@ namespace DroidSpeeching
                 dialog.Show();
             });
 
-            User serverUser = await ServerData.PostUserAccount(thisUser);
-
-            dialog.Hide();
-
-            if (serverUser == null)
+            try
             {
-                ThrowError("Failed to set up your account with the service. Please try again later.");
-                return;
+                User serverUser = await ServerData.PostUserAccount(thisUser);
+                dialog.Hide();
+
+                if (serverUser == null)
+                {
+                    ThrowError("Failed to set up your account with the service. Please try again later.");
+                    return;
+                }
+
+                AppData.AssignCurrentUser(serverUser);
+                ReadyMainMenu();
+            }
+            catch (Exception e)
+            {
+                
+                throw;
             }
 
-            AppData.AssignCurrentUser(serverUser);
-            ReadyMainMenu();
         }
 
         public void OnConnectionSuspended(int cause)

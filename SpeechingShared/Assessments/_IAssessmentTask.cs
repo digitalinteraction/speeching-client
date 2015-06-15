@@ -5,7 +5,7 @@ namespace SpeechingShared
     {
         int Id { get; set; }
         string Title { get; set; }
-        string Instructions { get; set; }
+        ServerData.TaskType TaskType { get; set; }
         AssessmentRecordingPromptCol PromptCol { get; set; }
     }
 }

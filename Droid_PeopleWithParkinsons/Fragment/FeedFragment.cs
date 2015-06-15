@@ -10,7 +10,7 @@ using SpeechingShared;
 
 namespace DroidSpeeching
 {
-    public class FeedFragment : Android.Support.V4.App.Fragment, ISwipeListener, IActionClickListener
+    public class FeedFragment : Android.Support.V4.App.Fragment, ISwipeListener, IActionClickListener, IEventListener
     {
         private FeedCardAdapter adapter;
         private IFeedItem[] backup;
@@ -18,6 +18,8 @@ namespace DroidSpeeching
         private RecyclerView feedList;
         private List<IFeedItem> items;
         private CustomSwipeToRefresh refresher;
+
+        private bool saved;
 
         public void OnActionClicked(Snackbar snackbar)
         {
@@ -29,6 +31,7 @@ namespace DroidSpeeching
 
             adapter.NotifyDataSetChanged();
             adapter.NotifyItemRangeChanged(0, items.Count);
+            saved = true;
         }
 
         public bool CanSwipe(int position)
@@ -38,6 +41,7 @@ namespace DroidSpeeching
 
         public void OnDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions)
         {
+            saved = false;
             backup = items.ToArray();
             changed = reverseSortedPositions;
             foreach (int position in reverseSortedPositions)
@@ -54,7 +58,8 @@ namespace DroidSpeeching
                     .Color(Color.DarkRed)
                     .ActionColor(Color.White)
                     .TextColor(Color.White)
-                    .ActionListener(this));
+                    .ActionListener(this)
+                    .EventListener(this));
         }
 
         public void OnDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions)
@@ -158,6 +163,31 @@ namespace DroidSpeeching
             feedList.AddOnItemTouchListener(swipeTouchListener);
 
             Activity.RunOnUiThread(() => { refresher.Post(() => { refresher.Refreshing = false; }); });
+        }
+
+        public void OnShow(Snackbar snackbar)
+        {
+        }
+
+        public void OnShown(Snackbar snackbar)
+        {
+        }
+
+        public void OnDismiss(Snackbar snackbar)
+        {
+        }
+
+        public void OnDismissed(Snackbar snackbar)
+        {
+            if (!saved) DismissFeedItems();
+        }
+
+        public async void DismissFeedItems()
+        {
+            foreach (int position in changed)
+            {
+                await ServerData.DismissFeedItem(backup[position].Id);
+            }
         }
     }
 }

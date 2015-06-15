@@ -4,14 +4,15 @@
     android:id="@+id/mainMenuContent"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <pagerslidingtabstrip.PagerSlidingTabStrip
+    <com.refractored.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="48dip"
-        app:shouldExpand="true"
-        app:indicatorColor="@color/appHighlight"
+        app:pstsShouldExpand="true"
+        app:pstsTextColorSelected="@color/white"
+        app:pstsIndicatorColor="@color/appHighlight"
         android:background="@color/appDark"
-        android:textColor="@color/white" />
+        android:textColor="@color/lighterHighlight" />
     <RelativeLayout
         android:id="@+id/offlineWarning"
         android:layout_width="fill_parent"

@@ -162,7 +162,7 @@ namespace SpeechingShared
         {
             if (Session == null) Session = new SessionData();
             Session.CurrentUser = thisUser;
-            ServerData.StorageRemoteDir = "uploads/" + thisUser.Id + "/";
+            ServerData.StorageRemoteDir = "uploads/" + thisUser.Key + "/";
 
             SaveCurrentData();
         }

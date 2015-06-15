@@ -10,12 +10,11 @@ namespace SpeechingShared
         public enum UserType { Patient, Therapist, Rater };
         public enum FriendStatus { Accepted, Denied, Sent, Received };
 
-        public string Id;
         public string Nickname;
         public string Name;
         public string Avatar;
         public string Email;
-        public int Key;
+        public string Key;
         public UserType userType;
         public FriendStatus Status;
         public List<string> Friends;

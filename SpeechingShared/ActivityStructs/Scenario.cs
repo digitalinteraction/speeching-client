@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using System.Threading.Tasks;
 
 namespace SpeechingShared
@@ -10,7 +5,6 @@ namespace SpeechingShared
     public class Scenario : ISpeechingPracticeActivity
     {
         public SpeechingTask[] ParticipantTasks;
-
         public int Id { get; set; }
         public User Creator { get; set; }
         public string Title { get; set; }
@@ -44,19 +38,32 @@ namespace SpeechingShared
 
     public class TaskContent
     {
-        public enum ContentType { Audio, Video, Text };
-        public ContentType Type;
-        public string Visual;
+        public enum ContentType
+        {
+            Audio,
+            Video,
+            Text
+        };
+
         public string Audio;
         public string Text;
+        public ContentType Type;
+        public string Visual;
     }
 
     public class TaskResponse
     {
-        public enum ResponseType { None, Prompted, Freeform, Choice };
-        public ResponseType Type;
+        public enum ResponseType
+        {
+            None,
+            Prompted,
+            Freeform,
+            Choice
+        };
+
         public string Prompt;
         public string[] Related;
+        public ResponseType Type;
     }
 
     public class SpeechingTask
@@ -65,5 +72,4 @@ namespace SpeechingShared
         public TaskContent ParticipantTaskContent;
         public TaskResponse ParticipantTaskResponse;
     }
-
 }

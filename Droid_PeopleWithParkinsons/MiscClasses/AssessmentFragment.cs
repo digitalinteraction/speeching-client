@@ -24,7 +24,7 @@ namespace DroidSpeeching
         public abstract int GetCurrentStage();
         public abstract void GoToStage(int stage);
         public abstract string GetTitle();
-        public abstract string GetInstructions();
+        public abstract ActivityHelp GetHelp();
         public abstract IAssessmentTask GetTask();
     }
 }

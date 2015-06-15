@@ -56,36 +56,50 @@ namespace DroidSpeeching
 			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
 			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
 			global::OxyPlot.Xamarin.Forms.Platform.Android.Resource.String.library_name = global::DroidSpeeching.Resource.String.library_name;
-			global::PagerSlidingTabStrip.Resource.Attribute.dividerColor = global::DroidSpeeching.Resource.Attribute.dividerColor;
-			global::PagerSlidingTabStrip.Resource.Attribute.indicatorColor = global::DroidSpeeching.Resource.Attribute.indicatorColor;
-			global::PagerSlidingTabStrip.Resource.Attribute.indicatorHeight = global::DroidSpeeching.Resource.Attribute.indicatorHeight;
-			global::PagerSlidingTabStrip.Resource.Attribute.scrollOffset = global::DroidSpeeching.Resource.Attribute.scrollOffset;
-			global::PagerSlidingTabStrip.Resource.Attribute.shouldExpand = global::DroidSpeeching.Resource.Attribute.shouldExpand;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabBackground = global::DroidSpeeching.Resource.Attribute.tabBackground;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabDividerPadding = global::DroidSpeeching.Resource.Attribute.tabDividerPadding;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabPaddingLeftRight = global::DroidSpeeching.Resource.Attribute.tabPaddingLeftRight;
-			global::PagerSlidingTabStrip.Resource.Attribute.tabTextAllCaps = global::DroidSpeeching.Resource.Attribute.tabTextAllCaps;
-			global::PagerSlidingTabStrip.Resource.Attribute.underlineColor = global::DroidSpeeching.Resource.Attribute.underlineColor;
-			global::PagerSlidingTabStrip.Resource.Attribute.underlineHeight = global::DroidSpeeching.Resource.Attribute.underlineHeight;
-			global::PagerSlidingTabStrip.Resource.Color.background_tab_pressed = global::DroidSpeeching.Resource.Color.background_tab_pressed;
-			global::PagerSlidingTabStrip.Resource.Drawable.pagerslidingtabstrip_background_tab = global::DroidSpeeching.Resource.Drawable.pagerslidingtabstrip_background_tab;
-			global::PagerSlidingTabStrip.Resource.Layout.pagerslidingtabstrip_texttab = global::DroidSpeeching.Resource.Layout.pagerslidingtabstrip_texttab;
-			global::PagerSlidingTabStrip.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
-			global::PagerSlidingTabStrip.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_dividerColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_dividerColor;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_indicatorColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_indicatorColor;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_indicatorHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_indicatorHeight;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_scrollOffset = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_scrollOffset;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_shouldExpand = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_shouldExpand;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabBackground = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabBackground;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabDividerPadding = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabDividerPadding;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabPaddingLeftRight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabPaddingLeftRight;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_tabTextAllCaps;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_underlineColor;
-			global::PagerSlidingTabStrip.Resource.Styleable.PagerSlidingTabStrip_underlineHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_underlineHeight;
 			global::PCLStorage.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
+			global::com.refractored.Resource.Attribute.pstsDividerColor = global::DroidSpeeching.Resource.Attribute.pstsDividerColor;
+			global::com.refractored.Resource.Attribute.pstsDividerPadding = global::DroidSpeeching.Resource.Attribute.pstsDividerPadding;
+			global::com.refractored.Resource.Attribute.pstsDividerWidth = global::DroidSpeeching.Resource.Attribute.pstsDividerWidth;
+			global::com.refractored.Resource.Attribute.pstsIndicatorColor = global::DroidSpeeching.Resource.Attribute.pstsIndicatorColor;
+			global::com.refractored.Resource.Attribute.pstsIndicatorHeight = global::DroidSpeeching.Resource.Attribute.pstsIndicatorHeight;
+			global::com.refractored.Resource.Attribute.pstsPaddingMiddle = global::DroidSpeeching.Resource.Attribute.pstsPaddingMiddle;
+			global::com.refractored.Resource.Attribute.pstsScrollOffset = global::DroidSpeeching.Resource.Attribute.pstsScrollOffset;
+			global::com.refractored.Resource.Attribute.pstsShouldExpand = global::DroidSpeeching.Resource.Attribute.pstsShouldExpand;
+			global::com.refractored.Resource.Attribute.pstsTabBackground = global::DroidSpeeching.Resource.Attribute.pstsTabBackground;
+			global::com.refractored.Resource.Attribute.pstsTabPaddingLeftRight = global::DroidSpeeching.Resource.Attribute.pstsTabPaddingLeftRight;
+			global::com.refractored.Resource.Attribute.pstsTextAllCaps = global::DroidSpeeching.Resource.Attribute.pstsTextAllCaps;
+			global::com.refractored.Resource.Attribute.pstsTextAlpha = global::DroidSpeeching.Resource.Attribute.pstsTextAlpha;
+			global::com.refractored.Resource.Attribute.pstsTextColorSelected = global::DroidSpeeching.Resource.Attribute.pstsTextColorSelected;
+			global::com.refractored.Resource.Attribute.pstsTextSelectedStyle = global::DroidSpeeching.Resource.Attribute.pstsTextSelectedStyle;
+			global::com.refractored.Resource.Attribute.pstsTextStyle = global::DroidSpeeching.Resource.Attribute.pstsTextStyle;
+			global::com.refractored.Resource.Attribute.pstsUnderlineColor = global::DroidSpeeching.Resource.Attribute.pstsUnderlineColor;
+			global::com.refractored.Resource.Attribute.pstsUnderlineHeight = global::DroidSpeeching.Resource.Attribute.pstsUnderlineHeight;
+			global::com.refractored.Resource.Color.psts_background_tab_pressed = global::DroidSpeeching.Resource.Color.psts_background_tab_pressed;
+			global::com.refractored.Resource.Drawable.psts_background_tab = global::DroidSpeeching.Resource.Drawable.psts_background_tab;
+			global::com.refractored.Resource.Id.bold = global::DroidSpeeching.Resource.Id.bold;
+			global::com.refractored.Resource.Id.italic = global::DroidSpeeching.Resource.Id.italic;
+			global::com.refractored.Resource.Id.normal = global::DroidSpeeching.Resource.Id.normal;
+			global::com.refractored.Resource.Id.psts_tab_title = global::DroidSpeeching.Resource.Id.psts_tab_title;
+			global::com.refractored.Resource.Layout.psts_tab = global::DroidSpeeching.Resource.Layout.psts_tab;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsDividerColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsDividerColor;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsDividerPadding = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsDividerPadding;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsDividerWidth = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsDividerWidth;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsIndicatorColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsIndicatorColor;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsIndicatorHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsIndicatorHeight;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsPaddingMiddle = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsPaddingMiddle;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsScrollOffset = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsScrollOffset;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsShouldExpand = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsShouldExpand;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTabBackground = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTabBackground;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTabPaddingLeftRight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTabPaddingLeftRight;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTextAllCaps = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTextAllCaps;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTextAlpha = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTextAlpha;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTextColorSelected = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTextColorSelected;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTextSelectedStyle = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTextSelectedStyle;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsTextStyle = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsTextStyle;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsUnderlineColor = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsUnderlineColor;
+			global::com.refractored.Resource.Styleable.PagerSlidingTabStrip_pstsUnderlineHeight = global::DroidSpeeching.Resource.Styleable.PagerSlidingTabStrip_pstsUnderlineHeight;
 			global::Xamarin.Forms.Platform.Resource.String.ApplicationName = global::DroidSpeeching.Resource.String.ApplicationName;
 			global::Xamarin.Forms.Platform.Resource.String.Hello = global::DroidSpeeching.Resource.String.Hello;
 		}
@@ -463,9 +477,6 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f010016
 			public const int divider = 2130771990;
 			
-			// aapt resource value: 0x7f0100f9
-			public const int dividerColor = 2130772217;
-			
 			// aapt resource value: 0x7f01008e
 			public const int dividerHorizontal = 2130772110;
 			
@@ -543,12 +554,6 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f01001d
 			public const int indeterminateProgressStyle = 2130771997;
-			
-			// aapt resource value: 0x7f0100f7
-			public const int indicatorColor = 2130772215;
-			
-			// aapt resource value: 0x7f0100fa
-			public const int indicatorHeight = 2130772218;
 			
 			// aapt resource value: 0x7f010028
 			public const int initialActivityCount = 2130772008;
@@ -631,8 +636,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f010035
 			public const int middleBarArrowSize = 2130772021;
 			
-			// aapt resource value: 0x7f010102
-			public const int minTextSize = 2130772226;
+			// aapt resource value: 0x7f010108
+			public const int minTextSize = 2130772232;
 			
 			// aapt resource value: 0x7f01002c
 			public const int multiChoiceItemLayout = 2130772012;
@@ -688,6 +693,57 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f01004e
 			public const int prompt = 2130772046;
 			
+			// aapt resource value: 0x7f0100f9
+			public const int pstsDividerColor = 2130772217;
+			
+			// aapt resource value: 0x7f0100fd
+			public const int pstsDividerPadding = 2130772221;
+			
+			// aapt resource value: 0x7f0100fa
+			public const int pstsDividerWidth = 2130772218;
+			
+			// aapt resource value: 0x7f0100f7
+			public const int pstsIndicatorColor = 2130772215;
+			
+			// aapt resource value: 0x7f0100fb
+			public const int pstsIndicatorHeight = 2130772219;
+			
+			// aapt resource value: 0x7f010103
+			public const int pstsPaddingMiddle = 2130772227;
+			
+			// aapt resource value: 0x7f0100ff
+			public const int pstsScrollOffset = 2130772223;
+			
+			// aapt resource value: 0x7f010101
+			public const int pstsShouldExpand = 2130772225;
+			
+			// aapt resource value: 0x7f010100
+			public const int pstsTabBackground = 2130772224;
+			
+			// aapt resource value: 0x7f0100fe
+			public const int pstsTabPaddingLeftRight = 2130772222;
+			
+			// aapt resource value: 0x7f010102
+			public const int pstsTextAllCaps = 2130772226;
+			
+			// aapt resource value: 0x7f010105
+			public const int pstsTextAlpha = 2130772229;
+			
+			// aapt resource value: 0x7f010104
+			public const int pstsTextColorSelected = 2130772228;
+			
+			// aapt resource value: 0x7f010107
+			public const int pstsTextSelectedStyle = 2130772231;
+			
+			// aapt resource value: 0x7f010106
+			public const int pstsTextStyle = 2130772230;
+			
+			// aapt resource value: 0x7f0100f8
+			public const int pstsUnderlineColor = 2130772216;
+			
+			// aapt resource value: 0x7f0100fc
+			public const int pstsUnderlineHeight = 2130772220;
+			
 			// aapt resource value: 0x7f01004c
 			public const int queryBackground = 2130772044;
 			
@@ -699,9 +755,6 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f0100be
 			public const int ratingBarStyle = 2130772158;
-			
-			// aapt resource value: 0x7f0100fe
-			public const int scrollOffset = 2130772222;
 			
 			// aapt resource value: 0x7f010048
 			public const int searchHintIcon = 2130772040;
@@ -717,9 +770,6 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f01008c
 			public const int selectableItemBackgroundBorderless = 2130772108;
-			
-			// aapt resource value: 0x7f010100
-			public const int shouldExpand = 2130772224;
 			
 			// aapt resource value: 0x7f01003b
 			public const int showAsAction = 2130772027;
@@ -777,18 +827,6 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f010054
 			public const int switchTextAppearance = 2130772052;
-			
-			// aapt resource value: 0x7f0100ff
-			public const int tabBackground = 2130772223;
-			
-			// aapt resource value: 0x7f0100fc
-			public const int tabDividerPadding = 2130772220;
-			
-			// aapt resource value: 0x7f0100fd
-			public const int tabPaddingLeftRight = 2130772221;
-			
-			// aapt resource value: 0x7f010101
-			public const int tabTextAllCaps = 2130772225;
 			
 			// aapt resource value: 0x7f01002f
 			public const int textAllCaps = 2130772015;
@@ -883,12 +921,6 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0100e4
 			public const int uiZoomGestures = 2130772196;
 			
-			// aapt resource value: 0x7f0100f8
-			public const int underlineColor = 2130772216;
-			
-			// aapt resource value: 0x7f0100fb
-			public const int underlineHeight = 2130772219;
-			
 			// aapt resource value: 0x7f0100e5
 			public const int useViewLifecycle = 2130772197;
 			
@@ -981,29 +1013,29 @@ namespace DroidSpeeching
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f080061
-			public const int abc_background_cache_hint_selector_material_dark = 2131230817;
-			
 			// aapt resource value: 0x7f080062
-			public const int abc_background_cache_hint_selector_material_light = 2131230818;
+			public const int abc_background_cache_hint_selector_material_dark = 2131230818;
+			
+			// aapt resource value: 0x7f080063
+			public const int abc_background_cache_hint_selector_material_light = 2131230819;
 			
 			// aapt resource value: 0x7f080004
 			public const int abc_input_method_navigation_guard = 2131230724;
 			
-			// aapt resource value: 0x7f080063
-			public const int abc_primary_text_disable_only_material_dark = 2131230819;
-			
 			// aapt resource value: 0x7f080064
-			public const int abc_primary_text_disable_only_material_light = 2131230820;
+			public const int abc_primary_text_disable_only_material_dark = 2131230820;
 			
 			// aapt resource value: 0x7f080065
-			public const int abc_primary_text_material_dark = 2131230821;
+			public const int abc_primary_text_disable_only_material_light = 2131230821;
 			
 			// aapt resource value: 0x7f080066
-			public const int abc_primary_text_material_light = 2131230822;
+			public const int abc_primary_text_material_dark = 2131230822;
 			
 			// aapt resource value: 0x7f080067
-			public const int abc_search_url_text = 2131230823;
+			public const int abc_primary_text_material_light = 2131230823;
+			
+			// aapt resource value: 0x7f080068
+			public const int abc_search_url_text = 2131230824;
 			
 			// aapt resource value: 0x7f080005
 			public const int abc_search_url_text_normal = 2131230725;
@@ -1014,11 +1046,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f080007
 			public const int abc_search_url_text_selected = 2131230727;
 			
-			// aapt resource value: 0x7f080068
-			public const int abc_secondary_text_material_dark = 2131230824;
-			
 			// aapt resource value: 0x7f080069
-			public const int abc_secondary_text_material_light = 2131230825;
+			public const int abc_secondary_text_material_dark = 2131230825;
+			
+			// aapt resource value: 0x7f08006a
+			public const int abc_secondary_text_material_light = 2131230826;
 			
 			// aapt resource value: 0x7f080008
 			public const int accent_material_dark = 2131230728;
@@ -1032,8 +1064,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f08005d
 			public const int appDarkest = 2131230813;
 			
-			// aapt resource value: 0x7f080060
-			public const int appDull = 2131230816;
+			// aapt resource value: 0x7f080061
+			public const int appDull = 2131230817;
 			
 			// aapt resource value: 0x7f08005e
 			public const int appHighlight = 2131230814;
@@ -1041,8 +1073,8 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f08005b
 			public const int appMain = 2131230811;
 			
-			// aapt resource value: 0x7f08005f
-			public const int appTitle = 2131230815;
+			// aapt resource value: 0x7f080060
+			public const int appTitle = 2131230816;
 			
 			// aapt resource value: 0x7f08000a
 			public const int background_floating_material_dark = 2131230730;
@@ -1055,9 +1087,6 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f08000d
 			public const int background_material_light = 2131230733;
-			
-			// aapt resource value: 0x7f08004e
-			public const int background_tab_pressed = 2131230798;
 			
 			// aapt resource value: 0x7f08000e
 			public const int bright_foreground_disabled_material_dark = 2131230734;
@@ -1125,11 +1154,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f08003c
 			public const int common_signin_btn_light_text_pressed = 2131230780;
 			
-			// aapt resource value: 0x7f08006a
-			public const int common_signin_btn_text_dark = 2131230826;
-			
 			// aapt resource value: 0x7f08006b
-			public const int common_signin_btn_text_light = 2131230827;
+			public const int common_signin_btn_text_dark = 2131230827;
+			
+			// aapt resource value: 0x7f08006c
+			public const int common_signin_btn_text_light = 2131230828;
 			
 			// aapt resource value: 0x7f080053
 			public const int darkBlue = 2131230803;
@@ -1172,6 +1201,9 @@ namespace DroidSpeeching
 			
 			// aapt resource value: 0x7f080058
 			public const int lightRed = 2131230808;
+			
+			// aapt resource value: 0x7f08005f
+			public const int lighterHighlight = 2131230815;
 			
 			// aapt resource value: 0x7f08001e
 			public const int link_text_material_dark = 2131230750;
@@ -1218,6 +1250,9 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f08002c
 			public const int primary_text_disabled_material_light = 2131230764;
 			
+			// aapt resource value: 0x7f08004e
+			public const int psts_background_tab_pressed = 2131230798;
+			
 			// aapt resource value: 0x7f08002d
 			public const int ripple_material_dark = 2131230765;
 			
@@ -1254,11 +1289,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f080034
 			public const int switch_thumb_disabled_material_light = 2131230772;
 			
-			// aapt resource value: 0x7f08006c
-			public const int switch_thumb_material_dark = 2131230828;
-			
 			// aapt resource value: 0x7f08006d
-			public const int switch_thumb_material_light = 2131230829;
+			public const int switch_thumb_material_dark = 2131230829;
+			
+			// aapt resource value: 0x7f08006e
+			public const int switch_thumb_material_light = 2131230830;
 			
 			// aapt resource value: 0x7f080035
 			public const int switch_thumb_normal_material_dark = 2131230773;
@@ -1308,11 +1343,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f08004d
 			public const int wallet_link_text_light = 2131230797;
 			
-			// aapt resource value: 0x7f08006e
-			public const int wallet_primary_text_holo_light = 2131230830;
-			
 			// aapt resource value: 0x7f08006f
-			public const int wallet_secondary_text_holo_dark = 2131230831;
+			public const int wallet_primary_text_holo_light = 2131230831;
+			
+			// aapt resource value: 0x7f080070
+			public const int wallet_secondary_text_holo_dark = 2131230832;
 			
 			// aapt resource value: 0x7f080059
 			public const int white = 2131230809;
@@ -1866,22 +1901,22 @@ namespace DroidSpeeching
 			public const int info = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int listCell = 2130837600;
+			public const int infoWhite = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int listCellChild = 2130837601;
+			public const int listCell = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int mode = 2130837602;
+			public const int listCellChild = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int notifIcon = 2130837603;
+			public const int mode = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int offline = 2130837604;
+			public const int notifIcon = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int pagerslidingtabstrip_background_tab = 2130837605;
+			public const int offline = 2130837605;
 			
 			// aapt resource value: 0x7f020066
 			public const int powered_by_google_dark = 2130837606;
@@ -1893,43 +1928,46 @@ namespace DroidSpeeching
 			public const int progress = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int recordButtonBlue = 2130837609;
+			public const int psts_background_tab = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int recordButtonRed = 2130837610;
+			public const int recordButtonBlue = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int round_button = 2130837611;
+			public const int recordButtonRed = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int round_button_alt = 2130837612;
+			public const int round_button = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int rounded_layout = 2130837613;
+			public const int round_button_alt = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int sb__bg = 2130837614;
+			public const int rounded_layout = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int sb__btn_bg = 2130837615;
+			public const int sb__bg = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int shadowed = 2130837616;
+			public const int sb__btn_bg = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int splash = 2130837617;
+			public const int shadowed = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int splashIcon = 2130837618;
+			public const int splash = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int tabs_pattern = 2130837619;
+			public const int splashIcon = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int TutPlaceholder = 2130837620;
+			public const int tabs_pattern = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int whiteCircle = 2130837621;
+			public const int TutPlaceholder = 2130837621;
+			
+			// aapt resource value: 0x7f020076
+			public const int whiteCircle = 2130837622;
 			
 			static Drawable()
 			{
@@ -1944,56 +1982,59 @@ namespace DroidSpeeching
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0c00c4
-			public const int BackgroundAudioDisplay = 2131493060;
-			
-			// aapt resource value: 0x7f0c00c0
-			public const int Instructions = 2131493056;
-			
-			// aapt resource value: 0x7f0c00c2
-			public const int RecordButton = 2131493058;
-			
-			// aapt resource value: 0x7f0c00bf
-			public const int RootLayout = 2131493055;
+			// aapt resource value: 0x7f0c00c7
+			public const int BackgroundAudioDisplay = 2131493063;
 			
 			// aapt resource value: 0x7f0c00c3
-			public const int StoredSoundsValue = 2131493059;
+			public const int Instructions = 2131493059;
 			
-			// aapt resource value: 0x7f0c00c1
-			public const int TextToSpeak = 2131493057;
+			// aapt resource value: 0x7f0c00c5
+			public const int RecordButton = 2131493061;
 			
-			// aapt resource value: 0x7f0c00f9
-			public const int action_about = 2131493113;
+			// aapt resource value: 0x7f0c00c2
+			public const int RootLayout = 2131493058;
 			
-			// aapt resource value: 0x7f0c0054
-			public const int action_bar = 2131492948;
+			// aapt resource value: 0x7f0c00c6
+			public const int StoredSoundsValue = 2131493062;
+			
+			// aapt resource value: 0x7f0c00c4
+			public const int TextToSpeak = 2131493060;
+			
+			// aapt resource value: 0x7f0c00ff
+			public const int action_about = 2131493119;
+			
+			// aapt resource value: 0x7f0c0056
+			public const int action_bar = 2131492950;
 			
 			// aapt resource value: 0x7f0c0000
 			public const int action_bar_activity_content = 2131492864;
 			
-			// aapt resource value: 0x7f0c0053
-			public const int action_bar_container = 2131492947;
+			// aapt resource value: 0x7f0c0055
+			public const int action_bar_container = 2131492949;
 			
-			// aapt resource value: 0x7f0c004f
-			public const int action_bar_root = 2131492943;
+			// aapt resource value: 0x7f0c0051
+			public const int action_bar_root = 2131492945;
 			
 			// aapt resource value: 0x7f0c0001
 			public const int action_bar_spinner = 2131492865;
 			
-			// aapt resource value: 0x7f0c0038
-			public const int action_bar_subtitle = 2131492920;
+			// aapt resource value: 0x7f0c003a
+			public const int action_bar_subtitle = 2131492922;
 			
-			// aapt resource value: 0x7f0c0037
-			public const int action_bar_title = 2131492919;
+			// aapt resource value: 0x7f0c0039
+			public const int action_bar_title = 2131492921;
 			
-			// aapt resource value: 0x7f0c0055
-			public const int action_context_bar = 2131492949;
+			// aapt resource value: 0x7f0c0057
+			public const int action_context_bar = 2131492951;
 			
-			// aapt resource value: 0x7f0c00fc
-			public const int action_help = 2131493116;
+			// aapt resource value: 0x7f0c0103
+			public const int action_help = 2131493123;
 			
-			// aapt resource value: 0x7f0c00f8
-			public const int action_logOut = 2131493112;
+			// aapt resource value: 0x7f0c0100
+			public const int action_info = 2131493120;
+			
+			// aapt resource value: 0x7f0c00fe
+			public const int action_logOut = 2131493118;
 			
 			// aapt resource value: 0x7f0c0002
 			public const int action_menu_divider = 2131492866;
@@ -2001,26 +2042,26 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0003
 			public const int action_menu_presenter = 2131492867;
 			
-			// aapt resource value: 0x7f0c0051
-			public const int action_mode_bar = 2131492945;
+			// aapt resource value: 0x7f0c0053
+			public const int action_mode_bar = 2131492947;
 			
-			// aapt resource value: 0x7f0c0050
-			public const int action_mode_bar_stub = 2131492944;
+			// aapt resource value: 0x7f0c0052
+			public const int action_mode_bar_stub = 2131492946;
 			
-			// aapt resource value: 0x7f0c0039
-			public const int action_mode_close_button = 2131492921;
+			// aapt resource value: 0x7f0c003b
+			public const int action_mode_close_button = 2131492923;
 			
-			// aapt resource value: 0x7f0c00fa
-			public const int action_practiceMode = 2131493114;
+			// aapt resource value: 0x7f0c0101
+			public const int action_practiceMode = 2131493121;
 			
-			// aapt resource value: 0x7f0c00f7
-			public const int action_settings = 2131493111;
+			// aapt resource value: 0x7f0c00fd
+			public const int action_settings = 2131493117;
 			
-			// aapt resource value: 0x7f0c00f6
-			public const int action_uploads = 2131493110;
+			// aapt resource value: 0x7f0c00fc
+			public const int action_uploads = 2131493116;
 			
-			// aapt resource value: 0x7f0c003a
-			public const int activity_chooser_view_content = 2131492922;
+			// aapt resource value: 0x7f0c003c
+			public const int activity_chooser_view_content = 2131492924;
 			
 			// aapt resource value: 0x7f0c0023
 			public const int adjust_height = 2131492899;
@@ -2028,35 +2069,38 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0024
 			public const int adjust_width = 2131492900;
 			
-			// aapt resource value: 0x7f0c0044
-			public const int alertTitle = 2131492932;
+			// aapt resource value: 0x7f0c0046
+			public const int alertTitle = 2131492934;
 			
 			// aapt resource value: 0x7f0c0016
 			public const int always = 2131492886;
 			
-			// aapt resource value: 0x7f0c0064
-			public const int assessment_info = 2131492964;
-			
 			// aapt resource value: 0x7f0c0066
-			public const int assessment_loading = 2131492966;
+			public const int assessment_info = 2131492966;
 			
 			// aapt resource value: 0x7f0c0068
-			public const int assessment_preamble = 2131492968;
+			public const int assessment_loading = 2131492968;
 			
-			// aapt resource value: 0x7f0c0069
-			public const int assessment_startBtn = 2131492969;
+			// aapt resource value: 0x7f0c006a
+			public const int assessment_preamble = 2131492970;
 			
-			// aapt resource value: 0x7f0c0063
-			public const int assessment_type = 2131492963;
+			// aapt resource value: 0x7f0c006b
+			public const int assessment_startBtn = 2131492971;
+			
+			// aapt resource value: 0x7f0c0065
+			public const int assessment_type = 2131492965;
 			
 			// aapt resource value: 0x7f0c0013
 			public const int beginning = 2131492883;
 			
+			// aapt resource value: 0x7f0c0037
+			public const int bold = 2131492919;
+			
 			// aapt resource value: 0x7f0c0030
 			public const int book_now = 2131492912;
 			
-			// aapt resource value: 0x7f0c004a
-			public const int buttonPanel = 2131492938;
+			// aapt resource value: 0x7f0c004c
+			public const int buttonPanel = 2131492940;
 			
 			// aapt resource value: 0x7f0c002d
 			public const int buyButton = 2131492909;
@@ -2067,11 +2111,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0032
 			public const int buy_with_google = 2131492914;
 			
-			// aapt resource value: 0x7f0c0074
-			public const int card_view = 2131492980;
+			// aapt resource value: 0x7f0c0076
+			public const int card_view = 2131492982;
 			
-			// aapt resource value: 0x7f0c004c
-			public const int checkbox = 2131492940;
+			// aapt resource value: 0x7f0c004e
+			public const int checkbox = 2131492942;
 			
 			// aapt resource value: 0x7f0c0034
 			public const int classic = 2131492916;
@@ -2079,32 +2123,32 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0017
 			public const int collapseActionView = 2131492887;
 			
-			// aapt resource value: 0x7f0c0045
-			public const int contentPanel = 2131492933;
+			// aapt resource value: 0x7f0c0047
+			public const int contentPanel = 2131492935;
 			
-			// aapt resource value: 0x7f0c0049
-			public const int custom = 2131492937;
+			// aapt resource value: 0x7f0c004b
+			public const int custom = 2131492939;
 			
-			// aapt resource value: 0x7f0c0048
-			public const int customPanel = 2131492936;
+			// aapt resource value: 0x7f0c004a
+			public const int customPanel = 2131492938;
 			
-			// aapt resource value: 0x7f0c0052
-			public const int decor_content_parent = 2131492946;
+			// aapt resource value: 0x7f0c0054
+			public const int decor_content_parent = 2131492948;
 			
-			// aapt resource value: 0x7f0c003d
-			public const int default_activity_button = 2131492925;
+			// aapt resource value: 0x7f0c003f
+			public const int default_activity_button = 2131492927;
 			
-			// aapt resource value: 0x7f0c0089
-			public const int describe_image = 2131493001;
+			// aapt resource value: 0x7f0c008b
+			public const int describe_image = 2131493003;
 			
-			// aapt resource value: 0x7f0c008a
-			public const int describe_text = 2131493002;
+			// aapt resource value: 0x7f0c008c
+			public const int describe_text = 2131493004;
 			
 			// aapt resource value: 0x7f0c001b
 			public const int dialog = 2131492891;
 			
-			// aapt resource value: 0x7f0c00be
-			public const int dialogRatingBar = 2131493054;
+			// aapt resource value: 0x7f0c00c1
+			public const int dialogRatingBar = 2131493057;
 			
 			// aapt resource value: 0x7f0c000c
 			public const int disableHome = 2131492876;
@@ -2115,80 +2159,89 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c001c
 			public const int dropdown = 2131492892;
 			
-			// aapt resource value: 0x7f0c0056
-			public const int edit_query = 2131492950;
+			// aapt resource value: 0x7f0c0058
+			public const int edit_query = 2131492952;
 			
 			// aapt resource value: 0x7f0c0014
 			public const int end = 2131492884;
 			
-			// aapt resource value: 0x7f0c003b
-			public const int expand_activities_button = 2131492923;
+			// aapt resource value: 0x7f0c003d
+			public const int expand_activities_button = 2131492925;
 			
-			// aapt resource value: 0x7f0c004b
-			public const int expanded_menu = 2131492939;
+			// aapt resource value: 0x7f0c004d
+			public const int expanded_menu = 2131492941;
 			
-			// aapt resource value: 0x7f0c0073
-			public const int feedbackList_date = 2131492979;
+			// aapt resource value: 0x7f0c0075
+			public const int feedbackList_date = 2131492981;
 			
-			// aapt resource value: 0x7f0c0072
-			public const int feedbackList_title = 2131492978;
+			// aapt resource value: 0x7f0c0074
+			public const int feedbackList_title = 2131492980;
 			
-			// aapt resource value: 0x7f0c006e
-			public const int feedback_completionDate = 2131492974;
-			
-			// aapt resource value: 0x7f0c006a
-			public const int feedback_drawerLayout = 2131492970;
-			
-			// aapt resource value: 0x7f0c006f
-			public const int feedback_feedbackList = 2131492975;
-			
-			// aapt resource value: 0x7f0c006b
-			public const int feedback_icon = 2131492971;
-			
-			// aapt resource value: 0x7f0c0071
-			public const int feedback_itemsList = 2131492977;
+			// aapt resource value: 0x7f0c0070
+			public const int feedback_completionDate = 2131492976;
 			
 			// aapt resource value: 0x7f0c006c
-			public const int feedback_tease = 2131492972;
+			public const int feedback_drawerLayout = 2131492972;
+			
+			// aapt resource value: 0x7f0c0071
+			public const int feedback_feedbackList = 2131492977;
 			
 			// aapt resource value: 0x7f0c006d
-			public const int feedback_title = 2131492973;
+			public const int feedback_icon = 2131492973;
 			
-			// aapt resource value: 0x7f0c0065
-			public const int fragment_container = 2131492965;
+			// aapt resource value: 0x7f0c0073
+			public const int feedback_itemsList = 2131492979;
 			
-			// aapt resource value: 0x7f0c0083
-			public const int friendsCheckAlert_List = 2131492995;
+			// aapt resource value: 0x7f0c006e
+			public const int feedback_tease = 2131492974;
 			
-			// aapt resource value: 0x7f0c0082
-			public const int friendsCheckAlert_Message = 2131492994;
+			// aapt resource value: 0x7f0c006f
+			public const int feedback_title = 2131492975;
 			
-			// aapt resource value: 0x7f0c0094
-			public const int friendsList_message = 2131493012;
+			// aapt resource value: 0x7f0c0067
+			public const int fragment_container = 2131492967;
 			
-			// aapt resource value: 0x7f0c0093
-			public const int friendsList_title = 2131493011;
+			// aapt resource value: 0x7f0c0085
+			public const int friendsCheckAlert_List = 2131492997;
+			
+			// aapt resource value: 0x7f0c0084
+			public const int friendsCheckAlert_Message = 2131492996;
+			
+			// aapt resource value: 0x7f0c0096
+			public const int friendsList_message = 2131493014;
+			
+			// aapt resource value: 0x7f0c0095
+			public const int friendsList_title = 2131493013;
 			
 			// aapt resource value: 0x7f0c0035
 			public const int grayscale = 2131492917;
 			
+			// aapt resource value: 0x7f0c008a
+			public const int guide_content = 2131493002;
+			
 			// aapt resource value: 0x7f0c0088
-			public const int guide_content = 2131493000;
-			
-			// aapt resource value: 0x7f0c0086
-			public const int guide_left = 2131492998;
-			
-			// aapt resource value: 0x7f0c0085
-			public const int guide_mainImage = 2131492997;
-			
-			// aapt resource value: 0x7f0c0084
-			public const int guide_pager = 2131492996;
+			public const int guide_left = 2131493000;
 			
 			// aapt resource value: 0x7f0c0087
-			public const int guide_right = 2131492999;
+			public const int guide_mainImage = 2131492999;
 			
-			// aapt resource value: 0x7f0c00fb
-			public const int help = 2131493115;
+			// aapt resource value: 0x7f0c0086
+			public const int guide_pager = 2131492998;
+			
+			// aapt resource value: 0x7f0c0089
+			public const int guide_right = 2131493001;
+			
+			// aapt resource value: 0x7f0c0102
+			public const int help = 2131493122;
+			
+			// aapt resource value: 0x7f0c00ef
+			public const int helper_explanation = 2131493103;
+			
+			// aapt resource value: 0x7f0c00ee
+			public const int helper_video = 2131493102;
+			
+			// aapt resource value: 0x7f0c00ed
+			public const int helper_videoHolder = 2131493101;
 			
 			// aapt resource value: 0x7f0c0028
 			public const int holo_dark = 2131492904;
@@ -2205,35 +2258,38 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0025
 			public const int hybrid = 2131492901;
 			
-			// aapt resource value: 0x7f0c003f
-			public const int icon = 2131492927;
+			// aapt resource value: 0x7f0c0041
+			public const int icon = 2131492929;
 			
 			// aapt resource value: 0x7f0c0018
 			public const int ifRoom = 2131492888;
 			
-			// aapt resource value: 0x7f0c003c
-			public const int image = 2131492924;
+			// aapt resource value: 0x7f0c003e
+			public const int image = 2131492926;
 			
-			// aapt resource value: 0x7f0c0070
-			public const int left_drawer = 2131492976;
+			// aapt resource value: 0x7f0c0038
+			public const int italic = 2131492920;
+			
+			// aapt resource value: 0x7f0c0072
+			public const int left_drawer = 2131492978;
 			
 			// aapt resource value: 0x7f0c0009
 			public const int listMode = 2131492873;
 			
-			// aapt resource value: 0x7f0c003e
-			public const int list_item = 2131492926;
+			// aapt resource value: 0x7f0c0040
+			public const int list_item = 2131492928;
 			
-			// aapt resource value: 0x7f0c009c
-			public const int mainActivitiesList = 2131493020;
+			// aapt resource value: 0x7f0c009e
+			public const int mainActivitiesList = 2131493022;
 			
-			// aapt resource value: 0x7f0c008e
-			public const int mainMenuContent = 2131493006;
+			// aapt resource value: 0x7f0c0090
+			public const int mainMenuContent = 2131493008;
 			
-			// aapt resource value: 0x7f0c0099
-			public const int mainResults_recyclerView = 2131493017;
+			// aapt resource value: 0x7f0c009b
+			public const int mainResults_recyclerView = 2131493019;
 			
-			// aapt resource value: 0x7f0c008b
-			public const int map_fragment_container = 2131493003;
+			// aapt resource value: 0x7f0c008d
+			public const int map_fragment_container = 2131493005;
 			
 			// aapt resource value: 0x7f0c002f
 			public const int match_parent = 2131492911;
@@ -2256,113 +2312,113 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c000a
 			public const int normal = 2131492874;
 			
-			// aapt resource value: 0x7f0c0091
-			public const int offlineIcon = 2131493009;
+			// aapt resource value: 0x7f0c0093
+			public const int offlineIcon = 2131493011;
 			
-			// aapt resource value: 0x7f0c0090
-			public const int offlineWarning = 2131493008;
+			// aapt resource value: 0x7f0c0092
+			public const int offlineWarning = 2131493010;
 			
-			// aapt resource value: 0x7f0c0041
-			public const int parentPanel = 2131492929;
-			
-			// aapt resource value: 0x7f0c00a1
-			public const int permissions_addFriendsButton = 2131493025;
-			
-			// aapt resource value: 0x7f0c00a2
-			public const int permissions_addOtherButton = 2131493026;
-			
-			// aapt resource value: 0x7f0c00a4
-			public const int permissions_list = 2131493028;
-			
-			// aapt resource value: 0x7f0c00a6
-			public const int permissions_message = 2131493030;
+			// aapt resource value: 0x7f0c0043
+			public const int parentPanel = 2131492931;
 			
 			// aapt resource value: 0x7f0c00a3
-			public const int permissions_publicButton = 2131493027;
+			public const int permissions_addFriendsButton = 2131493027;
 			
-			// aapt resource value: 0x7f0c00a5
-			public const int permissions_title = 2131493029;
+			// aapt resource value: 0x7f0c00a4
+			public const int permissions_addOtherButton = 2131493028;
 			
-			// aapt resource value: 0x7f0c008d
-			public const int placesList = 2131493005;
+			// aapt resource value: 0x7f0c00a6
+			public const int permissions_list = 2131493030;
 			
 			// aapt resource value: 0x7f0c00a8
-			public const int placesList_message = 2131493032;
+			public const int permissions_message = 2131493032;
 			
-			// aapt resource value: 0x7f0c00a9
-			public const int placesList_name = 2131493033;
-			
-			// aapt resource value: 0x7f0c00aa
-			public const int placesList_photo = 2131493034;
+			// aapt resource value: 0x7f0c00a5
+			public const int permissions_publicButton = 2131493029;
 			
 			// aapt resource value: 0x7f0c00a7
-			public const int placesList_title = 2131493031;
+			public const int permissions_title = 2131493031;
 			
-			// aapt resource value: 0x7f0c008c
-			public const int placesProgress = 2131493004;
+			// aapt resource value: 0x7f0c008f
+			public const int placesList = 2131493007;
 			
-			// aapt resource value: 0x7f0c00af
-			public const int placesRecord_button = 2131493039;
-			
-			// aapt resource value: 0x7f0c00ae
-			public const int placesRecord_hint = 2131493038;
+			// aapt resource value: 0x7f0c00aa
+			public const int placesList_message = 2131493034;
 			
 			// aapt resource value: 0x7f0c00ab
-			public const int placesRecord_photo = 2131493035;
-			
-			// aapt resource value: 0x7f0c00ad
-			public const int placesRecord_subHeader = 2131493037;
+			public const int placesList_name = 2131493035;
 			
 			// aapt resource value: 0x7f0c00ac
-			public const int placesRecord_title = 2131493036;
+			public const int placesList_photo = 2131493036;
 			
-			// aapt resource value: 0x7f0c009f
-			public const int practiceAreaBtn = 2131493023;
+			// aapt resource value: 0x7f0c00a9
+			public const int placesList_title = 2131493033;
 			
-			// aapt resource value: 0x7f0c0067
-			public const int preamble_container = 2131492967;
+			// aapt resource value: 0x7f0c008e
+			public const int placesProgress = 2131493006;
+			
+			// aapt resource value: 0x7f0c00b1
+			public const int placesRecord_button = 2131493041;
+			
+			// aapt resource value: 0x7f0c00b0
+			public const int placesRecord_hint = 2131493040;
+			
+			// aapt resource value: 0x7f0c00ad
+			public const int placesRecord_photo = 2131493037;
+			
+			// aapt resource value: 0x7f0c00af
+			public const int placesRecord_subHeader = 2131493039;
+			
+			// aapt resource value: 0x7f0c00ae
+			public const int placesRecord_title = 2131493038;
+			
+			// aapt resource value: 0x7f0c00a1
+			public const int practiceAreaBtn = 2131493025;
+			
+			// aapt resource value: 0x7f0c0069
+			public const int preamble_container = 2131492969;
 			
 			// aapt resource value: 0x7f0c002a
 			public const int production = 2131492906;
 			
-			// aapt resource value: 0x7f0c00bc
-			public const int profile_ReassessBtn = 2131493052;
-			
-			// aapt resource value: 0x7f0c00b0
-			public const int profile_avatar = 2131493040;
-			
-			// aapt resource value: 0x7f0c00b3
-			public const int profile_date = 2131493043;
+			// aapt resource value: 0x7f0c00be
+			public const int profile_ReassessBtn = 2131493054;
 			
 			// aapt resource value: 0x7f0c00b2
-			public const int profile_name = 2131493042;
-			
-			// aapt resource value: 0x7f0c00b8
-			public const int profile_ratingStrong = 2131493048;
+			public const int profile_avatar = 2131493042;
 			
 			// aapt resource value: 0x7f0c00b5
-			public const int profile_ratingSummary = 2131493045;
-			
-			// aapt resource value: 0x7f0c00bb
-			public const int profile_ratingWeak = 2131493051;
-			
-			// aapt resource value: 0x7f0c00b6
-			public const int profile_strongIcon = 2131493046;
-			
-			// aapt resource value: 0x7f0c00b7
-			public const int profile_strongTitle = 2131493047;
-			
-			// aapt resource value: 0x7f0c00b1
-			public const int profile_title = 2131493041;
+			public const int profile_date = 2131493045;
 			
 			// aapt resource value: 0x7f0c00b4
-			public const int profile_totalRating = 2131493044;
-			
-			// aapt resource value: 0x7f0c00b9
-			public const int profile_weakIcon = 2131493049;
+			public const int profile_name = 2131493044;
 			
 			// aapt resource value: 0x7f0c00ba
-			public const int profile_weakTitle = 2131493050;
+			public const int profile_ratingStrong = 2131493050;
+			
+			// aapt resource value: 0x7f0c00b7
+			public const int profile_ratingSummary = 2131493047;
+			
+			// aapt resource value: 0x7f0c00bd
+			public const int profile_ratingWeak = 2131493053;
+			
+			// aapt resource value: 0x7f0c00b8
+			public const int profile_strongIcon = 2131493048;
+			
+			// aapt resource value: 0x7f0c00b9
+			public const int profile_strongTitle = 2131493049;
+			
+			// aapt resource value: 0x7f0c00b3
+			public const int profile_title = 2131493043;
+			
+			// aapt resource value: 0x7f0c00b6
+			public const int profile_totalRating = 2131493046;
+			
+			// aapt resource value: 0x7f0c00bb
+			public const int profile_weakIcon = 2131493051;
+			
+			// aapt resource value: 0x7f0c00bc
+			public const int profile_weakTitle = 2131493052;
 			
 			// aapt resource value: 0x7f0c0005
 			public const int progress_circular = 2131492869;
@@ -2370,53 +2426,56 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0006
 			public const int progress_horizontal = 2131492870;
 			
-			// aapt resource value: 0x7f0c00bd
-			public const int quickfire_text = 2131493053;
+			// aapt resource value: 0x7f0c00bf
+			public const int psts_tab_title = 2131493055;
 			
-			// aapt resource value: 0x7f0c004e
-			public const int radio = 2131492942;
+			// aapt resource value: 0x7f0c00c0
+			public const int quickfire_text = 2131493056;
 			
-			// aapt resource value: 0x7f0c0098
-			public const int refresher = 2131493016;
+			// aapt resource value: 0x7f0c0050
+			public const int radio = 2131492944;
 			
-			// aapt resource value: 0x7f0c007b
-			public const int resultCard_activityTitle = 2131492987;
-			
-			// aapt resource value: 0x7f0c007f
-			public const int resultCard_avatar = 2131492991;
-			
-			// aapt resource value: 0x7f0c0076
-			public const int resultCard_caption = 2131492982;
-			
-			// aapt resource value: 0x7f0c007c
-			public const int resultCard_graph = 2131492988;
-			
-			// aapt resource value: 0x7f0c007a
-			public const int resultCard_icon = 2131492986;
+			// aapt resource value: 0x7f0c009a
+			public const int refresher = 2131493018;
 			
 			// aapt resource value: 0x7f0c007d
-			public const int resultCard_image = 2131492989;
-			
-			// aapt resource value: 0x7f0c0079
-			public const int resultCard_interaction = 2131492985;
-			
-			// aapt resource value: 0x7f0c007e
-			public const int resultCard_percent = 2131492990;
+			public const int resultCard_activityTitle = 2131492989;
 			
 			// aapt resource value: 0x7f0c0081
-			public const int resultCard_ratingBar = 2131492993;
+			public const int resultCard_avatar = 2131492993;
 			
 			// aapt resource value: 0x7f0c0078
-			public const int resultCard_rationale = 2131492984;
+			public const int resultCard_caption = 2131492984;
 			
-			// aapt resource value: 0x7f0c0077
-			public const int resultCard_rationaleTease = 2131492983;
+			// aapt resource value: 0x7f0c007e
+			public const int resultCard_graph = 2131492990;
 			
-			// aapt resource value: 0x7f0c0075
-			public const int resultCard_title = 2131492981;
+			// aapt resource value: 0x7f0c007c
+			public const int resultCard_icon = 2131492988;
+			
+			// aapt resource value: 0x7f0c007f
+			public const int resultCard_image = 2131492991;
+			
+			// aapt resource value: 0x7f0c007b
+			public const int resultCard_interaction = 2131492987;
 			
 			// aapt resource value: 0x7f0c0080
-			public const int resultCard_username = 2131492992;
+			public const int resultCard_percent = 2131492992;
+			
+			// aapt resource value: 0x7f0c0083
+			public const int resultCard_ratingBar = 2131492995;
+			
+			// aapt resource value: 0x7f0c007a
+			public const int resultCard_rationale = 2131492986;
+			
+			// aapt resource value: 0x7f0c0079
+			public const int resultCard_rationaleTease = 2131492985;
+			
+			// aapt resource value: 0x7f0c0077
+			public const int resultCard_title = 2131492983;
+			
+			// aapt resource value: 0x7f0c0082
+			public const int resultCard_username = 2131492994;
 			
 			// aapt resource value: 0x7f0c002b
 			public const int sandbox = 2131492907;
@@ -2424,110 +2483,110 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0026
 			public const int satellite = 2131492902;
 			
-			// aapt resource value: 0x7f0c00c6
-			public const int sb__action = 2131493062;
-			
-			// aapt resource value: 0x7f0c00c5
-			public const int sb__text = 2131493061;
-			
-			// aapt resource value: 0x7f0c00ca
-			public const int scenarioAuthor = 2131493066;
-			
-			// aapt resource value: 0x7f0c00d0
-			public const int scenarioBreaker = 2131493072;
-			
-			// aapt resource value: 0x7f0c00d7
-			public const int scenarioChoice1 = 2131493079;
-			
-			// aapt resource value: 0x7f0c00d8
-			public const int scenarioChoice2 = 2131493080;
-			
-			// aapt resource value: 0x7f0c00d5
-			public const int scenarioChoiceLayout = 2131493077;
-			
-			// aapt resource value: 0x7f0c00d6
-			public const int scenarioChoicePrompt = 2131493078;
-			
-			// aapt resource value: 0x7f0c00cc
-			public const int scenarioEventLayout = 2131493068;
+			// aapt resource value: 0x7f0c00c9
+			public const int sb__action = 2131493065;
 			
 			// aapt resource value: 0x7f0c00c8
-			public const int scenarioIcon = 2131493064;
-			
-			// aapt resource value: 0x7f0c00ce
-			public const int scenarioImage = 2131493070;
-			
-			// aapt resource value: 0x7f0c00d4
-			public const int scenarioProgressBtn = 2131493076;
-			
-			// aapt resource value: 0x7f0c00d3
-			public const int scenarioPrompt = 2131493075;
-			
-			// aapt resource value: 0x7f0c00d2
-			public const int scenarioPromptHead = 2131493074;
-			
-			// aapt resource value: 0x7f0c00d1
-			public const int scenarioRecordLayout = 2131493073;
-			
-			// aapt resource value: 0x7f0c00cb
-			public const int scenarioStartBtn = 2131493067;
-			
-			// aapt resource value: 0x7f0c00cf
-			public const int scenarioText = 2131493071;
-			
-			// aapt resource value: 0x7f0c00c9
-			public const int scenarioTitle = 2131493065;
-			
-			// aapt resource value: 0x7f0c00c7
-			public const int scenarioTitleLayout = 2131493063;
+			public const int sb__text = 2131493064;
 			
 			// aapt resource value: 0x7f0c00cd
-			public const int scenarioVideo = 2131493069;
+			public const int scenarioAuthor = 2131493069;
+			
+			// aapt resource value: 0x7f0c00d3
+			public const int scenarioBreaker = 2131493075;
+			
+			// aapt resource value: 0x7f0c00da
+			public const int scenarioChoice1 = 2131493082;
+			
+			// aapt resource value: 0x7f0c00db
+			public const int scenarioChoice2 = 2131493083;
+			
+			// aapt resource value: 0x7f0c00d8
+			public const int scenarioChoiceLayout = 2131493080;
+			
+			// aapt resource value: 0x7f0c00d9
+			public const int scenarioChoicePrompt = 2131493081;
+			
+			// aapt resource value: 0x7f0c00cf
+			public const int scenarioEventLayout = 2131493071;
+			
+			// aapt resource value: 0x7f0c00cb
+			public const int scenarioIcon = 2131493067;
+			
+			// aapt resource value: 0x7f0c00d1
+			public const int scenarioImage = 2131493073;
+			
+			// aapt resource value: 0x7f0c00d7
+			public const int scenarioProgressBtn = 2131493079;
+			
+			// aapt resource value: 0x7f0c00d6
+			public const int scenarioPrompt = 2131493078;
+			
+			// aapt resource value: 0x7f0c00d5
+			public const int scenarioPromptHead = 2131493077;
+			
+			// aapt resource value: 0x7f0c00d4
+			public const int scenarioRecordLayout = 2131493076;
+			
+			// aapt resource value: 0x7f0c00ce
+			public const int scenarioStartBtn = 2131493070;
+			
+			// aapt resource value: 0x7f0c00d2
+			public const int scenarioText = 2131493074;
+			
+			// aapt resource value: 0x7f0c00cc
+			public const int scenarioTitle = 2131493068;
+			
+			// aapt resource value: 0x7f0c00ca
+			public const int scenarioTitleLayout = 2131493066;
+			
+			// aapt resource value: 0x7f0c00d0
+			public const int scenarioVideo = 2131493072;
 			
 			// aapt resource value: 0x7f0c001f
 			public const int screen = 2131492895;
 			
-			// aapt resource value: 0x7f0c0046
-			public const int scrollView = 2131492934;
-			
-			// aapt resource value: 0x7f0c0058
-			public const int search_badge = 2131492952;
-			
-			// aapt resource value: 0x7f0c0057
-			public const int search_bar = 2131492951;
-			
-			// aapt resource value: 0x7f0c0059
-			public const int search_button = 2131492953;
-			
-			// aapt resource value: 0x7f0c005e
-			public const int search_close_btn = 2131492958;
+			// aapt resource value: 0x7f0c0048
+			public const int scrollView = 2131492936;
 			
 			// aapt resource value: 0x7f0c005a
-			public const int search_edit_frame = 2131492954;
+			public const int search_badge = 2131492954;
 			
-			// aapt resource value: 0x7f0c0060
-			public const int search_go_btn = 2131492960;
+			// aapt resource value: 0x7f0c0059
+			public const int search_bar = 2131492953;
 			
 			// aapt resource value: 0x7f0c005b
-			public const int search_mag_icon = 2131492955;
+			public const int search_button = 2131492955;
+			
+			// aapt resource value: 0x7f0c0060
+			public const int search_close_btn = 2131492960;
 			
 			// aapt resource value: 0x7f0c005c
-			public const int search_plate = 2131492956;
-			
-			// aapt resource value: 0x7f0c005d
-			public const int search_src_text = 2131492957;
-			
-			// aapt resource value: 0x7f0c0061
-			public const int search_voice_btn = 2131492961;
+			public const int search_edit_frame = 2131492956;
 			
 			// aapt resource value: 0x7f0c0062
-			public const int select_dialog_listview = 2131492962;
+			public const int search_go_btn = 2131492962;
+			
+			// aapt resource value: 0x7f0c005d
+			public const int search_mag_icon = 2131492957;
+			
+			// aapt resource value: 0x7f0c005e
+			public const int search_plate = 2131492958;
+			
+			// aapt resource value: 0x7f0c005f
+			public const int search_src_text = 2131492959;
+			
+			// aapt resource value: 0x7f0c0063
+			public const int search_voice_btn = 2131492963;
+			
+			// aapt resource value: 0x7f0c0064
+			public const int select_dialog_listview = 2131492964;
 			
 			// aapt resource value: 0x7f0c002e
 			public const int selectionDetails = 2131492910;
 			
-			// aapt resource value: 0x7f0c004d
-			public const int shortcut = 2131492941;
+			// aapt resource value: 0x7f0c004f
+			public const int shortcut = 2131492943;
 			
 			// aapt resource value: 0x7f0c000f
 			public const int showCustom = 2131492879;
@@ -2538,11 +2597,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c0011
 			public const int showTitle = 2131492881;
 			
-			// aapt resource value: 0x7f0c00d9
-			public const int splash_loading = 2131493081;
+			// aapt resource value: 0x7f0c00dc
+			public const int splash_loading = 2131493084;
 			
-			// aapt resource value: 0x7f0c00da
-			public const int splash_signIn = 2131493082;
+			// aapt resource value: 0x7f0c00dd
+			public const int splash_signIn = 2131493085;
 			
 			// aapt resource value: 0x7f0c0007
 			public const int split_action_bar = 2131492871;
@@ -2559,143 +2618,143 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c002c
 			public const int strict_sandbox = 2131492908;
 			
-			// aapt resource value: 0x7f0c005f
-			public const int submit_area = 2131492959;
-			
-			// aapt resource value: 0x7f0c00db
-			public const int submittedAlert_Message = 2131493083;
-			
-			// aapt resource value: 0x7f0c00dc
-			public const int submittedAlert_feedbackBtn = 2131493084;
-			
-			// aapt resource value: 0x7f0c00dd
-			public const int submittedAlert_permission = 2131493085;
+			// aapt resource value: 0x7f0c0061
+			public const int submit_area = 2131492961;
 			
 			// aapt resource value: 0x7f0c00de
-			public const int submitted_list = 2131493086;
+			public const int submittedAlert_Message = 2131493086;
 			
-			// aapt resource value: 0x7f0c009e
-			public const int submitted_message = 2131493022;
+			// aapt resource value: 0x7f0c00df
+			public const int submittedAlert_feedbackBtn = 2131493087;
 			
-			// aapt resource value: 0x7f0c009d
-			public const int submitted_title = 2131493021;
+			// aapt resource value: 0x7f0c00e0
+			public const int submittedAlert_permission = 2131493088;
+			
+			// aapt resource value: 0x7f0c00e1
+			public const int submitted_list = 2131493089;
+			
+			// aapt resource value: 0x7f0c00a0
+			public const int submitted_message = 2131493024;
+			
+			// aapt resource value: 0x7f0c009f
+			public const int submitted_title = 2131493023;
 			
 			// aapt resource value: 0x7f0c000b
 			public const int tabMode = 2131492875;
 			
-			// aapt resource value: 0x7f0c008f
-			public const int tabs = 2131493007;
+			// aapt resource value: 0x7f0c0091
+			public const int tabs = 2131493009;
 			
-			// aapt resource value: 0x7f0c009a
-			public const int tasklist_childIcon = 2131493018;
+			// aapt resource value: 0x7f0c009c
+			public const int tasklist_childIcon = 2131493020;
 			
-			// aapt resource value: 0x7f0c009b
-			public const int tasklist_childTitle = 2131493019;
-			
-			// aapt resource value: 0x7f0c0095
-			public const int tasklist_parentIcon = 2131493013;
+			// aapt resource value: 0x7f0c009d
+			public const int tasklist_childTitle = 2131493021;
 			
 			// aapt resource value: 0x7f0c0097
-			public const int tasklist_parentStatus = 2131493015;
+			public const int tasklist_parentIcon = 2131493015;
 			
-			// aapt resource value: 0x7f0c0096
-			public const int tasklist_parentTitle = 2131493014;
+			// aapt resource value: 0x7f0c0099
+			public const int tasklist_parentStatus = 2131493017;
+			
+			// aapt resource value: 0x7f0c0098
+			public const int tasklist_parentTitle = 2131493016;
 			
 			// aapt resource value: 0x7f0c0027
 			public const int terrain = 2131492903;
 			
-			// aapt resource value: 0x7f0c0047
-			public const int textSpacerNoButtons = 2131492935;
-			
-			// aapt resource value: 0x7f0c0040
-			public const int title = 2131492928;
-			
-			// aapt resource value: 0x7f0c0043
-			public const int title_template = 2131492931;
+			// aapt resource value: 0x7f0c0049
+			public const int textSpacerNoButtons = 2131492937;
 			
 			// aapt resource value: 0x7f0c0042
-			public const int topPanel = 2131492930;
+			public const int title = 2131492930;
 			
-			// aapt resource value: 0x7f0c00f4
-			public const int ttsBtn = 2131493108;
+			// aapt resource value: 0x7f0c0045
+			public const int title_template = 2131492933;
+			
+			// aapt resource value: 0x7f0c0044
+			public const int topPanel = 2131492932;
+			
+			// aapt resource value: 0x7f0c00fa
+			public const int ttsBtn = 2131493114;
 			
 			// aapt resource value: 0x7f0c0008
 			public const int up = 2131492872;
 			
+			// aapt resource value: 0x7f0c00ec
+			public const int uploadsList_completedAt = 2131493100;
+			
 			// aapt resource value: 0x7f0c00e9
-			public const int uploadsList_completedAt = 2131493097;
-			
-			// aapt resource value: 0x7f0c00e6
-			public const int uploadsList_icon = 2131493094;
-			
-			// aapt resource value: 0x7f0c00e5
-			public const int uploadsList_progress = 2131493093;
+			public const int uploadsList_icon = 2131493097;
 			
 			// aapt resource value: 0x7f0c00e8
-			public const int uploadsList_scenarioTitle = 2131493096;
+			public const int uploadsList_progress = 2131493096;
+			
+			// aapt resource value: 0x7f0c00eb
+			public const int uploadsList_scenarioTitle = 2131493099;
+			
+			// aapt resource value: 0x7f0c00ea
+			public const int uploadsList_uploadStatus = 2131493098;
 			
 			// aapt resource value: 0x7f0c00e7
-			public const int uploadsList_uploadStatus = 2131493095;
-			
-			// aapt resource value: 0x7f0c00e4
-			public const int uploadsList_visuals = 2131493092;
-			
-			// aapt resource value: 0x7f0c00e0
-			public const int uploads_list = 2131493088;
+			public const int uploadsList_visuals = 2131493095;
 			
 			// aapt resource value: 0x7f0c00e3
-			public const int uploads_message = 2131493091;
+			public const int uploads_list = 2131493091;
 			
-			// aapt resource value: 0x7f0c00e1
-			public const int uploads_start = 2131493089;
+			// aapt resource value: 0x7f0c00e6
+			public const int uploads_message = 2131493094;
+			
+			// aapt resource value: 0x7f0c00e4
+			public const int uploads_start = 2131493092;
+			
+			// aapt resource value: 0x7f0c00e5
+			public const int uploads_title = 2131493093;
 			
 			// aapt resource value: 0x7f0c00e2
-			public const int uploads_title = 2131493090;
-			
-			// aapt resource value: 0x7f0c00df
-			public const int uploads_warning = 2131493087;
+			public const int uploads_warning = 2131493090;
 			
 			// aapt resource value: 0x7f0c0012
 			public const int useLogo = 2131492882;
 			
-			// aapt resource value: 0x7f0c0092
-			public const int viewPager = 2131493010;
+			// aapt resource value: 0x7f0c0094
+			public const int viewPager = 2131493012;
 			
-			// aapt resource value: 0x7f0c00a0
-			public const int viewSubmittedBtn = 2131493024;
+			// aapt resource value: 0x7f0c00a2
+			public const int viewSubmittedBtn = 2131493026;
 			
-			// aapt resource value: 0x7f0c00f2
-			public const int wiki_Targetvolume = 2131493106;
+			// aapt resource value: 0x7f0c00f8
+			public const int wiki_Targetvolume = 2131493112;
 			
-			// aapt resource value: 0x7f0c00ee
-			public const int wiki_bpm = 2131493102;
-			
-			// aapt resource value: 0x7f0c00ef
-			public const int wiki_downBtn = 2131493103;
-			
-			// aapt resource value: 0x7f0c00ea
-			public const int wiki_image = 2131493098;
-			
-			// aapt resource value: 0x7f0c00f3
-			public const int wiki_measureVolBtn = 2131493107;
-			
-			// aapt resource value: 0x7f0c00ec
-			public const int wiki_speedControls = 2131493100;
+			// aapt resource value: 0x7f0c00f4
+			public const int wiki_bpm = 2131493108;
 			
 			// aapt resource value: 0x7f0c00f5
-			public const int wiki_startBtn = 2131493109;
-			
-			// aapt resource value: 0x7f0c00eb
-			public const int wiki_text = 2131493099;
-			
-			// aapt resource value: 0x7f0c00ed
-			public const int wiki_upBtn = 2131493101;
+			public const int wiki_downBtn = 2131493109;
 			
 			// aapt resource value: 0x7f0c00f0
-			public const int wiki_volControls = 2131493104;
+			public const int wiki_image = 2131493104;
+			
+			// aapt resource value: 0x7f0c00f9
+			public const int wiki_measureVolBtn = 2131493113;
+			
+			// aapt resource value: 0x7f0c00f2
+			public const int wiki_speedControls = 2131493106;
+			
+			// aapt resource value: 0x7f0c00fb
+			public const int wiki_startBtn = 2131493115;
 			
 			// aapt resource value: 0x7f0c00f1
-			public const int wiki_volume = 2131493105;
+			public const int wiki_text = 2131493105;
+			
+			// aapt resource value: 0x7f0c00f3
+			public const int wiki_upBtn = 2131493107;
+			
+			// aapt resource value: 0x7f0c00f6
+			public const int wiki_volControls = 2131493110;
+			
+			// aapt resource value: 0x7f0c00f7
+			public const int wiki_volume = 2131493111;
 			
 			// aapt resource value: 0x7f0c001a
 			public const int withText = 2131492890;
@@ -2905,25 +2964,25 @@ namespace DroidSpeeching
 			public const int MainTaskListParent = 2130903087;
 			
 			// aapt resource value: 0x7f030030
-			public const int pagerslidingtabstrip_texttab = 2130903088;
+			public const int PermissionsActivity = 2130903088;
 			
 			// aapt resource value: 0x7f030031
-			public const int PermissionsActivity = 2130903089;
+			public const int PermissionsListHeader = 2130903089;
 			
 			// aapt resource value: 0x7f030032
-			public const int PermissionsListHeader = 2130903090;
+			public const int PlacesListHeader = 2130903090;
 			
 			// aapt resource value: 0x7f030033
-			public const int PlacesListHeader = 2130903091;
+			public const int PlacesListItem = 2130903091;
 			
 			// aapt resource value: 0x7f030034
-			public const int PlacesListItem = 2130903092;
+			public const int PlacesRecordEntry = 2130903092;
 			
 			// aapt resource value: 0x7f030035
-			public const int PlacesRecordEntry = 2130903093;
+			public const int ProfileFragment = 2130903093;
 			
 			// aapt resource value: 0x7f030036
-			public const int ProfileFragment = 2130903094;
+			public const int psts_tab = 2130903094;
 			
 			// aapt resource value: 0x7f030037
 			public const int QuickfireFragment = 2130903095;
@@ -2974,10 +3033,13 @@ namespace DroidSpeeching
 			public const int UploadsListItem = 2130903110;
 			
 			// aapt resource value: 0x7f030047
-			public const int ViewSubmissionActivity = 2130903111;
+			public const int VideoHelpPopup = 2130903111;
 			
 			// aapt resource value: 0x7f030048
-			public const int WikiPracticeActivity = 2130903112;
+			public const int ViewSubmissionActivity = 2130903112;
+			
+			// aapt resource value: 0x7f030049
+			public const int WikiPracticeActivity = 2130903113;
 			
 			static Layout()
 			{
@@ -4354,7 +4416,7 @@ namespace DroidSpeeching
 			public const int AppCompatTextView_textAllCaps = 1;
 			
 			public static int[] AutoResizeTextView = new int[] {
-					2130772226};
+					2130772232};
 			
 			// aapt resource value: 0
 			public const int AutoResizeTextView_minTextSize = 0;
@@ -4726,40 +4788,64 @@ namespace DroidSpeeching
 					2130772222,
 					2130772223,
 					2130772224,
-					2130772225};
+					2130772225,
+					2130772226,
+					2130772227,
+					2130772228,
+					2130772229,
+					2130772230,
+					2130772231};
 			
 			// aapt resource value: 2
-			public const int PagerSlidingTabStrip_dividerColor = 2;
-			
-			// aapt resource value: 0
-			public const int PagerSlidingTabStrip_indicatorColor = 0;
-			
-			// aapt resource value: 3
-			public const int PagerSlidingTabStrip_indicatorHeight = 3;
-			
-			// aapt resource value: 7
-			public const int PagerSlidingTabStrip_scrollOffset = 7;
-			
-			// aapt resource value: 9
-			public const int PagerSlidingTabStrip_shouldExpand = 9;
-			
-			// aapt resource value: 8
-			public const int PagerSlidingTabStrip_tabBackground = 8;
-			
-			// aapt resource value: 5
-			public const int PagerSlidingTabStrip_tabDividerPadding = 5;
+			public const int PagerSlidingTabStrip_pstsDividerColor = 2;
 			
 			// aapt resource value: 6
-			public const int PagerSlidingTabStrip_tabPaddingLeftRight = 6;
+			public const int PagerSlidingTabStrip_pstsDividerPadding = 6;
 			
-			// aapt resource value: 10
-			public const int PagerSlidingTabStrip_tabTextAllCaps = 10;
+			// aapt resource value: 3
+			public const int PagerSlidingTabStrip_pstsDividerWidth = 3;
 			
-			// aapt resource value: 1
-			public const int PagerSlidingTabStrip_underlineColor = 1;
+			// aapt resource value: 0
+			public const int PagerSlidingTabStrip_pstsIndicatorColor = 0;
 			
 			// aapt resource value: 4
-			public const int PagerSlidingTabStrip_underlineHeight = 4;
+			public const int PagerSlidingTabStrip_pstsIndicatorHeight = 4;
+			
+			// aapt resource value: 12
+			public const int PagerSlidingTabStrip_pstsPaddingMiddle = 12;
+			
+			// aapt resource value: 8
+			public const int PagerSlidingTabStrip_pstsScrollOffset = 8;
+			
+			// aapt resource value: 10
+			public const int PagerSlidingTabStrip_pstsShouldExpand = 10;
+			
+			// aapt resource value: 9
+			public const int PagerSlidingTabStrip_pstsTabBackground = 9;
+			
+			// aapt resource value: 7
+			public const int PagerSlidingTabStrip_pstsTabPaddingLeftRight = 7;
+			
+			// aapt resource value: 11
+			public const int PagerSlidingTabStrip_pstsTextAllCaps = 11;
+			
+			// aapt resource value: 14
+			public const int PagerSlidingTabStrip_pstsTextAlpha = 14;
+			
+			// aapt resource value: 13
+			public const int PagerSlidingTabStrip_pstsTextColorSelected = 13;
+			
+			// aapt resource value: 16
+			public const int PagerSlidingTabStrip_pstsTextSelectedStyle = 16;
+			
+			// aapt resource value: 15
+			public const int PagerSlidingTabStrip_pstsTextStyle = 15;
+			
+			// aapt resource value: 1
+			public const int PagerSlidingTabStrip_pstsUnderlineColor = 1;
+			
+			// aapt resource value: 5
+			public const int PagerSlidingTabStrip_pstsUnderlineHeight = 5;
 			
 			public static int[] PopupWindow = new int[] {
 					16843126,

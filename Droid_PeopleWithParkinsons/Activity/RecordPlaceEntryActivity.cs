@@ -144,7 +144,6 @@ namespace DroidSpeeching
         private void ExportRecordings()
         {
             // Compress exported recordings into zip (Delete existing zip first)
-            // TODO set password? https://github.com/icsharpcode/SharpZipLib/wiki/Zip-Samples#anchorCreate  
             File.Delete(resultsZipPath);
 
             try
@@ -158,7 +157,6 @@ namespace DroidSpeeching
                     ParticipantActivityId = 8675309,
                     ResourceUrl = resultsZipPath,
                     UploadState = Utils.UploadStage.Ready,
-                    UserId = AppData.Session.CurrentUser.Id,
                     GooglePlaceId = placeId,
                     GooglePlaceName = placeName,
                     Lat = lat,
