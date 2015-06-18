@@ -8,7 +8,7 @@
         android:id="@+id/wiki_image"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="2.5"
         android:scaleType="centerCrop"
         android:paddingBottom="25dp"
         android:orientation="vertical"
@@ -22,14 +22,14 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:padding="10dp"
+        android:padding="15dp"
         android:textSize="17sp"
         android:text="Loading..." />
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="180dp"
+        android:layout_height="170dp"
         android:orientation="vertical"
-        android:padding="6dp">
+        android:padding="10dp">
         <LinearLayout
             android:id="@+id/wiki_speedControls"
             android:layout_width="fill_parent"
@@ -43,7 +43,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:text="▲"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
             <TextView
                 android:id="@+id/wiki_bpm"
                 android:layout_width="0dp"
@@ -51,15 +51,15 @@
                 android:layout_weight="1"
                 android:text="50 BPM"
                 android:textSize="20sp"
-                android:gravity="center"
-                android:textColor="@color/appTitle" />
+                android:textColor="@color/appTitle"
+                android:gravity="center" />
             <Button
                 android:id="@+id/wiki_downBtn"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:text="▼"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/wiki_volControls"
@@ -78,7 +78,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="Current vol:"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
                     android:gravity="center" />
                 <TextView
                     android:id="@+id/wiki_volume"
@@ -86,7 +86,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="\?"
-                    android:textSize="22sp"
+                    android:textSize="24sp"
                     android:gravity="center"
                     android:textColor="@color/appTitle" />
             </LinearLayout>
@@ -100,7 +100,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="Target vol:"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
                     android:gravity="center" />
                 <TextView
                     android:id="@+id/wiki_Targetvolume"
@@ -108,30 +108,27 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="45"
-                    android:textSize="22sp"
+                    android:textSize="24sp"
                     android:gravity="center" />
             </LinearLayout>
             <Button
                 android:id="@+id/wiki_measureVolBtn"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1.2"
+                android:layout_weight="1.5"
                 android:text="Set new target"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
         </LinearLayout>
-        <Button
+        <Space
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/ttsBtn"
-            android:textSize="20sp"
-            android:text="Preview speech" />
+            android:layout_weight="0.2" />
         <Button
             android:id="@+id/wiki_startBtn"
             android:text="Start!"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

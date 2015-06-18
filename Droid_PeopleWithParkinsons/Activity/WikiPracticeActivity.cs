@@ -21,8 +21,6 @@ namespace DroidSpeeching
     {
         private const int MetronMaxBpm = 140;
         private const int MetronMinBpm = 60;
-        private const string SpeechSpeaking = "Stop Speech Preview";
-        private const string SpeechWaiting = "Start Speech Preview";
         private AndroidUtils.RecordAudioManager audioManager;
         private ServerData.TaskType currentMode;
         private LinearLayout loudControlsLayout;
@@ -46,7 +44,6 @@ namespace DroidSpeeching
         private bool reading;
         private Button startBtn;
         private TTSManager tts;
-        private Button ttsBtn;
         private WikipediaResult wiki;
         private ImageView wikiImage;
         private TextView wikiText;
@@ -75,8 +72,7 @@ namespace DroidSpeeching
             wikiImage = FindViewById<ImageView>(Resource.Id.wiki_image);
             startBtn = FindViewById<Button>(Resource.Id.wiki_startBtn);
             startBtn.Click += startBtn_Click;
-            ttsBtn = FindViewById<Button>(Resource.Id.ttsBtn);
-            ttsBtn.Click += ttsBtn_Click;
+            wikiText.Click += ttsBtn_Click;
 
             // Pacing layout
             metronBpmText = FindViewById<TextView>(Resource.Id.wiki_bpm);
@@ -107,8 +103,6 @@ namespace DroidSpeeching
 
             currentMode = ServerData.TaskType.Loudness;
 
-            onSpeechComplete = id => { RunOnUiThread(() => ttsBtn.Text = SpeechWaiting); };
-
             tts = new TTSManager(this, onSpeechComplete);
 
             SetupRecorder();
@@ -121,12 +115,10 @@ namespace DroidSpeeching
             if (tts.IsSpeaking())
             {
                 tts.StopSpeaking();
-                ttsBtn.Text = SpeechWaiting;
             }
             else
             {
                 tts.SayLine(wikiText.Text, "SpeechingWiki");
-                ttsBtn.Text = SpeechSpeaking;
             }
         }
 
@@ -135,7 +127,6 @@ namespace DroidSpeeching
             base.OnResume();
 
             tts = new TTSManager(this, onSpeechComplete);
-            ttsBtn.Text = SpeechWaiting;
             audioManager = new AndroidUtils.RecordAudioManager(this, OnRecordingFull);
         }
 
@@ -216,36 +207,35 @@ namespace DroidSpeeching
             if (stopRec)
                 audioManager.StopRecording();
 
-            if (popup)
+            if (!popup) return;
+
+            Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.TempRecording.Path));
+
+            Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
+                .SetTitle("Session complete!")
+                .SetMessage("Would you like to listen to your speech?")
+                .SetPositiveButton("Listen", (EventHandler<DialogClickEventArgs>) null)
+                .SetNeutralButton("Share recording", (EventHandler<DialogClickEventArgs>) null)
+                .SetNegativeButton("Close", (arg1, arg2) => { })
+                .Create();
+            alert.Show();
+
+            alert.GetButton((int) DialogButtonType.Positive).Click += (sender, e) =>
             {
-                Android.Net.Uri passedUri = Android.Net.Uri.FromFile(new Java.IO.File(AppData.TempRecording.Path));
+                Intent intent = new Intent();
+                intent.SetAction(Intent.ActionView);
+                intent.SetDataAndType(passedUri, "audio/*");
+                StartActivity(intent);
+            };
 
-                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
-                    .SetTitle("Session complete!")
-                    .SetMessage("Would you like to listen to your speech?")
-                    .SetPositiveButton("Listen", (EventHandler<DialogClickEventArgs>) null)
-                    .SetNeutralButton("Share this recording", (EventHandler<DialogClickEventArgs>) null)
-                    .SetNegativeButton("Close", (arg1, arg2) => { })
-                    .Create();
-                alert.Show();
-
-                alert.GetButton((int) DialogButtonType.Positive).Click += (sender, e) =>
-                {
-                    Intent intent = new Intent();
-                    intent.SetAction(Intent.ActionView);
-                    intent.SetDataAndType(passedUri, "audio/*");
-                    StartActivity(intent);
-                };
-
-                alert.GetButton((int) DialogButtonType.Neutral).Click += (sender, e) =>
-                {
-                    Intent intent = new Intent();
-                    intent.SetAction(Intent.ActionSend);
-                    intent.SetType("audio/*");
-                    intent.PutExtra(Intent.ExtraStream, passedUri);
-                    StartActivity(intent);
-                };
-            }
+            alert.GetButton((int) DialogButtonType.Neutral).Click += (sender, e) =>
+            {
+                Intent intent = new Intent();
+                intent.SetAction(Intent.ActionSend);
+                intent.SetType("audio/*");
+                intent.PutExtra(Intent.ExtraStream, passedUri);
+                StartActivity(intent);
+            };
         }
 
         private void StartAction()
@@ -315,7 +305,7 @@ namespace DroidSpeeching
 
             foreach (string sentence in sentences)
             {
-                if (finalText.Length < charTarget)
+                if (finalText.Length < charTarget && finalText.Length + sentence.Length < 570)
                 {
                     finalText += sentence + ". ";
                 }
@@ -333,11 +323,11 @@ namespace DroidSpeeching
                 if ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <=
                     Android.Content.Res.ScreenLayout.SizeNormal)
                 {
-                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
+                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 15);
                 }
                 else
                 {
-                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 20);
+                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 19);
                 }
             }
 

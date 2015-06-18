@@ -11,7 +11,7 @@
         android:textSize="32sp"
         android:textColor="@color/appTitle" />
     <TextView
-        android:text="Use these practice activities to hone your skills! Tap a category to see all of the activities available for it."
+        android:text="Prepare for your next assessment with these practice activites! Tap a category to see all of the activities available for it, or check out today's content in Daily Exercises."
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/practiceAreaBtn"
-            android:text="Daily excercises"
+            android:text="Daily Excercises"
             android:textSize="20sp"
             android:padding="18dp"
             android:layout_width="0dp"
@@ -32,18 +32,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp" />
-        <Button
-            android:id="@+id/viewSubmittedBtn"
-            android:text="Practice your last assessment!"
-            android:textSize="20sp"
-            android:padding="18dp"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" />
     </LinearLayout>
 </LinearLayout>

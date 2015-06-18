@@ -17,7 +17,6 @@ namespace DroidSpeeching
         private ExpandableListView mainList;
         private Button practiceBtn;
         private SwipeRefreshLayout refresher;
-        private Button viewFeedbackBtn;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,7 +33,7 @@ namespace DroidSpeeching
             View header = Activity.LayoutInflater.Inflate(Resource.Layout.MainTaskListHeader, null);
             mainList = view.FindViewById<ExpandableListView>(Resource.Id.mainActivitiesList);
             mainList.AddHeaderView(header, null, false);
-            mainList.SetAdapter(new ScenarioListAdapter(Activity, Resource.Id.mainActivitiesList,
+            mainList.SetAdapter(new ScenarioListAdapter(Activity,
                 AppData.Session.Categories.ToArray()));
             mainList.ChildClick += mainList_ChildClick;
 
@@ -52,7 +51,7 @@ namespace DroidSpeeching
                 await ServerData.FetchCategories();
                 refresher.Refreshing = false;
 
-                ((ScenarioListAdapter) mainList.ExpandableListAdapter).categories = AppData.Session.Categories.ToArray();
+                ((ScenarioListAdapter) mainList.ExpandableListAdapter).Categories = AppData.Session.Categories.ToArray();
                 Activity.RunOnUiThread(
                     () => ((ScenarioListAdapter) mainList.ExpandableListAdapter).NotifyDataSetChanged());
             };
@@ -62,9 +61,6 @@ namespace DroidSpeeching
             {
                 mainList.ExpandGroup(0, true);
             }
-
-            viewFeedbackBtn = header.FindViewById<Button>(Resource.Id.viewSubmittedBtn);
-            viewFeedbackBtn.Click += viewFeedbackBtn_Click;
 
             practiceBtn = header.FindViewById<Button>(Resource.Id.practiceAreaBtn);
             practiceBtn.Click += practiceButton_Click;
@@ -115,14 +111,6 @@ namespace DroidSpeeching
             }
         }
 
-        private void viewFeedbackBtn_Click(object sender, EventArgs e)
-        {
-            if (AndroidUtils.IsConnected())
-                Activity.StartActivity(typeof (AssessmentActivity)); //FeedbackActivity));
-            else
-                AndroidUtils.OfflineAlert(Activity);
-        }
-
         private void practiceButton_Click(object sender, EventArgs e)
         {
             if (AndroidUtils.IsConnected())
@@ -131,28 +119,23 @@ namespace DroidSpeeching
                 AndroidUtils.OfflineAlert(Activity);
         }
 
-        private ISharedPreferences GetActivityPrefs(int id)
-        {
-            return Activity.GetSharedPreferences("ACT_" + id, FileCreationMode.MultiProcess);
-        }
-
         /// <summary>
         /// An expandable list adapter which displays the available categories and the Activities under them
         /// </summary>
         public class ScenarioListAdapter : BaseExpandableListAdapter
         {
             private readonly Activity context;
-            public ActivityCategory[] categories;
+            public ActivityCategory[] Categories;
 
-            public ScenarioListAdapter(Activity context, int resource, ActivityCategory[] data)
+            public ScenarioListAdapter(Activity context, ActivityCategory[] data)
             {
                 this.context = context;
-                categories = data;
+                Categories = data;
             }
 
             public override int GroupCount
             {
-                get { return categories.Length; }
+                get { return Categories.Length; }
             }
 
             public override bool HasStableIds
@@ -172,7 +155,7 @@ namespace DroidSpeeching
 
             public override int GetChildrenCount(int groupPosition)
             {
-                return categories[groupPosition].Activities.Length;
+                return Categories[groupPosition].Activities.Length;
             }
 
             public override Java.Lang.Object GetGroup(int groupPosition)
@@ -189,7 +172,7 @@ namespace DroidSpeeching
                 ViewGroup parent)
             {
                 View view = convertView;
-                ISpeechingPracticeActivity scenario = categories[groupPosition].Activities[childPosition];
+                ISpeechingPracticeActivity scenario = Categories[groupPosition].Activities[childPosition];
                 if (view == null)
                 {
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListChild, null);
@@ -205,7 +188,7 @@ namespace DroidSpeeching
             public override View GetGroupView(int groupPosition, bool isExpanded, View convertView, ViewGroup parent)
             {
                 View view = convertView;
-                ActivityCategory category = categories[groupPosition];
+                ActivityCategory category = Categories[groupPosition];
                 if (view == null)
                 {
                     view = context.LayoutInflater.Inflate(Resource.Layout.MainTaskListParent, null);
