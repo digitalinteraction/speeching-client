@@ -5,6 +5,7 @@ using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
+using Android.Widget;
 using com.dbeattie;
 using SpeechingShared;
 
@@ -18,7 +19,6 @@ namespace DroidSpeeching
         private RecyclerView feedList;
         private List<IFeedItem> items;
         private CustomSwipeToRefresh refresher;
-
         private bool saved;
 
         public void OnActionClicked(Snackbar snackbar)
@@ -109,7 +109,6 @@ namespace DroidSpeeching
             };
 
             feedList = view.FindViewById<RecyclerView>(Resource.Id.mainResults_recyclerView);
-
             feedList.HasFixedSize = true;
 
             LinearLayoutManager llm = new LinearLayoutManager(Activity) {Orientation = LinearLayoutManager.Vertical};

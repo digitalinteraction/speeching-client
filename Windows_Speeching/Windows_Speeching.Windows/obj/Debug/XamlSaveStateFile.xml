@@ -4,6 +4,6 @@
     <ReferenceAssembly PathName="c:\users\tgs03_000\documents\dev\uni\speeching-client\packages\newtonsoft.json.7.0.1-beta3\lib\portable-net40+sl5+wp80+win8+wpa81\newtonsoft.json.dll" HashGuid="328df7c5-321a-a08e-a400-8dde727da031" />
     <ReferenceAssembly PathName="c:\users\tgs03_000\documents\dev\uni\speeching-client\packages\pclstorage.1.0.2\lib\portable-win8+wpa81\pclstorage.abstractions.dll" HashGuid="736550c0-daf7-fc43-5e2e-a9023a3ecf57" />
     <ReferenceAssembly PathName="c:\users\tgs03_000\documents\dev\uni\speeching-client\packages\pclstorage.1.0.2\lib\portable-win8+wpa81\pclstorage.dll" HashGuid="b3c72855-4fce-2ada-bc0f-5135882cc5d5" />
-    <ReferenceAssembly PathName="c:\users\tgs03_000\documents\dev\uni\speeching-client\speechingshared\bin\debug\speechingshared.dll" HashGuid="52a0c7d6-5d27-def7-88ed-6a474298db54" />
+    <ReferenceAssembly PathName="c:\users\tgs03_000\documents\dev\uni\speeching-client\speechingshared\bin\debug\speechingshared.dll" HashGuid="583ae62f-4068-7163-b641-7d0eedaa5331" />
   </ReferenceAssemblyList>
 </XamlCompilerSaveState>

@@ -186,7 +186,7 @@ namespace DroidSpeeching
                         float absVelocityY = System.Math.Abs(mVelocityTracker.YVelocity);
                         bool dismiss = false;
                         bool dismissRight = false;
-                        if (System.Math.Abs(mFinalDelta) > mViewWidth / 2 && mSwiping)
+                        if (System.Math.Abs(mFinalDelta) > mViewWidth / 2.2 && mSwiping)
                         {
                             dismiss = true;
                             dismissRight = mFinalDelta > 0;
@@ -224,7 +224,7 @@ namespace DroidSpeeching
                                     .Alpha(mAlpha)
                                     .SetDuration(mAnimationTime)
                                     .SetListener(null);
-                            if(!mSwipeListener.CanSwipe(mDownPosition) && System.Math.Abs(mFinalDelta) > 10)
+                            if (!mSwipeListener.CanSwipe(mDownPosition) && System.Math.Abs(mFinalDelta) > mViewWidth / 2)
                             {
                                 Animation shake = AnimationUtils.LoadAnimation(context, Resource.Animation.shake);
                                 mDownView.StartAnimation(shake);

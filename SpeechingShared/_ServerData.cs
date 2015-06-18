@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
@@ -824,9 +825,13 @@ namespace SpeechingShared
 
             List<IFeedItem> items = await GetRequest<List<IFeedItem>>("Feed", "", new FeedItemConverter());
 
-            if (items != null) AppData.Session.CurrentFeed = items;
+            if (items == null) return null;
 
-            return items;
+            List<IFeedItem> sortedItems = items.OrderBy(item => -item.Importance).ToList();
+
+            AppData.Session.CurrentFeed = sortedItems;
+
+            return sortedItems;
         }
 
         public static async Task<bool> DismissFeedItem(int id)

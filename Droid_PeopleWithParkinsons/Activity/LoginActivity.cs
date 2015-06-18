@@ -1,7 +1,9 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Gms.Auth;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Plus;
@@ -58,13 +60,33 @@ namespace DroidSpeeching
 
             IPerson currentPerson = PlusClass.PeopleApi.GetCurrentPerson(apiClient);
 
-            if (currentPerson == null) return;
+            if (currentPerson != null)
+            {
+                Task.Factory.StartNew(() => PrepUser(currentPerson));
+            }
+        }
+
+        private void PrepUser(IPerson currentPerson)
+        {
+            string email = PlusClass.AccountApi.GetAccountName(apiClient);
+            //TODO
+            //string token= "";
+            //try
+            //{
+            //    token = GoogleAuthUtil.GetToken(this, email, "audience:server:client_id:" + ConfidentialData.GoogleOAuthAppId);
+            //}
+            //catch (Exception ex)
+            //{
+                
+            //    throw;
+            //}
+            
 
             User thisUser = new User
             {
                 Name = currentPerson.DisplayName,
                 Key = currentPerson.Id,
-                Email = PlusClass.AccountApi.GetAccountName(apiClient)
+                Email = email
             };
 
             thisUser.Nickname = (currentPerson.HasNickname) ? currentPerson.Nickname : thisUser.Name;
@@ -92,26 +114,17 @@ namespace DroidSpeeching
                 dialog.Show();
             });
 
-            try
-            {
-                User serverUser = await ServerData.PostUserAccount(thisUser);
-                dialog.Hide();
+            User serverUser = await ServerData.PostUserAccount(thisUser);
+            RunOnUiThread(() => dialog.Hide());
 
-                if (serverUser == null)
-                {
-                    ThrowError("Failed to set up your account with the service. Please try again later.");
-                    return;
-                }
-
-                AppData.AssignCurrentUser(serverUser);
-                ReadyMainMenu();
-            }
-            catch (Exception e)
+            if (serverUser == null)
             {
-                
-                throw;
+                ThrowError("Failed to set up your account with the service. Please try again later.");
+                return;
             }
 
+            AppData.AssignCurrentUser(serverUser);
+            ReadyMainMenu();
         }
 
         public void OnConnectionSuspended(int cause)
@@ -161,7 +174,7 @@ namespace DroidSpeeching
                 .AddConnectionCallbacks(this)
                 .AddOnConnectionFailedListener(this)
                 .AddApi(PlusClass.Api)
-                .AddScope(PlusClass.ScopePlusLogin).Build();
+                .AddScope(PlusClass.ScopePlusProfile).Build();
 
             signOut = Intent.GetBooleanExtra("signOut", false);
             revokeAccess = Intent.GetBooleanExtra("revokeGoogle", false);
@@ -175,11 +188,6 @@ namespace DroidSpeeching
 
             apiClient.Disconnect();
 
-            if (resultCode != Result.Ok)
-            {
-                signInClicked = false;
-            }
-
             intentInProgress = false;
 
             if (!apiClient.IsConnecting)
@@ -187,7 +195,24 @@ namespace DroidSpeeching
                 apiClient.Connect();
             }
 
+            if (resultCode != Result.Ok)
+            {
+                signInClicked = false;
+                RunOnUiThread(() => signInBtn.Enabled = true);
+                return;
+            }
+
             RunOnUiThread(() => signInBtn.Enabled = false);
+        }
+
+        protected override void OnStop()
+        {
+            if (apiClient.IsConnected || apiClient.IsConnecting)
+            {
+                apiClient.Disconnect();
+            }
+
+            base.OnStop();
         }
 
         private void ResolveSignInError()
