@@ -55,7 +55,7 @@ namespace SpeechingShared
                 IsZoomEnabled = false
             });
 
-            model.DefaultFontSize = 21;
+            model.DefaultFontSize = 18;
 
             LineSeries series = new LineSeries
             {

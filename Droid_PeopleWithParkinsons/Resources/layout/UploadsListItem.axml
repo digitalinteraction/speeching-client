@@ -5,8 +5,8 @@
     android:background="@drawable/listCell"
     android:elevation="3dp">
     <LinearLayout
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:padding="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -28,24 +28,27 @@
             android:visibility="visible" />
     </LinearLayout>
     <TextView
-        android:id="@+id/uploadsList_uploadStatus"
-        android:text="status"
-        android:layout_toLeftOf="@id/uploadsList_visuals"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        android:padding="15dp" />
-    <TextView
         android:id="@+id/uploadsList_scenarioTitle"
         android:text="Geoffry Fakename"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@color/white"
-        android:padding="15dp" />
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp" />
+    <TextView
+        android:id="@+id/uploadsList_uploadStatus"
+        android:text="status"
+        android:layout_below="@id/uploadsList_scenarioTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="4dp" />
     <TextView
         android:id="@+id/uploadsList_completedAt"
         android:text="11/11/2011"
@@ -53,7 +56,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:layout_below="@id/uploadsList_scenarioTitle"
+        android:layout_below="@id/uploadsList_uploadStatus"
         android:textColor="@color/white"
-        android:padding="15dp" />
+        android:paddingTop="4dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp" />
 </RelativeLayout>

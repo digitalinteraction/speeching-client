@@ -2687,11 +2687,11 @@ namespace DroidSpeeching
 			// aapt resource value: 0x7f0c00e7
 			public const int uploadsList_progress = 2131493095;
 			
-			// aapt resource value: 0x7f0c00ea
-			public const int uploadsList_scenarioTitle = 2131493098;
-			
 			// aapt resource value: 0x7f0c00e9
-			public const int uploadsList_uploadStatus = 2131493097;
+			public const int uploadsList_scenarioTitle = 2131493097;
+			
+			// aapt resource value: 0x7f0c00ea
+			public const int uploadsList_uploadStatus = 2131493098;
 			
 			// aapt resource value: 0x7f0c00e6
 			public const int uploadsList_visuals = 2131493094;
