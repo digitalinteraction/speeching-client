@@ -379,7 +379,14 @@ namespace DroidSpeeching
 
         public void PlotGraph(PlotModel plotModel)
         {
-            PlotView.Model = plotModel;
+            if (plotModel.PlotView != null)
+            {
+                PlotView = (PlotView)plotModel.PlotView;
+            }
+            else
+            {
+                PlotView.Model = plotModel;
+            }
         }
     }
 }

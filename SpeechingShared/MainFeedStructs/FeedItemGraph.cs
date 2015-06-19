@@ -35,10 +35,12 @@ namespace SpeechingShared
 
             model.Axes.Add(new DateTimeAxis
             {
-                IntervalType = DateTimeIntervalType.Days,
                 StringFormat = "dd MMM",
                 IsPanEnabled = false,
-                IsZoomEnabled = false
+                IsZoomEnabled = false,
+                IntervalType = DateTimeIntervalType.Auto,
+                MajorStep = 1,
+                MinorStep = 0.5
             });
             model.Axes.Add(new LinearAxis
             {
@@ -52,6 +54,8 @@ namespace SpeechingShared
                 IsPanEnabled = false,
                 IsZoomEnabled = false
             });
+
+            model.DefaultFontSize = 21;
 
             LineSeries series = new LineSeries
             {
