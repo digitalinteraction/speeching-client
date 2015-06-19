@@ -16,10 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows_Speeching.WindowsPhone", "Windows_Speeching\Windows_Speeching.WindowsPhone\Windows_Speeching.WindowsPhone.csproj", "{CE12A567-9138-4BA3-AFFF-A04986B0CF7E}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Windows_Speeching\Windows_Speeching.Shared\Windows_Speeching.Shared.projitems*{ed60037d-88ae-468e-86df-bca8ad8e545e}*SharedItemsImports = 13
-		Windows_Speeching\Windows_Speeching.Shared\Windows_Speeching.Shared.projitems*{3a7f6c60-8c52-4615-9674-a30e7f223de2}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU
 		Ad-Hoc|ARM = Ad-Hoc|ARM

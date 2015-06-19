@@ -46,16 +46,25 @@ namespace SpeechingShared
             }
 
             if (ActivityCache == null) ActivityCache = new List<ISpeechingPracticeActivity>();
+            ISpeechingPracticeActivity newPracticeActivity = null;
 
-            // Check if it's already been downloaded and exists in the cache
-            foreach(ISpeechingPracticeActivity activity in ActivityCache)
+            try
             {
-                if (activity.Id == activityId) return activity;
-            }
+                // Check if it's already been downloaded and exists in the cache
+                foreach (ISpeechingPracticeActivity activity in ActivityCache)
+                {
+                    if ( activity != null && activity.Id == activityId) return activity;
+                }
 
-            // We don't have it locally - check the server and add to the cache for next time!
-            ISpeechingPracticeActivity newPracticeActivity = await ServerData.GetRequest<ISpeechingPracticeActivity>("practiceActivity", activityId.ToString(), new ActivityConverter());
-            ActivityCache.Add(newPracticeActivity);
+                // We don't have it locally - check the server and add to the cache for next time!
+                newPracticeActivity = await ServerData.GetRequest<ISpeechingPracticeActivity>("Activity", activityId.ToString(), new ActivityConverter());
+                ActivityCache.Add(newPracticeActivity);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            
 
             AppData.SaveCurrentData();
 

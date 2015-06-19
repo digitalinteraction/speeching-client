@@ -152,13 +152,23 @@ namespace DroidSpeeching
                             if (!AndroidUtils.IsConnected() && !AndroidUtils.IsActivityAvailableOffline(actId, context))
                             {
                                 AndroidUtils.OfflineAlert(context,
-                                    "This practiceActivity has not been downloaded yet and requires an Internet connection to prepare!");
+                                    "This assessment has not been downloaded yet and requires an Internet connection to prepare!");
                                 return;
                             }
 
-                            Intent intent = new Intent(context, typeof(AssessmentActivity));
-                            intent.PutExtra("ActivityId", actId);
-                            context.StartActivity(intent);
+                            try
+                            {
+                                Intent intent = new Intent(context, typeof(AssessmentActivity));
+                                intent.PutExtra("ActivityId", actId);
+                                context.StartActivity(intent);
+                            }
+                            catch (Exception ex)
+                            {
+                                AndroidUtils.OfflineAlert(context,
+                                    "Error launching assessment activity");
+                                return;
+                            }
+                            
                         };
                     break;
 
