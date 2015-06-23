@@ -36,12 +36,19 @@ namespace DroidSpeeching
 
             video = view.FindViewById<VideoView>(Resource.Id.helper_video);
             descriptionView = view.FindViewById<TextView>(Resource.Id.helper_explanation);
+            descriptionView.SetText(description.ToCharArray(),0, description.Length);
 
-            descriptionView.Text = description;
-
-            video.Prepared += VideoPrepared;
-            video.SetVideoURI(Uri.Parse(videoAdd));
-            video.SetZOrderOnTop(true); // Removes dimming
+            if (!string.IsNullOrEmpty(videoAdd))
+            {
+                video.Prepared += VideoPrepared;
+                video.SetVideoURI(Uri.Parse(videoAdd));
+                video.SetZOrderOnTop(true); // Removes dimming
+            }
+            else
+            {
+                LinearLayout holder = view.FindViewById<LinearLayout>(Resource.Id.helper_videoHolder);
+                holder.Visibility = ViewStates.Gone;
+            }
 
             dialog.SetView(view);
 
@@ -56,10 +63,13 @@ namespace DroidSpeeching
 
         public async void StartVideo()
         {
+            if (string.IsNullOrEmpty(videoAdd)) return;
+
             while (!prepped)
             {
                 await Task.Delay(100);
             }
+            video.RequestFocus();
             video.Start();
         }
 

@@ -21,6 +21,7 @@ namespace DroidSpeeching
         private PagerSlidingTabStrip tabs;
         private RelativeLayout offlineNotice;
         private ViewPager pager;
+        private ISharedPreferences prefs;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -43,6 +44,45 @@ namespace DroidSpeeching
             AndroidUtils.IsConnected();
 
             SupportActionBar.Show();
+
+            CheckForFirstTime();
+        }
+
+        private async void CheckForFirstTime()
+        {
+            if (!GetPrefs().GetBoolean("FIRSTTIME", true)) return;
+
+            try
+            {
+                ActivityHelp help = await ServerData.FetchHelp(ServerData.TaskType.None);
+
+                VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
+                helpVidFragment.Show(SupportFragmentManager, "video_helper");
+
+                helpVidFragment.StartVideo();
+
+                ISharedPreferencesEditor editor = GetPrefs().Edit();
+                editor.PutBoolean("FIRSTTIME", false);
+                editor.Apply();
+            }
+            catch (Exception except)
+            {
+                ISharedPreferencesEditor editor = GetPrefs().Edit();
+                editor.PutBoolean("FIRSTTIME", true);
+                editor.Apply();
+            }
+            
+            
+        }
+
+        private ISharedPreferences GetPrefs()
+        {
+            if (prefs == null)
+            {
+                prefs = GetSharedPreferences("APP", FileCreationMode.MultiProcess);
+            }
+
+            return prefs;
         }
 
         public void ShowOfflineWarning(bool show)

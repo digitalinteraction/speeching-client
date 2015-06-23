@@ -12,15 +12,14 @@
         android:id="@+id/helper_videoHolder"
         android:orientation="vertical"
         android:layout_width="250dp"
-        android:layout_height="188dp"
+        android:layout_height="145dp"
         android:layout_gravity="center"
         android:layout_margin="10dp">
         <VideoView
             android:id="@+id/helper_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:paddingBottom="15dp" />
+            android:layout_gravity="center" />
     </LinearLayout>
     <TextView
         android:id="@+id/helper_explanation"
