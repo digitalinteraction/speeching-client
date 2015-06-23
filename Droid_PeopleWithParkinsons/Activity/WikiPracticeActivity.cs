@@ -132,7 +132,12 @@ namespace DroidSpeeching
 
         protected override void OnPause()
         {
+            FinishReading();
             base.OnPause();
+        }
+
+        private void FinishReading()
+        {
             if (reading)
             {
                 reading = false;
@@ -162,6 +167,8 @@ namespace DroidSpeeching
 
         private async void ShowHelpDialog()
         {
+            FinishReading();
+
             ActivityHelp help = await ServerData.FetchHelp(currentMode);
 
             VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
