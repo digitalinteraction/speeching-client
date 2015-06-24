@@ -18,6 +18,7 @@ namespace SpeechingShared
         public UserType userType;
         public FriendStatus Status;
         public List<string> Friends;
+        public string IdToken;
 
         public User()
         {

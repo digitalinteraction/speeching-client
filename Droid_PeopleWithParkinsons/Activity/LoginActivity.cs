@@ -69,23 +69,13 @@ namespace DroidSpeeching
         private void PrepUser(IPerson currentPerson)
         {
             string email = PlusClass.AccountApi.GetAccountName(apiClient);
-            //TODO
-            //string token= "";
-            //try
-            //{
-            //    token = GoogleAuthUtil.GetToken(this, email, "audience:server:client_id:" + ConfidentialData.GoogleOAuthAppId);
-            //}
-            //catch (Exception ex)
-            //{
-                
-            //    throw;
-            //}
-            
+
+            string token = GoogleAuthUtil.GetToken(this, email, "audience:server:client_id:" + ConfidentialData.GoogleOAuthWebAppId);
 
             User thisUser = new User
             {
                 Name = currentPerson.DisplayName,
-                Key = currentPerson.Id,
+                IdToken = token,
                 Email = email
             };
 
