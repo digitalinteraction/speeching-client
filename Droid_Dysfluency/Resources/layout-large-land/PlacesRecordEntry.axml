@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ImageView
+        android:src="@drawable/Icon"
+        android:id="@+id/placesRecord_photo"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="2">
+        <TextView
+            android:id="@+id/placesRecord_title"
+            android:text="Create an entry about 'A Location'"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/appTitle"
+            android:padding="15dp" />
+        <TextView
+            android:id="@+id/placesRecord_subHeader"
+            android:text="Why not try talking about..."
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:padding="15dp" />
+        <TextView
+            android:id="@+id/placesRecord_hint"
+            android:text="•What it looks like\n•The last time you went there\n•The things about it that you like and dislike\n"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:padding="15dp" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <Button
+                android:id="@+id/placesRecord_button"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/recordButtonBlue"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Start recording!"
+                android:textColor="#fff"
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="40dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

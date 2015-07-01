@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/TutPlaceholder"
+        android:id="@+id/guide_mainImage"
+        android:scaleType="centerCrop" />
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/guide_left"
+        android:alpha="0.8">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <TextView
+                android:text="&lt;"
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="33sp"
+                android:textColor="@color/darkBlue" />
+        </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:background="@drawable/shadowed" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/guide_right"
+        android:alpha="0.8">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <TextView
+                android:text="&gt;"
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="33sp"
+                android:textColor="@color/darkBlue" />
+        </LinearLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:background="@drawable/shadowed" />
+    </LinearLayout>
+<!-- Bottom bar -->
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="140dp"
+        android:background="@color/white"
+        android:alpha="0.85">
+        <TextView
+            android:text="Smile when you can and offer reassuring physical contact when it is appropriate."
+            android:id="@+id/guide_content"
+            android:gravity="left"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:textSize="24sp"
+            android:layout_margin="12dp"
+            android:textColor="@color/darkBlue" />
+    </LinearLayout>
+</RelativeLayout>

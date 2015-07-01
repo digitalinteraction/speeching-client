@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/listCell"
+    android:elevation="3dp">
+    <LinearLayout
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:padding="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/uploadsList_visuals">
+        <ProgressBar
+            android:id="@+id/uploadsList_progress"
+            style="?android:attr/progressBarStyleLargeInverse"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"
+            android:indeterminateTintMode="src_in"
+            android:visibility="gone" />
+        <ImageView
+            android:src="@drawable/Icon"
+            android:id="@+id/uploadsList_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/uploadsList_scenarioTitle"
+        android:text="Geoffry Fakename"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp" />
+    <TextView
+        android:id="@+id/uploadsList_uploadStatus"
+        android:text="status"
+        android:layout_below="@id/uploadsList_scenarioTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="4dp" />
+    <TextView
+        android:id="@+id/uploadsList_completedAt"
+        android:text="11/11/2011"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_below="@id/uploadsList_uploadStatus"
+        android:textColor="@color/white"
+        android:paddingTop="4dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="15dp" />
+</RelativeLayout>

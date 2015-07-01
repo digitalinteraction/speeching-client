@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ImageView
+        android:src="@drawable/Icon"
+        android:id="@+id/wiki_image"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5.5"
+        android:scaleType="centerCrop"
+        android:paddingBottom="25dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:background="@color/appDark"
+        android:elevation="7dp"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/wiki_text"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:padding="18dp"
+        android:layout_margin="15dp"
+        android:textSize="22sp"
+        android:text="Loading..." />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:padding="15dp">
+        <LinearLayout
+            android:id="@+id/wiki_speedControls"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_margin="15dp">
+            <Button
+                android:id="@+id/wiki_upBtn"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="▲"
+                android:textSize="22sp" />
+            <TextView
+                android:id="@+id/wiki_bpm"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="50 BPM"
+                android:textSize="28sp"
+                android:textColor="@color/appTitle"
+                android:gravity="center" />
+            <Button
+                android:id="@+id/wiki_downBtn"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="▼"
+                android:textSize="22sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/wiki_volControls"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_margin="15dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Current vol:"
+                    android:textSize="22sp"
+                    android:gravity="center" />
+                <TextView
+                    android:id="@+id/wiki_volume"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="\?"
+                    android:textSize="33sp"
+                    android:gravity="center"
+                    android:textColor="@color/appTitle" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Target vol:"
+                    android:textSize="22sp"
+                    android:gravity="center" />
+                <TextView
+                    android:id="@+id/wiki_Targetvolume"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="45"
+                    android:textSize="33sp"
+                    android:gravity="center" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/wiki_measureVolBtn"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.5"
+                android:text="Set new target"
+                android:textSize="22sp" />
+        </LinearLayout>
+        <Space
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2" />
+        <Button
+            android:id="@+id/wiki_startBtn"
+            android:text="Start!"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.3"
+            android:textSize="24sp"
+            android:layout_margin="15dp" />
+    </LinearLayout>
+</LinearLayout>

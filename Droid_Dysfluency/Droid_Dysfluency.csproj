@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{442A9706-33D5-459F-89C1-C074EE7E8DBD}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Droid_Dysfluency</RootNamespace>
+    <AssemblyName>Droid_Dysfluency</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>e86ec571</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidLinkSkip />
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <Debugger>Xamarin</Debugger>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DBeattie.SnackbarSharp">
+      <HintPath>..\packages\SnackbarSharp.dll.1.0.7\lib\MonoAndroid\DBeattie.SnackbarSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="FormsViewGroup">
+      <HintPath>..\packages\Xamarin.Forms.1.4.2.6359\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib.Portable">
+      <HintPath>..\packages\SharpZipLib.Portable.0.86.0.0002\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\packages\OxyPlot.Core.2015.1.889-alpha\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+Xamarin.iOS10\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Android">
+      <HintPath>..\packages\OxyPlot.Xamarin.Android.2015.1.889-alpha\lib\MonoAndroid\OxyPlot.Xamarin.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Forms">
+      <HintPath>..\packages\OxyPlot.Xamarin.Forms.2015.1.889-alpha\lib\MonoAndroid10\OxyPlot.Xamarin.Forms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OxyPlot.Xamarin.Forms.Platform.Android">
+      <HintPath>..\packages\OxyPlot.Xamarin.Forms.2015.1.889-alpha\lib\MonoAndroid10\OxyPlot.Xamarin.Forms.Platform.Android.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage.Abstractions">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="RadialProgress.Android">
+      <HintPath>..\Components\radialprogress-1.0.1.3\lib\android\RadialProgress.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Refractored.PagerSlidingTabStrip">
+      <HintPath>..\packages\Refractored.PagerSlidingTabStrip.1.0.9.4\lib\MonoAndroid10\Refractored.PagerSlidingTabStrip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp.MonoDroid">
+      <HintPath>..\Components\restsharp-105.0.1.0\lib\android\RestSharp.MonoDroid.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\packages\Xamarin.Android.Support.v4.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.AppCompat.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.CardView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.Palette">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.Palette.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.Palette.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.22.2.0.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>..\packages\Xamarin.Forms.1.4.2.6359\lib\MonoAndroid10\Xamarin.Forms.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform">
+      <HintPath>..\packages\Xamarin.Forms.1.4.2.6359\lib\MonoAndroid10\Xamarin.Forms.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform.Android">
+      <HintPath>..\packages\Xamarin.Forms.1.4.2.6359\lib\MonoAndroid10\Xamarin.Forms.Platform.Android.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>..\packages\Xamarin.Forms.1.4.2.6359\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Base">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Gcm">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Gcm.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Gcm.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Location">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Location.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Location.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Maps">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Maps.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.GooglePlayServices.Plus">
+      <HintPath>..\packages\Xamarin.GooglePlayServices.Plus.25.0.0.0\lib\MonoAndroid41\Xamarin.GooglePlayServices.Plus.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activity\AssessmentActivity.cs" />
+    <Compile Include="Activity\FeedbackActivity.cs" />
+    <Compile Include="Activity\GuideActivity.cs" />
+    <Compile Include="Activity\LocationActivity.cs" />
+    <Compile Include="Activity\LoginActivity.cs" />
+    <Compile Include="Activity\MainActivity.cs" />
+    <Compile Include="Activity\RecordPlaceEntryActivity.cs" />
+    <Compile Include="Activity\ScenarioActivity.cs" />
+    <Compile Include="Activity\SettingsActivity.cs" />
+    <Compile Include="Activity\UploadsActivity.cs" />
+    <Compile Include="Activity\WikiPracticeActivity.cs" />
+    <Compile Include="Fragment\AssessmentImgDescFragment.cs" />
+    <Compile Include="Fragment\AssessmentQuickFireFragment.cs" />
+    <Compile Include="Fragment\FeedFragment.cs" />
+    <Compile Include="Fragment\GuideFragment.cs" />
+    <Compile Include="Fragment\ResultsFragment.cs" />
+    <Compile Include="Fragment\SettingsFragment.cs" />
+    <Compile Include="Fragment\SubmittedListFragment.cs" />
+    <Compile Include="Fragment\TaskListFragment.cs" />
+    <Compile Include="Fragment\UserProfileFragment.cs" />
+    <Compile Include="Geofences\GeofencingReceiver.cs" />
+    <Compile Include="Geofences\GeofencingRegisterer.cs" />
+    <Compile Include="MiscClasses\AndroidPCLHelper.cs" />
+    <Compile Include="MiscClasses\AndroidUtils.cs" />
+    <Compile Include="MiscClasses\AssessmentFragment.cs" />
+    <Compile Include="MiscClasses\AudioRecorder.cs" />
+    <Compile Include="MiscClasses\CustomSwipeToRefresh.cs" />
+    <Compile Include="MiscClasses\ExportedListAdapter.cs" />
+    <Compile Include="MiscClasses\FeedbackSubmissionButton.cs" />
+    <Compile Include="MiscClasses\FeedCardAdapter.cs" />
+    <Compile Include="MiscClasses\GCMService.cs" />
+    <Compile Include="MiscClasses\IAudioRecorder.cs" />
+    <Compile Include="MiscClasses\RoundedDrawable.cs" />
+    <Compile Include="MiscClasses\SwipeableRecyclerViewTouchListener.cs" />
+    <Compile Include="MiscClasses\TTSManager.cs" />
+    <Compile Include="MiscClasses\VideoPlayerFragment.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Assets\AboutAssets.txt" />
+    <AndroidResource Include="Resources\drawable\rounded_layout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\shadowed.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AssessmentActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardGraph.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardImage.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardPercentage.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardPerson.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardStarRating.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedCardText.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FriendsCheckListAlert.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GuideActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\GuideFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ImageDescFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\LocationActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\layout\MainFriendsListHeader.axml" />
+    <AndroidResource Include="Resources\layout\MainMenuListItem.axml" />
+    <AndroidResource Include="Resources\layout\MainResultsFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainTaskListChild.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainTaskListFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainTaskListHeader.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MainTaskListParent.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PermissionsActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PermissionsListHeader.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PlacesListHeader.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PlacesListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PlacesRecordEntry.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ProfileFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\QuickfireFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\RatingDialog.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ScenarioActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Splash.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SubmittedAlert.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SubmittedFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SubmittedHeader.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\UploadsActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\UploadsListHead.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\UploadsListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\VideoHelpPopup.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ViewSubmissionActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\WikiPracticeActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-land\AssessmentActivity.axml" />
+    <AndroidResource Include="Resources\layout-land\FeedbackActivity.axml" />
+    <AndroidResource Include="Resources\layout-land\FeedCardImage.axml" />
+    <AndroidResource Include="Resources\layout-land\LocationActivity.axml" />
+    <AndroidResource Include="Resources\layout-land\MainResultsFragment.axml" />
+    <AndroidResource Include="Resources\layout-land\MainTaskListFragment.axml" />
+    <AndroidResource Include="Resources\layout-land\ProfileFragment.axml" />
+    <AndroidResource Include="Resources\layout-land\ScenarioActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\AssessmentActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\FeedbackActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\GuideFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\ImageDescFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\LocationActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\MainResultsFragment.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListChild.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\MainTaskListParent.axml" />
+    <AndroidResource Include="Resources\layout-large\PermissionsListHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\PlacesListHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\PlacesListItem.axml" />
+    <AndroidResource Include="Resources\layout-large\PlacesRecordEntry.axml" />
+    <AndroidResource Include="Resources\layout-large\SubmittedHeader.axml" />
+    <AndroidResource Include="Resources\layout-large\UploadsActivity.axml" />
+    <AndroidResource Include="Resources\layout-large\UploadsListHead.axml" />
+    <AndroidResource Include="Resources\layout-large\UploadsListItem.axml" />
+    <AndroidResource Include="Resources\layout-large\VideoHelpPopup.axml" />
+    <AndroidResource Include="Resources\layout-large\WikiPracticeActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\AssessmentActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\FeedbackActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\LocationActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-land\MainResultsFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-land\MainTaskListFragment.axml" />
+    <AndroidResource Include="Resources\layout-large-land\PlacesRecordEntry.axml" />
+    <AndroidResource Include="Resources\layout-large-land\RecordSound.axml" />
+    <AndroidResource Include="Resources\layout-large-land\ScenarioActivity.axml" />
+    <AndroidResource Include="Resources\layout-large-port\RecordSound.axml" />
+    <AndroidResource Include="Resources\layout-large-port\ScenarioActivity.axml" />
+    <AndroidResource Include="Resources\layout-normal-land\PlacesRecordEntry.axml" />
+    <AndroidResource Include="Resources\values\AutoResizeTextViewStyleable.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <AndroidResource Include="Resources\anim\scale_button_normal.xml" />
+    <AndroidResource Include="Resources\anim\scale_button_pressed.xml" />
+    <AndroidResource Include="Resources\anim\shake.xml" />
+    <AndroidResource Include="Resources\drawable\background_tabs.xml" />
+    <AndroidResource Include="Resources\drawable\circle.png" />
+    <AndroidResource Include="Resources\drawable\ic_action_mic.png" />
+    <AndroidResource Include="Resources\drawable\ic_drawer.png" />
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\drawable\iconupload128.png" />
+    <AndroidResource Include="Resources\drawable\info.png" />
+    <AndroidResource Include="Resources\drawable\infoWhite.png" />
+    <AndroidResource Include="Resources\drawable\listCell.xml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\listCellChild.xml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\mode.png" />
+    <AndroidResource Include="Resources\drawable\notifIcon.png" />
+    <AndroidResource Include="Resources\drawable\offline.png" />
+    <AndroidResource Include="Resources\drawable\progress.xml" />
+    <AndroidResource Include="Resources\drawable\recordButtonBlue.xml" />
+    <AndroidResource Include="Resources\drawable\recordButtonRed.xml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\round_button.xml" />
+    <AndroidResource Include="Resources\drawable\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable\splash.png" />
+    <AndroidResource Include="Resources\drawable\splashIcon.png" />
+    <AndroidResource Include="Resources\drawable\tabs_pattern.png" />
+    <AndroidResource Include="Resources\drawable\TutPlaceholder.jpg" />
+    <AndroidResource Include="Resources\drawable\whiteCircle.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_mic.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\iconupload128.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mode.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_mic.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-mdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_mic.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_mic.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notifIcon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\round_button.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\round_button_alt.xml" />
+    <AndroidResource Include="Resources\menu\mainActivityActions.xml" />
+    <AndroidResource Include="Resources\menu\practiceActivityActions.xml" />
+    <AndroidResource Include="Resources\menu\RecordMenu.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\menu\scenarioActivityActions.xml" />
+    <AndroidResource Include="Resources\raw\Click1.wav" />
+    <AndroidResource Include="Resources\values\Strings.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\Styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\xml\user_settings.xml" />
+    <None Include="packages.config" />
+    <None Include="Resources\AboutResources.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\layout-xlarge-land\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpeechingShared\SpeechingShared.csproj">
+      <Project>{c592a9e6-5de7-462a-9901-343dd2fc25c5}</Project>
+      <Name>SpeechingShared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="radialprogress">
+      <Visible>False</Visible>
+      <Version>1.0.1.3</Version>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="restsharp">
+      <Visible>False</Visible>
+      <Version>105.0.1.0</Version>
+    </XamarinComponentReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="..\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.1.4.2.6359\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

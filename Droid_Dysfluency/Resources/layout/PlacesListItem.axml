@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/listCell"
+    android:elevation="4dp">
+    <TextView
+        android:id="@+id/placesList_name"
+        android:text="this is a longer than average location name"
+        android:layout_alignParentLeft="true"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
+    <ImageView
+        android:src="@drawable/Icon"
+        android:id="@+id/placesList_photo"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_vertical|right"
+        android:scaleType="centerCrop"
+        android:background="@color/appMain" />
+</LinearLayout>

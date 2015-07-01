@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<!-- LEFT SIDE -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="fill_parent"
+        android:layout_margin="15dp"
+        android:background="@color/darkBlue">
+    <!-- Profile header -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+            <ImageView
+                android:src="@drawable/Icon"
+                android:id="@+id/profile_avatar"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_weight="2"
+                android:scaleType="fitCenter"
+                android:layout_margin="20dp" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3">
+                <TextView
+                    android:text="Your Profile"
+                    android:id="@+id/profile_title"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:textSize="33sp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:text="Justin Time"
+                    android:id="@+id/profile_name"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:textSize="25sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:text="Member since 11/11/11"
+                    android:id="@+id/profile_date"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    <!-- Progress summary -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            <TextView
+                android:text="Your Total Score:"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:orientation="vertical"
+                android:textSize="25sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="6dp"
+                android:textColor="@color/white" />
+            <RatingBar
+                android:id="@+id/profile_totalRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:rating="3.5" />
+            <TextView
+                android:text="This was your average score across all categories as of 11/12/13. Practice and see if you can improve!"
+                android:id="@+id/profile_ratingSummary"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:orientation="vertical"
+                android:textSize="18sp"
+                android:layout_margin="8dp"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp">
+    <!-- Strengths and weaknesses -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5">
+        <!-- STRENGTH -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="6dp"
+                android:gravity="top"
+                android:background="@color/darkGreen">
+                <TextView
+                    android:text="Your best score:"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:textSize="25sp"
+                    android:layout_marginTop="13dp"
+                    android:textColor="@color/white" />
+                <ImageView
+                    android:src="@drawable/Icon"
+                    android:id="@+id/profile_strongIcon"
+                    android:layout_width="fill_parent"
+                    android:layout_height="120dp"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:text="Category Name"
+                    android:id="@+id/profile_strongTitle"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:textSize="24sp"
+                    android:textColor="@color/white" />
+                <RatingBar
+                    android:id="@+id/profile_ratingStrong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:rating="4.5" />
+            </LinearLayout>
+        <!-- WEAKNESS -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="6dp"
+                android:gravity="top"
+                android:background="@color/darkRed">
+                <TextView
+                    android:text="Needs practice..."
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:textSize="25sp"
+                    android:layout_marginTop="13dp"
+                    android:textColor="@color/white" />
+                <ImageView
+                    android:src="@drawable/Icon"
+                    android:id="@+id/profile_weakIcon"
+                    android:layout_width="fill_parent"
+                    android:layout_height="120dp"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/white" />
+                <TextView
+                    android:text="Category Name"
+                    android:id="@+id/profile_weakTitle"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:textSize="24sp"
+                    android:textColor="@color/white" />
+                <RatingBar
+                    android:id="@+id/profile_ratingWeak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:rating="2.0" />
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/profile_ReassessBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Reassess Yourself!"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:padding="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+</LinearLayout>

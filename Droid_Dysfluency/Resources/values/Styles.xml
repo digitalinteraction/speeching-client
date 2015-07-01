@@ -1,0 +1,22 @@
+﻿<resources>
+  <style name="Theme.Splash" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <item name="android:windowBackground">@color/appMain</item>
+    <item name="android:colorBackground">@color/appDark</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:navigationBarColor">@color/appMain</item>
+    <item name="colorPrimaryDark">@color/appMain</item>
+  </style>
+
+  <style name="Theme.Speechingred" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <item name="colorPrimary">@color/appMain</item>
+    <item name="colorPrimaryDark">@color/appDark</item>
+    <item name="colorAccent">@color/appMain</item>
+    <item name="actionButtonStyle">@style/Speeching.ActionButton</item>
+  </style>
+
+  <style name="Speeching.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
+    <item name="android:minWidth">20dp</item>
+    <item name="android:paddingLeft">0dp</item>
+    <item name="android:paddingRight">15dp</item>
+  </style>
+</resources>

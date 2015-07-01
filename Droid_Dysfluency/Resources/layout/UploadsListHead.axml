@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView
+        android:text="Your Uploads"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploads_title"
+        android:textColor="@color/appTitle"
+        android:textSize="24sp" />
+    <TextView
+        android:text="Upload your results to the cloud service!"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/uploads_message"
+        android:textSize="18sp" />
+</LinearLayout>

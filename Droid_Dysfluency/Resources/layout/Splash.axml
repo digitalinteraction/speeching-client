@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/appMain">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="5dp">
+        <ImageView
+            android:src="@drawable/splashIcon"
+            android:layout_width="165dp"
+            android:layout_height="150dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:text="Loading"
+            android:layout_width="match_parent"
+            android:id="@+id/splash_loading"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="@color/white"
+            android:visibility="visible" />
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/splash_signIn"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

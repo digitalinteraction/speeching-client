@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="Droid_PeopleWithParkinsons.AutoResizeTextView"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<!-- TITLE SCREEN LAYOUT  -->
+    <RelativeLayout
+        android:id="@+id/scenarioTitleLayout"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone">
+        <ImageView
+            android:src="@drawable/Icon"
+            android:id="@+id/scenarioIcon"
+            android:layout_centerHorizontal="true"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp" />
+        <TextView
+            android:text="Getting the bus to the train station"
+            android:layout_width="match_parent"
+            android:id="@+id/scenarioTitle"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:textSize="35sp"
+            android:textColor="@color/appTitle"
+            android:layout_below="@id/scenarioIcon"
+            android:paddingTop="60dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp" />
+        <TextView
+            android:text="Created by Dan Richardson"
+            android:layout_width="match_parent"
+            android:id="@+id/scenarioAuthor"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scenarioTitle"
+            android:textSize="15sp"
+            android:paddingTop="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="20dp" />
+        <Button
+            android:id="@+id/scenarioStartBtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/recordButtonBlue"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Start!"
+            android:textColor="#fff"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="40dp"
+            android:elevation="4dp" />
+    </RelativeLayout>
+<!-- EVENT LAYOUT  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/scenarioEventLayout"
+        android:visibility="visible">
+        <VideoView
+            android:id="@+id/scenarioVideo"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:scaleType="centerCrop"
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            android:background="@color/appDark"
+            android:elevation="7dp" />
+        <ImageView
+            android:src="@drawable/Icon"
+            android:id="@+id/scenarioImage"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:scaleType="centerCrop"
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:background="@color/appDark"
+            android:elevation="7dp" />
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            <TextView
+                android:text="This is a text entry! There are many others like it, but this one is mine."
+                android:layout_width="wrap_content"
+                android:id="@+id/scenarioText"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scenarioImage"
+                android:textSize="22sp"
+                android:paddingLeft="25dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="22dp" />
+            <View
+                android:layout_below="@id/scenarioText"
+                android:id="@+id/scenarioBreaker"
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/appMain"
+                android:paddingBottom="22dp" />
+        <!-- Standard layout with big red button -->
+            <RelativeLayout
+                android:id="@+id/scenarioRecordLayout"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_below="@id/scenarioBreaker"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="visible">
+                <TextView
+                    android:text="Your response:"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioPromptHead"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="18sp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingTop="22dp" />
+                <TextView
+                    android:text="This is the prompt - try to read it as carefully as possible."
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioPrompt"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scenarioPromptHead"
+                    android:textSize="22sp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp"
+                    android:paddingTop="16dp" />
+                <Button
+                    android:id="@+id/scenarioProgressBtn"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:background="@drawable/recordButtonBlue"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="Begin Recording!"
+                    android:textColor="#fff"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="20sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="15dp"
+                    android:elevation="4dp" />
+            </RelativeLayout>
+        <!-- Alternative layout for presenting a choice to the user -->
+            <LinearLayout
+                android:id="@+id/scenarioChoiceLayout"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_below="@id/scenarioBreaker"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone">
+                <TextView
+                    android:text="Make a choice, using this prompt!"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioChoicePrompt"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp" />
+                <TextView
+                    android:text="Tap your choice:"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scenarioPromptHead"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="20sp"
+                    android:padding="15dp" />
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/scenarioBreaker"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="10dp"
+                    android:visibility="visible">
+                    <ImageView
+                        android:src="@drawable/Icon"
+                        android:id="@+id/scenarioChoice1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitCenter" />
+                    <ImageView
+                        android:src="@drawable/Icon"
+                        android:id="@+id/scenarioChoice2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitCenter" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
