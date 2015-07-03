@@ -169,12 +169,17 @@ namespace DroidSpeeching
         {
             FinishReading();
 
-            ActivityHelp help = await ServerData.FetchHelp(currentMode);
+            ActivityHelp help = await ServerData.FetchHelp(currentMode) as ActivityHelp;
+
+            if (help == null) return;
 
             VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
             helpVidFragment.Show(SupportFragmentManager, "video_helper");
 
-            helpVidFragment.StartVideo();
+            if (!string.IsNullOrWhiteSpace(help.HelpVideo))
+            {
+                helpVidFragment.StartVideo();
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

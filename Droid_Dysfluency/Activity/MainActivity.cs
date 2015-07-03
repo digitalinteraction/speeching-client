@@ -54,12 +54,17 @@ namespace Droid_Dysfluency
 
             try
             {
-                ActivityHelp help = await ServerData.FetchHelp(ServerData.TaskType.None);
+                ActivityHelp help = await ServerData.FetchHelp(ServerData.TaskType.None) as ActivityHelp;
+
+                if (help == null) return;
 
                 VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
                 helpVidFragment.Show(SupportFragmentManager, "video_helper");
 
-                helpVidFragment.StartVideo();
+                if (!string.IsNullOrWhiteSpace(help.HelpVideo))
+                {
+                    helpVidFragment.StartVideo();
+                }
 
                 ISharedPreferencesEditor editor = GetPrefs().Edit();
                 editor.PutBoolean("FIRSTTIME", false);
@@ -71,8 +76,6 @@ namespace Droid_Dysfluency
                 editor.PutBoolean("FIRSTTIME", true);
                 editor.Apply();
             }
-            
-            
         }
 
         private ISharedPreferences GetPrefs()

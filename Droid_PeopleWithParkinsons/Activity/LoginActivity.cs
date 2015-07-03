@@ -81,6 +81,7 @@ namespace DroidSpeeching
 
             thisUser.Nickname = (currentPerson.HasNickname) ? currentPerson.Nickname : thisUser.Name;
             thisUser.Avatar = (currentPerson.Image != null) ? currentPerson.Image.Url : null;
+            thisUser.App = User.AppType.Speeching;
 
             SetupUserAccount(thisUser);
             needLogin = false;

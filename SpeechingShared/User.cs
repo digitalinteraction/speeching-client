@@ -7,6 +7,7 @@ namespace SpeechingShared
     /// </summary>
     public class User
     {
+        public enum AppType { None = 0, Speeching = 1, Fluent = 2};
         public enum UserType { Patient, Therapist, Rater };
         public enum FriendStatus { Accepted, Denied, Sent, Received };
 
@@ -19,6 +20,7 @@ namespace SpeechingShared
         public FriendStatus Status;
         public List<string> Friends;
         public string IdToken;
+        public AppType App;
 
         public User()
         {

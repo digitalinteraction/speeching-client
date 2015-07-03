@@ -54,6 +54,7 @@ namespace SpeechingShared
                 {
                     requestMessage.Headers.Add("Email", AppData.Session.CurrentUser.Email);
                     requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key);
+                    requestMessage.Headers.Add("App", AppData.Session.CurrentUser.App.ToString());
                 }
 
                 if (jsonData != null)
@@ -162,7 +163,8 @@ namespace SpeechingShared
                 if (AppData.Session != null && AppData.Session.CurrentUser != null)
                 {
                     requestMessage.Headers.Add("Email", AppData.Session.CurrentUser.Email);
-                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key.ToString());
+                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key);
+                    requestMessage.Headers.Add("App", AppData.Session.CurrentUser.App.ToString());
                 }
                 
                 HttpResponseMessage response = await client.SendAsync(requestMessage);
