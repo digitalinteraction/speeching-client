@@ -19,6 +19,8 @@ namespace SpeechingShared
 
         public double UserRating { get; set; } // out of 5
 
+        public string FeedbackQuery { get; set; }
+
         public ScenarioResult(int activityId, string dataLoc)
         {
             Id = AppData.Rand.Next(0, 100000); // TEMP

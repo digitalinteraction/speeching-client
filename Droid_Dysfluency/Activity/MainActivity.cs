@@ -161,7 +161,7 @@ namespace Droid_Dysfluency
 
         public class MyPagerAdapter : FragmentPagerAdapter
         {
-            protected internal static readonly string[] Titles = {"Home", "Practice"};
+            protected internal static readonly string[] Titles = {"Home"};
             protected internal static readonly string[] Titles2 = Titles.Select(s => s + " (Alt)").ToArray();
             private readonly string[] titles;
             private int count;

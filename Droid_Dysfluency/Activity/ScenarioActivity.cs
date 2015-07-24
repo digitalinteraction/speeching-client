@@ -646,6 +646,8 @@ namespace Droid_Dysfluency
 
             ProgressDialog progressDialog;
             AppCompatDialog ratingsDialog = null;
+            AppCompatDialog commentDialog = null;
+
             bool rated = false;
 
             RunOnUiThread(() =>
@@ -654,9 +656,23 @@ namespace Droid_Dysfluency
                 progressDialog.SetTitle("Scenario Complete!");
                 progressDialog.SetMessage("Getting your recordings ready to upload...");
 
+                commentDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
+                    .SetTitle("Ask for feedback")
+                    .SetMessage("If you'd like feedback on anything specific, ask your question in the box below.")
+                    .SetView(Resource.Layout.FeedbackDialog)
+                    .SetCancelable(false)
+                     .SetPositiveButton("Done", (par1, par2) =>
+                     {
+                         progressDialog.Show();
+                         EditText textInput = commentDialog.FindViewById<EditText>(Resource.Id.dialogTextField);
+                         results.FeedbackQuery = textInput.Text;
+                         rated = true;
+                     })
+                    .Create();
+
                 ratingsDialog = new Android.Support.V7.App.AlertDialog.Builder(this)
                     .SetTitle("Scenario Complete!")
-                    .SetMessage("How do you feel you did?")
+                    .SetMessage("How confident are you that you've spoken clearly?")
                     .SetView(Resource.Layout.RatingDialog)
                     .SetCancelable(false)
                     .SetPositiveButton("Done", (par1, par2) =>
@@ -665,8 +681,7 @@ namespace Droid_Dysfluency
                         // ReSharper disable once AccessToModifiedClosure
                         RatingBar rating = ratingsDialog.FindViewById<RatingBar>(Resource.Id.dialogRatingBar);
                         results.UserRating = rating.Rating;
-                        progressDialog.Show();
-                        rated = true;
+                        commentDialog.Show();
                     })
                     .Create();
 

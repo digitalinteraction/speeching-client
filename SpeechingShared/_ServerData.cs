@@ -39,7 +39,7 @@ namespace SpeechingShared
         /// <param name="route">The route on the server to query</param>
         /// <param name="jsonData">Serialized data to send to the server in the request</param>
         /// <returns>The response's JSON in type T</returns>
-        public static async Task<T> PostRequest<T>(string route, string jsonData = null, bool login = true)
+        public static async Task<T> PostRequest<T>(string route, string jsonData = null, User altUser = null)
         {
             if (!AppData.CheckNetwork()) return default(T);
 
@@ -50,11 +50,13 @@ namespace SpeechingShared
 
                 HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, ServiceUrl + route);
 
-                if (AppData.Session != null && AppData.Session.CurrentUser != null && login)
+                User loginUser = altUser ?? AppData.Session.CurrentUser;
+
+                if (loginUser != null)
                 {
-                    requestMessage.Headers.Add("Email", AppData.Session.CurrentUser.Email);
-                    requestMessage.Headers.Add("Key", AppData.Session.CurrentUser.Key);
-                    requestMessage.Headers.Add("App", AppData.Session.CurrentUser.App.ToString());
+                    requestMessage.Headers.Add("Email", loginUser.Email);
+                    requestMessage.Headers.Add("Key", loginUser.Key);
+                    requestMessage.Headers.Add("App", loginUser.App.ToString());
                 }
 
                 if (jsonData != null)
@@ -394,6 +396,8 @@ namespace SpeechingShared
 
         private static async Task<string> UploadFile(string toUrl, IFile file, HttpClientHandler credentials)
         {
+            credentials.PreAuthenticate = true;
+
             using (HttpClient client = new HttpClient(credentials))
             {
                 using (StreamContent content = new StreamContent(await file.OpenAsync(FileAccess.Read)))
@@ -451,7 +455,7 @@ namespace SpeechingShared
                             ConfidentialData.storagePassword)
                     })
                     {
-                        if (!AppData.Session.ServerFolderExists)
+                        //if (!AppData.Session.ServerFolderExists)
                         {
                             // Try to create the remote dir
                             try
@@ -595,7 +599,7 @@ namespace SpeechingShared
             }
 
             string serializedAccount = JsonConvert.SerializeObject(user);
-            return await PostRequest<User>("Account", serializedAccount, false);
+            return await PostRequest<User>("Account", serializedAccount, user);
         }
 
         /// <summary>

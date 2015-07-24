@@ -57,7 +57,7 @@ namespace Droid_Dysfluency
             //DEBUG
             string downloadFolderPath =
                 Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads)
-                    .AbsolutePath + "/speeching";
+                    .AbsolutePath + "/fluent";
             if (!Directory.Exists(downloadFolderPath))
             {
                 Directory.CreateDirectory(downloadFolderPath);

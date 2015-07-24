@@ -60,8 +60,8 @@
     <Reference Include="FormsViewGroup">
       <HintPath>..\packages\Xamarin.Forms.1.4.2.6359\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib.Portable">
-      <HintPath>..\packages\SharpZipLib.Portable.0.86.0.0002\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
@@ -364,6 +364,9 @@
     <AndroidResource Include="Resources\layout-large-port\ScenarioActivity.axml" />
     <AndroidResource Include="Resources\layout-normal-land\PlacesRecordEntry.axml" />
     <AndroidResource Include="Resources\values\AutoResizeTextViewStyleable.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackDialog.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
