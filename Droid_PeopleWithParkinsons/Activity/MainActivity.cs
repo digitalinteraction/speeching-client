@@ -76,8 +76,6 @@ namespace DroidSpeeching
                 editor.PutBoolean("FIRSTTIME", true);
                 editor.Apply();
             }
-            
-            
         }
 
         private ISharedPreferences GetPrefs()

@@ -3,20 +3,26 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <ImageView
-        android:src="@drawable/Icon"
-        android:id="@+id/wiki_image"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5"
-        android:scaleType="centerCrop"
-        android:paddingBottom="25dp"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:background="@color/appDark"
-        android:elevation="7dp"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <Button
+            android:id="@+id/wiki_pacingModeBtn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="Pacing"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/wiki_loudnessModeBtn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="Loudness"
+            android:textSize="16sp" />
+    </LinearLayout>
     <TextView
         android:id="@+id/wiki_text"
         android:layout_width="fill_parent"

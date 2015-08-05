@@ -3,8 +3,4 @@
         android:title="Information"
         android:icon="@drawable/infoWhite"
         speeching:showAsAction="always"/>
-  <item android:id="@+id/action_practiceMode"
-        android:title="Change Mode"
-        android:icon="@drawable/mode"
-        speeching:showAsAction="always|withText"/>
 </menu>

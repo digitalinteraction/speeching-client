@@ -384,6 +384,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large\VideoHelpPopup.axml" />
+    <AndroidResource Include="Resources\layout\HelpActivity.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

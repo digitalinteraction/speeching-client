@@ -43,20 +43,11 @@ namespace Droid_Dysfluency
         private Action<string> onSpeechComplete;
         private bool reading;
         private Button startBtn;
-        private TTSManager tts;
+        private Button pacingModeButton;
+        private Button loudnessModeButton;
         private WikipediaResult wiki;
         private ImageView wikiImage;
         private TextView wikiText;
-
-        public void OnClick(IDialogInterface dialog, int which)
-        {
-            string choice = names[which];
-
-            ServerData.TaskType mode;
-            modeNames.TryGetBySecond(choice, out mode);
-
-            SwitchMode(mode);
-        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -72,7 +63,6 @@ namespace Droid_Dysfluency
             wikiImage = FindViewById<ImageView>(Resource.Id.wiki_image);
             startBtn = FindViewById<Button>(Resource.Id.wiki_startBtn);
             startBtn.Click += startBtn_Click;
-            wikiText.Click += ttsBtn_Click;
 
             // Pacing layout
             metronBpmText = FindViewById<TextView>(Resource.Id.wiki_bpm);
@@ -103,30 +93,19 @@ namespace Droid_Dysfluency
 
             currentMode = ServerData.TaskType.Loudness;
 
-            tts = new TTSManager(this, onSpeechComplete);
+            pacingModeButton = FindViewById<Button>(Resource.Id.wiki_pacingModeBtn);
+            pacingModeButton.Click += pacingModeSwitch;
+            loudnessModeButton = FindViewById<Button>(Resource.Id.wiki_loudnessModeBtn);
+            loudnessModeButton.Click += loudnessModeSwitch;
 
             SetupRecorder();
 
             LoadWikiInfo();
         }
 
-        private void ttsBtn_Click(object sender, EventArgs e)
-        {
-            if (tts.IsSpeaking())
-            {
-                tts.StopSpeaking();
-            }
-            else
-            {
-                tts.SayLine(wikiText.Text, "SpeechingWiki");
-            }
-        }
-
         protected override void OnResume()
         {
             base.OnResume();
-
-            tts = new TTSManager(this, onSpeechComplete);
             audioManager = new AndroidUtils.RecordAudioManager(this, OnRecordingFull);
         }
 
@@ -144,12 +123,6 @@ namespace Droid_Dysfluency
                 audioManager.StopRecording();
                 modeLayouts[currentMode].Visibility = ViewStates.Gone;
                 startBtn.Text = "Start!";
-            }
-
-            if (tts != null)
-            {
-                tts.Clean();
-                tts = null;
             }
 
             if (audioManager != null)
@@ -184,12 +157,6 @@ namespace Droid_Dysfluency
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if (item.ItemId == Resource.Id.action_practiceMode)
-            {
-                ShowChooseModeDialog();
-                return true;
-                
-            }
             if (item.ItemId == Resource.Id.action_info)
             {
                 ShowHelpDialog();
@@ -294,7 +261,7 @@ namespace Droid_Dysfluency
 
             wiki = await AndroidUtils.GetTodaysWiki(this);
 
-            if (wiki.imageURL != null)
+            if (wikiImage != null && wiki.imageURL != null)
             {
                 if (!File.Exists(wiki.imageURL))
                 {
@@ -304,7 +271,7 @@ namespace Droid_Dysfluency
                 wikiImage.SetImageURI(Android.Net.Uri.FromFile(new Java.IO.File(wiki.imageURL)));
                 wikiImage.Visibility = ViewStates.Visible;
             }
-            else
+            else if(wikiImage != null)
             {
                 wikiImage.Visibility = ViewStates.Gone;
             }
@@ -447,6 +414,26 @@ namespace Droid_Dysfluency
                     }
                 });
             }
+        }
+
+        private void pacingModeSwitch(object sender, EventArgs e)
+        {
+            string choice = names[0];
+
+            ServerData.TaskType mode;
+            modeNames.TryGetBySecond(choice, out mode);
+
+            SwitchMode(mode);
+        }
+
+        private void loudnessModeSwitch(object sender, EventArgs e)
+        {
+            string choice = names[1];
+
+            ServerData.TaskType mode;
+            modeNames.TryGetBySecond(choice, out mode);
+
+            SwitchMode(mode);
         }
 
         private void loud_targetButton_Click(object sender, EventArgs e)

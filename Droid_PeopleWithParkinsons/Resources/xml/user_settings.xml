@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
   <PreferenceCategory android:title="Application">
-    <CheckBoxPreference android:defaultValue="true" android:key="autoTTS" android:summary="Automatically play Text-to-Speech in Activities when voice recordings aren't available." android:title="Auto Text-to-Speech">
+    <CheckBoxPreference android:defaultValue="false" android:key="autoTTS" android:summary="Automatically play Text-to-Speech in Activities when voice recordings aren't available." android:title="Auto Text-to-Speech">
     </CheckBoxPreference>
   </PreferenceCategory>
   

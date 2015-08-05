@@ -8,14 +8,16 @@
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
+        android:id="@+id/submitted_title"
+        android:textSize="27sp"
         android:textColor="@color/appTitle" />
     <TextView
-        android:text="Prepare for your next assessment with these practice activites! Tap a category to see all of the activities available for it, or check out today's content in Daily Exercises."
+        android:text="These simple practice exercises will help you maintain clear, understandable speaking techniques."
         android:layout_width="fill_parent"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:layout_height="wrap_content"
+        android:id="@+id/submitted_message"
         android:textSize="20sp" />
     <LinearLayout
         android:orientation="horizontal"
@@ -23,15 +25,29 @@
         android:layout_height="wrap_content">
         <Button
             android:id="@+id/practiceAreaBtn"
-            android:text="Daily Excercises"
-            android:textSize="20sp"
+            android:text="Go to practice area"
+            android:textSize="17sp"
             android:padding="18dp"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_margin="6dp" />
     </LinearLayout>
+    <TextView
+        android:text="Your Activities"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/submitted_title"
+        android:textSize="27sp"
+        android:textColor="@color/appTitle" />
+    <TextView
+        android:text="Run through these tasks to develop and get feedback on your speech."
+        android:layout_width="fill_parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/submitted_message"
+        android:textSize="20sp" />
 </LinearLayout>
