@@ -27,7 +27,7 @@ namespace DroidSpeeching
         private int loudCurrentVol;
         private Button loudTargetButton;
         private TextView loudTargetText;
-        private int loudTargetVol = 45;
+        private int loudTargetVol = 35;
         private TextView loudVolText;
         private short[] metronAudioBuffer;
         private AudioTrack metronAudioTrack;
@@ -48,6 +48,7 @@ namespace DroidSpeeching
         private WikipediaResult wiki;
         private ImageView wikiImage;
         private TextView wikiText;
+        private ISharedPreferences prefs;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -91,7 +92,7 @@ namespace DroidSpeeching
                 names.Add(entry.Value);
             }
 
-            currentMode = ServerData.TaskType.Loudness;
+            currentMode = ServerData.TaskType.None;
 
             pacingModeButton = FindViewById<Button>(Resource.Id.wiki_pacingModeBtn);
             pacingModeButton.Click += pacingModeSwitch;
@@ -101,6 +102,8 @@ namespace DroidSpeeching
             SetupRecorder();
 
             LoadWikiInfo();
+
+            CheckForFirstTime();
         }
 
         protected override void OnResume()
@@ -113,6 +116,43 @@ namespace DroidSpeeching
         {
             FinishReading();
             base.OnPause();
+        }
+
+        private ISharedPreferences GetPrefs()
+        {
+            if (prefs == null)
+            {
+                prefs = GetSharedPreferences("WIKI", FileCreationMode.MultiProcess);
+            }
+
+            return prefs;
+        }
+
+        private void CheckForFirstTime()
+        {
+            if (!GetPrefs().GetBoolean("FIRSTTIME", true)) return;
+
+            try
+            {
+                Android.Support.V7.App.AlertDialog alert = new Android.Support.V7.App.AlertDialog.Builder(this)
+                .SetTitle("Practice Area")
+                .SetMessage("Tap the buttons above the text to switch between practicing your rate of speech and your speech volume.\n" +
+                            "Tap the information button at the top of the screen for more information about the current mode.\n"+
+                            "The sample text is updated daily from Wikipedia, so check back each day for new content!")
+                .SetNegativeButton("Got it", (arg1, arg2) => { })
+                .Create();
+                alert.Show();
+
+                ISharedPreferencesEditor editor = GetPrefs().Edit();
+                editor.PutBoolean("FIRSTTIME", false);
+                editor.Apply();
+            }
+            catch (Exception except)
+            {
+                ISharedPreferencesEditor editor = GetPrefs().Edit();
+                editor.PutBoolean("FIRSTTIME", true);
+                editor.Apply();
+            }
         }
 
         private void FinishReading()
@@ -159,7 +199,10 @@ namespace DroidSpeeching
         {
             if (item.ItemId == Resource.Id.action_info)
             {
-                ShowHelpDialog();
+                Type targetActivity = (currentMode == ServerData.TaskType.Loudness) ? typeof(HelpLoudnessActivity) : typeof(HelpPacingActivity);
+
+                Intent intent = new Intent(this, targetActivity);
+                StartActivity(intent);
                 return true;
             }
 
@@ -292,7 +335,7 @@ namespace DroidSpeeching
                 if ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <=
                     Android.Content.Res.ScreenLayout.SizeNormal)
                 {
-                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 15);
+                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 17);
                 }
                 else
                 {
@@ -301,7 +344,7 @@ namespace DroidSpeeching
             }
 
 
-            SwitchMode(ServerData.TaskType.Loudness);
+            SwitchMode(ServerData.TaskType.Pacing);
 
             dialog.Hide();
         }
@@ -321,6 +364,17 @@ namespace DroidSpeeching
 
             currentMode = newMode;
             string modeName;
+
+            if (currentMode == ServerData.TaskType.Loudness)
+            {
+                loudnessModeButton.Enabled = false;
+                pacingModeButton.Enabled = true;
+            }
+            else if(currentMode == ServerData.TaskType.Pacing)
+            {
+                loudnessModeButton.Enabled = true;
+                pacingModeButton.Enabled = false;
+            }
 
             modeNames.TryGetByFirst(newMode, out modeName);
 

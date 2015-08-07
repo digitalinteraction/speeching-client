@@ -35,7 +35,7 @@
             android:layout_margin="6dp" />
     </LinearLayout>
     <TextView
-        android:text="Your Activities"
+        android:text="Extra Activities"
         android:layout_width="fill_parent"
         android:layout_marginTop="5dp"
         android:layout_height="wrap_content"

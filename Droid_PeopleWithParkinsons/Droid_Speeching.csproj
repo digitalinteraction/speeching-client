@@ -166,6 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity\AssessmentActivity.cs" />
+    <Compile Include="Activity\HelpLoudnessActivity.cs" />
+    <Compile Include="Activity\HelpPacingActivity.cs" />
     <Compile Include="Activity\SettingsActivity.cs" />
     <Compile Include="Activity\FeedbackActivity.cs" />
     <Compile Include="Activity\GuideActivity.cs" />
@@ -384,7 +386,10 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout-large\VideoHelpPopup.axml" />
-    <AndroidResource Include="Resources\layout\HelpActivity.axml" />
+    <AndroidResource Include="Resources\layout\HelpLoudnessActivity.axml" />
+    <AndroidResource Include="Resources\layout\HelpPacingActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

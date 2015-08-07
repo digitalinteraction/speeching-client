@@ -126,7 +126,7 @@ namespace DroidSpeeching
             titleLayout.Visibility = ViewStates.Visible;
             eventLayout.Visibility = ViewStates.Gone;
 
-            helpText = "This is a short practiceActivity which may require you to perform multiple simple tasks." +
+            helpText = "This is a short activity which may require you to perform multiple simple tasks." +
                        "\nOnce you have completed it, you'll be given the chance to upload your results for others to analyse and give you feedback." +
                        "\nPress the Start button to begin!";
 
@@ -396,7 +396,7 @@ namespace DroidSpeeching
 
             string ttsHelp = "Tap the text to listen to it spoken aloud!";
 
-            mainButton.Text = "Record Response";
+            mainButton.Text = "Start Recording";
             mainButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
 
             if (tts == null)
@@ -614,7 +614,7 @@ namespace DroidSpeeching
                 recording = true;
                 string fileAdd = System.IO.Path.Combine(localTempDirectory, scenario.ParticipantTasks[currIndex].Id + ".mp4");
                 audioManager.StartRecording(fileAdd);
-                mainButton.Text = "Stop";
+                mainButton.Text = "Stop Recording";
             }
         }
 

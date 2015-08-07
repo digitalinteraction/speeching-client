@@ -610,9 +610,11 @@ namespace DroidSpeeching
                 if (audioRecorder != null)
                 {
                     double pressure = audioRecorder.MaxAmplitude;
-                    if (pressure == 0) return 0;
+                    if (pressure <= 0) return 0;
 
-                    return (20 * Math.Log10(pressure / 2700.0) + 40); // Fluffed :/
+                    double fluffedVal = 50 - pressure / 1000;//20 * Math.Log10(pressure * 1);
+
+                    return fluffedVal;
                 }  
                 else
                 {

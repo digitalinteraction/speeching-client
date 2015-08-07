@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="7dp">
+        <TextView
+            android:text="Loudness Practice"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:textColor="@color/appTitle" />
+        <TextView
+            android:text="Practice controlling the volume of your voice, making it as loud and clear as possible."
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/submitted_message"
+            android:textSize="18sp" />
+        <Button
+            android:id="@+id/loudnessIntroVidBtn"
+            android:text="Watch Loudness Intro Video"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="6dp" />
+        <TextView
+            android:text="How to Use"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:textColor="@color/appTitle" />
+        <Button
+            android:id="@+id/loudnessTutVidBtn"
+            android:text="Watch Tutorial Video"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="6dp" />
+        <TextView
+            android:text="Press start to begin.\nThe coloured number on the left will change to reflect the detected volume and turn green if it's above the target volume, which is on the right.\nPress \'set new target\' and follow the instructions if you want to change the target volume.\nWhen you're done, press stop and you'll be given the option to listen to your speech in your favourite music apps."
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+    </LinearLayout>
+</ScrollView>

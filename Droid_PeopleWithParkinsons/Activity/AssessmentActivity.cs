@@ -140,7 +140,7 @@ namespace DroidSpeeching
                 currentStage = AssessmentStage.Preamble;
                 preambleContainer.Visibility = ViewStates.Visible;
                 recButton.Visibility = ViewStates.Visible;
-                helpButton.Visibility = ViewStates.Visible;
+                helpButton.Visibility = ViewStates.Gone;
             }
 
             RunOnUiThread(() => { dialog.Hide(); });
@@ -326,7 +326,7 @@ namespace DroidSpeeching
             });
             recording = false;
             recButton.SetBackgroundResource(Resource.Drawable.recordButtonBlue);
-            recButton.Text = "Record";
+            recButton.Text = "Start Recording";
         }
 
         private void SetNewFragment()
