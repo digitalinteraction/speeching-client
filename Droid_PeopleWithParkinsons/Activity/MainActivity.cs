@@ -51,31 +51,13 @@ namespace DroidSpeeching
         private async void CheckForFirstTime()
         {
             if (!GetPrefs().GetBoolean("FIRSTTIME", true)) return;
+            
+            ISharedPreferencesEditor editor = GetPrefs().Edit();
+            editor.PutBoolean("FIRSTTIME", false);
+            editor.Apply();
 
-            try
-            {
-                ActivityHelp help = await ServerData.FetchHelp(ServerData.TaskType.None) as ActivityHelp;
-
-                if (help == null) return;
-
-                VideoPlayerFragment helpVidFragment = new VideoPlayerFragment(help.HelpVideo, help.ActivityName, help.ActivityDescription);
-                helpVidFragment.Show(SupportFragmentManager, "video_helper");
-
-                if (!string.IsNullOrWhiteSpace(help.HelpVideo))
-                {
-                    helpVidFragment.StartVideo();
-                }
-                    
-                ISharedPreferencesEditor editor = GetPrefs().Edit();
-                editor.PutBoolean("FIRSTTIME", false);
-                editor.Apply();
-            }
-            catch (Exception except)
-            {
-                ISharedPreferencesEditor editor = GetPrefs().Edit();
-                editor.PutBoolean("FIRSTTIME", true);
-                editor.Apply();
-            }
+            // Show about activity
+            StartActivity(typeof(HelpAboutActivity));
         }
 
         private ISharedPreferences GetPrefs()
@@ -125,6 +107,11 @@ namespace DroidSpeeching
             if (item.ItemId == Resource.Id.action_settings)
             {
                 StartActivity(typeof (SettingsActivity));
+                return true;
+            }
+            if (item.ItemId == Resource.Id.action_about)
+            {
+                StartActivity(typeof(HelpAboutActivity));
                 return true;
             }
             if (item.ItemId == Resource.Id.action_logOut)

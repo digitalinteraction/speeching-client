@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity\AssessmentActivity.cs" />
+    <Compile Include="Activity\HelpAboutActivity.cs" />
     <Compile Include="Activity\HelpLoudnessActivity.cs" />
     <Compile Include="Activity\HelpPacingActivity.cs" />
     <Compile Include="Activity\SettingsActivity.cs" />
@@ -390,6 +391,10 @@
     <AndroidResource Include="Resources\layout\HelpPacingActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\imageAlert.axml" />
+    <AndroidResource Include="Resources\layout\AboutActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -479,6 +484,15 @@
       <Project>{c592a9e6-5de7-462a-9901-343dd2fc25c5}</Project>
       <Name>SpeechingShared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\micDistance.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\diagram.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\exampleResult.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

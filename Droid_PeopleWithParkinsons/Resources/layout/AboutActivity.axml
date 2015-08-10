@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="7dp">
+        <TextView
+            android:text="What is Speeching?"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:padding="7dp"
+            android:textColor="@color/appTitle" />
+        <TextView
+            android:text="This application has been made as a tool for those who wish to get feedback about their speech. By completing the various available practice tasks on a regular basis you should be able to track your progress towards the goal of having clearer speech."
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/introVidBtn"
+                android:text="View Intro Video"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="6dp" />
+        </RelativeLayout>
+        <TextView
+            android:text="How does it Work?"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:padding="7dp"
+            android:textColor="@color/appTitle" />
+        <TextView
+            android:text="While using the application you can complete various simple scenarios, assessments and tasks. These activities have been designed to help assess your speech clarity and record your vocal responses. Upon completion of an activity, you can choose to upload these recordings. This is where the fun begins!"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp" />
+        <ImageView
+            android:src="@drawable/diagram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp" />
+        <TextView
+            android:text="If you choose to upload your recordings, they will be distibuted anonymously to a 'crowd' of users. These users will not know who you are, nor will you know who they are. They'll be asked to give feedback on various aspects of your speech, such as clarity, pacing and pitch. We then find the average for these statistics and return them to you!"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp" />
+        <TextView
+            android:text="Then What?"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:padding="7dp"
+            android:textColor="@color/appTitle" />
+        <ImageView
+            android:src="@drawable/exampleResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp" />
+        <TextView
+            android:text="Soon after submitting your results for an activity, your main feed will start to fill up with 'cards' like the one above. Each card will contain a measurement of a different area of speech. Use these measurements and their accompanying tips to help improve your speech!"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="18sp" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/closeBtn"
+                android:text="Get Started!"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="6dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

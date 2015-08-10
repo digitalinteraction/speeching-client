@@ -8,6 +8,7 @@ using Android.Net;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.V4.App;
+using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
 using RestSharp.Contrib;
@@ -46,6 +47,22 @@ namespace DroidSpeeching
             ISharedPreferences prefs = context.GetSharedPreferences("ACT_" + id, FileCreationMode.MultiProcess);
 
             return prefs.GetBoolean("DOWNLOADED", false);
+        }
+
+        public static void ShowMicDistancePrompt(Context context)
+        {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context)
+                .SetTitle("Get ready to record!")
+                .SetMessage("Try to keep the device at roughly a hand's length away from your mouth when recording.")
+                .SetPositiveButton("Got it", (s, a) => { });
+
+            LayoutInflater factory = LayoutInflater.From(context);
+            View view = factory.Inflate(Resource.Layout.imageAlert, null);
+            ImageView image = view.FindViewById<ImageView>(Resource.Id.alertImage);
+            image.SetImageResource(Resource.Drawable.micDistance);
+
+            dialog.SetView(view);
+            dialog.Show();
         }
 
         /// <summary>

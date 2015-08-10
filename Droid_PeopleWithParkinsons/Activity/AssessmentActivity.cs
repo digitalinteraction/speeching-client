@@ -70,6 +70,8 @@ namespace DroidSpeeching
             helpButton.Click += helpButton_Click;
             helpButton.Visibility = ViewStates.Gone;
 
+            AndroidUtils.ShowMicDistancePrompt(this);
+
             LoadData(bundle);
         }
 

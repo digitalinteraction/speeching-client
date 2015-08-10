@@ -347,6 +347,8 @@ namespace DroidSpeeching
             SwitchMode(ServerData.TaskType.Pacing);
 
             dialog.Hide();
+
+            AndroidUtils.ShowMicDistancePrompt(this);
         }
 
         /// <summary>

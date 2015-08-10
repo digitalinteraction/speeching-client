@@ -130,6 +130,8 @@ namespace DroidSpeeching
                        "\nOnce you have completed it, you'll be given the chance to upload your results for others to analyse and give you feedback." +
                        "\nPress the Start button to begin!";
 
+            AndroidUtils.ShowMicDistancePrompt(this);
+
             InitialiseData(savedInstanceState);
         }
 
