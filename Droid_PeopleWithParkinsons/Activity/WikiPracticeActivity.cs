@@ -335,7 +335,7 @@ namespace DroidSpeeching
                 if ((Resources.Configuration.ScreenLayout & Android.Content.Res.ScreenLayout.SizeMask) <=
                     Android.Content.Res.ScreenLayout.SizeNormal)
                 {
-                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 17);
+                    wikiText.SetTextSize(Android.Util.ComplexUnitType.Sp, 16);
                 }
                 else
                 {

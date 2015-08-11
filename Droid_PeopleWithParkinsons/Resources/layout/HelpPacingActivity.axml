@@ -40,6 +40,12 @@
             android:textSize="25sp"
             android:gravity="center"
             android:textColor="@color/appTitle" />
+        <TextView
+            android:text=""
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
         <Button
             android:id="@+id/pacingTutVidBtn"
             android:text="Watch Tutorial Video"
@@ -47,8 +53,14 @@
             android:padding="14dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="6dp" />
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:text="Note: The above video tutorial shows both a basic and an advanced method of practice. Try mastering them both!"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
         <TextView
             android:text="Press start to begin.\nThe number in the middle is the target tempo. This number will flash and a note will play in time with the beat. Try reading the text in time with it, either by syllable or the sentence's stress.\nYou can make the pacing faster or slower by using up and down arrows respectively.\nWhen you're done, press stop and you'll be given the option to listen to your speech in your favourite music apps."
             android:layout_width="fill_parent"
