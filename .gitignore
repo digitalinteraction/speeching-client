@@ -5,10 +5,11 @@ Droid_PeopleWithParkinsons/obj
 *.apk
 *.dll
 *.pdb
+.vs/
 Droid_Dysfluency/bin
 Droid_Dysfluency/obj
 Droid_PeopleWithParkinsons/bin/Debug
 Droid_PeopleWithParkinsons/bin/Release
 SpeechingShared/bin
-SpeechingShared/obj/Debug
+SpeechingShared/obj
 SpeechingShared/ConfidentialData.cs

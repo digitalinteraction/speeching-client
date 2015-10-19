@@ -15,7 +15,7 @@
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <DevInstrumentationEnabled>True</DevInstrumentationEnabled>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>e42e02a6</NuGetPackageImportStamp>
@@ -51,6 +51,20 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkSkip />
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis>armeabi</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <Debugger>Xamarin</Debugger>
+    <AotAssemblies>False</AotAssemblies>
+    <EnableLLVM>False</EnableLLVM>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
+    <EnableProguard>False</EnableProguard>
+    <DevInstrumentationEnabled>False</DevInstrumentationEnabled>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DBeattie.SnackbarSharp">
@@ -114,6 +128,9 @@
     </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\packages\icsharpcode-SharpZipLib-9478d50\SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="SpeechingShared">
+      <HintPath>..\SpeechingShared\bin\Release\SpeechingShared.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -478,12 +495,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\layout-xlarge-land\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SpeechingShared\SpeechingShared.csproj">
-      <Project>{c592a9e6-5de7-462a-9901-343dd2fc25c5}</Project>
-      <Name>SpeechingShared</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\micDistance.png" />
